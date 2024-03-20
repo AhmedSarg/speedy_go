@@ -5,7 +5,9 @@ class AppStrings {
   static const String success = "success";
 
   //splash screen
-  static const splashScreenTitle = "splashScreenTitle";
+  static const splashScreenTitleDriver = "splashScreenTitleDriver";
+  static const splashScreenTitlePassenger = "splashScreenTitlePassenger";
+  static const splashSubScreenTitle = "splashSubScreenTitle";
 
   //Onboarding screen
   static const onBoardingTitle = "onBoardingTitle";

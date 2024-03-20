@@ -1,1 +1,5 @@
-{}
+{
+  "splashScreenTitleDriver": "Driver",
+  "splashScreenTitlePassenger": "passenger",
+  "splashSubScreenTitle": "mode"
+}

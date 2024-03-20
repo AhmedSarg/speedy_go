@@ -6,6 +6,18 @@ import 'styles_manager.dart';
 
 class AppTextStyles {
   AppTextStyles._();
+  static TextStyle SplashScreenTitleTextStyle(BuildContext? context) =>
+      getRegularStyle(
+        fontFamily: FontConstants.primaryEnglishFont,
+        color: ColorManager.white,
+        fontSize: FontSize.s60,
+      );
+  static TextStyle SplashScreenSubTitleTextStyle(BuildContext? context) =>
+      getLightStyle(
+        fontFamily: FontConstants.primaryEnglishFont,
+        color: ColorManager.white,
+        fontSize: FontSize.s28,
+      );
 
   static TextStyle baseStatesMessageTextStyle(BuildContext? context) =>
       getBoldStyle(

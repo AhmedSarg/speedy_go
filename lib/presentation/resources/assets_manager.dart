@@ -1,7 +1,12 @@
 const String imagePath = "assets/images/";
 
 class ImageAssets {
-  static const String tempLogo = "${imagePath}temp.png";
+  static const String driverimage = "${imagePath}drivermode.png";
+  static const String passengerimage = "${imagePath}passengermode.png";
+
+
+
+
   static const String boardImage = "${imagePath}board_image.png";
   static const String placeholder1Image =
       "${imagePath}placeholders/placeholder1.png";
