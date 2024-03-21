@@ -17,19 +17,20 @@ class FontWeightManager {
 }
 
 class FontSize {
-  static const double s10 = 10.0;
-  static const double s12 = 12.0;
-  static const double s14 = 14.0;
-  static const double s15 = 15.0;
-  static const double s16 = 16.0;
-  static const double s17 = 17.0;
-  static const double s18 = 18.0;
-  static const double s20 = 20.0;
-  static const double s22 = 22.0;
-  static const double s24 = 24.0;
-  static const double s28 = 28.0;
-  static const double s32 = 32.0;
-  static const double s50 = 50.0;
-  static const double s60 = 60.0;
-  static const double s75 = 75.0;
+  static const double f10 = 10.0;
+  static const double f12 = 12.0;
+  static const double f14 = 14.0;
+  static const double f15 = 15.0;
+  static const double f16 = 16.0;
+  static const double f17 = 17.0;
+  static const double f18 = 18.0;
+  static const double f20 = 20.0;
+  static const double f22 = 22.0;
+  static const double f24 = 24.0;
+  static const double f28 = 28.0;
+  static const double f32 = 32.0;
+  static const double f40 = 40.0;
+  static const double f50 = 50.0;
+  static const double f60 = 60.0;
+  static const double f75 = 75.0;
 }

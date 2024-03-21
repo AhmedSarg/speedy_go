@@ -1,4 +1,5 @@
 import '../../../domain/models/domain.dart';
+import '../../../domain/models/enums.dart';
 
 class DataIntent {
   DataIntent._();
@@ -14,6 +15,18 @@ class DataIntent {
   //   _newsItemModel = null;
   //   return r;
   // }
+
+//-----------------------------------
+
+//------------------------------------
+  //Selection
+  static Selection _selection = Selection.none;
+
+  static void setSelection(Selection item) => _selection = item;
+
+  static Selection getSelection() {
+    return _selection;
+  }
 
 //-----------------------------------
 }

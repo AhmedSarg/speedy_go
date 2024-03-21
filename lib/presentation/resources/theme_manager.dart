@@ -12,7 +12,7 @@ ThemeData getApplicationTheme() {
     disabledColor: ColorManager.darkGrey,
     // ripple effect color
     splashColor: ColorManager.primary,
-    scaffoldBackgroundColor: ColorManager.light,
+    scaffoldBackgroundColor: ColorManager.primary,
     // app bar theme
     appBarTheme: const AppBarTheme(
       centerTitle: true,
@@ -22,7 +22,7 @@ ThemeData getApplicationTheme() {
       iconTheme: IconThemeData(color: ColorManager.white), //add this line here
     ),
     dialogTheme: const DialogTheme(
-      backgroundColor: ColorManager.light,
+      backgroundColor: ColorManager.white,
       surfaceTintColor: ColorManager.transparent
     ),
     // bottomNavigationBarTheme: BottomNavigationBarThemeData(
@@ -53,7 +53,7 @@ ThemeData getApplicationTheme() {
       ),
       disabledColor: ColorManager.lightGrey,
       buttonColor: ColorManager.primary,
-      splashColor: ColorManager.lightBlue,
+      splashColor: ColorManager.secondary,
     ),
 
     // elevated button them

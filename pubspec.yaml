@@ -94,6 +94,10 @@ flutter:
   fonts:
     - family: Poppins
       fonts:
+        - asset: assets/fonts/english/poppins/Poppins-Black.ttf
+          weight: 900
+        - asset: assets/fonts/english/poppins/Poppins-ExtraBold.ttf
+          weight: 800
         - asset: assets/fonts/english/poppins/Poppins-Bold.ttf
           weight: 700
         - asset: assets/fonts/english/poppins/Poppins-SemiBold.ttf
@@ -104,6 +108,10 @@ flutter:
           weight: 400
         - asset: assets/fonts/english/poppins/Poppins-Light.ttf
           weight: 300
+        - asset: assets/fonts/english/poppins/Poppins-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/english/poppins/Poppins-Thin.ttf
+          weight: 100
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

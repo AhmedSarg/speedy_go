@@ -1,5 +1,8 @@
 {
-  "splashScreenTitleDriver": "Driver",
-  "splashScreenTitlePassenger": "passenger",
-  "splashSubScreenTitle": "mode"
+  "splashScreenDriverTitle": "Driver",
+  "splashScreenPassengerTitle": "passenger",
+  "splashScreenSubTitle": "mode",
+
+  "selectionScreenDriverTile": "Driver",
+  "selectionScreenPassengerTile": "Passenger"
 }

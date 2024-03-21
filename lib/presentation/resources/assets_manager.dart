@@ -1,29 +1,11 @@
-const String imagePath = "assets/images/";
-
 class ImageAssets {
-  static const String driverimage = "${imagePath}drivermode.png";
-  static const String passengerimage = "${imagePath}passengermode.png";
+  ImageAssets._();
 
+  static const String _imagePath = "assets/images/";
 
-
-
-  static const String boardImage = "${imagePath}board_image.png";
-  static const String placeholder1Image =
-      "${imagePath}placeholders/placeholder1.png";
-  static const String placeholder2Image =
-      "${imagePath}placeholders/placeholder2.png";
-  static const String placeholder3Image =
-      "${imagePath}placeholders/placeholder3.png";
-  static const String placeholder4Image =
-      "${imagePath}placeholders/placeholder4.png";
-  static const String placeholder5Image =
-      "${imagePath}placeholders/placeholder5.png";
-  static const String placeholder6Image =
-      "${imagePath}placeholders/placeholder6.png";
-  static const String ieeeWhiteLogo =
-      "${imagePath}ieee_white_logo.png";
-  static const String ieeeBlueLogo =
-      "${imagePath}ieee_blue_logo.png";
+  static const String driverSelectionTileImage = "${_imagePath}driver_selection_tile_image.jpg";
+  static const String passengerSelectionTileImage =
+      "${_imagePath}passenger_selection_tile_image.jpg";
 }
 
 class IconsAssets {

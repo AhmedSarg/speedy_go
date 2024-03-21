@@ -32,7 +32,7 @@ class _SplashScreenDriverBodyState extends State<SplashScreenDriverBody>
     _controller.forward();
 
     Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, Routes.onboardingRoute);
+      Navigator.pushReplacementNamed(context, Routes.selectionRoute);
     });
   }
 
@@ -48,7 +48,7 @@ class _SplashScreenDriverBodyState extends State<SplashScreenDriverBody>
 
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(ImageAssets.driverimage),
+            image: AssetImage(ImageAssets.driverSelectionTileImage),
             fit: BoxFit.cover,
           ),
         ),
@@ -63,8 +63,8 @@ class _SplashScreenDriverBodyState extends State<SplashScreenDriverBody>
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Center(child: Text(AppStrings.splashScreenTitleDriver.tr(),style: AppTextStyles.SplashScreenTitleTextStyle(context),)),
-                  Center(child: Text(AppStrings.splashSubScreenTitle.tr(),style: AppTextStyles.SplashScreenSubTitleTextStyle(context))),
+                  Center(child: Text(AppStrings.splashScreenDriverTitle.tr(),style: AppTextStyles.splashScreenTitleTextStyle(context),)),
+                  Center(child: Text(AppStrings.splashScreenSubTitle.tr(),style: AppTextStyles.splashScreenSubTitleTextStyle(context))),
 
                 ],
               ),
