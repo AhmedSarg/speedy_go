@@ -70,9 +70,8 @@ ThemeData getApplicationTheme() {
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
         backgroundColor: ColorManager.transparent,
-        foregroundColor: ColorManager.primary,
-        shape: const StadiumBorder(),
-      ),
+        foregroundColor: ColorManager.secondary,
+      )
     ),
 
     // input decoration theme (text form field)
@@ -82,8 +81,6 @@ ThemeData getApplicationTheme() {
       // hint style
       // labelStyle: AppTextStyles.textFieldLabelTextStyle(null),
       // errorStyle: AppTextStyles.textFieldErrorTextStyle(null),
-      filled: true,
-      fillColor: ColorManager.offwhite,
     ),
   );
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:speedy_go/presentation/login_screen/view/login_view.dart';
 import 'package:speedy_go/presentation/selection_screen/view/selection_view.dart';
 
 import '../../app/sl.dart';
@@ -11,6 +12,7 @@ class Routes {
 
   static const String splashRoute = "/splash";
   static const String selectionRoute = "/selection";
+  static const String loginRoute = "/login";
 }
 
 class RouteGenerator {
@@ -22,6 +24,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const SplashScreen());
       case Routes.selectionRoute:
         return MaterialPageRoute(builder: (_) => const SelectionScreen());
+      case Routes.loginRoute:
+        return MaterialPageRoute(builder: (_) => const LoginScreen());
       default:
         return unDefinedRoute();
     }

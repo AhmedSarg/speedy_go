@@ -1,5 +1,4 @@
 class AppStrings {
-
   ///Splash Screen
   static const splashScreenDriverTitle = "splashScreenDriverTitle";
   static const splashScreenPassengerTitle = "splashScreenPassengerTitle";
@@ -9,41 +8,50 @@ class AppStrings {
   static const selectionScreenDriverTile = "selectionScreenDriverTile";
   static const selectionScreenPassengerTile = "selectionScreenPassengerTile";
 
-  //general
+  ///Login Screen
+  static const loginScreenTitle = "loginScreenTitle";
+  static const loginScreenSendCode = "loginScreenSendCode";
+  static const loginScreenDontHaveAccount = "loginScreenDontHaveAccount";
+  static const loginScreenCreateAccount = "loginScreenCreateAccount";
+  static const loginScreenPhoneNumberHint = "loginScreenPhoneNumberHint";
+  static const loginScreenSelectorEmail = "loginScreenSelectorEmail";
+  static const loginScreenSelectorPhoneNumber = "loginScreenSelectorPhoneNumber";
+
+  ///General
   static const noRouteFound = "noRouteFound";
   static const retryAgain = "retryAgain";
-  static const String success = "success";
+  static const success = "success";
 
-  // error handler
-  static const String badRequestError = "badRequestError";
-  static const String noContent = "noContent";
-  static const String forbiddenError = "forbiddenError";
-  static const String unauthorizedError = "unauthorizedError";
-  static const String notFoundError = "notFoundError";
-  static const String conflictError = "conflictError";
-  static const String internalServerError = "internalServerError";
-  static const String unknownError = "unknownError";
-  static const String timeoutError = "timeoutError";
-  static const String defaultError = "defaultError";
-  static const String cacheError = "cacheError";
-  static const String noInternetError = "noInternetError";
+  ///Error Handler
+  static const badRequestError = "badRequestError";
+  static const noContent = "noContent";
+  static const forbiddenError = "forbiddenError";
+  static const unauthorizedError = "unauthorizedError";
+  static const notFoundError = "notFoundError";
+  static const conflictError = "conflictError";
+  static const internalServerError = "internalServerError";
+  static const unknownError = "unknownError";
+  static const timeoutError = "timeoutError";
+  static const defaultError = "defaultError";
+  static const cacheError = "cacheError";
+  static const noInternetError = "noInternetError";
 
-  static const String emptyContent = "emptyContent";
-  static const String intentError = "intentError";
-  static const String areYouSure = "areYouSure";
-  static const String sure = "sure";
-  static const String cancel = "cancel";
+  static const emptyContent = "emptyContent";
+  static const intentError = "intentError";
+  static const areYouSure = "areYouSure";
+  static const sure = "sure";
+  static const cancel = "cancel";
 
-  //validations
+  ///Validations
   static const validationsFieldRequired = "validationsFieldRequired";
   static const validationsFieldLengthMoreThen6 =
       "validationsFieldLengthMoreThen6";
-  static const validationsFullNameErrorText =
-      "validationsFullNameErrorText";
+  static const validationsFullNameErrorText = "validationsFullNameErrorText";
 
   static const validationsValidEmail = "validationsValidEmail";
   static const validationsNumbersOnly = "validationsNumbersOnly";
-  static const validationsNumbersMustEqual14Digit = "validationsNumbersMustEqual14Digit";
-  static const validationsNumbersMustEqual11Digit = "validationsNumbersMustEqual11Digit";
-
+  static const validationsNumbersMustEqual14Digit =
+      "validationsNumbersMustEqual14Digit";
+  static const validationsNumbersMustEqual11Digit =
+      "validationsNumbersMustEqual11Digit";
 }

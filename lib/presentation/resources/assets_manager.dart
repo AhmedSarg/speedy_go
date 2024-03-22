@@ -6,25 +6,15 @@ class ImageAssets {
   static const String driverSelectionTileImage = "${_imagePath}driver_selection_tile_image.jpg";
   static const String passengerSelectionTileImage =
       "${_imagePath}passenger_selection_tile_image.jpg";
+  static const String loginBackgroundImage =
+      "${_imagePath}login_bg.jpg";
 }
 
 class IconsAssets {
   IconsAssets._();
 
   static const String _basePath = "assets/icons/";
-  static const String awards = "${_basePath}Awards Icon.svg";
-  static const String board = "${_basePath}Board Icon.svg";
-  static const String calenderAdd = "${_basePath}calender-add.svg";
-  static const String home = "${_basePath}Home Icon.svg";
-  static const String menu = "${_basePath}Menu Icon.svg";
-  static const String news = "${_basePath}News Icon.svg";
-  static const String profileCircle = "${_basePath}profile-circle.svg";
-  static const String ranking = "${_basePath}ranking.svg";
-  static const String teacher = "${_basePath}teacher.svg";
-  static const String back = "${_basePath}Back Icon.svg";
-  static const String schedule = "${_basePath}schedule.svg";
-  static const String ticket = "${_basePath}ticket-discount.svg";
-  static const String order = "${_basePath}truck.svg";
+  static const String logo = "${_basePath}logo.svg";
 }
 
 class SVGAssets {

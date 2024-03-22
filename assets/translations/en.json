@@ -4,5 +4,13 @@
   "splashScreenSubTitle": "mode",
 
   "selectionScreenDriverTile": "Driver",
-  "selectionScreenPassengerTile": "Passenger"
+  "selectionScreenPassengerTile": "Passenger",
+
+  "loginScreenTitle": "Login to Your Account",
+  "loginScreenSendCode": "Send Code",
+  "loginScreenDontHaveAccount": "Don't have account?",
+  "loginScreenCreateAccount": "Create Account",
+  "loginScreenPhoneNumberHint": "1234567890",
+  "loginScreenSelectorEmail": "Email",
+  "loginScreenSelectorPhoneNumber": "Phone Number"
 }

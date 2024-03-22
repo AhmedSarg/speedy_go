@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:flutter/material.dart';
 
 import '../../main.dart';
+import 'font_manager.dart';
 
 enum Languages { ar, en }
 
@@ -40,6 +41,24 @@ class AppLanguages {
         return Languages.ar;
       default:
         return Languages.en;
+    }
+  }
+
+  static String getPrimaryFont(BuildContext context) {
+    Languages language = getCurrentLang(context);
+    if (language == Languages.ar) {
+      return FontConstants.primaryArabicFont;
+    } else {
+      return FontConstants.primaryEnglishFont;
+    }
+  }
+
+  static String getSecondaryFont(BuildContext context) {
+    Languages language = getCurrentLang(context);
+    if (language == Languages.ar) {
+      return FontConstants.secondaryArabicFont;
+    } else {
+      return FontConstants.secondaryEnglishFont;
     }
   }
 

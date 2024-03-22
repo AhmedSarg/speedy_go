@@ -78,6 +78,7 @@ flutter:
   assets:
       - assets/translations/
       - assets/images/
+      - assets/icons/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -112,6 +113,22 @@ flutter:
           weight: 200
         - asset: assets/fonts/english/poppins/Poppins-Thin.ttf
           weight: 100
+    - family: Jakarta
+      fonts:
+        - asset: assets/fonts/english/jakarta/PlusJakartaSans-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/english/jakarta/PlusJakartaSans-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/english/jakarta/PlusJakartaSans-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/english/jakarta/PlusJakartaSans-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/english/jakarta/PlusJakartaSans-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/english/jakarta/PlusJakartaSans-Light.ttf
+          weight: 300
+        - asset: assets/fonts/english/jakarta/PlusJakartaSans-ExtraLight.ttf
+          weight: 200
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

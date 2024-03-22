@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 class FontConstants {
   static const String primaryEnglishFont = "Poppins";
+  static const String secondaryEnglishFont = "Jakarta";
+  static const String primaryArabicFont = "Poppins";
+  static const String secondaryArabicFont = "Jakarta";
 }
 
 class FontWeightManager {
