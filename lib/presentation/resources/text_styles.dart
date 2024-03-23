@@ -93,14 +93,14 @@ class AppTextStyles {
         fontSize: FontSize.f12,
       );
 
-  static TextStyle loginScreenPhoneNumberHintTextStyle(BuildContext context) =>
+  static TextStyle loginScreenTextFieldHintTextStyle(BuildContext context) =>
       getMediumStyle(
         fontFamily: AppLanguages.getSecondaryFont(context),
         color: ColorManager.white.withOpacity(.5),
         fontSize: FontSize.f14,
       );
 
-  static TextStyle loginScreenPhoneNumberValueTextStyle(BuildContext context) =>
+  static TextStyle loginScreenTextFieldValueTextStyle(BuildContext context) =>
       getMediumStyle(
         fontFamily: AppLanguages.getSecondaryFont(context),
         color: ColorManager.white,
@@ -108,6 +108,50 @@ class AppTextStyles {
       );
 
   static TextStyle loginScreenSelectorTextStyle(BuildContext context, Color color) =>
+      getSemiBoldStyle(
+        fontFamily: AppLanguages.getSecondaryFont(context),
+        color: color,
+        fontSize: FontSize.f12,
+      );
+
+  ///Register Screen
+
+  static TextStyle registerScreenTitleTextStyle(BuildContext context) =>
+      getSemiBoldStyle(
+        fontFamily: AppLanguages.getSecondaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f20,
+      );
+
+  static TextStyle registerScreenAlreadyHaveAccountTextStyle(BuildContext context) =>
+      getSemiBoldStyle(
+        fontFamily: AppLanguages.getSecondaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f12,
+      );
+
+  static TextStyle registerScreenLoginTextStyle(BuildContext context) =>
+      getSemiBoldStyle(
+        fontFamily: AppLanguages.getSecondaryFont(context),
+        color: ColorManager.secondary,
+        fontSize: FontSize.f12,
+      );
+
+  static TextStyle registerScreenTextFieldHintTextStyle(BuildContext context) =>
+      getMediumStyle(
+        fontFamily: AppLanguages.getSecondaryFont(context),
+        color: ColorManager.white.withOpacity(.5),
+        fontSize: FontSize.f14,
+      );
+
+  static TextStyle registerScreenTextFieldValueTextStyle(BuildContext context) =>
+      getMediumStyle(
+        fontFamily: AppLanguages.getSecondaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f14,
+      );
+
+  static TextStyle registerScreenSelectorTextStyle(BuildContext context, Color color) =>
       getSemiBoldStyle(
         fontFamily: AppLanguages.getSecondaryFont(context),
         color: color,

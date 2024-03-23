@@ -12,5 +12,24 @@
   "loginScreenCreateAccount": "Create Account",
   "loginScreenPhoneNumberHint": "1234567890",
   "loginScreenSelectorEmail": "Email",
-  "loginScreenSelectorPhoneNumber": "Phone Number"
+  "loginScreenSelectorPhoneNumber": "Phone Number",
+  "loginScreenEmailHint": "Enter Email",
+  "loginScreenPasswordHint": "Enter Password",
+  "loginScreenLogin": "Login",
+
+  "registerScreenTitle": "Sign up",
+  "registerScreenSignUp": "Sign up",
+  "registerScreenAlreadyHaveAccount": " Already have account?",
+  "registerScreenLogin": "Login",
+  "registerScreenFirstNameHint": "First Name",
+  "registerScreenLastNameHint": "Last Name",
+  "registerScreenPhoneNumberHint": "Phone Number",
+  "registerScreenGenderHint": "Gender",
+  "registerScreenGenderMale": "Male",
+  "registerScreenGenderFemale": "Female",
+  "registerScreenEmailHint": "Email",
+  "registerScreenPasswordHint": "Password",
+  "registerScreenConfirmPasswordHint": "Confirm Password",
+  "registerScreenSelectorPassenger": "Passenger",
+  "registerScreenSelectorDriver": "Driver"
 }

@@ -28,7 +28,7 @@ class AppButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: AppSize.s50,
+      height: AppSize.s40,
       child: TextButton(
         onPressed: onPressed,
         style: TextButton.styleFrom(
