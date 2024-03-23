@@ -14,7 +14,6 @@ class IconsAssets {
   IconsAssets._();
 
   static const String _basePath = "assets/icons/";
-  static const String logo = "${_basePath}logo.svg";
 }
 
 class SVGAssets {
@@ -22,24 +21,10 @@ class SVGAssets {
 
   static const String _basePath = "assets/svg/";
 
-  static const String facebook = "${_basePath}facebook.svg";
-  static const String gmail = "${_basePath}gmail.svg";
-  static const String ieeeLogo = "${_basePath}IEEE Logo.svg";
-  static const String instagram = "${_basePath}instagram.svg";
-  static const String linkedin = "${_basePath}linkedin.svg";
-  static const String qrCode = "${_basePath}QR Code.svg";
-  static const String wifi = "${_basePath}Wifi Icon.svg";
-
-  static const String prIcon = "${_basePath}tracks_icons/pr_icon.svg";
-  static const String hrIcon = "${_basePath}tracks_icons/hr_icon.svg";
-  static const String frIcon = "${_basePath}tracks_icons/fr_icon.svg";
-  static const String flutterIcon = "${_basePath}tracks_icons/flutter_icon.svg";
-  static const String webIcon = "${_basePath}tracks_icons/web_icon.svg";
-  static const String mediaIcon = "${_basePath}tracks_icons/media_icon.svg";
-  static const String logisticsIcon =
-      "${_basePath}tracks_icons/logistics_icon.svg";
-  static const String embeddedIcon =
-      "${_basePath}tracks_icons/embedded_icon.svg";
+  static const String logo = "${_basePath}logo.svg";
+  static const String car = "${_basePath}car.svg";
+  static const String tuktuk = "${_basePath}tuktuk.svg";
+  static const String bus = "${_basePath}bus.svg";
 }
 
 class LottieAssets {
