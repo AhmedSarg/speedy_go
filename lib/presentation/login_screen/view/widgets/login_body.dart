@@ -1,7 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:speedy_go/app/extensions.dart';
+import 'package:speedy_go/presentation/resources/routes_manager.dart';
 
 import '../../../../domain/models/enums.dart';
 import '../../../common/widget/main_button.dart';
@@ -61,23 +64,28 @@ class LoginBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
       margin: const EdgeInsets.symmetric(
         horizontal: AppMargin.m20,
         vertical: AppMargin.m40,
       ),
       padding: const EdgeInsets.all(AppPadding.p20),
       width: AppSize.infinity,
+      height: viewModel.getLoginType == LoginType.phoneNumber ? AppSize.s300 : AppSize.s360,
       decoration: BoxDecoration(
         color: ColorManager.primary,
         borderRadius: BorderRadius.circular(AppSize.s25),
       ),
       child: Column(
         children: [
-          Center(
-            child: Text(
-              AppStrings.loginScreenTitle.tr(),
-              style: AppTextStyles.loginScreenTitleTextStyle(context),
+          SizedBox(
+            height: AppSize.s40,
+            child: Center(
+              child: Text(
+                AppStrings.loginScreenTitle.tr(),
+                style: AppTextStyles.loginScreenTitleTextStyle(context),
+              ),
             ),
           ),
           const SizedBox(height: AppSize.s20),
@@ -88,34 +96,39 @@ class LoginBox extends StatelessWidget {
           else
             ...emailPasswordLoginWidgets(),
           const SizedBox(height: AppSize.s20),
-          FittedBox(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  AppStrings.loginScreenDontHaveAccount.tr(),
-                  style: AppTextStyles.loginScreenDontHaveAccountTextStyle(
-                      context),
-                ),
-                const SizedBox(width: AppSize.s5),
-                SizedBox(
-                  height: AppSize.s20,
-                  child: TextButton(
-                    onPressed: () {},
-                    style: TextButton.styleFrom(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: AppPadding.p4),
-                      splashFactory: InkRipple.splashFactory,
-                      foregroundColor: ColorManager.white.withOpacity(.1),
-                    ),
-                    child: Text(
-                      AppStrings.loginScreenCreateAccount.tr(),
-                      style: AppTextStyles.loginScreenCreateAccountTextStyle(
-                          context),
-                    ),
+          SizedBox(
+            height: AppSize.s20,
+            child: FittedBox(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    AppStrings.loginScreenDontHaveAccount.tr(),
+                    style: AppTextStyles.loginScreenDontHaveAccountTextStyle(
+                        context),
                   ),
-                )
-              ],
+                  const SizedBox(width: AppSize.s5),
+                  SizedBox(
+                    height: AppSize.s20,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, Routes.registerRoute);
+                      },
+                      style: TextButton.styleFrom(
+                        padding:
+                            const EdgeInsets.symmetric(horizontal: AppPadding.p4),
+                        splashFactory: InkRipple.splashFactory,
+                        foregroundColor: ColorManager.white.withOpacity(.1),
+                      ),
+                      child: Text(
+                        AppStrings.loginScreenCreateAccount.tr(),
+                        style: AppTextStyles.loginScreenCreateAccountTextStyle(
+                            context),
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ],
@@ -125,34 +138,48 @@ class LoginBox extends StatelessWidget {
 
   List<Widget> phoneNumberLoginWidgets() {
     return [
-      const SizedBox(
-        height: AppSize.s40,
+      Expanded(
         child: Row(
           children: [
-            CountryCodeInput(),
-            SizedBox(width: AppSize.s10),
-            PhoneNumberInput(),
+            const CountryCodeInput(),
+            const SizedBox(width: AppSize.s10),
+            LoginTextField(
+              keyboard: TextInputType.number,
+              hintText: AppStrings.loginScreenPhoneNumberHint.tr(),
+            ),
           ],
         ),
       ),
       const SizedBox(height: AppSize.s20),
-      AppButton(
-        text: AppStrings.loginScreenSendCode.tr(),
-        onPressed: () {},
+      SizedBox(
+        height: AppSize.s40,
+        child: AppButton(
+          text: AppStrings.loginScreenSendCode.tr(),
+          onPressed: () {},
+        ),
       ),
     ];
   }
 
   List<Widget> emailPasswordLoginWidgets() {
     return [
-      const Placeholder(
-        fallbackHeight: AppSize.s40,
-        color: ColorManager.white,
+      LoginTextField(
+        keyboard: TextInputType.emailAddress,
+        hintText: AppStrings.loginScreenEmailHint.tr(),
       ),
       const SizedBox(height: AppSize.s20),
-      AppButton(
-        text: AppStrings.loginScreenSendCode.tr(),
-        onPressed: () {},
+      LoginTextField(
+        keyboard: TextInputType.text,
+        hintText: AppStrings.loginScreenPasswordHint.tr(),
+        canObscure: true,
+      ),
+      const SizedBox(height: AppSize.s20),
+      SizedBox(
+        height: AppSize.s40,
+        child: AppButton(
+          text: AppStrings.loginScreenLogin.tr(),
+          onPressed: () {},
+        ),
       ),
     ];
   }
@@ -168,8 +195,10 @@ class LoginTypeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double itemWidth = (context.width() - AppSize.s80) / 2;
     return Container(
       height: AppSize.s40,
+      width: itemWidth * 2,
       decoration: BoxDecoration(
         color: ColorManager.lightGrey,
         borderRadius: BorderRadius.circular(AppSize.s10),
@@ -177,6 +206,18 @@ class LoginTypeSelector extends StatelessWidget {
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: Stack(
         children: [
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 400),
+            left: viewModel.getLoginType == LoginType.emailPassword ? 0 : itemWidth,
+            child: Container(
+              width: itemWidth,
+              height: AppSize.s40,
+              decoration: BoxDecoration(
+                color: ColorManager.white,
+                borderRadius: BorderRadius.circular(AppSize.s10),
+              ),
+            ),
+          ),
           Row(
             children: [
               LoginTypeItem(
@@ -190,7 +231,7 @@ class LoginTypeSelector extends StatelessWidget {
                 viewModel: viewModel,
               ),
             ],
-          )
+          ),
         ],
       ),
     );
@@ -216,12 +257,13 @@ class LoginTypeItem extends StatelessWidget {
       onTap: () {
         viewModel.setLoginType(type);
       },
-      child: Container(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
         width: itemWidth,
         decoration: BoxDecoration(
-          color: type == viewModel.getLoginType
-              ? ColorManager.white
-              : ColorManager.transparent,
+          // color: type == viewModel.getLoginType
+          //     ? ColorManager.white
+          //     : ColorManager.lightGrey,
           borderRadius: BorderRadius.circular(AppSize.s10),
         ),
         child: Center(
@@ -229,9 +271,9 @@ class LoginTypeItem extends StatelessWidget {
             text,
             style: AppTextStyles.loginScreenSelectorTextStyle(
               context,
-                type == viewModel.getLoginType
-                    ? ColorManager.lightGrey
-                    : ColorManager.white,
+              type == viewModel.getLoginType
+                  ? ColorManager.lightGrey
+                  : ColorManager.white,
             ),
           ),
         ),
@@ -259,6 +301,7 @@ class _CountryCodeInputState extends State<CountryCodeInput> {
   Widget build(BuildContext context) {
     return Container(
       width: AppSize.s80,
+      height: AppSize.s40,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppSize.s10),
         border: Border.all(color: ColorManager.white, width: AppSize.s0_5),
@@ -291,8 +334,24 @@ class _CountryCodeInputState extends State<CountryCodeInput> {
   }
 }
 
-class PhoneNumberInput extends StatelessWidget {
-  const PhoneNumberInput({super.key});
+class LoginTextField extends StatefulWidget {
+  const LoginTextField({
+    super.key,
+    required this.keyboard,
+    required this.hintText,
+    this.canObscure = false,
+  });
+
+  final TextInputType keyboard;
+  final String hintText;
+  final bool canObscure;
+
+  @override
+  State<LoginTextField> createState() => _LoginTextFieldState();
+}
+
+class _LoginTextFieldState extends State<LoginTextField> {
+  late bool hidden = widget.canObscure;
 
   @override
   Widget build(BuildContext context) {
@@ -300,12 +359,13 @@ class PhoneNumberInput extends StatelessWidget {
       child: TextFormField(
         cursorColor: ColorManager.secondary,
         cursorRadius: const Radius.circular(AppSize.s1),
-        style: AppTextStyles.loginScreenPhoneNumberValueTextStyle(context),
+        style: AppTextStyles.loginScreenTextFieldValueTextStyle(context),
         cursorWidth: AppSize.s1,
-        keyboardType: TextInputType.number,
+        obscureText: hidden,
+        keyboardType: widget.keyboard,
         decoration: InputDecoration(
-          hintStyle: AppTextStyles.loginScreenPhoneNumberHintTextStyle(context),
-          hintText: AppStrings.loginScreenPhoneNumberHint.tr(),
+          hintStyle: AppTextStyles.loginScreenTextFieldHintTextStyle(context),
+          hintText: widget.hintText,
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(AppSize.s10),
             borderSide: const BorderSide(
@@ -316,7 +376,7 @@ class PhoneNumberInput extends StatelessWidget {
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(AppSize.s10),
             borderSide: const BorderSide(
-              color: ColorManager.white,
+              color: ColorManager.secondary,
               width: AppSize.s0_5,
             ),
           ),
@@ -334,6 +394,21 @@ class PhoneNumberInput extends StatelessWidget {
               width: AppSize.s0_5,
             ),
           ),
+          suffixIcon: widget.canObscure
+              ? IconButton(
+                  onPressed: () {
+                    setState(() {
+                      hidden = !hidden;
+                    });
+                  },
+                  iconSize: AppSize.s20,
+                  splashRadius: AppSize.s1,
+                  isSelected: !hidden,
+                  color: ColorManager.white,
+                  selectedIcon: const Icon(CupertinoIcons.eye),
+                  icon: const Icon(CupertinoIcons.eye_slash),
+                )
+              : null,
         ),
       ),
     );

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:speedy_go/app/extensions.dart';
 import 'package:speedy_go/presentation/common/data_intent/data_intent.dart';
 import 'package:speedy_go/presentation/resources/color_manager.dart';
+import 'package:speedy_go/presentation/resources/routes_manager.dart';
 import 'package:speedy_go/presentation/resources/strings_manager.dart';
 import 'package:speedy_go/presentation/resources/values_manager.dart';
 
@@ -56,7 +57,9 @@ class _SelectionBodyState extends State<SelectionBody> {
             dimension: AppSize.s70,
             child: FittedBox(
               child: FloatingActionButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, Routes.loginRoute);
+                },
                 backgroundColor: ColorManager.primary,
                 foregroundColor: ColorManager.white,
                 shape: RoundedRectangleBorder(

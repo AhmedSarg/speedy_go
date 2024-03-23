@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:speedy_go/presentation/base/cubit_builder.dart';
-import 'package:speedy_go/presentation/base/cubit_listener.dart';
-import 'package:speedy_go/presentation/login_screen/viewmodel/login_viewmodel.dart';
 
 import '../../base/base_states.dart';
+import '../../base/cubit_builder.dart';
+import '../../base/cubit_listener.dart';
+import '../viewmodel/login_viewmodel.dart';
 import 'widgets/login_body.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -20,7 +20,8 @@ class LoginScreen extends StatelessWidget {
             baseListener(context, state);
           },
           builder: (context, state) {
-            return baseBuilder(context, state, LoginBody(viewModel: LoginViewModel.get(context)));
+            return baseBuilder(context, state,
+                LoginBody(viewModel: LoginViewModel.get(context)));
           },
         ),
       ),
