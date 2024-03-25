@@ -1,11 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:speedy_go/app/extensions.dart';
+import 'package:speedy_go/presentation/resources/assets_manager.dart';
 import 'package:speedy_go/presentation/resources/routes_manager.dart';
 
 import '../../../../domain/models/enums.dart';
-import '../../../common/widget/main_button.dart';
 import '../../../resources/color_manager.dart';
 import '../../../resources/strings_manager.dart';
 import '../../../resources/text_styles.dart';
@@ -22,10 +23,27 @@ class RegisterBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Center(
-        child: RegisterBox(
-          viewModel: viewModel,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: ColorManager.transparent,
+        resizeToAvoidBottomInset: true,
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: AppPadding.p20,
+                  horizontal: context.width() * .25,
+                ),
+                child: SvgPicture.asset(SVGAssets.logo),
+              ),
+              RegisterBox(
+                viewModel: viewModel,
+              ),
+              const SizedBox(height: AppSize.s40),
+            ],
+          ),
         ),
       ),
     );
@@ -42,30 +60,22 @@ class RegisterBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double boxHeight = viewModel.getBoxHeight;
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 200),
-      margin: EdgeInsets.only(
-          right: AppMargin.m20,
-          left: AppMargin.m20,
-          top: context.height() - boxHeight - AppMargin.m40,
-          bottom: AppMargin.m40),
-      padding: const EdgeInsets.all(AppPadding.p20),
+      duration: const Duration(milliseconds: 800),
       width: AppSize.infinity,
-      height: boxHeight,
       decoration: BoxDecoration(
         color: ColorManager.primary,
         borderRadius: BorderRadius.circular(AppSize.s25),
       ),
-      child: Column(
+      child: ListView(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        padding: const EdgeInsets.all(AppSize.s20),
         children: [
-          SizedBox(
-            height: AppSize.s40,
-            child: Center(
-              child: Text(
-                AppStrings.registerScreenTitle.tr(),
-                style: AppTextStyles.registerScreenTitleTextStyle(context),
-              ),
+          Center(
+            child: Text(
+              AppStrings.registerScreenTitle.tr(),
+              style: AppTextStyles.registerScreenTitleTextStyle(context),
             ),
           ),
           const SizedBox(height: AppSize.s20),
@@ -219,16 +229,24 @@ class RegisterTypeItem extends StatelessWidget {
 class RegisterTextField extends StatefulWidget {
   const RegisterTextField({
     super.key,
+    required this.controller,
     required this.keyboard,
     required this.hintText,
     required this.icon,
+    required this.focusNode,
+    required this.validator,
+    this.nextFocusNode,
     this.canObscure = false,
   });
 
+  final TextEditingController controller;
   final TextInputType keyboard;
   final String hintText;
   final bool canObscure;
   final IconData icon;
+  final FocusNode focusNode;
+  final FocusNode? nextFocusNode;
+  final String? Function(String? value) validator;
 
   @override
   State<RegisterTextField> createState() => _RegisterTextFieldState();
@@ -236,83 +254,127 @@ class RegisterTextField extends StatefulWidget {
 
 class _RegisterTextFieldState extends State<RegisterTextField> {
   late bool hidden = widget.canObscure;
+  String? errorText;
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: TextFormField(
-        cursorColor: ColorManager.secondary,
-        cursorRadius: const Radius.circular(AppSize.s1),
-        style: AppTextStyles.registerScreenTextFieldValueTextStyle(context),
-        cursorWidth: AppSize.s1,
-        obscureText: hidden,
-        keyboardType: widget.keyboard,
-        decoration: InputDecoration(
-          hintStyle:
-              AppTextStyles.registerScreenTextFieldHintTextStyle(context),
-          hintText: widget.hintText,
-          prefixIcon: Padding(
-            padding: const EdgeInsets.all(AppPadding.p5),
-            child: Icon(widget.icon, size: AppSize.s20),
-          ),
-          prefixIconColor: ColorManager.secondary,
-          prefixIconConstraints: const BoxConstraints(
-            maxWidth: AppSize.s30,
-            minWidth: AppSize.s0,
-            maxHeight: AppSize.s30,
-            minHeight: AppSize.s0,
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(AppSize.s10),
-            borderSide: const BorderSide(
-              color: ColorManager.white,
-              width: AppSize.s0_5,
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(AppSize.s10),
-            borderSide: const BorderSide(
-              color: ColorManager.secondary,
-              width: AppSize.s0_5,
-            ),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(AppSize.s10),
-            borderSide: const BorderSide(
-              color: ColorManager.error,
-              width: AppSize.s0_5,
-            ),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(AppSize.s10),
-            borderSide: const BorderSide(
-              color: ColorManager.error,
-              width: AppSize.s0_5,
-            ),
-          ),
-          suffixIcon: widget.canObscure
-              ? IconButton(
-                  onPressed: () {
-                    setState(() {
-                      hidden = !hidden;
-                    });
-                  },
-                  iconSize: AppSize.s20,
-                  splashRadius: AppSize.s1,
-                  isSelected: !hidden,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: AppSize.s50,
+          child: TextFormField(
+            controller: widget.controller,
+            cursorColor: ColorManager.secondary,
+            cursorErrorColor: ColorManager.secondary,
+            cursorRadius: const Radius.circular(AppSize.s1),
+            focusNode: widget.focusNode,
+            textInputAction: widget.nextFocusNode != null ? TextInputAction.next : TextInputAction.done,
+            validator: (value) {
+              setState(() {
+                errorText = widget.validator(value);
+              });
+              return widget.validator(value);
+            },
+            onEditingComplete: () {
+              widget.focusNode.unfocus();
+              if (widget.nextFocusNode != null) {
+                widget.nextFocusNode!.requestFocus();
+              }
+            },
+            style: AppTextStyles.registerScreenTextFieldValueTextStyle(context),
+            cursorWidth: AppSize.s1,
+            obscureText: hidden,
+            keyboardType: widget.keyboard,
+            decoration: InputDecoration(
+              hintStyle:
+                  AppTextStyles.registerScreenTextFieldHintTextStyle(context),
+              hintText: widget.hintText,
+              errorStyle: const TextStyle(
+                fontSize: AppSize.s0,
+                color: ColorManager.transparent,
+              ),
+              prefixIcon: Padding(
+                padding: const EdgeInsets.all(AppPadding.p5),
+                child: Icon(widget.icon, size: AppSize.s20),
+              ),
+              prefixIconColor: ColorManager.secondary,
+              prefixIconConstraints: const BoxConstraints(
+                maxWidth: AppSize.s30,
+                minWidth: AppSize.s0,
+                maxHeight: AppSize.s30,
+                minHeight: AppSize.s0,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppSize.s10),
+                borderSide: const BorderSide(
                   color: ColorManager.white,
-                  selectedIcon: const Icon(CupertinoIcons.eye),
-                  icon: const Icon(CupertinoIcons.eye_slash),
-                )
-              : null,
+                  width: AppSize.s0_5,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppSize.s10),
+                borderSide: const BorderSide(
+                  color: ColorManager.secondary,
+                  width: AppSize.s0_5,
+                ),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppSize.s10),
+                borderSide: const BorderSide(
+                  color: ColorManager.error,
+                  width: AppSize.s0_5,
+                ),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppSize.s10),
+                borderSide: const BorderSide(
+                  color: ColorManager.error,
+                  width: AppSize.s0_5,
+                ),
+              ),
+              suffixIcon: widget.canObscure
+                  ? IconButton(
+                      onPressed: () {
+                        setState(() {
+                          hidden = !hidden;
+                        });
+                      },
+                      iconSize: AppSize.s20,
+                      splashRadius: AppSize.s1,
+                      isSelected: !hidden,
+                      color: ColorManager.white,
+                      selectedIcon: const Icon(CupertinoIcons.eye),
+                      icon: const Icon(CupertinoIcons.eye_slash),
+                    )
+                  : null,
+            ),
+          ),
         ),
-      ),
+        SizedBox(
+          height: errorText == null ? AppSize.s0 : AppSize.s8,
+        ),
+        errorText == null
+            ? const SizedBox()
+            : Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppPadding.p8),
+                child: Text(
+                  errorText!,
+                  style: AppTextStyles.textFieldErrorTextStyle(context),
+                ),
+              ),
+      ],
     );
   }
 }
 
 class GenderInput extends StatefulWidget {
-  const GenderInput({super.key});
+  const GenderInput({
+    super.key,
+    required this.viewModel,
+  });
+
+  final RegisterViewModel viewModel;
 
   @override
   State<GenderInput> createState() => _GenderInputState();
@@ -329,36 +391,72 @@ class _GenderInputState extends State<GenderInput> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: AppSize.s40,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppSize.s10),
-        border: Border.all(color: ColorManager.white, width: AppSize.s0_5),
-      ),
-      child: Center(
-        child: DropdownButton(
-          value: selectedValue,
-          items: genders
-              .map(
-                (e) => DropdownMenuItem(
-                  value: e,
-                  child: Text(e),
+    return FormField(
+      validator: (value) {
+        if (widget.viewModel.getGender == null) {
+          return AppStrings.validationsFieldRequired.tr();
+        }
+        return null;
+      },
+      initialValue: null,
+      builder: (errorContext) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: AppSize.s50,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(AppSize.s10),
+              border: Border.all(
+                  color: errorContext.hasError
+                      ? ColorManager.error
+                      : ColorManager.white,
+                  width: AppSize.s0_5),
+            ),
+            child: Center(
+              child: DropdownButton(
+                value: selectedValue,
+                alignment: Alignment.centerLeft,
+                icon: const Icon(CupertinoIcons.chevron_down),
+                items: genders
+                    .map(
+                      (e) => DropdownMenuItem(
+                        value: e,
+                        child: Text(e),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedValue = value!;
+                    // print(selectedValue);
+                    widget.viewModel.setGender = value;
+                  });
+                },
+                padding: const EdgeInsets.symmetric(horizontal: AppPadding.p16),
+                dropdownColor: ColorManager.primary,
+                iconEnabledColor: ColorManager.white,
+                isExpanded: true,
+                isDense: true,
+                style:
+                    AppTextStyles.registerScreenTextFieldHintTextStyle(context),
+                underline: const SizedBox(height: AppSize.s0),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: errorContext.errorText == null ? AppSize.s0 : AppSize.s8,
+          ),
+          errorContext.errorText == null
+              ? const SizedBox()
+              : Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: AppPadding.p8),
+                  child: Text(
+                    errorContext.errorText!,
+                    style: AppTextStyles.textFieldErrorTextStyle(context),
+                  ),
                 ),
-              )
-              .toList(),
-          onChanged: (value) {
-            setState(() {
-              selectedValue = value!;
-            });
-          },
-          padding: const EdgeInsets.symmetric(horizontal: AppPadding.p16),
-          dropdownColor: ColorManager.primary,
-          iconEnabledColor: ColorManager.white,
-          isExpanded: true,
-          isDense: true,
-          style: AppTextStyles.registerScreenTextFieldHintTextStyle(context),
-          underline: const SizedBox(height: AppSize.s0),
-        ),
+        ],
       ),
     );
   }

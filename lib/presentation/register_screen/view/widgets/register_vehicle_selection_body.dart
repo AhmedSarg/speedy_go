@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:speedy_go/domain/models/enums.dart';
-import 'package:speedy_go/presentation/common/widget/main_button.dart';
-import 'package:speedy_go/presentation/register_screen/viewmodel/register_viewmodel.dart';
+
+import '../../../../domain/models/enums.dart';
+import '../../../common/widget/main_button.dart';
+import '../../viewmodel/register_viewmodel.dart';
 
 class RegisterVehicleSelectionBody extends StatelessWidget {
   const RegisterVehicleSelectionBody({

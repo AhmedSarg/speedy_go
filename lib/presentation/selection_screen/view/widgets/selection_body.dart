@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:speedy_go/domain/models/enums.dart';
+import 'package:speedy_go/presentation/common/data_intent/data_intent.dart';
 import 'package:speedy_go/presentation/common/widget/main_button.dart';
 import 'package:speedy_go/presentation/resources/routes_manager.dart';
 import 'package:speedy_go/presentation/resources/text_styles.dart';
@@ -50,7 +52,8 @@ class SelectionBox extends StatelessWidget {
           AppButton(
             text: 'Driver',
             onPressed: () {
-              // Navigator.pushNamed(context, routeName);
+              Navigator.pushNamed(context, Routes.registerRoute);
+              DataIntent.setSelection(Selection.driver);
             },
             textStyle: AppTextStyles.selectionScreenButtonTextStyle(context),
           ),
@@ -59,6 +62,7 @@ class SelectionBox extends StatelessWidget {
             text: 'Passeneger',
             onPressed: () {
               Navigator.pushNamed(context, Routes.registerRoute);
+              DataIntent.setSelection(Selection.passenger);
             },
             textStyle: AppTextStyles.selectionScreenButtonTextStyle(context),
           ),

@@ -33,6 +33,13 @@ class AppTextStyles {
         fontSize: FontSize.f18,
       );
 
+  static TextStyle textFieldErrorTextStyle(BuildContext context) =>
+      getMediumStyle(
+        fontFamily: AppLanguages.getSecondaryFont(context),
+        color: ColorManager.error.withOpacity(.7),
+        fontSize: FontSize.f12,
+      );
+
   static TextStyle splashScreenTitleTextStyle(BuildContext context) =>
       getRegularStyle(
         fontFamily: AppLanguages.getPrimaryFont(context),
