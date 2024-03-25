@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:speedy_go/app/extensions.dart';
+import 'package:speedy_go/presentation/resources/routes_manager.dart';
 
 import '../../../../domain/models/enums.dart';
 import '../../../common/widget/main_button.dart';
@@ -42,15 +42,14 @@ class RegisterBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double boxHeight = viewModel.getRegisterType == RegisterType.passenger ? AppSize.s600 : AppSize.s360;
+    double boxHeight = viewModel.getBoxHeight;
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
       margin: EdgeInsets.only(
-        right: AppMargin.m20,
-        left: AppMargin.m20,
-        top: context.height() - boxHeight - AppMargin.m40,
-        bottom: AppMargin.m40
-      ),
+          right: AppMargin.m20,
+          left: AppMargin.m20,
+          top: context.height() - boxHeight - AppMargin.m40,
+          bottom: AppMargin.m40),
       padding: const EdgeInsets.all(AppPadding.p20),
       width: AppSize.infinity,
       height: boxHeight,
@@ -70,12 +69,11 @@ class RegisterBox extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppSize.s20),
-          RegisterTypeSelector(viewModel: viewModel),
+          RegisterTypeSelector(
+            viewModel: viewModel,
+          ),
           const SizedBox(height: AppSize.s20),
-          if (viewModel.getRegisterType == RegisterType.passenger)
-            ...passengerRegisterWidgets()
-          else
-            ...driverRegisterWidgets(),
+          ...viewModel.getBoxContent,
           const SizedBox(height: AppSize.s20),
           SizedBox(
             height: AppSize.s20,
@@ -93,7 +91,13 @@ class RegisterBox extends StatelessWidget {
                   SizedBox(
                     height: AppSize.s20,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          Routes.loginRoute,
+                          ModalRoute.withName('/'),
+                        );
+                      },
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
                             horizontal: AppPadding.p4),
@@ -114,87 +118,6 @@ class RegisterBox extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  List<Widget> passengerRegisterWidgets() {
-    return [
-      Expanded(
-        child: Row(
-          children: [
-            RegisterTextField(
-              keyboard: TextInputType.text,
-              hintText: AppStrings.registerScreenFirstNameHint.tr(),
-              icon: CupertinoIcons.person,
-            ),
-            const SizedBox(width: AppSize.s20),
-            RegisterTextField(
-              keyboard: TextInputType.text,
-              hintText: AppStrings.registerScreenLastNameHint.tr(),
-              icon: CupertinoIcons.person,
-            ),
-          ],
-        ),
-      ),
-      const SizedBox(height: AppSize.s20),
-      RegisterTextField(
-        keyboard: TextInputType.number,
-        hintText: AppStrings.registerScreenPhoneNumberHint.tr(),
-        icon: CupertinoIcons.phone,
-      ),
-      const SizedBox(height: AppSize.s20),
-      const GenderInput(),
-      const SizedBox(height: AppSize.s20),
-      RegisterTextField(
-        keyboard: TextInputType.emailAddress,
-        hintText: AppStrings.registerScreenEmailHint.tr(),
-        icon: CupertinoIcons.envelope,
-      ),
-      const SizedBox(height: AppSize.s20),
-      RegisterTextField(
-        keyboard: TextInputType.text,
-        hintText: AppStrings.registerScreenPasswordHint.tr(),
-        icon: CupertinoIcons.lock_fill,
-        canObscure: true,
-      ),
-      const SizedBox(height: AppSize.s20),
-      RegisterTextField(
-        keyboard: TextInputType.text,
-        hintText: AppStrings.registerScreenPasswordHint.tr(),
-        icon: CupertinoIcons.lock_fill,
-        canObscure: true,
-      ),
-      const SizedBox(height: AppSize.s20),
-      SizedBox(
-        height: AppSize.s40,
-        child: AppButton(
-          text: AppStrings.registerScreenSignUp.tr(),
-          onPressed: () {},
-        ),
-      ),
-    ];
-  }
-
-  List<Widget> driverRegisterWidgets() {
-    return [
-      // RegisterTextField(
-      //   keyboard: TextInputType.emailAddress,
-      //   hintText: AppStrings.registerScreenEmailHint.tr(),
-      // ),
-      // const SizedBox(height: AppSize.s20),
-      // RegisterTextField(
-      //   keyboard: TextInputType.text,
-      //   hintText: AppStrings.registerScreenPasswordHint.tr(),
-      //   canObscure: true,
-      // ),
-      // const SizedBox(height: AppSize.s20),
-      // SizedBox(
-      //   height: AppSize.s40,
-      //   child: AppButton(
-      //     text: AppStrings.registerScreenSignUp.tr(),
-      //     onPressed: () {},
-      //   ),
-      // ),
-    ];
   }
 }
 
@@ -221,14 +144,14 @@ class RegisterTypeSelector extends StatelessWidget {
         children: [
           AnimatedPositioned(
             duration: const Duration(milliseconds: 400),
-            left: viewModel.getRegisterType == RegisterType.passenger
+            left: viewModel.getRegisterType == Selection.passenger
                 ? 0
                 : itemWidth,
             child: Container(
               width: itemWidth,
               height: AppSize.s40,
               decoration: BoxDecoration(
-                color: ColorManager.white,
+                color: ColorManager.secondary,
                 borderRadius: BorderRadius.circular(AppSize.s10),
               ),
             ),
@@ -236,12 +159,12 @@ class RegisterTypeSelector extends StatelessWidget {
           Row(
             children: [
               RegisterTypeItem(
-                type: RegisterType.passenger,
+                type: Selection.passenger,
                 text: AppStrings.registerScreenSelectorPassenger.tr(),
                 viewModel: viewModel,
               ),
               RegisterTypeItem(
-                type: RegisterType.driver,
+                type: Selection.driver,
                 text: AppStrings.registerScreenSelectorDriver.tr(),
                 viewModel: viewModel,
               ),
@@ -261,7 +184,7 @@ class RegisterTypeItem extends StatelessWidget {
     required this.viewModel,
   });
 
-  final RegisterType type;
+  final Selection type;
   final String text;
   final RegisterViewModel viewModel;
 
@@ -270,7 +193,7 @@ class RegisterTypeItem extends StatelessWidget {
     double itemWidth = (context.width() - AppSize.s80) / 2;
     return GestureDetector(
       onTap: () {
-        viewModel.setRegisterType(type);
+        viewModel.setRegisterType = type;
       },
       child: Container(
         width: itemWidth,

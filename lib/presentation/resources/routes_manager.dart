@@ -11,8 +11,8 @@ class Routes {
   Routes._();
 
   static const String splashRoute = "/splash";
-  static const String selectionRoute = "/selection";
   static const String loginRoute = "/login";
+  static const String selectionRoute = "/selection";
   static const String registerRoute = "/register";
 }
 
@@ -23,10 +23,10 @@ class RouteGenerator {
     switch (settings.name) {
       case Routes.splashRoute:
         return MaterialPageRoute(builder: (_) => const SplashScreen());
-      case Routes.selectionRoute:
-        return MaterialPageRoute(builder: (_) => const SelectionScreen());
       case Routes.loginRoute:
         return MaterialPageRoute(builder: (_) => const LoginScreen());
+      case Routes.selectionRoute:
+        return MaterialPageRoute(builder: (_) => const SelectionScreen());
       case Routes.registerRoute:
         return MaterialPageRoute(builder: (_) => const RegisterScreen());
       default:

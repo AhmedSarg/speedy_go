@@ -7,8 +7,8 @@ import '../../../resources/color_manager.dart';
 import '../../../resources/text_styles.dart';
 import '../../../resources/values_manager.dart';
 
-class SelectionTile extends StatefulWidget {
-  const SelectionTile({
+class SelectionOldTile extends StatefulWidget {
+  const SelectionOldTile({
     super.key,
     required this.type,
     required this.title,
@@ -22,10 +22,10 @@ class SelectionTile extends StatefulWidget {
   final Function() onTap;
 
   @override
-  State<SelectionTile> createState() => _SelectionTileState();
+  State<SelectionOldTile> createState() => _SelectionOldTileState();
 }
 
-class _SelectionTileState extends State<SelectionTile> {
+class _SelectionOldTileState extends State<SelectionOldTile> {
   @override
   Widget build(BuildContext context) {
     Selection selection = DataIntent.getSelection();

@@ -1,32 +1,95 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../domain/models/enums.dart';
 import '../../base/base_cubit.dart';
 import '../../base/base_states.dart';
+import '../view/states/register_states.dart';
 
 class RegisterViewModel extends BaseCubit
     implements RegisterViewModelInput, RegisterViewModelOutput {
-  RegisterType _selection = RegisterType.passenger;
+  Selection _registerType = Selection.passenger;
+
+  RegisterType _registerBoxType = RegisterType.passenger;
+
+  late double _boxHeight;
+
+  late List<Widget> _boxContent;
 
   static RegisterViewModel get(context) => BlocProvider.of(context);
 
   @override
-  void start() {}
+  void start() {
+    emit(RegisterPassengerState());
+  }
 
   @override
-  RegisterType get getRegisterType => _selection;
+  Selection get getRegisterType => _registerType;
 
   @override
-  void setRegisterType(RegisterType loginType) {
-    _selection = loginType;
+  RegisterType get getRegisterBoxType => _registerBoxType;
+
+  @override
+  double get getBoxHeight => _boxHeight;
+
+  @override
+  List<Widget> get getBoxContent => _boxContent;
+
+  @override
+  set setRegisterType(Selection registerType) {
+    _registerType = registerType;
+    if (registerType == Selection.driver) {
+      emit(RegisterVehicleSelectionState());
+    } else {
+      setRegisterBoxType = RegisterType.passenger;
+      emit(ContentState());
+    }
+  }
+
+  @override
+  set setRegisterBoxType(RegisterType registerBoxType) {
+    _registerBoxType = registerBoxType;
+    if (registerBoxType == RegisterType.car) {
+      emit(RegisterCarState());
+    } else if (registerBoxType == RegisterType.tuktuk) {
+      emit(RegisterTukTukState());
+    } else if (registerBoxType == RegisterType.bus) {
+      emit(RegisterBusState());
+    } else {
+      emit(RegisterPassengerState());
+    }
+    emit(ContentState());
+  }
+
+  @override
+  set setBoxHeight(double value) {
+    _boxHeight = value;
+    emit(ContentState());
+  }
+
+  @override
+  set setBoxContent(List<Widget> content) {
+    _boxContent = content;
     emit(ContentState());
   }
 }
 
 abstract class RegisterViewModelInput {
-  void setRegisterType(RegisterType loginType);
+  set setRegisterType(Selection registerType);
+
+  set setRegisterBoxType(RegisterType registerBoxType);
+
+  set setBoxHeight(double value);
+
+  set setBoxContent(List<Widget> content);
 }
 
 abstract class RegisterViewModelOutput {
-  RegisterType get getRegisterType;
+  Selection get getRegisterType;
+
+  RegisterType get getRegisterBoxType;
+
+  double get getBoxHeight;
+
+  List<Widget> get getBoxContent;
 }

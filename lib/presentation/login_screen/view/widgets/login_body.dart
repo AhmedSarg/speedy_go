@@ -111,7 +111,7 @@ class LoginBox extends StatelessWidget {
                     height: AppSize.s20,
                     child: TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, Routes.registerRoute);
+                        Navigator.pushNamed(context, Routes.selectionRoute);
                       },
                       style: TextButton.styleFrom(
                         padding:

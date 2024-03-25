@@ -47,7 +47,7 @@ class AppTextStyles {
         fontSize: FontSize.f28,
       );
 
-  ///Selection Screen
+  ///Selection Old Screen
 
   static TextStyle selectionScreenTileTextStyle(BuildContext context) =>
       getLightStyle(
@@ -61,6 +61,15 @@ class AppTextStyles {
         fontFamily: AppLanguages.getPrimaryFont(context),
         color: ColorManager.white,
         fontSize: FontSize.f40,
+      );
+
+  ///Selection Screen
+
+  static TextStyle selectionScreenButtonTextStyle(BuildContext context) =>
+      getSemiBoldStyle(
+        fontFamily: AppLanguages.getSecondaryFont(context),
+        color: ColorManager.black,
+        fontSize: FontSize.f18,
       );
 
   ///Login Screen
