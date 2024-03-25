@@ -74,4 +74,6 @@ class AppStrings {
       "validationsNumbersMustEqual14Digit";
   static const validationsNumbersMustEqual11Digit =
       "validationsNumbersMustEqual11Digit";
+  static const String validationsPasswordSpecifications = "validationsPasswordSpecifications";
+  static const String validationsEnterTheSamePassword = "validationsEnterTheSamePassword";
 }

@@ -28,7 +28,7 @@ class RouteGenerator {
       case Routes.selectionRoute:
         return MaterialPageRoute(builder: (_) => const SelectionScreen());
       case Routes.registerRoute:
-        return MaterialPageRoute(builder: (_) => const RegisterScreen());
+        return MaterialPageRoute(builder: (_) => RegisterScreen());
       default:
         return unDefinedRoute();
     }

@@ -8,16 +8,24 @@ class AppValidators {
   static String? validateName(String? val) {
     if (val == null) {
       return AppStrings.validationsFieldRequired.tr();
-    } else if (val.trim().length <= 6) {
-      return AppStrings.validationsFieldLengthMoreThen6.tr();
+    } else if (val.trim().isEmpty) {
+      return AppStrings.validationsFieldRequired.tr();
     } else {
-      List<String> names = val.trim().split(" ");
-      names.removeWhere((element) => element.length < 3);
-      if (names.length < 3) {
-        return AppStrings.validationsFullNameErrorText.tr();
-      } else {
-        return null;
-      }
+      return null;
+    }
+  }
+
+  static String? validatePhoneNumber(String? val) {
+    if (val == null) {
+      return AppStrings.validationsFieldRequired.tr();
+    } else if (val.trim().isEmpty) {
+      return AppStrings.validationsFieldRequired.tr();
+    } else if (int.tryParse(val.trim()) == null) {
+      return AppStrings.validationsNumbersOnly.tr();
+    } else if (val.trim().length != 11) {
+      return AppStrings.validationsNumbersMustEqual11Digit.tr();
+    } else {
+      return null;
     }
   }
 
@@ -40,6 +48,8 @@ class AppValidators {
   static String? validateNationalID(String? val) {
     if (val == null) {
       return AppStrings.validationsFieldRequired.tr();
+    } else if (val.trim().isEmpty) {
+      return AppStrings.validationsFieldRequired.tr();
     } else if (int.tryParse(val.trim()) == null) {
       return AppStrings.validationsNumbersOnly.tr();
     } else if (val.trim().length != 14) {
@@ -49,43 +59,26 @@ class AppValidators {
     }
   }
 
-  static String? validatePhoneWhatsApp(String? val) {
+  static String? validatePassword(String? val) {
+    RegExp passwordRegex = RegExp(r'^(?=.*[a-zA-Z])(?=.*[0-9])');
     if (val == null) {
       return AppStrings.validationsFieldRequired.tr();
-    } else if (int.tryParse(val.trim()) == null) {
-      return AppStrings.validationsNumbersOnly.tr();
-    } else if (val.trim().length != 11) {
-      return AppStrings.validationsNumbersMustEqual11Digit.tr();
+    } else if (val.trim().isEmpty) {
+      return AppStrings.validationsFieldRequired.tr();
+    } else if (val.trim().length < 8 || !passwordRegex.hasMatch(val.trim())) {
+      return AppStrings.validationsPasswordSpecifications.tr();
     } else {
       return null;
     }
   }
 
-  static String? validateUniversity(String? val) {
+  static String? validateConfirmPassword(String? val, String? password) {
     if (val == null) {
       return AppStrings.validationsFieldRequired.tr();
     } else if (val.trim().isEmpty) {
       return AppStrings.validationsFieldRequired.tr();
-    } else {
-      return null;
-    }
-  }
-
-  static String? validateCollege(String? val) {
-    if (val == null) {
-      return AppStrings.validationsFieldRequired.tr();
-    } else if (val.trim().isEmpty) {
-      return AppStrings.validationsFieldRequired.tr();
-    } else {
-      return null;
-    }
-  }
-
-  static String? validateAcademicYear(String? val) {
-    if (val == null) {
-      return AppStrings.validationsFieldRequired.tr();
-    } else if (val.trim().isEmpty) {
-      return AppStrings.validationsFieldRequired.tr();
+    } else if (val != password) {
+      return AppStrings.validationsEnterTheSamePassword.tr();
     } else {
       return null;
     }

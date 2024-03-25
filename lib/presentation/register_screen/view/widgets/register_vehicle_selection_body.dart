@@ -61,10 +61,10 @@ class _RegisterVehicleSelectionBodyState
             IconButton(
               onPressed: (index != 0)
                   ? () {
-                      setState(() {
-                        index = indexHandel(index, 0);
-                      });
-                    }
+                setState(() {
+                  index = indexHandel(index, 0);
+                });
+              }
                   : null,
               color: ColorManager.white,
               icon: const Icon(Icons.arrow_back_ios),
@@ -92,10 +92,10 @@ class _RegisterVehicleSelectionBodyState
             IconButton(
               onPressed: (index != 2)
                   ? () {
-                      setState(() {
-                        index = indexHandel(index, 1);
-                      });
-                    }
+                setState(() {
+                  index = indexHandel(index, 1);
+                });
+              }
                   : null,
               hoverColor: Colors.transparent,
               color: ColorManager.white,
