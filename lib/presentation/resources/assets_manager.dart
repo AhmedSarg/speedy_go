@@ -32,6 +32,7 @@ class SVGAssets {
   static const String password = "${_basePath}password.svg";
   static const String person = "${_basePath}person.svg";
   static const String phone = "${_basePath}phone.svg";
+  static const String checkmark = "${_basePath}checkmark.svg";
 }
 
 class LottieAssets {

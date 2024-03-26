@@ -14,7 +14,9 @@ import 'widgets/register_vehicle_selection_body.dart';
 
 class RegisterScreen extends StatelessWidget {
   RegisterScreen({super.key});
+
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,27 +40,46 @@ class RegisterScreen extends StatelessWidget {
                 create: (context) => RegisterViewModel()..start(),
                 child: BlocConsumer<RegisterViewModel, BaseStates>(
                   listener: (context, state) {
-                    RegisterViewModel viewModel = RegisterViewModel.get(context);
+                    RegisterViewModel viewModel =
+                        RegisterViewModel.get(context);
                     if (state is RegisterPassengerState) {
                       viewModel.setBoxContent =
                           passengerRegisterWidgets(context, viewModel, formKey);
                     } else if (state is RegisterCarState) {
-                      viewModel.setBoxContent = carRegisterWidgets(context, viewModel, formKey);
+                      viewModel.setBoxContent =
+                          carRegisterWidgets(context, viewModel, formKey);
                       viewModel.animateToDriver();
                     } else if (state is RegisterTukTukState) {
-                      viewModel.setBoxContent = tuktukRegisterWidgets(context, viewModel, formKey);
+                      viewModel.setBoxContent =
+                          tuktukRegisterWidgets(context, viewModel, formKey);
                       viewModel.animateToDriver();
                     } else if (state is RegisterBusState) {
-                      viewModel.setBoxContent = busRegisterWidgets(context, viewModel, formKey);
+                      viewModel.setBoxContent =
+                          busRegisterWidgets(context, viewModel, formKey);
                       viewModel.animateToDriver();
+                    } else if (state is RegisterImagePickedState) {
+                      showDialog(
+                        context: context,
+                        builder: (_) => AlertDialog(
+                          content: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(AppSize.s10),
+                            ),
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            child: Image.file(state.image),
+                          ),
+                        ),
+                      );
                     }
                     baseListener(context, state);
                   },
                   builder: (context, state) {
                     Widget content;
-                    RegisterViewModel viewModel = RegisterViewModel.get(context);
+                    RegisterViewModel viewModel =
+                        RegisterViewModel.get(context);
                     if (state is RegisterVehicleSelectionState) {
-                      content = RegisterVehicleSelectionBody(viewModel: viewModel);
+                      content =
+                          RegisterVehicleSelectionBody(viewModel: viewModel);
                     } else if (state is RegisterPassengerState) {
                       viewModel.setBoxContent =
                           passengerRegisterWidgets(context, viewModel, formKey);

@@ -4,6 +4,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:speedy_go/app/functions.dart';
+import 'package:speedy_go/data/network/failure.dart';
 
 import '../../../domain/models/enums.dart';
 import '../../base/base_cubit.dart';
@@ -16,7 +18,7 @@ class RegisterViewModel extends BaseCubit
     implements RegisterViewModelInput, RegisterViewModelOutput {
   late Selection _registerType;
 
-  late Selection _oldRegisterType;
+  late Selection _oldRegisterType = Selection.driver;
 
   late RegisterType _registerBoxType;
 
@@ -33,10 +35,10 @@ class RegisterViewModel extends BaseCubit
   final TextEditingController _nationalIdController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
 
-  late File _drivingLicense;
-  late File _carLicense;
-  late File _carImage;
-  late File _tukTukImage;
+  File? _drivingLicense;
+  File? _carLicense;
+  File? _carImage;
+  File? _tukTukImage;
   Gender? _gender;
 
   @override
@@ -81,16 +83,16 @@ class RegisterViewModel extends BaseCubit
   TextEditingController get getEmailController => _emailController;
 
   @override
-  File get getDrivingLicense => _drivingLicense;
+  File? get getDrivingLicense => _drivingLicense;
 
   @override
-  File get getCarLicense => _carLicense;
+  File? get getCarLicense => _carLicense;
 
   @override
-  File get getCarImage => _carImage;
+  File? get getCarImage => _carImage;
 
   @override
-  File get getTukTukImage => _tukTukImage;
+  File? get getTukTukImage => _tukTukImage;
 
   @override
   Gender? get getGender => _gender;
@@ -105,14 +107,6 @@ class RegisterViewModel extends BaseCubit
       setRegisterBoxType = RegisterType.passenger;
       emit(ContentState());
     }
-  }
-
-  void animateToDriver() {
-    _registerType = _oldRegisterType;
-    Future.delayed(const Duration(milliseconds: 10), () {
-      _registerType = Selection.driver;
-      emit(ContentState());
-    });
   }
 
   @override
@@ -139,12 +133,94 @@ class RegisterViewModel extends BaseCubit
   set setGender(String gender) {
     if (gender == AppStrings.registerScreenGenderFemale.tr()) {
       _gender = Gender.female;
-    }
-    else if (gender == AppStrings.registerScreenGenderMale.tr()) {
+    } else if (gender == AppStrings.registerScreenGenderMale.tr()) {
       _gender = Gender.male;
-    }
-    else {
+    } else {
       _gender = null;
+    }
+  }
+
+  void animateToDriver() {
+    _registerType = _oldRegisterType;
+    Future.delayed(const Duration(milliseconds: 10), () {
+      _registerType = Selection.driver;
+      emit(ContentState());
+    });
+  }
+
+  void chooseDrivingLicense() async {
+    try {
+      String path = await getImagesFromGallery();
+      _drivingLicense = File(path);
+      emit(RegisterImagePickedState(image: _drivingLicense!));
+      _oldRegisterType = Selection.driver;
+      setRegisterBoxType = _registerBoxType;
+    } catch (e) {
+      emit(
+        ErrorState(
+          failure: Failure.fake(
+            (e as Exception).toString(),
+          ),
+          displayType: DisplayType.popUpDialog,
+        ),
+      );
+    }
+  }
+
+  void chooseCarLicense() async {
+    try {
+      String path = await getImagesFromGallery();
+      _carLicense = File(path);
+      emit(RegisterImagePickedState(image: _carLicense!));
+      _oldRegisterType = Selection.driver;
+      setRegisterBoxType = _registerBoxType;
+    } catch (e) {
+      emit(
+        ErrorState(
+          failure: Failure.fake(
+            (e as Exception).toString(),
+          ),
+          displayType: DisplayType.popUpDialog,
+        ),
+      );
+    }
+  }
+
+  void chooseCarImage() async {
+    try {
+      String path = await getImagesFromGallery();
+      _carImage = File(path);
+      emit(RegisterImagePickedState(image: _carImage!));
+      _oldRegisterType = Selection.driver;
+      setRegisterBoxType = _registerBoxType;
+    } catch (e) {
+      emit(
+        ErrorState(
+          failure: Failure.fake(
+            (e as Exception).toString(),
+          ),
+          displayType: DisplayType.popUpDialog,
+        ),
+      );
+    }
+  }
+
+  void chooseTukTukImage() async {
+    try {
+      String path = await getImagesFromGallery();
+      _tukTukImage = File(path);
+      emit(RegisterImagePickedState(image: _tukTukImage!));
+      _oldRegisterType = Selection.driver;
+      setRegisterBoxType = _registerBoxType;
+    } catch (e) {
+      emit(
+        ErrorState(
+          failure: Failure.fake(
+            (e as Exception).toString(),
+          ),
+          displayType: DisplayType.popUpDialog,
+        ),
+      );
     }
   }
 }
@@ -180,13 +256,13 @@ abstract class RegisterViewModelOutput {
 
   TextEditingController get getEmailController;
 
-  File get getDrivingLicense;
+  File? get getDrivingLicense;
 
-  File get getCarLicense;
+  File? get getCarLicense;
 
-  File get getCarImage;
+  File? get getCarImage;
 
-  File get getTukTukImage;
+  File? get getTukTukImage;
 
   Gender? get getGender;
 }

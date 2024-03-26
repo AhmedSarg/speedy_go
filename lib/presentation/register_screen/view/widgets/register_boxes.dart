@@ -12,7 +12,6 @@ import 'upload_field.dart';
 
 List<Widget> passengerRegisterWidgets(BuildContext context,
     RegisterViewModel viewModel, GlobalKey<FormState> formKey) {
-
   FocusNode firstNameFocusNode = FocusNode();
   FocusNode lastNameFocusNode = FocusNode();
   FocusNode phoneNumberFocusNode = FocusNode();
@@ -116,7 +115,6 @@ List<Widget> passengerRegisterWidgets(BuildContext context,
 
 List<Widget> carRegisterWidgets(BuildContext context,
     RegisterViewModel viewModel, GlobalKey<FormState> formKey) {
-
   FocusNode firstNameFocusNode = FocusNode();
   FocusNode lastNameFocusNode = FocusNode();
   FocusNode phoneNumberFocusNode = FocusNode();
@@ -173,7 +171,9 @@ List<Widget> carRegisterWidgets(BuildContext context,
     const SizedBox(height: AppSize.s20),
     UploadField(
       hint: AppStrings.registerScreenDrivingLicenseHint.tr(),
+      value: viewModel.getDrivingLicense?.path,
       iconPath: SVGAssets.id,
+      onPressed: viewModel.chooseDrivingLicense,
     ),
     const SizedBox(height: AppSize.s20),
     Row(
@@ -181,14 +181,18 @@ List<Widget> carRegisterWidgets(BuildContext context,
         Expanded(
           child: UploadField(
             hint: AppStrings.registerScreenCarLicenseHint.tr(),
+            value: viewModel.getCarLicense?.path,
             iconPath: SVGAssets.id,
+            onPressed: viewModel.chooseCarLicense,
           ),
         ),
         const SizedBox(width: AppSize.s20),
         Expanded(
           child: UploadField(
             hint: AppStrings.registerScreenCarImageHint.tr(),
+            value: viewModel.getCarImage?.path,
             iconPath: SVGAssets.image,
+            onPressed: viewModel.chooseCarImage,
           ),
         ),
       ],
@@ -240,7 +244,6 @@ List<Widget> carRegisterWidgets(BuildContext context,
 
 List<Widget> tuktukRegisterWidgets(BuildContext context,
     RegisterViewModel viewModel, GlobalKey<FormState> formKey) {
-
   FocusNode firstNameFocusNode = FocusNode();
   FocusNode lastNameFocusNode = FocusNode();
   FocusNode phoneNumberFocusNode = FocusNode();
@@ -297,7 +300,9 @@ List<Widget> tuktukRegisterWidgets(BuildContext context,
     const SizedBox(height: AppSize.s20),
     UploadField(
       hint: AppStrings.registerScreenTukTukImageHint.tr(),
+      value: viewModel.getTukTukImage?.path,
       iconPath: SVGAssets.image,
+      onPressed: viewModel.chooseTukTukImage,
     ),
     const SizedBox(height: AppSize.s20),
     RegisterTextField(
@@ -346,7 +351,6 @@ List<Widget> tuktukRegisterWidgets(BuildContext context,
 
 List<Widget> busRegisterWidgets(BuildContext context,
     RegisterViewModel viewModel, GlobalKey<FormState> formKey) {
-
   FocusNode firstNameFocusNode = FocusNode();
   FocusNode lastNameFocusNode = FocusNode();
   FocusNode phoneNumberFocusNode = FocusNode();
