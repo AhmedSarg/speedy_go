@@ -25,6 +25,13 @@ class SVGAssets {
   static const String car = "${_basePath}car.svg";
   static const String tuktuk = "${_basePath}tuktuk.svg";
   static const String bus = "${_basePath}bus.svg";
+
+  static const String email = "${_basePath}email.svg";
+  static const String id = "${_basePath}id.svg";
+  static const String image = "${_basePath}image.svg";
+  static const String password = "${_basePath}password.svg";
+  static const String person = "${_basePath}person.svg";
+  static const String phone = "${_basePath}phone.svg";
 }
 
 class LottieAssets {

@@ -21,12 +21,12 @@ class AppStrings {
   static const loginScreenLogin = "loginScreenLogin";
 
   ///Register Screen
-  static const registerScreenTitle = "registerScreenTitle";//
-  static const registerScreenSelectorPassenger = "registerScreenSelectorPassenger";//
-  static const registerScreenSelectorDriver = "registerScreenSelectorDriver";//
-  static const registerScreenSignUp = "registerScreenSignUp";//
-  static const registerScreenAlreadyHaveAccount = "registerScreenAlreadyHaveAccount";//
-  static const registerScreenLogin = "registerScreenLogin";//
+  static const registerScreenTitle = "registerScreenTitle";
+  static const registerScreenSelectorPassenger = "registerScreenSelectorPassenger";
+  static const registerScreenSelectorDriver = "registerScreenSelectorDriver";
+  static const registerScreenSignUp = "registerScreenSignUp";
+  static const registerScreenAlreadyHaveAccount = "registerScreenAlreadyHaveAccount";
+  static const registerScreenLogin = "registerScreenLogin";
   static const registerScreenFirstNameHint = "registerScreenFirstNameHint";
   static const registerScreenLastNameHint = "registerScreenLastNameHint";
   static const registerScreenPhoneNumberHint = "registerScreenPhoneNumberHint";
@@ -36,6 +36,11 @@ class AppStrings {
   static const registerScreenEmailHint = "registerScreenEmailHint";
   static const registerScreenPasswordHint = "registerScreenPasswordHint";
   static const registerScreenConfirmPasswordHint = "registerScreenConfirmPasswordHint";
+  static const registerScreenNationalIdHint = "registerScreenNationalIdHint";
+  static const registerScreenDrivingLicenseHint = "registerScreenDrivingLicenseHint";
+  static const registerScreenCarLicenseHint = "registerScreenCarLicenseHint";
+  static const registerScreenCarImageHint = "registerScreenCarImageHint";
+  static const registerScreenTukTukImageHint = "registerScreenTukTukImageHint";
 
   ///General
   static const noRouteFound = "noRouteFound";

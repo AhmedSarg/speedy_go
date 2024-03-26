@@ -42,16 +42,15 @@ class RegisterScreen extends StatelessWidget {
                     if (state is RegisterPassengerState) {
                       viewModel.setBoxContent =
                           passengerRegisterWidgets(context, viewModel, formKey);
-                      viewModel.setBoxHeight = AppSize.s600;
                     } else if (state is RegisterCarState) {
                       viewModel.setBoxContent = carRegisterWidgets(context, viewModel, formKey);
-                      viewModel.setBoxHeight = AppSize.s600;
+                      viewModel.animateToDriver();
                     } else if (state is RegisterTukTukState) {
                       viewModel.setBoxContent = tuktukRegisterWidgets(context, viewModel, formKey);
-                      viewModel.setBoxHeight = AppSize.s600;
+                      viewModel.animateToDriver();
                     } else if (state is RegisterBusState) {
                       viewModel.setBoxContent = busRegisterWidgets(context, viewModel, formKey);
-                      viewModel.setBoxHeight = AppSize.s600;
+                      viewModel.animateToDriver();
                     }
                     baseListener(context, state);
                   },
@@ -59,12 +58,10 @@ class RegisterScreen extends StatelessWidget {
                     Widget content;
                     RegisterViewModel viewModel = RegisterViewModel.get(context);
                     if (state is RegisterVehicleSelectionState) {
-                      content =
-                          RegisterVehicleSelectionBody(viewModel: viewModel);
+                      content = RegisterVehicleSelectionBody(viewModel: viewModel);
                     } else if (state is RegisterPassengerState) {
                       viewModel.setBoxContent =
                           passengerRegisterWidgets(context, viewModel, formKey);
-                      viewModel.setBoxHeight = AppSize.s600;
                       content = RegisterBody(viewModel: viewModel);
                     } else {
                       content = RegisterBody(viewModel: viewModel);

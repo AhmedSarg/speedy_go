@@ -4,21 +4,21 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:speedy_go/presentation/resources/strings_manager.dart';
 
 import '../../../domain/models/enums.dart';
 import '../../base/base_cubit.dart';
 import '../../base/base_states.dart';
 import '../../common/data_intent/data_intent.dart';
+import '../../resources/strings_manager.dart';
 import '../view/states/register_states.dart';
 
 class RegisterViewModel extends BaseCubit
     implements RegisterViewModelInput, RegisterViewModelOutput {
-  Selection _registerType = Selection.passenger;
+  late Selection _registerType;
 
-  RegisterType _registerBoxType = RegisterType.passenger;
+  late Selection _oldRegisterType;
 
-  late double _boxHeight;
+  late RegisterType _registerBoxType;
 
   late List<Widget> _boxContent;
 
@@ -41,7 +41,8 @@ class RegisterViewModel extends BaseCubit
 
   @override
   void start() {
-    if (DataIntent.getSelection() == Selection.driver) {
+    _registerType = DataIntent.getSelection();
+    if (_registerType == Selection.driver) {
       emit(RegisterVehicleSelectionState());
     } else {
       emit(RegisterPassengerState());
@@ -53,9 +54,6 @@ class RegisterViewModel extends BaseCubit
 
   @override
   RegisterType get getRegisterBoxType => _registerBoxType;
-
-  @override
-  double get getBoxHeight => _boxHeight;
 
   @override
   List<Widget> get getBoxContent => _boxContent;
@@ -99,6 +97,7 @@ class RegisterViewModel extends BaseCubit
 
   @override
   set setRegisterType(Selection registerType) {
+    _oldRegisterType = _registerType;
     _registerType = registerType;
     if (registerType == Selection.driver) {
       emit(RegisterVehicleSelectionState());
@@ -106,6 +105,14 @@ class RegisterViewModel extends BaseCubit
       setRegisterBoxType = RegisterType.passenger;
       emit(ContentState());
     }
+  }
+
+  void animateToDriver() {
+    _registerType = _oldRegisterType;
+    Future.delayed(const Duration(milliseconds: 10), () {
+      _registerType = Selection.driver;
+      emit(ContentState());
+    });
   }
 
   @override
@@ -120,13 +127,6 @@ class RegisterViewModel extends BaseCubit
     } else {
       emit(RegisterPassengerState());
     }
-    emit(ContentState());
-  }
-
-  @override
-  set setBoxHeight(double value) {
-    _boxHeight = value;
-    emit(ContentState());
   }
 
   @override
@@ -146,7 +146,6 @@ class RegisterViewModel extends BaseCubit
     else {
       _gender = null;
     }
-    print(_gender);
   }
 }
 
@@ -154,8 +153,6 @@ abstract class RegisterViewModelInput {
   set setRegisterType(Selection registerType);
 
   set setRegisterBoxType(RegisterType registerBoxType);
-
-  set setBoxHeight(double value);
 
   set setBoxContent(List<Widget> content);
 
@@ -166,8 +163,6 @@ abstract class RegisterViewModelOutput {
   Selection get getRegisterType;
 
   RegisterType get getRegisterBoxType;
-
-  double get getBoxHeight;
 
   List<Widget> get getBoxContent;
 

@@ -3,11 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:speedy_go/app/extensions.dart';
-import 'package:speedy_go/presentation/resources/assets_manager.dart';
-import 'package:speedy_go/presentation/resources/routes_manager.dart';
 
 import '../../../../domain/models/enums.dart';
+import '../../../resources/assets_manager.dart';
 import '../../../resources/color_manager.dart';
+import '../../../resources/routes_manager.dart';
 import '../../../resources/strings_manager.dart';
 import '../../../resources/text_styles.dart';
 import '../../../resources/values_manager.dart';
@@ -232,7 +232,7 @@ class RegisterTextField extends StatefulWidget {
     required this.controller,
     required this.keyboard,
     required this.hintText,
-    required this.icon,
+    required this.iconPath,
     required this.focusNode,
     required this.validator,
     this.nextFocusNode,
@@ -243,7 +243,7 @@ class RegisterTextField extends StatefulWidget {
   final TextInputType keyboard;
   final String hintText;
   final bool canObscure;
-  final IconData icon;
+  final String iconPath;
   final FocusNode focusNode;
   final FocusNode? nextFocusNode;
   final String? Function(String? value) validator;
@@ -294,9 +294,9 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
                 fontSize: AppSize.s0,
                 color: ColorManager.transparent,
               ),
-              prefixIcon: Padding(
-                padding: const EdgeInsets.all(AppPadding.p5),
-                child: Icon(widget.icon, size: AppSize.s20),
+              prefixIcon: SizedBox(
+                width: AppSize.s30,
+                child: SvgPicture.asset(widget.iconPath),
               ),
               prefixIconColor: ColorManager.secondary,
               prefixIconConstraints: const BoxConstraints(
