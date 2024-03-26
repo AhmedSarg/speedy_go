@@ -13,6 +13,7 @@ class ColorManager {
 
   static const Color black = Color(0xff000000);
   static const Color white = Color(0xFFFFFFFF);
+  static const Color blueWithOpacity0_5 = Color.fromRGBO(14, 48, 78, 0.5);
   static const Color error = Color(0xffe61f34);
 
   static const Color transparent = Colors.transparent;

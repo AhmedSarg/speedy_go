@@ -173,5 +173,11 @@ class AppTextStyles {
         color: color,
         fontSize: FontSize.f12,
       );
+  static TextStyle registerVehicleSelectionBodyTextStyle(BuildContext context, Color color, double size) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: color,
+        fontSize: size,
+      );
 
 }

@@ -78,7 +78,7 @@ flutter:
   assets:
       - assets/translations/
       - assets/images/
-      - assets/icons/
+#      - assets/icons/
       - assets/svg/
   #   - images/a_dot_ham.jpeg
 
