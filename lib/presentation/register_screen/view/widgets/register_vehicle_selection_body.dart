@@ -8,6 +8,8 @@ import 'package:speedy_go/presentation/resources/text_styles.dart';
 import 'package:speedy_go/presentation/resources/values_manager.dart';
 
 import '../../../resources/font_manager.dart';
+import '../../../resources/routes_manager.dart';
+import 'package:animations/animations.dart';
 
 class RegisterVehicleSelectionBody extends StatefulWidget {
   const RegisterVehicleSelectionBody({
@@ -28,6 +30,7 @@ class _RegisterVehicleSelectionBodyState
 
   @override
   Widget build(BuildContext context) {
+    // bool _onFirstPage = true;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -39,7 +42,9 @@ class _RegisterVehicleSelectionBodyState
               radius: AppSize.s18,
               backgroundColor: ColorManager.grey,
               child: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, Routes.myCustomWidget);
+                },
                 padding: const EdgeInsets.only(left: AppPadding.p4),
                 icon: const Icon(
                   Icons.arrow_back_ios,
@@ -71,25 +76,29 @@ class _RegisterVehicleSelectionBodyState
                 color: ColorManager.white,
                 icon: const Icon(Icons.arrow_back_ios),
               ),
-              GestureDetector(
-                onTap: () {
-                  if (index == 0) {
-                    widget.viewModel.setRegisterBoxType = RegisterType.car;
-                  } else if (index == 1) {
-                    widget.viewModel.setRegisterBoxType = RegisterType.tuktuk;
-                  } else {
-                    widget.viewModel.setRegisterBoxType = RegisterType.bus;
-                  }
-                },
-                child: Container(
-                  height: 200,
-                  padding: const EdgeInsets.all(AppPadding.p20),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(AppSize.s20),
-                      color: ColorManager.blueWithOpacity0_5),
-                  child: selectIcon(index),
-                ),
+              PageTransitionSwitcher(
+                    duration: const Duration(seconds: 5),
+                    // reverse: !_onFirstPage,
+                    transitionBuilder: (Widget child,
+                        Animation<double> animation,
+                        Animation<double> secondaryAnimation) {
+                      return SlideTransition(
+                        position: Tween<Offset>(
+                          begin: Offset.zero,
+                          end: const Offset(1.5, 0.0),
+                        ).animate(secondaryAnimation),
+                        child: FadeTransition(
+                          opacity: Tween<double>(
+                            begin: 0.0,
+                            end: 1.0,
+                          ).animate(animation),
+                          child: child,
+                        ),
+                      );
+                    },
+                    child:  fun(index,widget.viewModel)
               ),
+              // ),
               IconButton(
                 onPressed: (index != 2)
                     ? () {
@@ -139,4 +148,27 @@ indexHandel(int index, int select) {
   }
   index = (index > 0) ? index % 3 : 0;
   return index;
+}
+
+
+Widget fun(int index,RegisterViewModel viewModel){
+  return GestureDetector(
+    onTap: () {
+      if (index == 0) {
+        viewModel.setRegisterBoxType = RegisterType.car;
+      } else if (index == 1) {
+        viewModel.setRegisterBoxType = RegisterType.tuktuk;
+      } else {
+        viewModel.setRegisterBoxType = RegisterType.bus;
+      }
+    },
+    child: Container(
+      height: 200,
+      padding: const EdgeInsets.all(AppPadding.p20),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(AppSize.s20),
+          color: ColorManager.blueWithOpacity0_5),
+      child:selectIcon(index),
+    ),
+  );
 }

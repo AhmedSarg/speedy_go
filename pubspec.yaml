@@ -52,6 +52,7 @@ dependencies:
   ntp:
   gsheets:
   image_picker:
+  animations:
 
 dev_dependencies:
   flutter_test:
