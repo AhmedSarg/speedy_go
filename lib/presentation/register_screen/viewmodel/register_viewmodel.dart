@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:speedy_go/app/functions.dart';
 import 'package:speedy_go/data/network/failure.dart';
+import 'package:speedy_go/domain/usecase/register_car_driver_usecase.dart';
 
 import '../../../domain/models/enums.dart';
 import '../../base/base_cubit.dart';
@@ -16,6 +17,10 @@ import '../view/states/register_states.dart';
 
 class RegisterViewModel extends BaseCubit
     implements RegisterViewModelInput, RegisterViewModelOutput {
+  final RegisterCarDriverUseCase _registerCarDriverUseCase;
+
+  RegisterViewModel(this._registerCarDriverUseCase);
+
   late Selection _registerType;
 
   late Selection _oldRegisterType = Selection.driver;
@@ -49,6 +54,7 @@ class RegisterViewModel extends BaseCubit
     } else {
       emit(RegisterPassengerState());
     }
+    emit(RegisterVerifyPhoneNumberState());
   }
 
   @override
@@ -152,6 +158,7 @@ class RegisterViewModel extends BaseCubit
     try {
       String path = await getImagesFromGallery();
       _drivingLicense = File(path);
+      // _drivingLicense = renameFile(_drivingLicense!, 'driving_license.jpg');
       emit(RegisterImagePickedState(image: _drivingLicense!));
       _oldRegisterType = Selection.driver;
       setRegisterBoxType = _registerBoxType;
@@ -171,6 +178,7 @@ class RegisterViewModel extends BaseCubit
     try {
       String path = await getImagesFromGallery();
       _carLicense = File(path);
+      // _carLicense = renameFile(_carLicense!, 'car_license.jpg');
       emit(RegisterImagePickedState(image: _carLicense!));
       _oldRegisterType = Selection.driver;
       setRegisterBoxType = _registerBoxType;
@@ -190,6 +198,7 @@ class RegisterViewModel extends BaseCubit
     try {
       String path = await getImagesFromGallery();
       _carImage = File(path);
+      // _carImage = renameFile(_carImage!, 'car_image.jpg');
       emit(RegisterImagePickedState(image: _carImage!));
       _oldRegisterType = Selection.driver;
       setRegisterBoxType = _registerBoxType;
@@ -222,6 +231,34 @@ class RegisterViewModel extends BaseCubit
         ),
       );
     }
+  }
+
+  void registerCarDriver() {
+    emit(LoadingState(displayType: DisplayType.popUpDialog));
+    _registerCarDriverUseCase(
+      RegisterCarDriverUseCaseInput(
+        firstName: _firstNameController.text.trim(),
+        lastName: _lastNameController.text.trim(),
+        phoneNumber: _phoneNumberController.text.trim(),
+        email: _emailController.text.trim(),
+        nationalId: _nationalIdController.text.trim(),
+        drivingLicense: _drivingLicense!,
+        carLicense: _carLicense!,
+        carImage: _carImage!,
+        password: _passwordController.text.trim(),
+      ),
+    ).then(
+      (value) {
+        value.fold(
+          (l) {
+            emit(ErrorState(failure: l, displayType: DisplayType.popUpDialog));
+          },
+          (r) {
+            emit(RegisterVerifyPhoneNumberState());
+          },
+        );
+      },
+    );
   }
 }
 

@@ -30,12 +30,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  google_maps_webservice_plus:
+    path: ../../../Flutter/packages/google_maps_webservice
 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons:
-  internet_connection_checker_plus:
   get_it:
   lottie:
   shared_preferences:
@@ -52,6 +53,17 @@ dependencies:
   ntp:
   gsheets:
   image_picker:
+  firebase_core:
+  firebase_auth:
+  cloud_firestore:
+  firebase_storage:
+  internet_connection_checker_plus:
+  google_maps_flutter:
+  path:
+  uuid:
+  animations:
+#  map_location_picker:
+#  flutter_google_places:
 
 dev_dependencies:
   flutter_test:

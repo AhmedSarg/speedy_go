@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "260578779074",
+    "project_id": "speedygo-a13e2",
+    "storage_bucket": "speedygo-a13e2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:260578779074:android:87769fa292fd45ca1fc05b",
+        "android_client_info": {
+          "package_name": "com.example.speedy_go"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDK-Hp4S3mx6kx3P9GQKmbm-0khAhBvVZY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

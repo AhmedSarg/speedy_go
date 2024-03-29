@@ -118,6 +118,7 @@ List<Widget> carRegisterWidgets(BuildContext context,
   FocusNode firstNameFocusNode = FocusNode();
   FocusNode lastNameFocusNode = FocusNode();
   FocusNode phoneNumberFocusNode = FocusNode();
+  FocusNode emailFocusNode = FocusNode();
   FocusNode nationalIdFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
   FocusNode confirmPasswordFocusNode = FocusNode();
@@ -158,6 +159,17 @@ List<Widget> carRegisterWidgets(BuildContext context,
       iconPath: SVGAssets.phone,
       validator: AppValidators.validatePhoneNumber,
       focusNode: phoneNumberFocusNode,
+      nextFocusNode: emailFocusNode,
+    ),
+    const SizedBox(height: AppSize.s20),
+    RegisterTextField(
+      controller: viewModel.getEmailController,
+      keyboard: TextInputType.emailAddress,
+      hintText: AppStrings.registerScreenEmailHint.tr(),
+      iconPath: SVGAssets.email,
+      validator: AppValidators.validateEmail,
+      focusNode: emailFocusNode,
+      nextFocusNode: nationalIdFocusNode,
     ),
     const SizedBox(height: AppSize.s20),
     RegisterTextField(
@@ -230,11 +242,7 @@ List<Widget> carRegisterWidgets(BuildContext context,
         text: AppStrings.registerScreenSignUp.tr(),
         onPressed: () {
           if (formKey.currentState!.validate()) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('validated'),
-              ),
-            );
+            viewModel.registerCarDriver();
           }
         },
       ),
@@ -242,11 +250,12 @@ List<Widget> carRegisterWidgets(BuildContext context,
   ];
 }
 
-List<Widget> tuktukRegisterWidgets(BuildContext context,
+List<Widget> tukTukRegisterWidgets(BuildContext context,
     RegisterViewModel viewModel, GlobalKey<FormState> formKey) {
   FocusNode firstNameFocusNode = FocusNode();
   FocusNode lastNameFocusNode = FocusNode();
   FocusNode phoneNumberFocusNode = FocusNode();
+  FocusNode emailFocusNode = FocusNode();
   FocusNode nationalIdFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
   FocusNode confirmPasswordFocusNode = FocusNode();
@@ -287,6 +296,17 @@ List<Widget> tuktukRegisterWidgets(BuildContext context,
       iconPath: SVGAssets.phone,
       validator: AppValidators.validatePhoneNumber,
       focusNode: phoneNumberFocusNode,
+      nextFocusNode: emailFocusNode,
+    ),
+    const SizedBox(height: AppSize.s20),
+    RegisterTextField(
+      controller: viewModel.getEmailController,
+      keyboard: TextInputType.emailAddress,
+      hintText: AppStrings.registerScreenEmailHint.tr(),
+      iconPath: SVGAssets.email,
+      validator: AppValidators.validateEmail,
+      focusNode: emailFocusNode,
+      nextFocusNode: nationalIdFocusNode,
     ),
     const SizedBox(height: AppSize.s20),
     RegisterTextField(
@@ -354,6 +374,7 @@ List<Widget> busRegisterWidgets(BuildContext context,
   FocusNode firstNameFocusNode = FocusNode();
   FocusNode lastNameFocusNode = FocusNode();
   FocusNode phoneNumberFocusNode = FocusNode();
+  FocusNode emailFocusNode = FocusNode();
   FocusNode nationalIdFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
   FocusNode confirmPasswordFocusNode = FocusNode();
@@ -394,6 +415,17 @@ List<Widget> busRegisterWidgets(BuildContext context,
       iconPath: SVGAssets.phone,
       validator: AppValidators.validatePhoneNumber,
       focusNode: phoneNumberFocusNode,
+      nextFocusNode: emailFocusNode,
+    ),
+    const SizedBox(height: AppSize.s20),
+    RegisterTextField(
+      controller: viewModel.getEmailController,
+      keyboard: TextInputType.emailAddress,
+      hintText: AppStrings.registerScreenEmailHint.tr(),
+      iconPath: SVGAssets.email,
+      validator: AppValidators.validateEmail,
+      focusNode: emailFocusNode,
+      nextFocusNode: nationalIdFocusNode,
     ),
     const SizedBox(height: AppSize.s20),
     RegisterTextField(

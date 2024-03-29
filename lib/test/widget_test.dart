@@ -1,97 +1,108 @@
-import 'dart:math';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:speedy_go/app/extensions.dart';
-import 'package:speedy_go/domain/models/enums.dart';
-import 'package:speedy_go/presentation/common/data_intent/data_intent.dart';
-import 'package:speedy_go/test/triangle.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_webservice_plus/places.dart';
 
-void main() {
-  runApp(
-    const MaterialApp(
+void main() async {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
+  // print(1);
+  // String imageUrl = 'hello';
+  // try {
+  //   imageUrl = await FirebaseStorage.instance
+  //       .ref()
+  //       .child('293301358_100176086107504_382459513746061380_n.jpg')
+  //       .getDownloadURL();
+  //   print(imageUrl);
+  // } catch (e) {
+  //   print(4);
+  //   print(e);
+  // }
+  // print(2);
+  runApp(const App());
+}
+
+class App extends StatelessWidget {
+  const App({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Center(child: WidgetTest()),
-    ),
-  );
+      home: WidgetTest(),
+    );
+  }
 }
 
 class WidgetTest extends StatefulWidget {
-  const WidgetTest({super.key});
+  const WidgetTest({
+    super.key
+  });
 
   @override
   State<WidgetTest> createState() => _WidgetTestState();
 }
 
 class _WidgetTestState extends State<WidgetTest> {
+
+  final _places = GoogleMapsPlaces(
+      apiKey: 'AIzaSyAk5wVPHzUelaMzxTZJ-ybERq42ULBusf0',
+  );
+
+  late final List<PlacesSearchResult> _placesList;
+
+  Future<List<PlacesSearchResult>> searchPlaces(String query, LatLng location) async {
+    final result = await _places.searchNearbyWithRadius(
+      Location(lat: location.latitude, lng: location.longitude),
+      10000,
+      type: "restaurant",
+    );
+    if (result.status == "OK") {
+      return result.results;
+    } else {
+      throw Exception(result.errorMessage);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    Selection selection = DataIntent.getSelection();
-    // Selection selection = Selection.none;
-    double w = context.width();
-    double h = context.height();
-    String sd = 'Driver';
-    String sp = 'Passenger';
     return Scaffold(
-      backgroundColor: Colors.black,
-      body: Stack(
-        children: [
-          selection == Selection.passenger
-              ? const SizedBox()
-              : GestureDetector(
-                  onTap: () {
-                    DataIntent.setSelection(Selection.driver);
-                    print(sd);
-                    setState(() {});
-                  },
-                  child: CustomPaint(
-                    painter: SelectionTrianglePainter(
-                      type: Selection.driver,
-                      selected: selection == Selection.driver,
-                    ),
-                    child: Container(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: context.height() * .1,
-                          horizontal: context.width() * .2,
-                        ),
-                        child: Text(sd),
-                      ),
-                    ),
-                  ),
-                ),
-          selection == Selection.driver
-              ? const SizedBox()
-              : GestureDetector(
-                  onTap: () {
-                    DataIntent.setSelection(Selection.passenger);
-                    print(sp);
-                    setState(() {});
-                  },
-                  child: CustomPaint(
-                    painter: SelectionTrianglePainter(
-                      type: Selection.passenger,
-                      selected: selection == Selection.passenger,
-                    ),
-                    child: Container(
-                      alignment: Alignment.bottomRight,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: context.height() * .1,
-                          horizontal: context.width() * .2,
-                        ),
-                        child: Text(sp),
-                      ),
-                    ),
-                  ),
-                ),
-        ],
+      body: Center(
+        child: ElevatedButton(
+          child: Text('fef'),
+          onPressed: () async {
+            _placesList = await searchPlaces('query', const LatLng(30.4762175,31.1800514));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => Places(placesList: _placesList)));
+          },
+        ),
+      )
+    );
+  }
+}
+
+class Places extends StatelessWidget {
+  const Places({super.key, required this.placesList});
+  
+  final List<PlacesSearchResult> placesList;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: ListView.builder(
+        itemCount: placesList.length,
+        itemBuilder: (context, index) {
+          final place = placesList[index];
+          return ListTile(
+            title: Text(place.name),
+            subtitle: Text(place.vicinity!),
+          );
+        },
       ),
     );
   }
 }
+
 
 // Container(
 // width: w,

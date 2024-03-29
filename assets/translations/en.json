@@ -71,5 +71,6 @@
   "registerScreenDrivingLicenseHint": "Driving License",
   "registerScreenCarLicenseHint": "Car License",
   "registerScreenCarImageHint": "Car Image",
-  "registerScreenTukTukImageHint": "Tuk-Tuk Image"
+  "registerScreenTukTukImageHint": "Tuk-Tuk Image",
+  "registerScreenSuccessMessage": "Registered Successfully"
 }

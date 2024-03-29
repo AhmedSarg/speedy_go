@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
+import '../../app/sl.dart';
 import '../login_screen/view/login_view.dart';
 import '../register_screen/view/register_view.dart';
 import '../selection_screen/view/selection_view.dart';
@@ -28,6 +29,7 @@ class RouteGenerator {
       case Routes.selectionRoute:
         return MaterialPageRoute(builder: (_) => const SelectionScreen());
       case Routes.registerRoute:
+        initRegisterCarDriverUseCase();
         return MaterialPageRoute(builder: (_) => RegisterScreen());
       default:
         return unDefinedRoute();

@@ -1,6 +1,10 @@
+import 'package:animations/animations.dart';
+import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:speedy_go/presentation/register_screen/view/widgets/register_verify_phone_number_body.dart';
 
+import '../../../app/sl.dart';
 import '../../base/base_states.dart';
 import '../../base/cubit_builder.dart';
 import '../../base/cubit_listener.dart';
@@ -37,7 +41,7 @@ class RegisterScreen extends StatelessWidget {
               width: AppSize.infinity,
               height: AppSize.infinity,
               child: BlocProvider(
-                create: (context) => RegisterViewModel()..start(),
+                create: (context) => RegisterViewModel(sl())..start(),
                 child: BlocConsumer<RegisterViewModel, BaseStates>(
                   listener: (context, state) {
                     RegisterViewModel viewModel =
@@ -51,7 +55,7 @@ class RegisterScreen extends StatelessWidget {
                       viewModel.animateToDriver();
                     } else if (state is RegisterTukTukState) {
                       viewModel.setBoxContent =
-                          tuktukRegisterWidgets(context, viewModel, formKey);
+                          tukTukRegisterWidgets(context, viewModel, formKey);
                       viewModel.animateToDriver();
                     } else if (state is RegisterBusState) {
                       viewModel.setBoxContent =
@@ -70,6 +74,14 @@ class RegisterScreen extends StatelessWidget {
                           ),
                         ),
                       );
+                    } else if (state is SuccessState) {
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        'hdh',
+                        ModalRoute.withName('/'),
+                      );
+                    } else if (state is ErrorState) {
+                      Navigator.pop(context);
                     }
                     baseListener(context, state);
                   },
@@ -80,7 +92,10 @@ class RegisterScreen extends StatelessWidget {
                     if (state is RegisterVehicleSelectionState) {
                       content =
                           RegisterVehicleSelectionBody(viewModel: viewModel);
-                    } else if (state is RegisterPassengerState) {
+                    } else if (state is RegisterVerifyPhoneNumberState) {
+                      content = RegisterVerifyPhoneNumberBody(viewModel: viewModel);
+                    }
+                    else if (state is RegisterPassengerState) {
                       viewModel.setBoxContent =
                           passengerRegisterWidgets(context, viewModel, formKey);
                       content = RegisterBody(viewModel: viewModel);

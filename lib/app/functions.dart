@@ -1,5 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
+
+File renameFile(File picture, String newName) {
+  print('Original path: ${picture.path}');
+  String dir = dirname(picture.path);
+  String newPath = join(dir, newName);
+  print('NewPath: ${newPath}');
+  return picture.renameSync(newPath);
+}
 
 Future<String> getImagesFromGallery() async {
   try {

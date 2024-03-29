@@ -1,6 +1,5 @@
 // ignore_for_file: constant_identifier_names
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../presentation/resources/strings_manager.dart';
@@ -25,6 +24,8 @@ enum DataSource {
   SEND_TIMEOUT,
   CACHE_ERROR,
   NO_INTERNET_CONNECTION,
+  EMAIL_ALREADY_EXISTS,
+  LOGIN_FAILED,
   DEFAULT
 }
 
@@ -44,6 +45,8 @@ class ResponseCode {
   static const int SEND_TIMEOUT = -4;
   static const int CACHE_ERROR = -5;
   static const int NO_INTERNET_CONNECTION = -6;
+  static const int EMAIL_ALREADY_EXISTS = -7;
+  static const int LOGIN_FAILED = -8;
   static const int DEFAULT = -10;
 }
 
@@ -69,6 +72,8 @@ class ResponseMessage {
   static const String SEND_TIMEOUT = AppStrings.timeoutError;
   static const String CACHE_ERROR = AppStrings.cacheError;
   static const String NO_INTERNET_CONNECTION = AppStrings.noInternetError;
+  static const String EMAIL_ALREADY_EXISTS = AppStrings.emailAlreadyExists;
+  static const String LOGIN_FAILED = AppStrings.loginFailed;
 
   static const String DEFAULT = AppStrings.defaultError;
 }
@@ -77,37 +82,43 @@ extension DataSourceExtension on DataSource {
   Failure getFailure() {
     switch (this) {
       case DataSource.SUCCESS:
-        return Failure(ResponseCode.SUCCESS, ResponseMessage.SUCCESS.tr());
+        return Failure(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
       case DataSource.NO_CONTENT:
-        return Failure(ResponseCode.NO_CONTENT, ResponseMessage.NO_CONTENT.tr());
+        return Failure(ResponseCode.NO_CONTENT, ResponseMessage.NO_CONTENT);
       case DataSource.BAD_REQUEST:
-        return Failure(ResponseCode.BAD_REQUEST, ResponseMessage.BAD_REQUEST.tr());
+        return Failure(ResponseCode.BAD_REQUEST, ResponseMessage.BAD_REQUEST);
       case DataSource.FORBIDDEN:
-        return Failure(ResponseCode.FORBIDDEN, ResponseMessage.FORBIDDEN.tr());
+        return Failure(ResponseCode.FORBIDDEN, ResponseMessage.FORBIDDEN);
       case DataSource.UNAUTORISED:
-        return Failure(ResponseCode.UNAUTORISED, ResponseMessage.UNAUTORISED.tr());
+        return Failure(ResponseCode.UNAUTORISED, ResponseMessage.UNAUTORISED);
       case DataSource.NOT_FOUND:
-        return Failure(ResponseCode.NOT_FOUND, ResponseMessage.NOT_FOUND.tr());
+        return Failure(ResponseCode.NOT_FOUND, ResponseMessage.NOT_FOUND);
       case DataSource.INTERNAL_SERVER_ERROR:
         return Failure(ResponseCode.INTERNAL_SERVER_ERROR,
-            ResponseMessage.INTERNAL_SERVER_ERROR.tr());
+            ResponseMessage.INTERNAL_SERVER_ERROR);
       case DataSource.CONNECT_TIMEOUT:
         return Failure(
-            ResponseCode.CONNECT_TIMEOUT, ResponseMessage.CONNECT_TIMEOUT.tr());
+            ResponseCode.CONNECT_TIMEOUT, ResponseMessage.CONNECT_TIMEOUT);
       case DataSource.CANCEL:
-        return Failure(ResponseCode.CANCEL, ResponseMessage.CANCEL.tr());
+        return Failure(ResponseCode.CANCEL, ResponseMessage.CANCEL);
       case DataSource.RECIEVE_TIMEOUT:
         return Failure(
-            ResponseCode.RECIEVE_TIMEOUT, ResponseMessage.RECIEVE_TIMEOUT.tr());
+            ResponseCode.RECIEVE_TIMEOUT, ResponseMessage.RECIEVE_TIMEOUT);
       case DataSource.SEND_TIMEOUT:
-        return Failure(ResponseCode.SEND_TIMEOUT, ResponseMessage.SEND_TIMEOUT.tr());
+        return Failure(ResponseCode.SEND_TIMEOUT, ResponseMessage.SEND_TIMEOUT);
       case DataSource.CACHE_ERROR:
-        return Failure(ResponseCode.CACHE_ERROR, ResponseMessage.CACHE_ERROR.tr());
+        return Failure(ResponseCode.CACHE_ERROR, ResponseMessage.CACHE_ERROR);
       case DataSource.NO_INTERNET_CONNECTION:
         return Failure(ResponseCode.NO_INTERNET_CONNECTION,
-            ResponseMessage.NO_INTERNET_CONNECTION.tr());
+            ResponseMessage.NO_INTERNET_CONNECTION);
+      case DataSource.EMAIL_ALREADY_EXISTS:
+        return Failure(ResponseCode.EMAIL_ALREADY_EXISTS,
+            ResponseMessage.EMAIL_ALREADY_EXISTS);
+      case DataSource.LOGIN_FAILED:
+        return Failure(ResponseCode.LOGIN_FAILED,
+            ResponseMessage.LOGIN_FAILED);
       case DataSource.DEFAULT:
-        return Failure(ResponseCode.DEFAULT, ResponseMessage.DEFAULT.tr());
+        return Failure(ResponseCode.DEFAULT, ResponseMessage.DEFAULT);
     }
   }
 }
