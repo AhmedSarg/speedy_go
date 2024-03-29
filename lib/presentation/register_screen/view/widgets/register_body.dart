@@ -266,7 +266,7 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
           child: TextFormField(
             controller: widget.controller,
             cursorColor: ColorManager.secondary,
-            cursorErrorColor: ColorManager.secondary,
+            // cursorErrorColor: ColorManager.secondary,
             cursorRadius: const Radius.circular(AppSize.s1),
             focusNode: widget.focusNode,
             textInputAction: widget.nextFocusNode != null ? TextInputAction.next : TextInputAction.done,
