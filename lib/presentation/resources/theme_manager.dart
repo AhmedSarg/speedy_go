@@ -22,7 +22,7 @@ ThemeData getApplicationTheme() {
       iconTheme: IconThemeData(color: ColorManager.white), //add this line here
     ),
     dialogTheme: const DialogTheme(
-      backgroundColor: ColorManager.white,
+      backgroundColor: ColorManager.primary,
       surfaceTintColor: ColorManager.transparent
     ),
     // bottomNavigationBarTheme: BottomNavigationBarThemeData(

@@ -1,14 +1,18 @@
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:speedy_go/app/functions.dart';
-import 'package:speedy_go/data/network/failure.dart';
-import 'package:speedy_go/domain/usecase/register_car_driver_usecase.dart';
+import 'package:speedy_go/data/network/error_handler.dart';
 
+import '../../../app/functions.dart';
+import '../../../data/network/failure.dart';
 import '../../../domain/models/enums.dart';
+import '../../../domain/usecase/authenticate_usecase.dart';
+import '../../../domain/usecase/register_car_driver_usecase.dart';
+import '../../../domain/usecase/verify_phone_number_usecase.dart';
 import '../../base/base_cubit.dart';
 import '../../base/base_states.dart';
 import '../../common/data_intent/data_intent.dart';
@@ -17,9 +21,15 @@ import '../view/states/register_states.dart';
 
 class RegisterViewModel extends BaseCubit
     implements RegisterViewModelInput, RegisterViewModelOutput {
+  final AuthenticateUseCase _authenticateUseCase;
+  final VerifyPhoneNumberUseCase _verifyPhoneNumberUseCase;
   final RegisterCarDriverUseCase _registerCarDriverUseCase;
 
-  RegisterViewModel(this._registerCarDriverUseCase);
+  RegisterViewModel(
+    this._authenticateUseCase,
+    this._verifyPhoneNumberUseCase,
+    this._registerCarDriverUseCase,
+  );
 
   late Selection _registerType;
 
@@ -29,7 +39,11 @@ class RegisterViewModel extends BaseCubit
 
   late List<Widget> _boxContent;
 
+  late Widget _content;
+
   static RegisterViewModel get(context) => BlocProvider.of(context);
+
+  late User user;
 
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
@@ -39,6 +53,7 @@ class RegisterViewModel extends BaseCubit
       TextEditingController();
   final TextEditingController _nationalIdController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _otpController = TextEditingController(text: '      ');
 
   File? _drivingLicense;
   File? _carLicense;
@@ -54,7 +69,6 @@ class RegisterViewModel extends BaseCubit
     } else {
       emit(RegisterPassengerState());
     }
-    emit(RegisterVerifyPhoneNumberState());
   }
 
   @override
@@ -65,6 +79,9 @@ class RegisterViewModel extends BaseCubit
 
   @override
   List<Widget> get getBoxContent => _boxContent;
+
+  @override
+  Widget get getContent => _content;
 
   @override
   TextEditingController get getFirstNameController => _firstNameController;
@@ -87,6 +104,9 @@ class RegisterViewModel extends BaseCubit
 
   @override
   TextEditingController get getEmailController => _emailController;
+
+  @override
+  TextEditingController get getOtpController => _otpController;
 
   @override
   File? get getDrivingLicense => _drivingLicense;
@@ -136,6 +156,11 @@ class RegisterViewModel extends BaseCubit
   }
 
   @override
+  set setContent(Widget content) {
+    _content = content;
+  }
+
+  @override
   set setGender(String gender) {
     if (gender == AppStrings.registerScreenGenderFemale.tr()) {
       _gender = Gender.female;
@@ -159,7 +184,7 @@ class RegisterViewModel extends BaseCubit
       String path = await getImagesFromGallery();
       _drivingLicense = File(path);
       // _drivingLicense = renameFile(_drivingLicense!, 'driving_license.jpg');
-      emit(RegisterImagePickedState(image: _drivingLicense!));
+      emit(RegisterImagePickSuccessState(image: _drivingLicense!));
       _oldRegisterType = Selection.driver;
       setRegisterBoxType = _registerBoxType;
     } catch (e) {
@@ -179,7 +204,7 @@ class RegisterViewModel extends BaseCubit
       String path = await getImagesFromGallery();
       _carLicense = File(path);
       // _carLicense = renameFile(_carLicense!, 'car_license.jpg');
-      emit(RegisterImagePickedState(image: _carLicense!));
+      emit(RegisterImagePickSuccessState(image: _carLicense!));
       _oldRegisterType = Selection.driver;
       setRegisterBoxType = _registerBoxType;
     } catch (e) {
@@ -199,7 +224,7 @@ class RegisterViewModel extends BaseCubit
       String path = await getImagesFromGallery();
       _carImage = File(path);
       // _carImage = renameFile(_carImage!, 'car_image.jpg');
-      emit(RegisterImagePickedState(image: _carImage!));
+      emit(RegisterImagePickSuccessState(image: _carImage!));
       _oldRegisterType = Selection.driver;
       setRegisterBoxType = _registerBoxType;
     } catch (e) {
@@ -218,22 +243,73 @@ class RegisterViewModel extends BaseCubit
     try {
       String path = await getImagesFromGallery();
       _tukTukImage = File(path);
-      emit(RegisterImagePickedState(image: _tukTukImage!));
+      emit(RegisterImagePickSuccessState(image: _tukTukImage!));
       _oldRegisterType = Selection.driver;
       setRegisterBoxType = _registerBoxType;
     } catch (e) {
       emit(
-        ErrorState(
-          failure: Failure.fake(
-            (e as Exception).toString(),
-          ),
+        RegisterImagePickFailedState(
+          failure: ErrorHandler.handle(e).failure,
           displayType: DisplayType.popUpDialog,
         ),
       );
     }
   }
 
-  void registerCarDriver() {
+  void authenticate() {
+    emit(LoadingState(displayType: DisplayType.popUpDialog));
+    _authenticateUseCase(AuthenticateUseCaseInput(
+      email: _emailController.text.trim(),
+      password: _passwordController.text.trim(),
+    )).then((value) {
+      value.fold(
+        (l) {
+          emit(ErrorState(failure: l, displayType: DisplayType.popUpDialog));
+        },
+        (r) {
+          user = r;
+          emit(RegisterVerifyPhoneNumberState());
+        },
+      );
+    });
+  }
+
+  void verifyPhoneNumber() {
+    emit(LoadingState(displayType: DisplayType.popUpDialog));
+    _verifyPhoneNumberUseCase(
+      VerifyPhoneNumberUseCaseInput(
+        phoneNumber: _phoneNumberController.text.trim(),
+        user: user,
+        otp: _otpController.text.trim(),
+      ),
+    ).then((value) {
+      value.fold(
+        (l) {
+          emit(ErrorState(failure: l, displayType: DisplayType.popUpDialog));
+        },
+        (r) {
+          if (r) {
+            switch (_registerBoxType) {
+              case RegisterType.passenger:
+              // TODO: Handle this case.
+                break;
+              case RegisterType.car:
+                _registerCarDriver();
+                break;
+              case RegisterType.tuktuk:
+              // TODO: Handle this case.
+                break;
+              case RegisterType.bus:
+              // TODO: Handle this case.
+                break;
+            }
+          }
+        },
+      );
+    });
+  }
+
+  void _registerCarDriver() {
     emit(LoadingState(displayType: DisplayType.popUpDialog));
     _registerCarDriverUseCase(
       RegisterCarDriverUseCaseInput(
@@ -254,7 +330,7 @@ class RegisterViewModel extends BaseCubit
             emit(ErrorState(failure: l, displayType: DisplayType.popUpDialog));
           },
           (r) {
-            emit(RegisterVerifyPhoneNumberState());
+            emit(SuccessState(AppStrings.registerScreenSuccessMessage.tr()));
           },
         );
       },
@@ -269,6 +345,8 @@ abstract class RegisterViewModelInput {
 
   set setBoxContent(List<Widget> content);
 
+  set setContent(Widget content);
+
   set setGender(String gender);
 }
 
@@ -278,6 +356,8 @@ abstract class RegisterViewModelOutput {
   RegisterType get getRegisterBoxType;
 
   List<Widget> get getBoxContent;
+
+  Widget get getContent;
 
   TextEditingController get getFirstNameController;
 
@@ -292,6 +372,8 @@ abstract class RegisterViewModelOutput {
   TextEditingController get getNationalIdController;
 
   TextEditingController get getEmailController;
+
+  TextEditingController get getOtpController;
 
   File? get getDrivingLicense;
 

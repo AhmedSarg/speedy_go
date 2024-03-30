@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:speedy_go/presentation/register_screen/view/test.dart';
 
 import '../../app/sl.dart';
 import '../login_screen/view/login_view.dart';
@@ -31,10 +30,12 @@ class RouteGenerator {
       case Routes.selectionRoute:
         return MaterialPageRoute(builder: (_) => const SelectionScreen());
       case Routes.registerRoute:
+        initAuthenticateUseCase();
+        initVerifyPhoneNumberUseCase();
         initRegisterCarDriverUseCase();
         return MaterialPageRoute(builder: (_) => RegisterScreen());
-      case Routes.myCustomWidget:
-        return MaterialPageRoute(builder: (_) => MyCustomWidget());
+      // case Routes.myCustomWidget:
+      //   return MaterialPageRoute(builder: (_) => MyCustomWidget());
       default:
         return unDefinedRoute();
     }

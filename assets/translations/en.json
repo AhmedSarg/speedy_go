@@ -15,8 +15,9 @@
   "defaultError": "Default Error",
   "emailAlreadyExists": "Account Already Exists",
   "loginFailed": "Incorrect Email or Password",
+  "invalidVerificationCode": "Verification Code is Incorrect Please Try Again",
   "cacheError": "Cache Error",
-  "noInternetError": "No Internet Error",
+  "noInternetError": "No Internet Connection",
   "emptyContent": "Empty Content",
   "intentError": "Intent Error",
 
@@ -72,5 +73,8 @@
   "registerScreenCarLicenseHint": "Car License",
   "registerScreenCarImageHint": "Car Image",
   "registerScreenTukTukImageHint": "Tuk-Tuk Image",
+  "registerScreenVerifyTitle": "Verify Phone Number",
+  "registerScreenVerifyDescription": "We've sent you sms with a validation code to your phone number\nenter the validation code",
+  "registerScreenVerifyButton": "Verify",
   "registerScreenSuccessMessage": "Registered Successfully"
 }

@@ -21,6 +21,8 @@ import '../data/network/firestore_factory.dart';
 import '../data/network/network_info.dart';
 import '../data/repository/repository_impl.dart';
 import '../domain/repository/repository.dart';
+import '../domain/usecase/authenticate_usecase.dart';
+import '../domain/usecase/verify_phone_number_usecase.dart';
 import 'date_ntp.dart';
 
 final sl = GetIt.instance;
@@ -61,5 +63,19 @@ void initRegisterCarDriverUseCase() {
   if (GetIt.instance.isRegistered<RegisterCarDriverUseCase>() == false) {
     sl.registerFactory<RegisterCarDriverUseCase>(
         () => RegisterCarDriverUseCase(sl()));
+  }
+}
+
+void initAuthenticateUseCase() {
+  if (GetIt.instance.isRegistered<AuthenticateUseCase>() == false) {
+    sl.registerFactory<AuthenticateUseCase>(
+        () => AuthenticateUseCase(sl()));
+  }
+}
+
+void initVerifyPhoneNumberUseCase() {
+  if (GetIt.instance.isRegistered<VerifyPhoneNumberUseCase>() == false) {
+    sl.registerFactory<VerifyPhoneNumberUseCase>(
+        () => VerifyPhoneNumberUseCase(sl()));
   }
 }

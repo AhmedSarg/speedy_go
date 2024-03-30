@@ -12,8 +12,8 @@ void baseListener(BuildContext context, BaseStates state) {
     //do nothing
   } else if (state is SuccessState) {
     BaseWidgets.showPopUpDialog(context, [
-      BaseWidgets.buildAnimatedImage(LottieAssets.success),
-      BaseWidgets.buildMessage(context, state.message),
+      BaseWidgets.buildAnimatedImage(LottieAssets.success, false),
+      BaseWidgets.buildMessage(context, state.message.tr()),
     ]);
   } else if (state is LoadingState) {
     BaseWidgets.showPopUpDialog(context, [
@@ -21,8 +21,8 @@ void baseListener(BuildContext context, BaseStates state) {
     ]);
   } else if (state is ErrorState) {
     BaseWidgets.showPopUpDialog(context, [
-      BaseWidgets.buildAnimatedImage(LottieAssets.error),
-      BaseWidgets.buildMessage(context, state.failure.message),
+      BaseWidgets.buildAnimatedImage(LottieAssets.error, false),
+      BaseWidgets.buildMessage(context, state.failure.message.tr()),
       BaseWidgets.buildButton(
           displayType: state.displayType,
           context: context,

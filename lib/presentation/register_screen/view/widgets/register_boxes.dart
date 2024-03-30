@@ -242,7 +242,7 @@ List<Widget> carRegisterWidgets(BuildContext context,
         text: AppStrings.registerScreenSignUp.tr(),
         onPressed: () {
           if (formKey.currentState!.validate()) {
-            viewModel.registerCarDriver();
+            viewModel.authenticate();
           }
         },
       ),

@@ -62,6 +62,7 @@ dependencies:
   path:
   uuid:
   animations:
+  string_validator:
 #  map_location_picker:
 #  flutter_google_places:
 
@@ -93,6 +94,7 @@ flutter:
       - assets/images/
 #      - assets/icons/
       - assets/svg/
+      - assets/lotties/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

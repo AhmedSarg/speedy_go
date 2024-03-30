@@ -13,7 +13,7 @@ class AppTextStyles {
   static TextStyle baseStatesMessageTextStyle(BuildContext context) =>
       getBoldStyle(
         fontFamily: AppLanguages.getPrimaryFont(context),
-        color: ColorManager.primary,
+        color: ColorManager.secondary,
         fontSize: FontSize.f16,
       );
 
@@ -173,11 +173,19 @@ class AppTextStyles {
         color: color,
         fontSize: FontSize.f12,
       );
-  static TextStyle registerVehicleSelectionBodyTextStyle(BuildContext context, Color color, double size) =>
+
+  static TextStyle registerScreenVehicleSelectionBodyTextStyle(BuildContext context, Color color, double size) =>
       getRegularStyle(
         fontFamily: AppLanguages.getPrimaryFont(context),
         color: color,
         fontSize: size,
+      );
+
+  static TextStyle registerScreenVerifyDescriptionTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white.withOpacity(.4),
+        fontSize: FontSize.f12,
       );
 
 }

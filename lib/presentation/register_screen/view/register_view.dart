@@ -1,5 +1,3 @@
-import 'package:animations/animations.dart';
-import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:speedy_go/presentation/register_screen/view/widgets/register_verify_phone_number_body.dart';
@@ -41,7 +39,8 @@ class RegisterScreen extends StatelessWidget {
               width: AppSize.infinity,
               height: AppSize.infinity,
               child: BlocProvider(
-                create: (context) => RegisterViewModel(sl())..start(),
+                create: (context) =>
+                    RegisterViewModel(sl(), sl(), sl())..start(),
                 child: BlocConsumer<RegisterViewModel, BaseStates>(
                   listener: (context, state) {
                     RegisterViewModel viewModel =
@@ -61,7 +60,7 @@ class RegisterScreen extends StatelessWidget {
                       viewModel.setBoxContent =
                           busRegisterWidgets(context, viewModel, formKey);
                       viewModel.animateToDriver();
-                    } else if (state is RegisterImagePickedState) {
+                    } else if (state is RegisterImagePickSuccessState) {
                       showDialog(
                         context: context,
                         builder: (_) => AlertDialog(
@@ -74,6 +73,7 @@ class RegisterScreen extends StatelessWidget {
                           ),
                         ),
                       );
+                    } else if (state is RegisterImagePickFailedState) {
                     } else if (state is SuccessState) {
                       Navigator.pushNamedAndRemoveUntil(
                         context,
@@ -81,28 +81,31 @@ class RegisterScreen extends StatelessWidget {
                         ModalRoute.withName('/'),
                       );
                     } else if (state is ErrorState) {
-                      Navigator.pop(context);
+                      Navigator.of(context, rootNavigator: true).pop();
                     }
                     baseListener(context, state);
                   },
                   builder: (context, state) {
-                    Widget content;
                     RegisterViewModel viewModel =
                         RegisterViewModel.get(context);
                     if (state is RegisterVehicleSelectionState) {
-                      content =
+                      viewModel.setContent =
                           RegisterVehicleSelectionBody(viewModel: viewModel);
                     } else if (state is RegisterVerifyPhoneNumberState) {
-                      content = RegisterVerifyPhoneNumberBody(viewModel: viewModel);
-                    }
-                    else if (state is RegisterPassengerState) {
+                      Navigator.pop(context);
+                      viewModel.setContent =
+                          RegisterVerifyPhoneNumberBody(viewModel: viewModel);
+                    } else if (state is RegisterPassengerState) {
                       viewModel.setBoxContent =
                           passengerRegisterWidgets(context, viewModel, formKey);
-                      content = RegisterBody(viewModel: viewModel);
+                      viewModel.setContent = RegisterBody(viewModel: viewModel);
+                    } else if (state is LoadingState ||
+                        state is ErrorState ||
+                        state is SuccessState) {
                     } else {
-                      content = RegisterBody(viewModel: viewModel);
+                      viewModel.setContent = RegisterBody(viewModel: viewModel);
                     }
-                    return baseBuilder(context, state, content);
+                    return baseBuilder(context, state, viewModel.getContent);
                   },
                 ),
               ),

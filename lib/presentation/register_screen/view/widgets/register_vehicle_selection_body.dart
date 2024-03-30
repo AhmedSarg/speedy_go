@@ -56,7 +56,7 @@ class _RegisterVehicleSelectionBodyState
             const SizedBox(width: AppSize.s10),
             Text(
               "Choose your vehicle",
-              style: AppTextStyles.registerVehicleSelectionBodyTextStyle(
+              style: AppTextStyles.registerScreenVehicleSelectionBodyTextStyle(
                   context, ColorManager.white, FontSize.f22),
             ),
           ],
@@ -118,7 +118,7 @@ class _RegisterVehicleSelectionBodyState
         ),
         Text(
           selectName(index),
-          style: AppTextStyles.registerVehicleSelectionBodyTextStyle(
+          style: AppTextStyles.registerScreenVehicleSelectionBodyTextStyle(
               context, ColorManager.white, FontSize.f32),
         )
       ],

@@ -41,6 +41,9 @@ class AppStrings {
   static const registerScreenCarLicenseHint = "registerScreenCarLicenseHint";
   static const registerScreenCarImageHint = "registerScreenCarImageHint";
   static const registerScreenTukTukImageHint = "registerScreenTukTukImageHint";
+  static const registerScreenVerifyTitle = "registerScreenVerifyTitle";
+  static const registerScreenVerifyDescription = "registerScreenVerifyDescription";
+  static const registerScreenVerifyButton = "registerScreenVerifyButton";
   static const registerScreenSuccessMessage = "registerScreenSuccessMessage";
 
   ///General
@@ -63,6 +66,7 @@ class AppStrings {
   static const noInternetError = "noInternetError";
   static const emailAlreadyExists = "emailAlreadyExists";
   static const loginFailed = "loginFailed";
+  static const invalidVerificationCode = "invalidVerificationCode";
 
   static const emptyContent = "emptyContent";
   static const intentError = "intentError";

@@ -1,4 +1,6 @@
 - country code dialog design
-- text editing controllers and focus nodes
-- driver register screen
+- country code in register
 - animate
+- image from camera
+- handle no image picked
+- handle incomplete process errors

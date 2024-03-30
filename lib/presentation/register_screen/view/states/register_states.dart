@@ -12,12 +12,19 @@ class RegisterBusState extends BaseStates {}
 
 class RegisterVehicleSelectionState extends BaseStates {}
 
-class RegisterImagePickedState extends BaseStates {
-  RegisterImagePickedState({
+class RegisterImagePickSuccessState extends BaseStates {
+  RegisterImagePickSuccessState({
     required this.image,
   });
 
   final File image;
+}
+
+class RegisterImagePickFailedState extends ErrorState {
+  RegisterImagePickFailedState({
+    required super.failure,
+    super.displayType,
+  });
 }
 
 class RegisterVerifyPhoneNumberState extends BaseStates {}

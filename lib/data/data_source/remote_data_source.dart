@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -23,10 +24,11 @@ abstract class RemoteDataSource {
     required String password,
   });
 
-  Future<void> verifyPhoneNumberForRegister(
-    User user,
-    String phoneNumber,
-  );
+  Future<FirebaseAuthException?> verifyPhoneNumberForRegister({
+    required String phoneNumber,
+    required User user,
+    required String otp,
+  });
 
   Future<void> login({
     required String email,
@@ -99,20 +101,37 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<void> verifyPhoneNumberForRegister(
-      User user, String phoneNumber) async {
-    _firebaseAuth.verifyPhoneNumber(
-      phoneNumber: phoneNumber,
-      verificationCompleted: (phoneCredentials) {
-        user.linkWithCredential(phoneCredentials);
+  Future<FirebaseAuthException?> verifyPhoneNumberForRegister({
+    required String phoneNumber,
+    required User user,
+    required String otp,
+  }) async {
+    Completer<FirebaseAuthException?> value =
+        Completer<FirebaseAuthException?>();
+    await _firebaseAuth.verifyPhoneNumber(
+      phoneNumber: '+20${phoneNumber.substring(1)}',
+      verificationCompleted: (phoneAuthCredential) {
+        user.linkWithCredential(phoneAuthCredential);
+        value.complete(null);
       },
-      verificationFailed: (FirebaseAuthException e) {
-        user.delete();
-        throw e;
+      verificationFailed: (e) {
+        value.complete(e);
       },
-      codeSent: (codeSent, v) {},
-      codeAutoRetrievalTimeout: (s) {},
+      codeSent: (String verificationId, int? resendToken) async {
+        PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
+          verificationId: verificationId,
+          smsCode: otp,
+        );
+        try {
+          await user.linkWithCredential(phoneAuthCredential);
+          value.complete(null);
+        } catch (e) {
+          value.complete(e as FirebaseAuthException);
+        }
+      },
+      codeAutoRetrievalTimeout: (_) {},
     );
+    return value.future;
   }
 
   @override

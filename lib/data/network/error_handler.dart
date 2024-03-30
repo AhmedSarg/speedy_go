@@ -1,5 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../presentation/resources/strings_manager.dart';
@@ -26,6 +27,7 @@ enum DataSource {
   NO_INTERNET_CONNECTION,
   EMAIL_ALREADY_EXISTS,
   LOGIN_FAILED,
+  INVALID_VERIFICATION_CODE,
   DEFAULT
 }
 
@@ -47,6 +49,7 @@ class ResponseCode {
   static const int NO_INTERNET_CONNECTION = -6;
   static const int EMAIL_ALREADY_EXISTS = -7;
   static const int LOGIN_FAILED = -8;
+  static const int INVALID_VERIFICATION_CODE = -9;
   static const int DEFAULT = -10;
 }
 
@@ -74,6 +77,7 @@ class ResponseMessage {
   static const String NO_INTERNET_CONNECTION = AppStrings.noInternetError;
   static const String EMAIL_ALREADY_EXISTS = AppStrings.emailAlreadyExists;
   static const String LOGIN_FAILED = AppStrings.loginFailed;
+  static const String INVALID_VERIFICATION_CODE = AppStrings.invalidVerificationCode;
 
   static const String DEFAULT = AppStrings.defaultError;
 }
@@ -117,6 +121,9 @@ extension DataSourceExtension on DataSource {
       case DataSource.LOGIN_FAILED:
         return Failure(ResponseCode.LOGIN_FAILED,
             ResponseMessage.LOGIN_FAILED);
+      case DataSource.INVALID_VERIFICATION_CODE:
+        return Failure(ResponseCode.INVALID_VERIFICATION_CODE,
+            ResponseMessage.INVALID_VERIFICATION_CODE);
       case DataSource.DEFAULT:
         return Failure(ResponseCode.DEFAULT, ResponseMessage.DEFAULT);
     }

@@ -32,7 +32,7 @@ class RepositoryImpl implements Repository {
   );
 
   @override
-  Future<Either<Failure, User>> registerCarDriver({
+  Future<Either<Failure, void>> registerCarDriver({
     required String firstName,
     required String lastName,
     required String phoneNumber,
@@ -58,6 +58,23 @@ class RepositoryImpl implements Repository {
           carImage: carImage,
           createdAt: DateTime.now(),
         );
+        void ret;
+        return Right(ret);
+      } else {
+        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+      }
+    } catch (e) {
+      return Left(ErrorHandler.handle(e).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, User>> authenticateUser({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      if (await _networkInfo.isConnected) {
         UserCredential userCredential =
             await _remoteDataSource.registerEmailPasswordToAuth(
           email: email,
@@ -67,14 +84,49 @@ class RepositoryImpl implements Repository {
       } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
       }
-    } on FirebaseAuthException catch (e){
+    } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         return Left(DataSource.EMAIL_ALREADY_EXISTS.getFailure());
-      }
-      else {
+      } else {
         return Left(ErrorHandler.handle(e).failure);
       }
     } catch (e) {
+      return Left(ErrorHandler.handle(e).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> verifyPhoneNumber({
+    required String phoneNumber,
+    required User user,
+    required String otp,
+  }) async {
+    try {
+      if (await _networkInfo.isConnected) {
+        FirebaseAuthException? value = await _remoteDataSource.verifyPhoneNumberForRegister(
+          phoneNumber: phoneNumber,
+          user: user,
+          otp: otp,
+        );
+        if (value != null) {
+          throw value;
+        }
+        else {
+          return const Right(true);
+        }
+      } else {
+        user.delete();
+        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'invalid-verification-code') {
+        return Left(DataSource.INVALID_VERIFICATION_CODE.getFailure());
+      } else {
+        user.delete();
+        return Left(ErrorHandler.handle(e).failure);
+      }
+    } catch (e) {
+      user.delete();
       return Left(ErrorHandler.handle(e).failure);
     }
   }
