@@ -24,11 +24,13 @@ class RouteGenerator {
   static Route<dynamic> getRoute(RouteSettings settings) {
     switch (settings.name) {
       case Routes.splashRoute:
-        return MaterialPageRoute(builder: (_) => const SplashScreen());
+        return MaterialPageRoute(builder: (_) =>  SplashScreen());
       case Routes.loginRoute:
         return MaterialPageRoute(builder: (_) => const LoginScreen());
       case Routes.selectionRoute:
         return MaterialPageRoute(builder: (_) => const SelectionScreen());
+
+
       case Routes.registerRoute:
         initAuthenticateUseCase();
         initVerifyPhoneNumberUseCase();
