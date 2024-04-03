@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:speedy_go/presentation/register_screen/view/widgets/register_verify_phone_number_body.dart';
+import 'package:speedy_go/presentation/resources/routes_manager.dart';
 
 import '../../../app/sl.dart';
 import '../../base/base_states.dart';
@@ -13,6 +13,7 @@ import 'states/register_states.dart';
 import 'widgets/register_body.dart';
 import 'widgets/register_boxes.dart';
 import 'widgets/register_vehicle_selection_body.dart';
+import 'widgets/register_verify_phone_number_body.dart';
 
 class RegisterScreen extends StatelessWidget {
   RegisterScreen({super.key});
@@ -77,7 +78,7 @@ class RegisterScreen extends StatelessWidget {
                     } else if (state is SuccessState) {
                       Navigator.pushNamedAndRemoveUntil(
                         context,
-                        'hdh',
+                        Routes.mainLayoutRoute,
                         ModalRoute.withName('/'),
                       );
                     } else if (state is ErrorState) {
@@ -93,6 +94,7 @@ class RegisterScreen extends StatelessWidget {
                           RegisterVehicleSelectionBody(viewModel: viewModel);
                     } else if (state is RegisterVerifyPhoneNumberState) {
                       Navigator.pop(context);
+                      // viewModel.startVerifyPhoneNumber();
                       viewModel.setContent =
                           RegisterVerifyPhoneNumberBody(viewModel: viewModel);
                     } else if (state is RegisterPassengerState) {

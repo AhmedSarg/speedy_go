@@ -5,7 +5,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:speedy_go/domain/usecase/register_car_driver_usecase.dart';
+import 'package:speedy_go/data/network/firebase_app_check_factory.dart';
+import 'package:speedy_go/domain/usecase/register_usecase.dart';
 
 import '../data/data_source/cache_data_source.dart';
 import '../data/data_source/local_data_source.dart';
@@ -47,6 +48,7 @@ Future<void> initAppModule() async {
   sl.registerLazySingleton<FirebaseAuth>(() => fireAuth);
   var fireStorage = await FireStorageFactoryImpl().create();
   sl.registerLazySingleton<FirebaseStorage>(() => fireStorage);
+  await FirebaseAppCheckFactoryImpl().create();
   sl.registerLazySingleton<AppServiceClient>(() => AppServiceClientImpl(sl()));
   sl.registerLazySingleton<RemoteDataSource>(() => RemoteDataSourceImpl(sl(), sl(), sl()));
   sl.registerLazySingleton<RuntimeDataSource>(() => RuntimeDataSourceImpl());
@@ -57,13 +59,6 @@ Future<void> initAppModule() async {
 
   sl.registerLazySingleton<Repository>(
       () => RepositoryImpl(sl(), sl()));
-}
-
-void initRegisterCarDriverUseCase() {
-  if (GetIt.instance.isRegistered<RegisterCarDriverUseCase>() == false) {
-    sl.registerFactory<RegisterCarDriverUseCase>(
-        () => RegisterCarDriverUseCase(sl()));
-  }
 }
 
 void initAuthenticateUseCase() {
@@ -77,5 +72,12 @@ void initVerifyPhoneNumberUseCase() {
   if (GetIt.instance.isRegistered<VerifyPhoneNumberUseCase>() == false) {
     sl.registerFactory<VerifyPhoneNumberUseCase>(
         () => VerifyPhoneNumberUseCase(sl()));
+  }
+}
+
+void initRegisterUseCase() {
+  if (GetIt.instance.isRegistered<RegisterUseCase>() == false) {
+    sl.registerFactory<RegisterUseCase>(
+            () => RegisterUseCase(sl()));
   }
 }

@@ -64,9 +64,11 @@ class AppStrings {
   static const defaultError = "defaultError";
   static const cacheError = "cacheError";
   static const noInternetError = "noInternetError";
-  static const emailAlreadyExists = "emailAlreadyExists";
-  static const loginFailed = "loginFailed";
-  static const invalidVerificationCode = "invalidVerificationCode";
+  static const emailAlreadyExistsError = "emailAlreadyExistsError";
+  static const phoneNumberAlreadyExistsError = "phoneNumberAlreadyExistsError";
+  static const emailAndPhoneNumberAlreadyExistsError = "emailAndPhoneNumberAlreadyExistsError";
+  static const loginFailedError = "loginFailedError";
+  static const invalidVerificationCodeError = "invalidVerificationCodeError";
 
   static const emptyContent = "emptyContent";
   static const intentError = "intentError";

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -11,7 +12,7 @@ import '../../../app/functions.dart';
 import '../../../data/network/failure.dart';
 import '../../../domain/models/enums.dart';
 import '../../../domain/usecase/authenticate_usecase.dart';
-import '../../../domain/usecase/register_car_driver_usecase.dart';
+import '../../../domain/usecase/register_usecase.dart';
 import '../../../domain/usecase/verify_phone_number_usecase.dart';
 import '../../base/base_cubit.dart';
 import '../../base/base_states.dart';
@@ -23,7 +24,7 @@ class RegisterViewModel extends BaseCubit
     implements RegisterViewModelInput, RegisterViewModelOutput {
   final AuthenticateUseCase _authenticateUseCase;
   final VerifyPhoneNumberUseCase _verifyPhoneNumberUseCase;
-  final RegisterCarDriverUseCase _registerCarDriverUseCase;
+  final RegisterUseCase _registerCarDriverUseCase;
 
   RegisterViewModel(
     this._authenticateUseCase,
@@ -45,15 +46,26 @@ class RegisterViewModel extends BaseCubit
 
   late User user;
 
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _phoneNumberController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final StreamController<String?> _otpStreamController =
+      StreamController<String?>();
+  late final Stream<FirebaseAuthException?> _verificationErrorStream;
+
+  final TextEditingController _firstNameController =
+      TextEditingController();
+  final TextEditingController _lastNameController =
+      TextEditingController();
+  final TextEditingController _phoneNumberController =
+      TextEditingController();
+  final TextEditingController _passwordController =
+      TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
-  final TextEditingController _nationalIdController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _otpController = TextEditingController(text: '      ');
+  final TextEditingController _nationalIdController =
+      TextEditingController();
+  final TextEditingController _emailController =
+      TextEditingController();
+  final TextEditingController _otpController =
+      TextEditingController(text: '      ');
 
   File? _drivingLicense;
   File? _carLicense;
@@ -256,31 +268,35 @@ class RegisterViewModel extends BaseCubit
     }
   }
 
-  void authenticate() {
+  Future<void> authenticate() async {
     emit(LoadingState(displayType: DisplayType.popUpDialog));
     _authenticateUseCase(AuthenticateUseCaseInput(
       email: _emailController.text.trim(),
       password: _passwordController.text.trim(),
+      phoneNumber: _phoneNumberController.text.trim(),
+      registerType: _registerBoxType,
+      otpStream: _otpStreamController.stream,
     )).then((value) {
       value.fold(
         (l) {
           emit(ErrorState(failure: l, displayType: DisplayType.popUpDialog));
         },
         (r) {
-          user = r;
+          _verificationErrorStream = r;
           emit(RegisterVerifyPhoneNumberState());
         },
       );
     });
   }
 
-  void verifyPhoneNumber() {
+  Future<void> verify() async {
     emit(LoadingState(displayType: DisplayType.popUpDialog));
     _verifyPhoneNumberUseCase(
       VerifyPhoneNumberUseCaseInput(
-        phoneNumber: _phoneNumberController.text.trim(),
-        user: user,
+        errorStream: _verificationErrorStream,
+        otpStreamController: _otpStreamController,
         otp: _otpController.text.trim(),
+        registerType: _registerBoxType,
       ),
     ).then((value) {
       value.fold(
@@ -288,54 +304,121 @@ class RegisterViewModel extends BaseCubit
           emit(ErrorState(failure: l, displayType: DisplayType.popUpDialog));
         },
         (r) {
-          if (r) {
-            switch (_registerBoxType) {
-              case RegisterType.passenger:
-              // TODO: Handle this case.
-                break;
-              case RegisterType.car:
-                _registerCarDriver();
-                break;
-              case RegisterType.tuktuk:
-              // TODO: Handle this case.
-                break;
-              case RegisterType.bus:
-              // TODO: Handle this case.
-                break;
-            }
-          }
+          register();
         },
       );
     });
   }
 
-  void _registerCarDriver() {
-    emit(LoadingState(displayType: DisplayType.popUpDialog));
+  Future<void> register() async {
     _registerCarDriverUseCase(
-      RegisterCarDriverUseCaseInput(
+      RegisterUseCaseInput(
         firstName: _firstNameController.text.trim(),
         lastName: _lastNameController.text.trim(),
+        gender: _gender,
         phoneNumber: _phoneNumberController.text.trim(),
         email: _emailController.text.trim(),
-        nationalId: _nationalIdController.text.trim(),
-        drivingLicense: _drivingLicense!,
-        carLicense: _carLicense!,
-        carImage: _carImage!,
+        nationalId: _nationalIdController.text.trim() == ''
+            ? null
+            : _nationalIdController.text.trim(),
+        drivingLicense: _drivingLicense,
+        carLicense: _carLicense,
+        carImage: _carImage,
+        tukTukImage: _tukTukImage,
         password: _passwordController.text.trim(),
+        registerType: _registerBoxType,
       ),
-    ).then(
-      (value) {
-        value.fold(
-          (l) {
-            emit(ErrorState(failure: l, displayType: DisplayType.popUpDialog));
-          },
-          (r) {
-            emit(SuccessState(AppStrings.registerScreenSuccessMessage.tr()));
-          },
-        );
-      },
-    );
+    ).then((value) {
+      value.fold(
+        (l) {
+          emit(ErrorState(failure: l, displayType: DisplayType.popUpDialog));
+        },
+        (r) {
+          emit(SuccessState(AppStrings.registerScreenSuccessMessage));
+        },
+      );
+    });
   }
+
+// Future<void> startVerifyPhoneNumber() async {
+//   print('in verify');
+//   _streamController.add(_otpController.text.trim());
+//   _verifyPhoneNumberUseCase(
+//     VerifyPhoneNumberUseCaseInput(
+//       phoneNumber: _phoneNumberController.text.trim(),
+//       user: user,
+//       otp: _streamController.stream,
+//     ),
+//   ).then((value) {
+//     print('in value');
+//     value.fold(
+//       (l) {
+//         emit(ErrorState(failure: l, displayType: DisplayType.popUpDialog));
+//       },
+//       (r) {
+//         if (r) {
+//           switch (_registerBoxType) {
+//             case RegisterType.passenger:
+//               // TODO: Handle this case.
+//               break;
+//             case RegisterType.car:
+//               _registerCarDriver();
+//               break;
+//             case RegisterType.tuktuk:
+//               // TODO: Handle this case.
+//               break;
+//             case RegisterType.bus:
+//               // TODO: Handle this case.
+//               break;
+//           }
+//         }
+//       },
+//     );
+//   });
+// }
+//
+// Future<void> onVerify() async {
+//   emit(LoadingState());
+//   print('in add');
+//   print(_otpController.text.trim());
+//   _streamController.add(_otpController.text.trim());
+// }
+//
+// bool isVerified(BuildContext context) {
+//   if (user.phoneNumber == null) {
+//     return true;
+//   } else {
+//     return false;
+//   }
+// }
+//
+// void _registerCarDriver() {
+//   emit(LoadingState(displayType: DisplayType.popUpDialog));
+//   _registerCarDriverUseCase(
+//     RegisterCarDriverUseCaseInput(
+//       firstName: _firstNameController.text.trim(),
+//       lastName: _lastNameController.text.trim(),
+//       phoneNumber: _phoneNumberController.text.trim(),
+//       email: _emailController.text.trim(),
+//       nationalId: _nationalIdController.text.trim(),
+//       drivingLicense: _drivingLicense!,
+//       carLicense: _carLicense!,
+//       carImage: _carImage!,
+//       password: _passwordController.text.trim(),
+//     ),
+//   ).then(
+//     (value) {
+//       value.fold(
+//         (l) {
+//           emit(ErrorState(failure: l, displayType: DisplayType.popUpDialog));
+//         },
+//         (r) {
+//           emit(SuccessState(AppStrings.registerScreenSuccessMessage.tr()));
+//         },
+//       );
+//     },
+//   );
+// }
 }
 
 abstract class RegisterViewModelInput {

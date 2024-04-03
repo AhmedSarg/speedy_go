@@ -63,6 +63,7 @@ dependencies:
   uuid:
   animations:
   string_validator:
+  firebase_app_check:
 #  map_location_picker:
 #  flutter_google_places:
 

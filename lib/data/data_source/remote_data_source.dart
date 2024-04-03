@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:speedy_go/domain/models/enums.dart';
 
 abstract class RemoteDataSource {
   Future<void> registerCarDriverToDataBase({
@@ -19,20 +20,27 @@ abstract class RemoteDataSource {
     required DateTime createdAt,
   });
 
-  Future<UserCredential> registerEmailPasswordToAuth({
+  AuthCredential registerEmailPasswordToAuth({
     required String email,
     required String password,
   });
 
-  Future<FirebaseAuthException?> verifyPhoneNumberForRegister({
+  Future<Stream<FirebaseAuthException?>> verifyPhoneNumber({
+    required String email,
+    required String password,
     required String phoneNumber,
-    required User user,
-    required String otp,
+    required Stream<String?> otpStream,
   });
 
-  Future<void> login({
+  // Future<void> login({
+  //   required String email,
+  //   required String password,
+  // });
+
+  Future<RegisteredBeforeError?> doesUserExists({
     required String email,
-    required String password,
+    required String phoneNumber,
+    required RegisterType registerType,
   });
 }
 
@@ -90,58 +98,130 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<UserCredential> registerEmailPasswordToAuth({
+  Future<RegisteredBeforeError?> doesUserExists({
     required String email,
-    required String password,
+    required String phoneNumber,
+    required RegisterType registerType,
   }) async {
-    return await _firebaseAuth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
+    bool phoneNumberUsed = false;
+    bool emailUsed = false;
+    String collection;
+    switch (registerType) {
+      case RegisterType.car:
+        collection = 'car_drivers';
+        break;
+      case RegisterType.passenger:
+        collection = 'passengers';
+        break;
+      case RegisterType.tuktuk:
+        collection = 'tuktuk_drivers';
+        break;
+      case RegisterType.bus:
+        collection = 'bus_drivers';
+        break;
+    }
+    await _firestore
+        .collection(collection)
+        .where('phone_number', isEqualTo: phoneNumber)
+        .get()
+        .then((value) {
+      if (value.docs.isNotEmpty) {
+        phoneNumberUsed = true;
+      }
+    });
+    await _firestore
+        .collection(collection)
+        .where('email', isEqualTo: email)
+        .get()
+        .then((value) {
+      if (value.docs.isNotEmpty) {
+        emailUsed = true;
+      }
+    });
+    if (phoneNumberUsed && emailUsed) {
+      return RegisteredBeforeError.emailAndPhoneNumberUsed;
+    } else if (emailUsed) {
+      return RegisteredBeforeError.emailUsed;
+    } else if (phoneNumberUsed) {
+      return RegisteredBeforeError.phoneNumberUsed;
+    } else {
+      return null;
+    }
   }
 
   @override
-  Future<FirebaseAuthException?> verifyPhoneNumberForRegister({
+  AuthCredential registerEmailPasswordToAuth({
+    required String email,
+    required String password,
+  }) {
+    AuthCredential authCredential =
+        EmailAuthProvider.credential(email: email, password: password);
+    return authCredential;
+  }
+
+  @override
+  Future<Stream<FirebaseAuthException?>> verifyPhoneNumber({
+    required String email,
+    required String password,
     required String phoneNumber,
-    required User user,
-    required String otp,
+    required Stream<String?> otpStream,
   }) async {
-    Completer<FirebaseAuthException?> value =
-        Completer<FirebaseAuthException?>();
+    StreamController<FirebaseAuthException?> errorStreamController =
+        StreamController<FirebaseAuthException?>.broadcast();
     await _firebaseAuth.verifyPhoneNumber(
       phoneNumber: '+20${phoneNumber.substring(1)}',
-      verificationCompleted: (phoneAuthCredential) {
-        user.linkWithCredential(phoneAuthCredential);
-        value.complete(null);
+      verificationCompleted: (phoneAuthCredential) async {
+        UserCredential userCredential =
+            await _firebaseAuth.signInWithCredential(phoneAuthCredential);
+        AuthCredential emailAuthCredential =
+            registerEmailPasswordToAuth(email: email, password: password);
+        await userCredential.user!.linkWithCredential(emailAuthCredential);
+        errorStreamController.add(null);
       },
       verificationFailed: (e) {
-        value.complete(e);
+        errorStreamController.add(e);
       },
-      codeSent: (String verificationId, int? resendToken) async {
-        PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
-          verificationId: verificationId,
-          smsCode: otp,
+      codeSent: (String verificationId, int? resendToken) {
+        otpStream.listen(
+          (otp) async {
+            if (otp != null) {
+              try {
+                PhoneAuthCredential phoneAuthCredential =
+                    PhoneAuthProvider.credential(
+                  verificationId: verificationId,
+                  smsCode: otp,
+                );
+                UserCredential userCredential = await _firebaseAuth
+                    .signInWithCredential(phoneAuthCredential);
+                AuthCredential emailAuthCredential =
+                    registerEmailPasswordToAuth(
+                        email: email, password: password);
+                await userCredential.user!
+                    .linkWithCredential(emailAuthCredential);
+                errorStreamController.add(null);
+              } catch (e) {
+                errorStreamController.add(e as FirebaseAuthException);
+              }
+            } else {
+              errorStreamController.add(
+                  FirebaseAuthException(code: 'invalid-verification-code'));
+            }
+          },
         );
-        try {
-          await user.linkWithCredential(phoneAuthCredential);
-          value.complete(null);
-        } catch (e) {
-          value.complete(e as FirebaseAuthException);
-        }
       },
       codeAutoRetrievalTimeout: (_) {},
     );
-    return value.future;
+    return errorStreamController.stream;
   }
 
-  @override
-  Future<void> login({
-    required String email,
-    required String password,
-  }) async {
-    await _firebaseAuth.signInWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-  }
+// @override
+// Future<void> login({
+//   required String email,
+//   required String password,
+// }) async {
+//   await _firebaseAuth.signInWithEmailAndPassword(
+//     email: email,
+//     password: password,
+//   );
+// }
 }

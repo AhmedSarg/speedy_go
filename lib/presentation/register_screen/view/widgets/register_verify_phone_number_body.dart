@@ -142,7 +142,7 @@ class RegisterVerifyPhoneNumberBody extends StatelessWidget {
                       text: AppStrings.registerScreenVerifyButton.tr(),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          viewModel.verifyPhoneNumber();
+                          viewModel.verify();
                         }
                       },
                     ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:speedy_go/presentation/main_layout/view/main_layout_view.dart';
 
 import '../../app/sl.dart';
 import '../login_screen/view/login_view.dart';
@@ -15,6 +16,7 @@ class Routes {
   static const String loginRoute = "/login";
   static const String selectionRoute = "/selection";
   static const String registerRoute = "/register";
+  static const String mainLayoutRoute = "/mainLayout";
   static const String myCustomWidget = "/MyCustomWidget";
 }
 
@@ -32,8 +34,10 @@ class RouteGenerator {
       case Routes.registerRoute:
         initAuthenticateUseCase();
         initVerifyPhoneNumberUseCase();
-        initRegisterCarDriverUseCase();
+        initRegisterUseCase();
         return MaterialPageRoute(builder: (_) => RegisterScreen());
+      case Routes.mainLayoutRoute:
+        return MaterialPageRoute(builder: (_) => const MainLayoutScreen());
       // case Routes.myCustomWidget:
       //   return MaterialPageRoute(builder: (_) => MyCustomWidget());
       default:
