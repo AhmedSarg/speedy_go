@@ -71,7 +71,7 @@ class AppStrings {
   static const emailAlreadyExistsError = "emailAlreadyExistsError";
   static const phoneNumberAlreadyExistsError = "phoneNumberAlreadyExistsError";
   static const emailAndPhoneNumberAlreadyExistsError = "emailAndPhoneNumberAlreadyExistsError";
-  static const loginFailedError = "loginFailedError";
+  static const emailLoginFailedError = "emailLoginFailedError";
   static const invalidVerificationCodeError = "invalidVerificationCodeError";
 
   static const emptyContent = "emptyContent";

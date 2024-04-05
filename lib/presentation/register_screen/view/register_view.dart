@@ -40,8 +40,11 @@ class RegisterScreen extends StatelessWidget {
               width: AppSize.infinity,
               height: AppSize.infinity,
               child: BlocProvider(
-                create: (context) =>
-                    RegisterViewModel(sl(), sl(), sl())..start(),
+                create: (context) => RegisterViewModel(
+                  sl(),
+                  sl(),
+                  sl(),
+                )..start(),
                 child: BlocConsumer<RegisterViewModel, BaseStates>(
                   listener: (context, state) {
                     RegisterViewModel viewModel =

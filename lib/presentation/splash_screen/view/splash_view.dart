@@ -1,9 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:speedy_go/presentation/resources/routes_manager.dart';
 
 import '../../resources/assets_manager.dart';
+import '../../resources/routes_manager.dart';
 import '../../resources/values_manager.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -15,28 +17,40 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
+  late AnimationController animationController;
   double s = AppSize.s1;
   double y = AppSize.s0;
+  double rot = AppSize.s0;
+  Duration animationDuration = const Duration(seconds: 1);
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
+    animationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 100),
-      animationBehavior: AnimationBehavior.preserve,
+      duration: animationDuration,
     );
-    _animationController.addListener(() {
+    animationController.addListener(() {
       setState(() {
-        s = AppSize.s1 + _animationController.value / 8;
-        y = AppSize.s0 + _animationController.value * AppSize.s30;
+        rot = animationController.value * pi;
       });
     });
     Future.delayed(const Duration(seconds: 1), () {
-      _animationController.forward();
+      animationController.forward();
     });
-    Future.delayed(const Duration(milliseconds: 1100), () {
+    animationDuration = const Duration(milliseconds: 100);
+    Future.delayed(const Duration(seconds: 3), () {
+      animationController.clearListeners();
+      animationController.addListener(() {
+        setState(() {
+          s = AppSize.s1 + animationController.value / 8;
+          y = AppSize.s0 + animationController.value * AppSize.s30;
+        });
+      });
+      animationController.reset();
+      animationController.forward();
+    });
+    Future.delayed(const Duration(milliseconds: 3600), () {
       Navigator.pushReplacementNamed(context, Routes.onBoardingRoute);
     });
   }
@@ -44,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void dispose() {
     super.dispose();
-    _animationController.dispose();
+    animationController.dispose();
   }
 
   @override
@@ -57,11 +71,11 @@ class _SplashScreenState extends State<SplashScreen>
             height: AppSize.infinity,
             fit: BoxFit.cover,
           ).animate().fade(
-            duration: const Duration(milliseconds: 600),
-            delay: const Duration(milliseconds: 500),
-            begin: AppSize.s0,
-            end: AppSize.s0_5,
-          ),
+                duration: const Duration(milliseconds: 500),
+                delay: const Duration(seconds: 3, milliseconds: 100),
+                begin: AppSize.s0,
+                end: AppSize.s0_5,
+              ),
           Center(
             child: Transform.translate(
               offset: Offset(AppSize.s0, y),
@@ -71,8 +85,9 @@ class _SplashScreenState extends State<SplashScreen>
                   dimension: AppSize.s150,
                   child: Hero(
                     tag: 'app-logo',
-                    child: Transform.flip(
-                      flipX: true,
+                    child: Transform(
+                      transform: Matrix4.rotationY(rot),
+                      alignment: Alignment.center,
                       child: SvgPicture.asset(SVGAssets.logo),
                     ),
                   ),

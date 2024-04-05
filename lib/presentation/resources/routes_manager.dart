@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:speedy_go/presentation/common/transitions/transitions.dart';
 import 'package:speedy_go/presentation/main_layout/view/main_layout_view.dart';
 import 'package:speedy_go/presentation/onboarding_screen/view/onboarding_view.dart';
 
@@ -12,8 +13,8 @@ import 'strings_manager.dart';
 
 class Routes {
   Routes._();
-
-  static const String splashRoute = "/";
+  //todo make splash initial route
+  static const String splashRoute = "/splash";
   static const String onBoardingRoute = "/onBoarding";
   static const String loginRoute = "/login";
   static const String selectionRoute = "/selection";
@@ -30,9 +31,10 @@ class RouteGenerator {
       case Routes.splashRoute:
         return MaterialPageRoute(builder: (_) =>  const SplashScreen());
       case Routes.onBoardingRoute:
-        return MaterialPageRoute(builder: (_) =>  const OnBoardingScreen());
+        return goTo(const OnBoardingScreen());
       case Routes.loginRoute:
-        return MaterialPageRoute(builder: (_) => const LoginScreen());
+        initLoginUseCase();
+        return MaterialPageRoute(builder: (_) =>  const LoginScreen());
       case Routes.selectionRoute:
         return MaterialPageRoute(builder: (_) => const SelectionScreen());
 

@@ -33,78 +33,6 @@ class RepositoryImpl implements Repository {
     // this._dateNTP,
   );
 
-  //
-  // @override
-  // Future<Either<Failure, User>> authenticateUser({
-  //   required String email,
-  //   required String password,
-  // }) async {
-  //   try {
-  //     if (await _networkInfo.isConnected) {
-  //       UserCredential userCredential =
-  //           await _remoteDataSource.registerEmailPasswordToAuth(
-  //         email: email,
-  //         password: password,
-  //       );
-  //       return Right(userCredential.user!);
-  //     } else {
-  //       return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
-  //     }
-  //   } on FirebaseAuthException catch (e) {
-  //     if (e.code == 'email-already-in-use') {
-  //       return Left(DataSource.EMAIL_ALREADY_EXISTS.getFailure());
-  //     } else {
-  //       return Left(ErrorHandler.handle(e).failure);
-  //     }
-  //   } catch (e) {
-  //     return Left(ErrorHandler.handle(e).failure);
-  //   }
-  // }
-
-  // @override
-  // Future<Either<Failure, bool>> startVerifyPhoneNumber({
-  //   required String phoneNumber,
-  //   required User user,
-  //   required Stream<String> otp,
-  // }) async {
-  //   try {
-  //     if (await _networkInfo.isConnected) {
-  //       print('in vm');
-  //       FirebaseAuthException? value =
-  //           await _remoteDataSource.verifyPhoneNumber(
-  //         phoneNumber: phoneNumber,
-  //         user: user,
-  //         otpStream: otp,
-  //       );
-  //       print(4);
-  //       print(value);
-  //       if (value != null) {
-  //         print(5);
-  //         throw value;
-  //       } else {
-  //         print(6);
-  //         return const Right(true);
-  //       }
-  //     } else {
-  //       user.delete();
-  //       return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
-  //     }
-  //   } on FirebaseAuthException catch (e) {
-  //     print(9);
-  //     if (e.code == 'invalid-verification-code') {
-  //       print(10);
-  //       return Left(DataSource.INVALID_VERIFICATION_CODE.getFailure());
-  //     } else {
-  //       print(11);
-  //       user.delete();
-  //       return Left(ErrorHandler.handle(e).failure);
-  //     }
-  //   } catch (e) {
-  //     user.delete();
-  //     return Left(ErrorHandler.handle(e).failure);
-  //   }
-  // }
-
   @override
   Future<Either<Failure, Stream<FirebaseAuthException?>>> authenticate({
     required String email,
@@ -136,8 +64,8 @@ class RepositoryImpl implements Repository {
             case RegisteredBeforeError.phoneNumberUsed:
               return Left(DataSource.PHONE_NUMBER_ALREADY_EXISTS.getFailure());
             case RegisteredBeforeError.emailAndPhoneNumberUsed:
-              return Left(
-                  DataSource.EMAIL_AND_PHONE_NUMBER_ALREADY_EXISTS.getFailure());
+              return Left(DataSource.EMAIL_AND_PHONE_NUMBER_ALREADY_EXISTS
+                  .getFailure());
           }
         }
       } else {
@@ -222,11 +150,65 @@ class RepositoryImpl implements Repository {
             carImage: carImage!,
             createdAt: DateTime.now(),
           );
+        } else if (registerType == RegisterType.tuktuk) {
+          await _remoteDataSource.registerTukTukDriverToDataBase(
+            uuid: uuid,
+            firstName: firstName,
+            lastName: lastName,
+            phoneNumber: phoneNumber,
+            email: email,
+            nationalId: nationalId!,
+            tukTukImage: tukTukImage!,
+            createdAt: DateTime.now(),
+          );
+        } else {
+          await _remoteDataSource.registerPassengerToDataBase(
+            uuid: uuid,
+            firstName: firstName,
+            lastName: lastName,
+            phoneNumber: phoneNumber,
+            email: email,
+            gender: gender! == Gender.female ? 'female' : 'male',
+            createdAt: DateTime.now(),
+          );
         }
         void ret;
         return Right(ret);
       } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+      }
+    } catch (e) {
+      return Left(ErrorHandler.handle(e).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, Stream<FirebaseAuthException?>?>> login({
+    required String email,
+    required String password,
+    required String phoneNumber,
+    required LoginType loginType,
+    required Stream<String?>? otpStream,
+  }) async {
+    try {
+      if (await _networkInfo.isConnected) {
+        if (loginType == LoginType.phoneNumber) {
+          await _remoteDataSource.loginWithPhoneNumber(
+              phoneNumber: phoneNumber);
+          return const Right(null);
+        } else {
+          await _remoteDataSource.loginWithEmailPassword(
+              email: email, password: password);
+          return const Right(null);
+        }
+      } else {
+        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'invalid-credential') {
+        return Left(DataSource.EMAIL_LOGIN_FAILED.getFailure());
+      } else {
+        return Left(ErrorHandler.handle(e).failure);
       }
     } catch (e) {
       return Left(ErrorHandler.handle(e).failure);

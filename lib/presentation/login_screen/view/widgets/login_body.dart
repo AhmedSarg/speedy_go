@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:speedy_go/app/extensions.dart';
 
@@ -45,7 +46,14 @@ class LoginBody extends StatelessWidget {
             ),
             LoginBox(
               viewModel: viewModel,
-            ),
+            )
+                .animate()
+                .fadeIn(duration: const Duration(milliseconds: 200))
+                .moveY(
+                  begin: AppSize.s100,
+                  end: AppSize.s0,
+                  duration: const Duration(milliseconds: 200),
+                ),
           ],
         ),
       ),
@@ -71,7 +79,9 @@ class LoginBox extends StatelessWidget {
       ),
       padding: const EdgeInsets.all(AppPadding.p20),
       width: AppSize.infinity,
-      height: viewModel.getLoginType == LoginType.phoneNumber ? AppSize.s300 : AppSize.s360,
+      height: viewModel.getLoginType == LoginType.phoneNumber
+          ? AppSize.s300
+          : AppSize.s360,
       decoration: BoxDecoration(
         color: ColorManager.primary,
         borderRadius: BorderRadius.circular(AppSize.s25),
@@ -110,12 +120,10 @@ class LoginBox extends StatelessWidget {
                   SizedBox(
                     height: AppSize.s20,
                     child: TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, Routes.selectionRoute);
-                      },
+                      onPressed: () {},
                       style: TextButton.styleFrom(
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: AppPadding.p4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: AppPadding.p4),
                         splashFactory: InkRipple.splashFactory,
                         foregroundColor: ColorManager.white.withOpacity(.1),
                       ),
@@ -136,13 +144,16 @@ class LoginBox extends StatelessWidget {
   }
 
   List<Widget> phoneNumberLoginWidgets() {
+    FocusNode phoneNumberFocusNode = FocusNode();
     return [
       Expanded(
         child: Row(
           children: [
-            const CountryCodeInput(),
+            CountryCodeInput(viewModel: viewModel),
             const SizedBox(width: AppSize.s10),
             LoginTextField(
+              controller: viewModel.getPhoneNumberController,
+              focusNode: phoneNumberFocusNode,
               keyboard: TextInputType.number,
               hintText: AppStrings.loginScreenPhoneNumberHint.tr(),
             ),
@@ -161,13 +172,20 @@ class LoginBox extends StatelessWidget {
   }
 
   List<Widget> emailPasswordLoginWidgets() {
+    FocusNode emailFocusNode = FocusNode();
+    FocusNode passwordFocusNode = FocusNode();
     return [
       LoginTextField(
+        controller: viewModel.getEmailController,
+        focusNode: emailFocusNode,
+        nextFocusNode: passwordFocusNode,
         keyboard: TextInputType.emailAddress,
         hintText: AppStrings.loginScreenEmailHint.tr(),
       ),
       const SizedBox(height: AppSize.s20),
       LoginTextField(
+        controller: viewModel.getPasswordController,
+        focusNode: passwordFocusNode,
         keyboard: TextInputType.text,
         hintText: AppStrings.loginScreenPasswordHint.tr(),
         canObscure: true,
@@ -177,7 +195,9 @@ class LoginBox extends StatelessWidget {
         height: AppSize.s40,
         child: AppButton(
           text: AppStrings.loginScreenLogin.tr(),
-          onPressed: () {},
+          onPressed: () {
+            viewModel.loginWithEmailAndPassword();
+          },
         ),
       ),
     ];
@@ -207,7 +227,9 @@ class LoginTypeSelector extends StatelessWidget {
         children: [
           AnimatedPositioned(
             duration: const Duration(milliseconds: 400),
-            left: viewModel.getLoginType == LoginType.emailPassword ? 0 : itemWidth,
+            left: viewModel.getLoginType == LoginType.emailPassword
+                ? 0
+                : itemWidth,
             child: Container(
               width: itemWidth,
               height: AppSize.s40,
@@ -282,7 +304,12 @@ class LoginTypeItem extends StatelessWidget {
 }
 
 class CountryCodeInput extends StatefulWidget {
-  const CountryCodeInput({super.key});
+  const CountryCodeInput({
+    super.key,
+    required this.viewModel,
+  });
+
+  final LoginViewModel viewModel;
 
   @override
   State<CountryCodeInput> createState() => _CountryCodeInputState();
@@ -290,6 +317,7 @@ class CountryCodeInput extends StatefulWidget {
 
 class _CountryCodeInputState extends State<CountryCodeInput> {
   final List<String> countryCodes = [
+    '---',
     '+20',
     '+966',
   ];
@@ -307,7 +335,7 @@ class _CountryCodeInputState extends State<CountryCodeInput> {
       ),
       child: Center(
         child: DropdownButton(
-          value: selectedValue,
+          value: widget.viewModel.getCountryCode,
           items: countryCodes
               .map(
                 (e) => DropdownMenuItem(
@@ -318,7 +346,7 @@ class _CountryCodeInputState extends State<CountryCodeInput> {
               .toList(),
           onChanged: (value) {
             setState(() {
-              selectedValue = value!;
+              widget.viewModel.setCountryCode(value!);
             });
           },
           padding: const EdgeInsets.all(AppPadding.p4),
@@ -336,11 +364,17 @@ class _CountryCodeInputState extends State<CountryCodeInput> {
 class LoginTextField extends StatefulWidget {
   const LoginTextField({
     super.key,
+    required this.controller,
+    required this.focusNode,
+    this.nextFocusNode,
     required this.keyboard,
     required this.hintText,
     this.canObscure = false,
   });
 
+  final TextEditingController controller;
+  final FocusNode focusNode;
+  final FocusNode? nextFocusNode;
   final TextInputType keyboard;
   final String hintText;
   final bool canObscure;
@@ -356,12 +390,23 @@ class _LoginTextFieldState extends State<LoginTextField> {
   Widget build(BuildContext context) {
     return Expanded(
       child: TextFormField(
+        controller: widget.controller,
+        focusNode: widget.focusNode,
         cursorColor: ColorManager.secondary,
         cursorRadius: const Radius.circular(AppSize.s1),
         style: AppTextStyles.loginScreenTextFieldValueTextStyle(context),
         cursorWidth: AppSize.s1,
         obscureText: hidden,
         keyboardType: widget.keyboard,
+        textInputAction: widget.nextFocusNode == null
+            ? TextInputAction.done
+            : TextInputAction.next,
+        onEditingComplete: () {
+          widget.focusNode.unfocus();
+          if (widget.nextFocusNode != null) {
+            widget.nextFocusNode!.requestFocus();
+          }
+        },
         decoration: InputDecoration(
           hintStyle: AppTextStyles.loginScreenTextFieldHintTextStyle(context),
           hintText: widget.hintText,

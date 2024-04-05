@@ -23,6 +23,7 @@ import '../data/network/network_info.dart';
 import '../data/repository/repository_impl.dart';
 import '../domain/repository/repository.dart';
 import '../domain/usecase/authenticate_usecase.dart';
+import '../domain/usecase/login_usecase.dart';
 import '../domain/usecase/verify_phone_number_usecase.dart';
 import 'date_ntp.dart';
 
@@ -79,5 +80,12 @@ void initRegisterUseCase() {
   if (GetIt.instance.isRegistered<RegisterUseCase>() == false) {
     sl.registerFactory<RegisterUseCase>(
             () => RegisterUseCase(sl()));
+  }
+}
+
+void initLoginUseCase() {
+  if (GetIt.instance.isRegistered<LoginUseCase>() == false) {
+    sl.registerFactory<LoginUseCase>(
+            () => LoginUseCase(sl()));
   }
 }

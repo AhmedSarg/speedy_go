@@ -36,7 +36,7 @@ class RegisterViewModel extends BaseCubit
 
   late Selection _oldRegisterType = Selection.driver;
 
-  late RegisterType _registerBoxType;
+  late RegisterType _registerBoxType = RegisterType.passenger;
 
   late List<Widget> _boxContent;
 
@@ -304,13 +304,13 @@ class RegisterViewModel extends BaseCubit
           emit(ErrorState(failure: l, displayType: DisplayType.popUpDialog));
         },
         (r) {
-          register();
+          _register();
         },
       );
     });
   }
 
-  Future<void> register() async {
+  Future<void> _register() async {
     _registerCarDriverUseCase(
       RegisterUseCaseInput(
         firstName: _firstNameController.text.trim(),
