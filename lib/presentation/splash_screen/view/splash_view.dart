@@ -1,74 +1,87 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:speedy_go/presentation/resources/values_manager.dart';
+import 'package:speedy_go/presentation/resources/routes_manager.dart';
 
 import '../../resources/assets_manager.dart';
+import '../../resources/values_manager.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _animation;
+  late AnimationController _animationController;
+  double s = AppSize.s1;
+  double y = AppSize.s0;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
+    _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 3),
+      duration: const Duration(milliseconds: 100),
+      animationBehavior: AnimationBehavior.preserve,
     );
+    _animationController.addListener(() {
+      setState(() {
+        s = AppSize.s1 + _animationController.value / 8;
+        y = AppSize.s0 + _animationController.value * AppSize.s30;
+      });
+    });
+    Future.delayed(const Duration(seconds: 1), () {
+      _animationController.forward();
+    });
+    Future.delayed(const Duration(milliseconds: 1100), () {
+      Navigator.pushReplacementNamed(context, Routes.onBoardingRoute);
+    });
+  }
 
-    _animation = Tween<double>(
-      begin: 0,
-      end: 1,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    ));
-
-    _controller.repeat();
+  @override
+  void dispose() {
+    super.dispose();
+    _animationController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: AnimatedBuilder(
-          animation: _animation,
-          builder: (context, child) {
-            return Transform(
-              alignment: Alignment.center,
-              transform: Matrix4.rotationY(_animation.value * 3.14),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  SvgPicture.asset(
-                    SVGAssets.logo,
-                    height: AppSize.s150, // Specify image height
+      body: Stack(
+        children: [
+          Image.asset(
+            ImageAssets.loginBackgroundImage,
+            height: AppSize.infinity,
+            fit: BoxFit.cover,
+          ).animate().fade(
+            duration: const Duration(milliseconds: 600),
+            delay: const Duration(milliseconds: 500),
+            begin: AppSize.s0,
+            end: AppSize.s0_5,
+          ),
+          Center(
+            child: Transform.translate(
+              offset: Offset(AppSize.s0, y),
+              child: Transform.scale(
+                scaleX: s,
+                child: SizedBox.square(
+                  dimension: AppSize.s150,
+                  child: Hero(
+                    tag: 'app-logo',
+                    child: Transform.flip(
+                      flipX: true,
+                      child: SvgPicture.asset(SVGAssets.logo),
+                    ),
                   ),
-
-
-                ],
+                ),
               ),
-            );
-          },
-        ),
+            ),
+          ),
+        ],
       ),
     );
   }
-
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
 }
-
