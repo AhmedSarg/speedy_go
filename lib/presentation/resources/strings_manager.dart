@@ -4,6 +4,10 @@ class AppStrings {
   static const splashScreenPassengerTitle = "splashScreenPassengerTitle";
   static const splashScreenSubTitle = "splashScreenSubTitle";
 
+  ///OnBoarding Screen
+  static const onBoardingScreenTitle = "onBoardingScreenTitle";
+  static const onBoardingScreenButton = "onBoardingScreenButton";
+
   ///Selection Screen
   static const selectionScreenDriverTile = "selectionScreenDriverTile";
   static const selectionScreenPassengerTile = "selectionScreenPassengerTile";

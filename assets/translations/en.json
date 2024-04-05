@@ -37,6 +37,9 @@
   "validationsEnterTheSamePassword": "please enter the same password",
   "validationsUsername": "use letters and numbers only",
 
+  "onBoardingScreenTitle": "Welcome",
+  "onBoardingScreenButton": "Get Started",
+
   "splashScreenDriverTitle": "Driver",
   "splashScreenPassengerTitle": "passenger",
   "splashScreenSubTitle": "mode",

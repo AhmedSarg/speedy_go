@@ -54,6 +54,22 @@ class AppTextStyles {
         fontSize: FontSize.f28,
       );
 
+  ///OnBoarding Screen
+
+  static TextStyle onBoardingScreenTitleTextStyle(BuildContext context) =>
+      getBoldStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f24,
+      );
+
+  static TextStyle onBoardingScreenButtonTextStyle(BuildContext context) =>
+      getBoldStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f14,
+      );
+
   ///Selection Old Screen
 
   static TextStyle selectionScreenTileTextStyle(BuildContext context) =>
