@@ -21,11 +21,11 @@ class LoginScreen extends StatelessWidget {
         child: BlocConsumer<LoginViewModel, BaseStates>(
           listener: (context, state) {
             if (state is SuccessState) {
-              // Navigator.pushNamedAndRemoveUntil(
-              //   context,
-              //   Routes.mainLayoutRoute,
-              //   ModalRoute.withName('/'),
-              // );
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                Routes.mainLayoutRoute,
+                ModalRoute.withName('/'),
+              );
             } else if (state is ErrorState) {
               Navigator.pop(context);
             }

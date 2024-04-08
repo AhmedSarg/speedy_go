@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:speedy_go/app/extensions.dart';
+import 'package:speedy_go/presentation/common/validators/validators.dart';
+import 'package:speedy_go/presentation/common/widget/options_menu.dart';
 
 import '../../../../domain/models/enums.dart';
 import '../../../common/widget/main_button.dart';
@@ -41,11 +43,21 @@ class LoginBody extends StatelessWidget {
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: AppPadding.p100),
-                child: SvgPicture.asset(SVGAssets.logo),
+                child: SizedBox.square(
+                  dimension: AppSize.s150,
+                  child: Hero(
+                    tag: 'app-logo',
+                    child: Transform.flip(
+                      flipX: false,
+                      child: SvgPicture.asset(SVGAssets.logo),
+                    ),
+                  ),
+                ),
               ),
             ),
             LoginBox(
               viewModel: viewModel,
+              formKey: GlobalKey<FormState>(),
             )
                 .animate()
                 .fadeIn(duration: const Duration(milliseconds: 200))
@@ -65,9 +77,11 @@ class LoginBox extends StatelessWidget {
   const LoginBox({
     super.key,
     required this.viewModel,
+    required this.formKey,
   });
 
   final LoginViewModel viewModel;
+  final GlobalKey<FormState> formKey;
 
   @override
   Widget build(BuildContext context) {
@@ -86,61 +100,65 @@ class LoginBox extends StatelessWidget {
         color: ColorManager.primary,
         borderRadius: BorderRadius.circular(AppSize.s25),
       ),
-      child: Column(
-        children: [
-          SizedBox(
-            height: AppSize.s40,
-            child: Center(
-              child: Text(
-                AppStrings.loginScreenTitle.tr(),
-                style: AppTextStyles.loginScreenTitleTextStyle(context),
+      child: Form(
+        key: formKey,
+        child: Column(
+          children: [
+            SizedBox(
+              height: AppSize.s40,
+              child: Center(
+                child: Text(
+                  AppStrings.loginScreenTitle.tr(),
+                  style: AppTextStyles.loginScreenTitleTextStyle(context),
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: AppSize.s20),
-          LoginTypeSelector(viewModel: viewModel),
-          const SizedBox(height: AppSize.s20),
-          if (viewModel.getLoginType == LoginType.phoneNumber)
-            ...phoneNumberLoginWidgets()
-          else
-            ...emailPasswordLoginWidgets(),
-          const SizedBox(height: AppSize.s20),
-          SizedBox(
-            height: AppSize.s20,
-            child: FittedBox(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    AppStrings.loginScreenDontHaveAccount.tr(),
-                    style: AppTextStyles.loginScreenDontHaveAccountTextStyle(
-                        context),
-                  ),
-                  const SizedBox(width: AppSize.s5),
-                  SizedBox(
-                    height: AppSize.s20,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, Routes.selectionRoute);
-                      },
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: AppPadding.p4),
-                        splashFactory: InkRipple.splashFactory,
-                        foregroundColor: ColorManager.white.withOpacity(.1),
-                      ),
-                      child: Text(
-                        AppStrings.loginScreenCreateAccount.tr(),
-                        style: AppTextStyles.loginScreenCreateAccountTextStyle(
-                            context),
-                      ),
+            const SizedBox(height: AppSize.s20),
+            LoginTypeSelector(viewModel: viewModel),
+            const SizedBox(height: AppSize.s20),
+            if (viewModel.getLoginType == LoginType.phoneNumber)
+              ...phoneNumberLoginWidgets()
+            else
+              ...emailPasswordLoginWidgets(),
+            const SizedBox(height: AppSize.s20),
+            SizedBox(
+              height: AppSize.s20,
+              child: FittedBox(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      AppStrings.loginScreenDontHaveAccount.tr(),
+                      style: AppTextStyles.loginScreenDontHaveAccountTextStyle(
+                          context),
                     ),
-                  )
-                ],
+                    const SizedBox(width: AppSize.s5),
+                    SizedBox(
+                      height: AppSize.s20,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, Routes.selectionRoute);
+                        },
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: AppPadding.p4),
+                          splashFactory: InkRipple.splashFactory,
+                          foregroundColor: ColorManager.white.withOpacity(.1),
+                        ),
+                        child: Text(
+                          AppStrings.loginScreenCreateAccount.tr(),
+                          style:
+                              AppTextStyles.loginScreenCreateAccountTextStyle(
+                                  context),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -158,6 +176,7 @@ class LoginBox extends StatelessWidget {
               focusNode: phoneNumberFocusNode,
               keyboard: TextInputType.number,
               hintText: AppStrings.loginScreenPhoneNumberHint.tr(),
+              validator: AppValidators.validateLoginPhoneNumber,
             ),
           ],
         ),
@@ -168,7 +187,9 @@ class LoginBox extends StatelessWidget {
         child: AppButton(
           text: AppStrings.loginScreenSendCode.tr(),
           onPressed: () {
-            viewModel.loginWithPhoneNumber();
+            if (formKey.currentState!.validate()) {
+              viewModel.loginWithPhoneNumber();
+            }
           },
         ),
       ),
@@ -185,6 +206,7 @@ class LoginBox extends StatelessWidget {
         nextFocusNode: passwordFocusNode,
         keyboard: TextInputType.emailAddress,
         hintText: AppStrings.loginScreenEmailHint.tr(),
+        validator: AppValidators.validateLoginEmail,
       ),
       const SizedBox(height: AppSize.s20),
       LoginTextField(
@@ -193,6 +215,7 @@ class LoginBox extends StatelessWidget {
         keyboard: TextInputType.text,
         hintText: AppStrings.loginScreenPasswordHint.tr(),
         canObscure: true,
+        validator: AppValidators.validateLoginPassword,
       ),
       const SizedBox(height: AppSize.s20),
       SizedBox(
@@ -200,7 +223,9 @@ class LoginBox extends StatelessWidget {
         child: AppButton(
           text: AppStrings.loginScreenLogin.tr(),
           onPressed: () {
-            viewModel.loginWithEmailAndPassword();
+            if (formKey.currentState!.validate()) {
+              viewModel.loginWithEmailAndPassword();
+            }
           },
         ),
       ),
@@ -282,13 +307,9 @@ class LoginTypeItem extends StatelessWidget {
       onTap: () {
         viewModel.setLoginType(type);
       },
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
+      child: Container(
         width: itemWidth,
         decoration: BoxDecoration(
-          // color: type == viewModel.getLoginType
-          //     ? ColorManager.white
-          //     : ColorManager.lightGrey,
           borderRadius: BorderRadius.circular(AppSize.s10),
         ),
         child: Center(
@@ -338,27 +359,18 @@ class _CountryCodeInputState extends State<CountryCodeInput> {
         border: Border.all(color: ColorManager.white, width: AppSize.s0_5),
       ),
       child: Center(
-        child: DropdownButton(
-          value: widget.viewModel.getCountryCode,
+        child: OptionMenu(
           items: countryCodes
               .map(
-                (e) => DropdownMenuItem(
-                  value: e,
-                  child: Text(e),
+                (e) => OptionMenuItem(
+                  text: e,
+                  onPressed: () {
+                    widget.viewModel.setCountryCode(e);
+                  },
                 ),
               )
               .toList(),
-          onChanged: (value) {
-            setState(() {
-              widget.viewModel.setCountryCode(value!);
-            });
-          },
-          padding: const EdgeInsets.all(AppPadding.p4),
-          dropdownColor: ColorManager.primary,
-          iconEnabledColor: ColorManager.white,
-          isExpanded: false,
-          style: AppTextStyles.loginScreenCountryCodeValueTextStyle(context),
-          underline: const SizedBox(height: AppSize.s0),
+          mainIcon: Icons.arrow_drop_down_outlined,
         ),
       ),
     );
@@ -374,6 +386,7 @@ class LoginTextField extends StatefulWidget {
     required this.keyboard,
     required this.hintText,
     this.canObscure = false,
+    required this.validator,
   });
 
   final TextEditingController controller;
@@ -382,6 +395,7 @@ class LoginTextField extends StatefulWidget {
   final TextInputType keyboard;
   final String hintText;
   final bool canObscure;
+  final String? Function(String? v) validator;
 
   @override
   State<LoginTextField> createState() => _LoginTextFieldState();
@@ -411,6 +425,7 @@ class _LoginTextFieldState extends State<LoginTextField> {
             widget.nextFocusNode!.requestFocus();
           }
         },
+        validator: widget.validator,
         decoration: InputDecoration(
           hintStyle: AppTextStyles.loginScreenTextFieldHintTextStyle(context),
           hintText: widget.hintText,

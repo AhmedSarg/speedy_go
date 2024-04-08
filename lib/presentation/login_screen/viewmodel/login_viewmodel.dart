@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:speedy_go/presentation/common/data_intent/data_intent.dart';
-import 'package:speedy_go/presentation/login_screen/states/login_states.dart';
-import 'package:speedy_go/presentation/resources/strings_manager.dart';
 
 import '../../../domain/models/enums.dart';
 import '../../../domain/usecase/login_usecase.dart';
 import '../../base/base_cubit.dart';
 import '../../base/base_states.dart';
+import '../../common/data_intent/data_intent.dart';
+import '../../resources/strings_manager.dart';
+import '../states/login_states.dart';
 
 class LoginViewModel extends BaseCubit
     implements LoginViewModelInput, LoginViewModelOutput {

@@ -40,6 +40,15 @@ class AppTextStyles {
         fontSize: FontSize.f12,
       );
 
+  static TextStyle optionsMenuOptionTextStyle(BuildContext context) =>
+      getMediumStyle(
+        fontFamily: AppLanguages.getSecondaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f14,
+      );
+
+  ///Splash Screen
+
   static TextStyle splashScreenTitleTextStyle(BuildContext context) =>
       getRegularStyle(
         fontFamily: AppLanguages.getPrimaryFont(context),
