@@ -57,6 +57,7 @@
   "loginScreenEmailHint": "Enter Email",
   "loginScreenPasswordHint": "Enter Password",
   "loginScreenLogin": "Login",
+  "loginScreenSuccess": "Login Successfully",
 
   "registerScreenTitle": "Sign up",
   "registerScreenSignUp": "Sign up",
@@ -78,8 +79,10 @@
   "registerScreenCarLicenseHint": "Car License",
   "registerScreenCarImageHint": "Car Image",
   "registerScreenTukTukImageHint": "Tuk-Tuk Image",
-  "registerScreenVerifyTitle": "Verify Phone Number",
-  "registerScreenVerifyDescription": "We've sent you sms with a validation code to your phone number\nenter the validation code",
-  "registerScreenVerifyButton": "Verify",
-  "registerScreenSuccessMessage": "Registered Successfully"
+
+  "verificationScreenTitle": "Verify Phone Number",
+  "verificationScreenDescription": "We've sent you sms with a validation code to your phone number\nenter the validation code",
+  "verificationScreenButton": "Verify",
+  "verificationScreenLoginSuccessMessage": "Account Verified Successfully",
+  "verificationScreenRegisterSuccessMessage": "Registered Successfully"
 }

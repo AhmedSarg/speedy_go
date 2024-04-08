@@ -2,18 +2,16 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:speedy_go/data/network/error_handler.dart';
 
 import '../../../app/functions.dart';
+import '../../../data/network/error_handler.dart';
 import '../../../data/network/failure.dart';
 import '../../../domain/models/enums.dart';
 import '../../../domain/usecase/authenticate_usecase.dart';
 import '../../../domain/usecase/register_usecase.dart';
-import '../../../domain/usecase/verify_phone_number_usecase.dart';
 import '../../base/base_cubit.dart';
 import '../../base/base_states.dart';
 import '../../common/data_intent/data_intent.dart';
@@ -23,12 +21,10 @@ import '../view/states/register_states.dart';
 class RegisterViewModel extends BaseCubit
     implements RegisterViewModelInput, RegisterViewModelOutput {
   final AuthenticateUseCase _authenticateUseCase;
-  final VerifyPhoneNumberUseCase _verifyPhoneNumberUseCase;
   final RegisterUseCase _registerCarDriverUseCase;
 
   RegisterViewModel(
     this._authenticateUseCase,
-    this._verifyPhoneNumberUseCase,
     this._registerCarDriverUseCase,
   );
 
@@ -44,26 +40,14 @@ class RegisterViewModel extends BaseCubit
 
   static RegisterViewModel get(context) => BlocProvider.of(context);
 
-  late User user;
-
-  final StreamController<String?> _otpStreamController =
-      StreamController<String?>();
-  late final Stream<FirebaseAuthException?> _verificationErrorStream;
-
-  final TextEditingController _firstNameController =
-      TextEditingController();
-  final TextEditingController _lastNameController =
-      TextEditingController();
-  final TextEditingController _phoneNumberController =
-      TextEditingController();
-  final TextEditingController _passwordController =
-      TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
-  final TextEditingController _nationalIdController =
-      TextEditingController();
-  final TextEditingController _emailController =
-      TextEditingController();
+  final TextEditingController _nationalIdController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _otpController =
       TextEditingController(text: '      ');
 
@@ -270,48 +254,29 @@ class RegisterViewModel extends BaseCubit
 
   Future<void> authenticate() async {
     emit(LoadingState(displayType: DisplayType.popUpDialog));
-    _authenticateUseCase(AuthenticateUseCaseInput(
+    await _authenticateUseCase(AuthenticateUseCaseInput(
       email: _emailController.text.trim(),
-      password: _passwordController.text.trim(),
       phoneNumber: _phoneNumberController.text.trim(),
-      registerType: _registerBoxType,
-      otpStream: _otpStreamController.stream,
     )).then((value) {
       value.fold(
         (l) {
           emit(ErrorState(failure: l, displayType: DisplayType.popUpDialog));
         },
         (r) {
-          _verificationErrorStream = r;
+          DataIntent.pushPhoneNumber(_phoneNumberController.text.trim());
+          DataIntent.pushEmail(_emailController.text.trim());
+          DataIntent.pushPassword(_passwordController.text.trim());
+          DataIntent.setAuthType(AuthType.register);
+          DataIntent.setOnVerified(_register);
           emit(RegisterVerifyPhoneNumberState());
         },
       );
     });
   }
 
-  Future<void> verify() async {
-    emit(LoadingState(displayType: DisplayType.popUpDialog));
-    _verifyPhoneNumberUseCase(
-      VerifyPhoneNumberUseCaseInput(
-        errorStream: _verificationErrorStream,
-        otpStreamController: _otpStreamController,
-        otp: _otpController.text.trim(),
-        registerType: _registerBoxType,
-      ),
-    ).then((value) {
-      value.fold(
-        (l) {
-          emit(ErrorState(failure: l, displayType: DisplayType.popUpDialog));
-        },
-        (r) {
-          _register();
-        },
-      );
-    });
-  }
-
-  Future<void> _register() async {
-    _registerCarDriverUseCase(
+  Future<BaseStates> _register() async {
+    BaseStates resultState = SuccessState('message');
+    await _registerCarDriverUseCase(
       RegisterUseCaseInput(
         firstName: _firstNameController.text.trim(),
         lastName: _lastNameController.text.trim(),
@@ -328,16 +293,20 @@ class RegisterViewModel extends BaseCubit
         password: _passwordController.text.trim(),
         registerType: _registerBoxType,
       ),
-    ).then((value) {
-      value.fold(
-        (l) {
-          emit(ErrorState(failure: l, displayType: DisplayType.popUpDialog));
-        },
-        (r) {
-          emit(SuccessState(AppStrings.registerScreenSuccessMessage));
-        },
-      );
-    });
+    ).then(
+      (value) {
+        value.fold(
+          (l) {
+            resultState = ErrorState(failure: l, displayType: DisplayType.popUpDialog);
+          },
+          (r) {
+            resultState = SuccessState(
+                AppStrings.verificationScreenRegisterSuccessMessage);
+          },
+        );
+      },
+    );
+    return resultState;
   }
 
 // Future<void> startVerifyPhoneNumber() async {

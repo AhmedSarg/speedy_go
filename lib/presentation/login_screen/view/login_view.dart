@@ -6,6 +6,7 @@ import '../../base/base_states.dart';
 import '../../base/cubit_builder.dart';
 import '../../base/cubit_listener.dart';
 import '../../resources/routes_manager.dart';
+import '../states/login_states.dart';
 import '../viewmodel/login_viewmodel.dart';
 import 'widgets/login_body.dart';
 
@@ -27,6 +28,10 @@ class LoginScreen extends StatelessWidget {
               // );
             } else if (state is ErrorState) {
               Navigator.pop(context);
+            }
+            else if (state is LoginVerifyPhoneNumberState) {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, Routes.verificationRoute);
             }
             baseListener(context, state);
           },

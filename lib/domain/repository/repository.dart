@@ -9,19 +9,31 @@ import '../models/enums.dart';
 
 abstract class Repository {
 
-  Future<Either<Failure, Stream<FirebaseAuthException?>>> authenticate({
+  // Future<Either<Failure, Stream<FirebaseAuthException?>>> authenticate({
+  //   required String email,
+  //   required String password,
+  //   required String phoneNumber,
+  //   required RegisterType registerType,
+  //   required Stream<String?> otpStream,
+  // });
+
+  Future<Either<Failure, void>> doesUserExists({
     required String email,
-    required String password,
     required String phoneNumber,
-    required RegisterType registerType,
-    required Stream<String?> otpStream,
   });
 
-  Future<Either<Failure, void>> verify({
+  Future<Either<Failure, Stream<FirebaseAuthException?>>> startVerify({
+    String? email,
+    String? password,
+    required String phoneNumber,
+    required StreamController<String?> otpStreamController,
+    required AuthType authType,
+  });
+
+  Future<Either<Failure, void>> verifyOtp({
     required Stream<FirebaseAuthException?> errorStream,
     required StreamController<String?> otpStreamController,
     required String otp,
-    required RegisterType registerType,
   });
 
   Future<Either<Failure, void>> register({
@@ -39,11 +51,8 @@ abstract class Repository {
     required RegisterType registerType,
   });
 
-  Future<Either<Failure, Stream<FirebaseAuthException?>?>> login({
+  Future<Either<Failure, void>> login({
     required String email,
     required String password,
-    required String phoneNumber,
-    required LoginType loginType,
-    required Stream<String?>? otpStream,
   });
 }

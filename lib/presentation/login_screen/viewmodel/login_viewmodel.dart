@@ -1,8 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:speedy_go/domain/usecase/login_usecase.dart';
+import 'package:speedy_go/presentation/common/data_intent/data_intent.dart';
+import 'package:speedy_go/presentation/login_screen/states/login_states.dart';
+import 'package:speedy_go/presentation/resources/strings_manager.dart';
 
 import '../../../domain/models/enums.dart';
+import '../../../domain/usecase/login_usecase.dart';
 import '../../base/base_cubit.dart';
 import '../../base/base_states.dart';
 
@@ -35,13 +40,10 @@ class LoginViewModel extends BaseCubit
 
   Future<void> loginWithEmailAndPassword() async {
     emit(LoadingState(displayType: DisplayType.popUpDialog));
-    _loginUseCase(
+    await _loginUseCase(
       LoginUseCaseInput(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
-        phoneNumber: _phoneNumberController.text.trim(),
-        loginType: LoginType.emailPassword,
-        otpStream: null,
       ),
     ).then((value) {
       value.fold(
@@ -53,6 +55,15 @@ class LoginViewModel extends BaseCubit
         },
       );
     });
+  }
+
+  void loginWithPhoneNumber() {
+    DataIntent.pushPhoneNumber(_phoneNumberController.text.trim());
+    DataIntent.setAuthType(AuthType.login);
+    DataIntent.setOnVerified(() {
+      return SuccessState(AppStrings.verificationScreenLoginSuccessMessage);
+    });
+    emit(LoginVerifyPhoneNumberState());
   }
 
   @override

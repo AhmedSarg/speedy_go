@@ -4,20 +4,21 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:speedy_go/domain/models/enums.dart';
 
 abstract class RemoteDataSource {
   Future<RegisteredBeforeError?> doesUserExists({
     required String email,
     required String phoneNumber,
-    required RegisterType registerType,
   });
 
   Future<Stream<FirebaseAuthException?>> verifyPhoneNumber({
-    required String email,
-    required String password,
+    String? email,
+    String? password,
     required String phoneNumber,
     required Stream<String?> otpStream,
+    required AuthType authType,
   });
 
   AuthCredential registerEmailPasswordToAuth({
@@ -59,10 +60,6 @@ abstract class RemoteDataSource {
     required DateTime createdAt,
   });
 
-  Future<void> loginWithPhoneNumber({
-    required String phoneNumber,
-  });
-
   Future<void> loginWithEmailPassword({
     required String email,
     required String password,
@@ -81,7 +78,6 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   Future<RegisteredBeforeError?> doesUserExists({
     required String email,
     required String phoneNumber,
-    required RegisterType registerType,
   }) async {
     bool phoneNumberUsed = false;
     bool emailUsed = false;
@@ -126,10 +122,11 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<Stream<FirebaseAuthException?>> verifyPhoneNumber({
-    required String email,
-    required String password,
+    String? email,
+    String? password,
     required String phoneNumber,
     required Stream<String?> otpStream,
+    required AuthType authType,
   }) async {
     StreamController<FirebaseAuthException?> errorStreamController =
         StreamController<FirebaseAuthException?>.broadcast();
@@ -138,9 +135,11 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       verificationCompleted: (phoneAuthCredential) async {
         UserCredential userCredential =
             await _firebaseAuth.signInWithCredential(phoneAuthCredential);
-        AuthCredential emailAuthCredential =
-            registerEmailPasswordToAuth(email: email, password: password);
-        await userCredential.user!.linkWithCredential(emailAuthCredential);
+        if (authType == AuthType.register) {
+          AuthCredential emailAuthCredential =
+              registerEmailPasswordToAuth(email: email!, password: password!);
+          await userCredential.user!.linkWithCredential(emailAuthCredential);
+        }
         errorStreamController.add(null);
       },
       verificationFailed: (e) {
@@ -158,14 +157,22 @@ class RemoteDataSourceImpl implements RemoteDataSource {
                 );
                 UserCredential userCredential = await _firebaseAuth
                     .signInWithCredential(phoneAuthCredential);
-                AuthCredential emailAuthCredential =
-                    registerEmailPasswordToAuth(
-                        email: email, password: password);
-                await userCredential.user!
-                    .linkWithCredential(emailAuthCredential);
+                if (authType == AuthType.register) {
+                  AuthCredential emailAuthCredential =
+                      registerEmailPasswordToAuth(
+                    email: email!,
+                    password: password!,
+                  );
+                  await userCredential.user!
+                      .linkWithCredential(emailAuthCredential);
+                }
                 errorStreamController.add(null);
+              } on FirebaseAuthException catch (e) {
+                errorStreamController.add(e);
               } catch (e) {
-                errorStreamController.add(e as FirebaseAuthException);
+                if (kDebugMode) {
+                  print(e);
+                }
               }
             } else {
               errorStreamController.add(
@@ -305,13 +312,6 @@ class RemoteDataSourceImpl implements RemoteDataSource {
           tukTukImage,
           SettableMetadata(contentType: 'image/jpeg'),
         );
-  }
-
-  @override
-  Future<void> loginWithPhoneNumber({
-    required String phoneNumber,
-  }) async {
-    await _firebaseAuth.signInWithPhoneNumber(phoneNumber);
   }
 
   @override

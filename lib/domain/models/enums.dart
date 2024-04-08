@@ -7,3 +7,5 @@ enum RegisterType { passenger, car, tuktuk, bus }
 enum Gender { male, female }
 
 enum RegisteredBeforeError { emailUsed, phoneNumberUsed, emailAndPhoneNumberUsed }
+
+enum AuthType { login, register }

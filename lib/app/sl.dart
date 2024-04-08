@@ -7,6 +7,9 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:speedy_go/data/network/firebase_app_check_factory.dart';
 import 'package:speedy_go/domain/usecase/register_usecase.dart';
+import 'package:speedy_go/domain/usecase/verify_otp_usecase.dart';
+import 'package:speedy_go/domain/usecase/verify_otp_usecase.dart';
+import 'package:speedy_go/domain/usecase/verify_otp_usecase.dart';
 
 import '../data/data_source/cache_data_source.dart';
 import '../data/data_source/local_data_source.dart';
@@ -24,7 +27,7 @@ import '../data/repository/repository_impl.dart';
 import '../domain/repository/repository.dart';
 import '../domain/usecase/authenticate_usecase.dart';
 import '../domain/usecase/login_usecase.dart';
-import '../domain/usecase/verify_phone_number_usecase.dart';
+import '../domain/usecase/start_verify_usecase.dart';
 import 'date_ntp.dart';
 
 final sl = GetIt.instance;
@@ -69,10 +72,17 @@ void initAuthenticateUseCase() {
   }
 }
 
-void initVerifyPhoneNumberUseCase() {
-  if (GetIt.instance.isRegistered<VerifyPhoneNumberUseCase>() == false) {
-    sl.registerFactory<VerifyPhoneNumberUseCase>(
-        () => VerifyPhoneNumberUseCase(sl()));
+void initStartVerifyUseCase() {
+  if (GetIt.instance.isRegistered<StartVerifyUseCase>() == false) {
+    sl.registerFactory<StartVerifyUseCase>(
+        () => StartVerifyUseCase(sl()));
+  }
+}
+
+void initVerifyOtpUseCase() {
+  if (GetIt.instance.isRegistered<VerifyOtpUseCase>() == false) {
+    sl.registerFactory<VerifyOtpUseCase>(
+        () => VerifyOtpUseCase(sl()));
   }
 }
 

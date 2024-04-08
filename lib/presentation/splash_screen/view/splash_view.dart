@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:speedy_go/presentation/resources/color_manager.dart';
 
 import '../../resources/assets_manager.dart';
 import '../../resources/routes_manager.dart';
@@ -64,6 +65,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorManager.black,
       body: Stack(
         children: [
           Image.asset(

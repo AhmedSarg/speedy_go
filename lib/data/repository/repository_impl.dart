@@ -33,30 +33,63 @@ class RepositoryImpl implements Repository {
     // this._dateNTP,
   );
 
+  // @override
+  // Future<Either<Failure, Stream<FirebaseAuthException?>>> authenticate({
+  //   required String email,
+  //   required String password,
+  //   required String phoneNumber,
+  //   required RegisterType registerType,
+  //   required Stream<String?> otpStream,
+  // }) async {
+  //   try {
+  //     if (await _networkInfo.isConnected) {
+  //       RegisteredBeforeError? error = await _remoteDataSource.doesUserExists(
+  //         email: email,
+  //         phoneNumber: phoneNumber,
+  //         registerType: registerType,
+  //       );
+  //       if (error == null) {
+  //         Stream<FirebaseAuthException?> errorStream =
+  //             await _remoteDataSource.verifyPhoneNumber(
+  //           email: email,
+  //           password: password,
+  //           phoneNumber: phoneNumber,
+  //           otpStream: otpStream,
+  //           authType: AuthType.register,
+  //         );
+  //         return Right(errorStream);
+  //       } else {
+  //         switch (error) {
+  //           case RegisteredBeforeError.emailUsed:
+  //             return Left(DataSource.EMAIL_ALREADY_EXISTS.getFailure());
+  //           case RegisteredBeforeError.phoneNumberUsed:
+  //             return Left(DataSource.PHONE_NUMBER_ALREADY_EXISTS.getFailure());
+  //           case RegisteredBeforeError.emailAndPhoneNumberUsed:
+  //             return Left(DataSource.EMAIL_AND_PHONE_NUMBER_ALREADY_EXISTS
+  //                 .getFailure());
+  //         }
+  //       }
+  //     } else {
+  //       return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+  //     }
+  //   } catch (e) {
+  //     return Left(ErrorHandler.handle(e).failure);
+  //   }
+  // }
+
   @override
-  Future<Either<Failure, Stream<FirebaseAuthException?>>> authenticate({
+  Future<Either<Failure, void>> doesUserExists({
     required String email,
-    required String password,
     required String phoneNumber,
-    required RegisterType registerType,
-    required Stream<String?> otpStream,
   }) async {
     try {
       if (await _networkInfo.isConnected) {
         RegisteredBeforeError? error = await _remoteDataSource.doesUserExists(
           email: email,
           phoneNumber: phoneNumber,
-          registerType: registerType,
         );
         if (error == null) {
-          Stream<FirebaseAuthException?> errorStream =
-              await _remoteDataSource.verifyPhoneNumber(
-            email: email,
-            password: password,
-            phoneNumber: phoneNumber,
-            otpStream: otpStream,
-          );
-          return Right(errorStream);
+          return const Right(null);
         } else {
           switch (error) {
             case RegisteredBeforeError.emailUsed:
@@ -77,11 +110,37 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, void>> verify({
+  Future<Either<Failure, Stream<FirebaseAuthException?>>> startVerify({
+    String? email,
+    String? password,
+    required String phoneNumber,
+    required StreamController<String?> otpStreamController,
+    required AuthType authType,
+  }) async {
+    try {
+      if (await _networkInfo.isConnected) {
+        Stream<FirebaseAuthException?> errorStream =
+            await _remoteDataSource.verifyPhoneNumber(
+          email: authType == AuthType.register ? email : null,
+          password: authType == AuthType.register ? password : null,
+          phoneNumber: phoneNumber,
+          otpStream: otpStreamController.stream,
+          authType: authType,
+        );
+        return Right(errorStream);
+      } else {
+        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+      }
+    } catch (e) {
+      return Left(ErrorHandler.handle(e).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> verifyOtp({
     required Stream<FirebaseAuthException?> errorStream,
     required StreamController<String?> otpStreamController,
     required String otp,
-    required RegisterType registerType,
   }) async {
     late StreamSubscription streamSubscription;
     try {
@@ -98,8 +157,7 @@ class RepositoryImpl implements Repository {
         }
         FirebaseAuthException? result = await retCompleter.future;
         if (result == null) {
-          void ret;
-          return Right(ret);
+          return const Right(null);
         } else {
           throw result;
         }
@@ -118,6 +176,48 @@ class RepositoryImpl implements Repository {
       return Left(ErrorHandler.handle(e).failure);
     }
   }
+
+  // @override
+  // Future<Either<Failure, void>> verify({
+  //   required Stream<FirebaseAuthException?> errorStream,
+  //   required StreamController<String?> otpStreamController,
+  //   required String otp,
+  // }) async {
+  //   late StreamSubscription streamSubscription;
+  //   try {
+  //     if (await _networkInfo.isConnected) {
+  //       Completer<FirebaseAuthException?> retCompleter =
+  //           Completer<FirebaseAuthException?>();
+  //       streamSubscription = errorStream.listen((error) async {
+  //         retCompleter.complete(error);
+  //       });
+  //       if (otp.isEmpty) {
+  //         otpStreamController.add(null);
+  //       } else {
+  //         otpStreamController.add(otp);
+  //       }
+  //       FirebaseAuthException? result = await retCompleter.future;
+  //       if (result == null) {
+  //         void ret;
+  //         return Right(ret);
+  //       } else {
+  //         throw result;
+  //       }
+  //     } else {
+  //       return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+  //     }
+  //   } on FirebaseAuthException catch (e) {
+  //     streamSubscription.cancel();
+  //     if (e.code == 'invalid-verification-code') {
+  //       return Left(DataSource.INVALID_VERIFICATION_CODE.getFailure());
+  //     } else {
+  //       return Left(ErrorHandler.handle(e).failure);
+  //     }
+  //   } catch (e) {
+  //     streamSubscription.cancel();
+  //     return Left(ErrorHandler.handle(e).failure);
+  //   }
+  // }
 
   @override
   Future<Either<Failure, void>> register({
@@ -183,24 +283,17 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, Stream<FirebaseAuthException?>?>> login({
+  Future<Either<Failure, void>> login({
     required String email,
     required String password,
-    required String phoneNumber,
-    required LoginType loginType,
-    required Stream<String?>? otpStream,
   }) async {
     try {
       if (await _networkInfo.isConnected) {
-        if (loginType == LoginType.phoneNumber) {
-          await _remoteDataSource.loginWithPhoneNumber(
-              phoneNumber: phoneNumber);
-          return const Right(null);
-        } else {
-          await _remoteDataSource.loginWithEmailPassword(
-              email: email, password: password);
-          return const Right(null);
-        }
+        await _remoteDataSource.loginWithEmailPassword(
+          email: email,
+          password: password,
+        );
+        return const Right(null);
       } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
       }

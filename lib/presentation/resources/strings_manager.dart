@@ -23,6 +23,7 @@ class AppStrings {
   static const loginScreenSelectorEmail = "loginScreenSelectorEmail";
   static const loginScreenSelectorPhoneNumber = "loginScreenSelectorPhoneNumber";
   static const loginScreenLogin = "loginScreenLogin";
+  static const loginScreenSuccess = "loginScreenSuccess";
 
   ///Register Screen
   static const registerScreenTitle = "registerScreenTitle";
@@ -45,10 +46,13 @@ class AppStrings {
   static const registerScreenCarLicenseHint = "registerScreenCarLicenseHint";
   static const registerScreenCarImageHint = "registerScreenCarImageHint";
   static const registerScreenTukTukImageHint = "registerScreenTukTukImageHint";
-  static const registerScreenVerifyTitle = "registerScreenVerifyTitle";
-  static const registerScreenVerifyDescription = "registerScreenVerifyDescription";
-  static const registerScreenVerifyButton = "registerScreenVerifyButton";
-  static const registerScreenSuccessMessage = "registerScreenSuccessMessage";
+
+  ///Verification Screen
+  static const verificationScreenTitle = "verificationScreenTitle";
+  static const verificationScreenDescription = "verificationScreenDescription";
+  static const verificationScreenButton = "verificationScreenButton";
+  static const verificationScreenLoginSuccessMessage = "verificationScreenLoginSuccessMessage";
+  static const verificationScreenRegisterSuccessMessage = "verificationScreenRegisterSuccessMessage";
 
   ///General
   static const noRouteFound = "noRouteFound";

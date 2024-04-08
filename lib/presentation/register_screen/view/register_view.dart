@@ -13,7 +13,6 @@ import 'states/register_states.dart';
 import 'widgets/register_body.dart';
 import 'widgets/register_boxes.dart';
 import 'widgets/register_vehicle_selection_body.dart';
-import 'widgets/register_verify_phone_number_body.dart';
 
 class RegisterScreen extends StatelessWidget {
   RegisterScreen({super.key});
@@ -40,11 +39,7 @@ class RegisterScreen extends StatelessWidget {
               width: AppSize.infinity,
               height: AppSize.infinity,
               child: BlocProvider(
-                create: (context) => RegisterViewModel(
-                  sl(),
-                  sl(),
-                  sl(),
-                )..start(),
+                create: (context) => RegisterViewModel(sl(), sl())..start(),
                 child: BlocConsumer<RegisterViewModel, BaseStates>(
                   listener: (context, state) {
                     RegisterViewModel viewModel =
@@ -78,6 +73,9 @@ class RegisterScreen extends StatelessWidget {
                         ),
                       );
                     } else if (state is RegisterImagePickFailedState) {
+                    } else if (state is RegisterVerifyPhoneNumberState) {
+                      Navigator.pop(context);
+                      Navigator.pushNamed(context, Routes.verificationRoute);
                     } else if (state is SuccessState) {
                       Navigator.pushNamedAndRemoveUntil(
                         context,
@@ -95,11 +93,6 @@ class RegisterScreen extends StatelessWidget {
                     if (state is RegisterVehicleSelectionState) {
                       viewModel.setContent =
                           RegisterVehicleSelectionBody(viewModel: viewModel);
-                    } else if (state is RegisterVerifyPhoneNumberState) {
-                      Navigator.pop(context);
-                      // viewModel.startVerifyPhoneNumber();
-                      viewModel.setContent =
-                          RegisterVerifyPhoneNumberBody(viewModel: viewModel);
                     } else if (state is RegisterPassengerState) {
                       viewModel.setBoxContent =
                           passengerRegisterWidgets(context, viewModel, formKey);

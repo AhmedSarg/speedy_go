@@ -120,7 +120,9 @@ class LoginBox extends StatelessWidget {
                   SizedBox(
                     height: AppSize.s20,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, Routes.selectionRoute);
+                      },
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
                             horizontal: AppPadding.p4),
@@ -165,7 +167,9 @@ class LoginBox extends StatelessWidget {
         height: AppSize.s40,
         child: AppButton(
           text: AppStrings.loginScreenSendCode.tr(),
-          onPressed: () {},
+          onPressed: () {
+            viewModel.loginWithPhoneNumber();
+          },
         ),
       ),
     ];
