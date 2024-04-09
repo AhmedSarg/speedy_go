@@ -190,7 +190,7 @@ class AppTextStyles {
         fontSize: FontSize.f12,
       );
 
-  static TextStyle registerScreenVehicleSelectionBodyTextStyle(BuildContext context, Color color, double size) =>
+  static TextStyle SelectionTextStyle(BuildContext context, Color color, double size) =>
       getRegularStyle(
         fontFamily: AppLanguages.getPrimaryFont(context),
         color: color,

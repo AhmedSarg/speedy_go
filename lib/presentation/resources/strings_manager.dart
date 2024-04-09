@@ -54,6 +54,13 @@ class AppStrings {
   static const noRouteFound = "noRouteFound";
   static const retryAgain = "retryAgain";
   static const success = "success";
+  static const confirm = "Confirm";
+  static const chooseYourVehicle = "Choose your vehicle";
+  static const searchNearestDriver = "Search nearest driver";
+  static const pleaseWait = "Please wait";
+  static const findDriver = "Find Driver";
+  static const endTrip = "End Trip";
+  static const selectDriver = "Select driver";
 
   ///Error Handler
   static const badRequestError = "badRequestError";
@@ -78,7 +85,8 @@ class AppStrings {
   static const intentError = "intentError";
   static const areYouSure = "areYouSure";
   static const sure = "sure";
-  static const cancel = "cancel";
+  static const cancel = "Cancel";
+  static const done = "Done";
 
   ///Validations
   static const validationsFieldRequired = "validationsFieldRequired";

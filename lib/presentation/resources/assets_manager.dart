@@ -26,6 +26,11 @@ class SVGAssets {
   static const String tuktuk = "${_basePath}tuktuk.svg";
   static const String bus = "${_basePath}bus.svg";
 
+  static const String cash = "${_basePath}cash.svg";
+  static const String star = "${_basePath}star.svg";
+  static const String fillPhone = "${_basePath}fillPhone.svg";
+  static const String location = "${_basePath}location.svg";
+
   static const String email = "${_basePath}email.svg";
   static const String id = "${_basePath}id.svg";
   static const String image = "${_basePath}image.svg";

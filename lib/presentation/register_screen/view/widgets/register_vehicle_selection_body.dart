@@ -11,6 +11,8 @@ import '../../../resources/font_manager.dart';
 import '../../../resources/routes_manager.dart';
 import 'package:animations/animations.dart';
 
+import '../../../resources/strings_manager.dart';
+
 class RegisterVehicleSelectionBody extends StatefulWidget {
   const RegisterVehicleSelectionBody({
     super.key,
@@ -43,7 +45,7 @@ class _RegisterVehicleSelectionBodyState
               backgroundColor: ColorManager.grey,
               child: IconButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, Routes.myCustomWidget);
+                  Navigator.pushNamed(context, Routes.registerRoute);
                 },
                 padding: const EdgeInsets.only(left: AppPadding.p4),
                 icon: const Icon(
@@ -55,8 +57,8 @@ class _RegisterVehicleSelectionBodyState
             ),
             const SizedBox(width: AppSize.s10),
             Text(
-              "Choose your vehicle",
-              style: AppTextStyles.registerScreenVehicleSelectionBodyTextStyle(
+              AppStrings.chooseYourVehicle,
+              style: AppTextStyles.SelectionTextStyle(
                   context, ColorManager.white, FontSize.f22),
             ),
           ],
@@ -118,7 +120,7 @@ class _RegisterVehicleSelectionBodyState
         ),
         Text(
           selectName(index),
-          style: AppTextStyles.registerScreenVehicleSelectionBodyTextStyle(
+          style: AppTextStyles.SelectionTextStyle(
               context, ColorManager.white, FontSize.f32),
         )
       ],
@@ -128,9 +130,9 @@ class _RegisterVehicleSelectionBodyState
 
 selectIcon(int index) {
   List<SvgPicture> img = [
-    SvgPicture.asset('assets/svg/car.svg'),
-    SvgPicture.asset('assets/svg/tuktuk.svg'),
-    SvgPicture.asset('assets/svg/bus.svg')
+    SvgPicture.asset(SVGAssets.car),
+    SvgPicture.asset(SVGAssets.tuktuk),
+    SvgPicture.asset(SVGAssets.bus)
   ];
   return img[index];
 }
