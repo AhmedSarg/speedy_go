@@ -23,7 +23,7 @@ class OnBoardingScreen extends StatelessWidget {
             height: AppSize.infinity,
             fit: BoxFit.cover,
           ).animate().fade(
-                duration: const Duration(milliseconds: 600),
+                duration: const Duration(milliseconds: 500),
                 begin: AppSize.s0_5,
                 end: AppSize.s1,
               ),

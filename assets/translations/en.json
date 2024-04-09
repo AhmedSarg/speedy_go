@@ -12,11 +12,11 @@
   "internalServerError": "Internal Server Error",
   "unknownError": "Unknown Error",
   "timeoutError": "Timeout Error",
-  "defaultError": "Default Error",
+  "defaultError": "Error Has Happened\nTry Again Later",
   "emailAlreadyExistsError": "Account Already Exists With The Same Email",
   "phoneNumberAlreadyExistsError": "Account Already Exists With The Same Phone Number",
   "emailAndPhoneNumberAlreadyExistsError": "Account Already Exists With The Same Email And Phone Number",
-  "loginFailedError": "Incorrect Email or Password",
+  "emailLoginFailedError": "Incorrect Email or Password",
   "invalidVerificationCodeError": "Verification Code is Incorrect Please Try Again",
   "cacheError": "Cache Error",
   "noInternetError": "No Internet Connection",
@@ -57,6 +57,7 @@
   "loginScreenEmailHint": "Enter Email",
   "loginScreenPasswordHint": "Enter Password",
   "loginScreenLogin": "Login",
+  "loginScreenSuccess": "Login Successfully",
 
   "registerScreenTitle": "Sign up",
   "registerScreenSignUp": "Sign up",
@@ -78,8 +79,10 @@
   "registerScreenCarLicenseHint": "Car License",
   "registerScreenCarImageHint": "Car Image",
   "registerScreenTukTukImageHint": "Tuk-Tuk Image",
-  "registerScreenVerifyTitle": "Verify Phone Number",
-  "registerScreenVerifyDescription": "We've sent you sms with a validation code to your phone number\nenter the validation code",
-  "registerScreenVerifyButton": "Verify",
-  "registerScreenSuccessMessage": "Registered Successfully"
+
+  "verificationScreenTitle": "Verify Phone Number",
+  "verificationScreenDescription": "We've sent you sms with a validation code to your phone number\nenter the validation code",
+  "verificationScreenButton": "Verify",
+  "verificationScreenLoginSuccessMessage": "Account Verified Successfully",
+  "verificationScreenRegisterSuccessMessage": "Registered Successfully"
 }

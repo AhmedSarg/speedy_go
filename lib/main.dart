@@ -25,7 +25,6 @@ void main() async {
       supportedLocales: AppLanguages.locals,
       path: AppLanguages.translationsPath,
       fallbackLocale: AppLanguages.fallBackLocal,
-      //todo save start local in storage
       startLocale: AppLanguages.startLocal,
       useOnlyLangCode: true,
       saveLocale: true,

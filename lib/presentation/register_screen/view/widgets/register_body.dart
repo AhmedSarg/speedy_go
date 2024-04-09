@@ -79,9 +79,7 @@ class RegisterBox extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppSize.s20),
-          RegisterTypeSelector(
-            viewModel: viewModel,
-          ),
+          RegisterTypeSelector(viewModel: viewModel),
           const SizedBox(height: AppSize.s20),
           ...viewModel.getBoxContent,
           const SizedBox(height: AppSize.s20),
@@ -269,7 +267,9 @@ class _RegisterTextFieldState extends State<RegisterTextField> {
             // cursorErrorColor: ColorManager.secondary,
             cursorRadius: const Radius.circular(AppSize.s1),
             focusNode: widget.focusNode,
-            textInputAction: widget.nextFocusNode != null ? TextInputAction.next : TextInputAction.done,
+            textInputAction: widget.nextFocusNode != null
+                ? TextInputAction.next
+                : TextInputAction.done,
             validator: (value) {
               setState(() {
                 errorText = widget.validator(value);

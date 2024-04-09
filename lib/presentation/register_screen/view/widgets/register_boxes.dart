@@ -18,7 +18,6 @@ List<Widget> passengerRegisterWidgets(BuildContext context,
   FocusNode emailFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
   FocusNode confirmPasswordFocusNode = FocusNode();
-
   return [
     Row(
       children: [
@@ -101,11 +100,7 @@ List<Widget> passengerRegisterWidgets(BuildContext context,
         text: AppStrings.registerScreenSignUp.tr(),
         onPressed: () {
           if (formKey.currentState!.validate()) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('validated'),
-              ),
-            );
+            viewModel.authenticate();
           }
         },
       ),
@@ -122,7 +117,6 @@ List<Widget> carRegisterWidgets(BuildContext context,
   FocusNode nationalIdFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
   FocusNode confirmPasswordFocusNode = FocusNode();
-
   return [
     Row(
       children: [
@@ -259,7 +253,6 @@ List<Widget> tukTukRegisterWidgets(BuildContext context,
   FocusNode nationalIdFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
   FocusNode confirmPasswordFocusNode = FocusNode();
-
   return [
     Row(
       children: [
@@ -357,11 +350,7 @@ List<Widget> tukTukRegisterWidgets(BuildContext context,
         text: AppStrings.registerScreenSignUp.tr(),
         onPressed: () {
           if (formKey.currentState!.validate()) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('validated'),
-              ),
-            );
+            viewModel.authenticate();
           }
         },
       ),

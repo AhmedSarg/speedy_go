@@ -33,102 +33,63 @@ class RepositoryImpl implements Repository {
     // this._dateNTP,
   );
 
-  //
   // @override
-  // Future<Either<Failure, User>> authenticateUser({
+  // Future<Either<Failure, Stream<FirebaseAuthException?>>> authenticate({
   //   required String email,
   //   required String password,
-  // }) async {
-  //   try {
-  //     if (await _networkInfo.isConnected) {
-  //       UserCredential userCredential =
-  //           await _remoteDataSource.registerEmailPasswordToAuth(
-  //         email: email,
-  //         password: password,
-  //       );
-  //       return Right(userCredential.user!);
-  //     } else {
-  //       return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
-  //     }
-  //   } on FirebaseAuthException catch (e) {
-  //     if (e.code == 'email-already-in-use') {
-  //       return Left(DataSource.EMAIL_ALREADY_EXISTS.getFailure());
-  //     } else {
-  //       return Left(ErrorHandler.handle(e).failure);
-  //     }
-  //   } catch (e) {
-  //     return Left(ErrorHandler.handle(e).failure);
-  //   }
-  // }
-
-  // @override
-  // Future<Either<Failure, bool>> startVerifyPhoneNumber({
   //   required String phoneNumber,
-  //   required User user,
-  //   required Stream<String> otp,
+  //   required RegisterType registerType,
+  //   required Stream<String?> otpStream,
   // }) async {
   //   try {
   //     if (await _networkInfo.isConnected) {
-  //       print('in vm');
-  //       FirebaseAuthException? value =
-  //           await _remoteDataSource.verifyPhoneNumber(
+  //       RegisteredBeforeError? error = await _remoteDataSource.doesUserExists(
+  //         email: email,
   //         phoneNumber: phoneNumber,
-  //         user: user,
-  //         otpStream: otp,
+  //         registerType: registerType,
   //       );
-  //       print(4);
-  //       print(value);
-  //       if (value != null) {
-  //         print(5);
-  //         throw value;
+  //       if (error == null) {
+  //         Stream<FirebaseAuthException?> errorStream =
+  //             await _remoteDataSource.verifyPhoneNumber(
+  //           email: email,
+  //           password: password,
+  //           phoneNumber: phoneNumber,
+  //           otpStream: otpStream,
+  //           authType: AuthType.register,
+  //         );
+  //         return Right(errorStream);
   //       } else {
-  //         print(6);
-  //         return const Right(true);
+  //         switch (error) {
+  //           case RegisteredBeforeError.emailUsed:
+  //             return Left(DataSource.EMAIL_ALREADY_EXISTS.getFailure());
+  //           case RegisteredBeforeError.phoneNumberUsed:
+  //             return Left(DataSource.PHONE_NUMBER_ALREADY_EXISTS.getFailure());
+  //           case RegisteredBeforeError.emailAndPhoneNumberUsed:
+  //             return Left(DataSource.EMAIL_AND_PHONE_NUMBER_ALREADY_EXISTS
+  //                 .getFailure());
+  //         }
   //       }
   //     } else {
-  //       user.delete();
   //       return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
   //     }
-  //   } on FirebaseAuthException catch (e) {
-  //     print(9);
-  //     if (e.code == 'invalid-verification-code') {
-  //       print(10);
-  //       return Left(DataSource.INVALID_VERIFICATION_CODE.getFailure());
-  //     } else {
-  //       print(11);
-  //       user.delete();
-  //       return Left(ErrorHandler.handle(e).failure);
-  //     }
   //   } catch (e) {
-  //     user.delete();
   //     return Left(ErrorHandler.handle(e).failure);
   //   }
   // }
 
   @override
-  Future<Either<Failure, Stream<FirebaseAuthException?>>> authenticate({
+  Future<Either<Failure, void>> doesUserExists({
     required String email,
-    required String password,
     required String phoneNumber,
-    required RegisterType registerType,
-    required Stream<String?> otpStream,
   }) async {
     try {
       if (await _networkInfo.isConnected) {
         RegisteredBeforeError? error = await _remoteDataSource.doesUserExists(
           email: email,
           phoneNumber: phoneNumber,
-          registerType: registerType,
         );
         if (error == null) {
-          Stream<FirebaseAuthException?> errorStream =
-              await _remoteDataSource.verifyPhoneNumber(
-            email: email,
-            password: password,
-            phoneNumber: phoneNumber,
-            otpStream: otpStream,
-          );
-          return Right(errorStream);
+          return const Right(null);
         } else {
           switch (error) {
             case RegisteredBeforeError.emailUsed:
@@ -136,8 +97,8 @@ class RepositoryImpl implements Repository {
             case RegisteredBeforeError.phoneNumberUsed:
               return Left(DataSource.PHONE_NUMBER_ALREADY_EXISTS.getFailure());
             case RegisteredBeforeError.emailAndPhoneNumberUsed:
-              return Left(
-                  DataSource.EMAIL_AND_PHONE_NUMBER_ALREADY_EXISTS.getFailure());
+              return Left(DataSource.EMAIL_AND_PHONE_NUMBER_ALREADY_EXISTS
+                  .getFailure());
           }
         }
       } else {
@@ -149,11 +110,37 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, void>> verify({
+  Future<Either<Failure, Stream<FirebaseAuthException?>>> startVerify({
+    String? email,
+    String? password,
+    required String phoneNumber,
+    required StreamController<String?> otpStreamController,
+    required AuthType authType,
+  }) async {
+    try {
+      if (await _networkInfo.isConnected) {
+        Stream<FirebaseAuthException?> errorStream =
+            await _remoteDataSource.verifyPhoneNumber(
+          email: authType == AuthType.register ? email : null,
+          password: authType == AuthType.register ? password : null,
+          phoneNumber: phoneNumber,
+          otpStream: otpStreamController.stream,
+          authType: authType,
+        );
+        return Right(errorStream);
+      } else {
+        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+      }
+    } catch (e) {
+      return Left(ErrorHandler.handle(e).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> verifyOtp({
     required Stream<FirebaseAuthException?> errorStream,
     required StreamController<String?> otpStreamController,
     required String otp,
-    required RegisterType registerType,
   }) async {
     late StreamSubscription streamSubscription;
     try {
@@ -170,8 +157,7 @@ class RepositoryImpl implements Repository {
         }
         FirebaseAuthException? result = await retCompleter.future;
         if (result == null) {
-          void ret;
-          return Right(ret);
+          return const Right(null);
         } else {
           throw result;
         }
@@ -190,6 +176,48 @@ class RepositoryImpl implements Repository {
       return Left(ErrorHandler.handle(e).failure);
     }
   }
+
+  // @override
+  // Future<Either<Failure, void>> verify({
+  //   required Stream<FirebaseAuthException?> errorStream,
+  //   required StreamController<String?> otpStreamController,
+  //   required String otp,
+  // }) async {
+  //   late StreamSubscription streamSubscription;
+  //   try {
+  //     if (await _networkInfo.isConnected) {
+  //       Completer<FirebaseAuthException?> retCompleter =
+  //           Completer<FirebaseAuthException?>();
+  //       streamSubscription = errorStream.listen((error) async {
+  //         retCompleter.complete(error);
+  //       });
+  //       if (otp.isEmpty) {
+  //         otpStreamController.add(null);
+  //       } else {
+  //         otpStreamController.add(otp);
+  //       }
+  //       FirebaseAuthException? result = await retCompleter.future;
+  //       if (result == null) {
+  //         void ret;
+  //         return Right(ret);
+  //       } else {
+  //         throw result;
+  //       }
+  //     } else {
+  //       return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+  //     }
+  //   } on FirebaseAuthException catch (e) {
+  //     streamSubscription.cancel();
+  //     if (e.code == 'invalid-verification-code') {
+  //       return Left(DataSource.INVALID_VERIFICATION_CODE.getFailure());
+  //     } else {
+  //       return Left(ErrorHandler.handle(e).failure);
+  //     }
+  //   } catch (e) {
+  //     streamSubscription.cancel();
+  //     return Left(ErrorHandler.handle(e).failure);
+  //   }
+  // }
 
   @override
   Future<Either<Failure, void>> register({
@@ -222,11 +250,58 @@ class RepositoryImpl implements Repository {
             carImage: carImage!,
             createdAt: DateTime.now(),
           );
+        } else if (registerType == RegisterType.tuktuk) {
+          await _remoteDataSource.registerTukTukDriverToDataBase(
+            uuid: uuid,
+            firstName: firstName,
+            lastName: lastName,
+            phoneNumber: phoneNumber,
+            email: email,
+            nationalId: nationalId!,
+            tukTukImage: tukTukImage!,
+            createdAt: DateTime.now(),
+          );
+        } else {
+          await _remoteDataSource.registerPassengerToDataBase(
+            uuid: uuid,
+            firstName: firstName,
+            lastName: lastName,
+            phoneNumber: phoneNumber,
+            email: email,
+            gender: gender! == Gender.female ? 'female' : 'male',
+            createdAt: DateTime.now(),
+          );
         }
         void ret;
         return Right(ret);
       } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+      }
+    } catch (e) {
+      return Left(ErrorHandler.handle(e).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> login({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      if (await _networkInfo.isConnected) {
+        await _remoteDataSource.loginWithEmailPassword(
+          email: email,
+          password: password,
+        );
+        return const Right(null);
+      } else {
+        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'invalid-credential') {
+        return Left(DataSource.EMAIL_LOGIN_FAILED.getFailure());
+      } else {
+        return Left(ErrorHandler.handle(e).failure);
       }
     } catch (e) {
       return Left(ErrorHandler.handle(e).failure);

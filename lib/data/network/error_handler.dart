@@ -28,7 +28,7 @@ enum DataSource {
   EMAIL_ALREADY_EXISTS,
   PHONE_NUMBER_ALREADY_EXISTS,
   EMAIL_AND_PHONE_NUMBER_ALREADY_EXISTS,
-  LOGIN_FAILED,
+  EMAIL_LOGIN_FAILED,
   INVALID_VERIFICATION_CODE,
   DEFAULT
 }
@@ -49,7 +49,7 @@ class ResponseCode {
   static const int SEND_TIMEOUT = -4;
   static const int CACHE_ERROR = -5;
   static const int NO_INTERNET_CONNECTION = -6;
-  static const int LOGIN_FAILED = -8;
+  static const int EMAIL_LOGIN_FAILED = -8;
   static const int DEFAULT = -10;
   static const int EMAIL_ALREADY_EXISTS = -11;
   static const int PHONE_NUMBER_ALREADY_EXISTS = -12;
@@ -84,7 +84,7 @@ class ResponseMessage {
       AppStrings.phoneNumberAlreadyExistsError;
   static const String EMAIL_AND_PHONE_NUMBER_ALREADY_EXISTS =
       AppStrings.emailAndPhoneNumberAlreadyExistsError;
-  static const String LOGIN_FAILED = AppStrings.loginFailedError;
+  static const String EMAIL_LOGIN_FAILED = AppStrings.emailLoginFailedError;
   static const String INVALID_VERIFICATION_CODE =
       AppStrings.invalidVerificationCodeError;
 
@@ -174,10 +174,10 @@ extension DataSourceExtension on DataSource {
           ResponseCode.EMAIL_AND_PHONE_NUMBER_ALREADY_EXISTS,
           ResponseMessage.EMAIL_AND_PHONE_NUMBER_ALREADY_EXISTS,
         );
-      case DataSource.LOGIN_FAILED:
+      case DataSource.EMAIL_LOGIN_FAILED:
         return Failure(
-          ResponseCode.LOGIN_FAILED,
-          ResponseMessage.LOGIN_FAILED,
+          ResponseCode.EMAIL_LOGIN_FAILED,
+          ResponseMessage.EMAIL_LOGIN_FAILED,
         );
       case DataSource.INVALID_VERIFICATION_CODE:
         return Failure(

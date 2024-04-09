@@ -1,7 +1,6 @@
-- country code dialog design
 - country code in register and handle zero in phone number
-- animate
 - image from camera
 - handle no image picked
-- handle incomplete process errors
 - PhoneNumberUtil
+- login screen to be flexible and handle validation error overflow
+- login country code validation
