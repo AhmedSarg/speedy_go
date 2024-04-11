@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:speedy_go/app/extensions.dart';
@@ -100,65 +101,82 @@ class LoginBox extends StatelessWidget {
         color: ColorManager.primary,
         borderRadius: BorderRadius.circular(AppSize.s25),
       ),
-      child: Form(
-        key: formKey,
-        child: Column(
-          children: [
-            SizedBox(
-              height: AppSize.s40,
-              child: Center(
-                child: Text(
-                  AppStrings.loginScreenTitle.tr(),
-                  style: AppTextStyles.loginScreenTitleTextStyle(context),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+            height: AppSize.s40,
+            child: Center(
+              child: Text(
+                AppStrings.loginScreenTitle.tr(),
+                style: AppTextStyles.loginScreenTitleTextStyle(context),
+              ),
+            ),
+          ),
+          const SizedBox(height: AppSize.s20),
+          LoginTypeSelector(viewModel: viewModel),
+          const SizedBox(height: AppSize.s20),
+          if (viewModel.getLoginType == LoginType.phoneNumber)
+            Expanded(
+              child: SizedBox(
+                height: AppSize.s100,
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    children: phoneNumberLoginWidgets(),
+                  ),
+                ),
+              ),
+            )
+          else
+            Expanded(
+              child: SizedBox(
+                height: AppSize.s160,
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    children: emailPasswordLoginWidgets(),
+                  ),
                 ),
               ),
             ),
-            const SizedBox(height: AppSize.s20),
-            LoginTypeSelector(viewModel: viewModel),
-            const SizedBox(height: AppSize.s20),
-            if (viewModel.getLoginType == LoginType.phoneNumber)
-              ...phoneNumberLoginWidgets()
-            else
-              ...emailPasswordLoginWidgets(),
-            const SizedBox(height: AppSize.s20),
-            SizedBox(
-              height: AppSize.s20,
-              child: FittedBox(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      AppStrings.loginScreenDontHaveAccount.tr(),
-                      style: AppTextStyles.loginScreenDontHaveAccountTextStyle(
-                          context),
-                    ),
-                    const SizedBox(width: AppSize.s5),
-                    SizedBox(
-                      height: AppSize.s20,
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, Routes.selectionRoute);
-                        },
-                        style: TextButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: AppPadding.p4),
-                          splashFactory: InkRipple.splashFactory,
-                          foregroundColor: ColorManager.white.withOpacity(.1),
-                        ),
-                        child: Text(
-                          AppStrings.loginScreenCreateAccount.tr(),
-                          style:
-                              AppTextStyles.loginScreenCreateAccountTextStyle(
-                                  context),
-                        ),
+          const SizedBox(height: AppSize.s20),
+          SizedBox(
+            height: AppSize.s20,
+            child: FittedBox(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    AppStrings.loginScreenDontHaveAccount.tr(),
+                    style: AppTextStyles.loginScreenDontHaveAccountTextStyle(
+                        context),
+                  ),
+                  const SizedBox(width: AppSize.s5),
+                  SizedBox(
+                    height: AppSize.s20,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, Routes.selectionRoute);
+                      },
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: AppPadding.p4),
+                        splashFactory: InkRipple.splashFactory,
+                        foregroundColor: ColorManager.white.withOpacity(.1),
                       ),
-                    )
-                  ],
-                ),
+                      child: Text(
+                        AppStrings.loginScreenCreateAccount.tr(),
+                        style: AppTextStyles.loginScreenCreateAccountTextStyle(
+                            context),
+                      ),
+                    ),
+                  )
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -256,6 +274,7 @@ class LoginTypeSelector extends StatelessWidget {
         children: [
           AnimatedPositioned(
             duration: const Duration(milliseconds: 400),
+            curve: Curves.easeInOut,
             left: viewModel.getLoginType == LoginType.emailPassword
                 ? 0
                 : itemWidth,
@@ -307,7 +326,8 @@ class LoginTypeItem extends StatelessWidget {
       onTap: () {
         viewModel.setLoginType(type);
       },
-      child: Container(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
         width: itemWidth,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppSize.s10),
@@ -351,14 +371,24 @@ class _CountryCodeInputState extends State<CountryCodeInput> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: AppSize.s80,
-      height: AppSize.s40,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppSize.s10),
-        border: Border.all(color: ColorManager.white, width: AppSize.s0_5),
-      ),
-      child: Center(
+    return FormField(
+      validator: (v) {
+        print(selectedValue);
+        if (selectedValue == countryCodes[0]) {
+          return AppStrings.validationsFieldRequired.tr();
+        }
+        return null;
+      },
+      initialValue: null,
+      builder: (error) => Container(
+        width: AppSize.s80,
+        height: AppSize.s50,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(AppSize.s10),
+          border: Border.all(
+              color: error.hasError ? ColorManager.error : ColorManager.white,
+              width: AppSize.s0_5),
+        ),
         child: OptionMenu(
           items: countryCodes
               .map(
@@ -429,6 +459,7 @@ class _LoginTextFieldState extends State<LoginTextField> {
         decoration: InputDecoration(
           hintStyle: AppTextStyles.loginScreenTextFieldHintTextStyle(context),
           hintText: widget.hintText,
+          errorStyle: const TextStyle(fontSize: AppSize.s0),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(AppSize.s10),
             borderSide: const BorderSide(

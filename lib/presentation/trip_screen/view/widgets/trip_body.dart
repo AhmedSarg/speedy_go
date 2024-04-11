@@ -1,91 +1,65 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:speedy_go/presentation/trip_screen/viewmodel/trip_viewmodel.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:speedy_go/app/extensions.dart';
 
+import '../../../../domain/models/enums.dart';
 import '../../../resources/assets_manager.dart';
 import '../../../resources/color_manager.dart';
 import '../../../resources/font_manager.dart';
-import '../../../resources/routes_manager.dart';
 import '../../../resources/text_styles.dart';
 import '../../../resources/values_manager.dart';
-import 'end_trip.dart';
-import 'cancel_search.dart';
-import 'cancel_trip.dart';
-import 'confirm.dart';
-import 'selection_trip.dart';
-import 'edit_price.dart';
+import '../../viewmodel/trip_viewmodel.dart';
 
 class TripBody extends StatelessWidget {
-  const TripBody({super.key, required this.viewModel});
+  const TripBody({
+    super.key,
+    required this.viewModel,
+  });
 
   final TripViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        const Background(),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Align(
-              alignment: Alignment.topLeft,
-              child: Padding(
-                padding:
-                    EdgeInsets.only(left: AppPadding.p20, top: AppPadding.p80),
-                child: Back(),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (_) {
+        viewModel.prevPage();
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: const EdgeInsets.all(AppPadding.p20),
+              child: Back(onTap: viewModel.prevPage),
+            ),
+          ),
+          Container(
+            width: AppSize.infinity,
+            padding: const EdgeInsets.all(AppPadding.p16),
+            decoration: const BoxDecoration(
+              color: ColorManager.lightBlack,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(AppSize.s20),
+                topRight: Radius.circular(AppSize.s20),
               ),
             ),
-            const Spacer(
-              flex: 1,
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                width: AppSize.infinity,
-                height:
-                    (viewModel.indexPage == 4) ? AppSize.s650 : AppSize.s450,
-                // height: ,
-                decoration: const BoxDecoration(
-                  color: ColorManager.lightBlack,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(AppSize.s20),
-                    topRight: Radius.circular(AppSize.s20),
-                  ),
-                ),
-                // child: Selection(viewModel: viewModel,),
-                // child: CancelTrip(viewModel: viewModel,),
-                // child: CancelSearch(viewModel: viewModel,),
-                // child: EditPrice(viewModel: viewModel),
-                // child: Confirm(viewModel: viewModel),
-                // child: EndTrip(viewModel: viewModel),
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class Background extends StatelessWidget {
-  const Background({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: AppSize.infinity,
-      width: AppSize.infinity,
-      child: Image.asset(
-        ImageAssets.loginBackgroundImage,
-        fit: BoxFit.cover,
+            child: viewModel.getPage,
+          ),
+        ],
       ),
     );
   }
 }
 
 class Back extends StatelessWidget {
-  const Back({super.key});
+  const Back({
+    super.key,
+    required this.onTap,
+  });
+
+  final Function() onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -93,9 +67,7 @@ class Back extends StatelessWidget {
       radius: AppSize.s18,
       backgroundColor: ColorManager.grey,
       child: IconButton(
-        onPressed: () {
-          Navigator.pushNamed(context, Routes.registerRoute);
-        },
+        onPressed: onTap,
         padding: const EdgeInsets.only(left: AppPadding.p4),
         icon: const Icon(
           Icons.arrow_back_ios,
@@ -107,42 +79,45 @@ class Back extends StatelessWidget {
   }
 }
 
-class Item extends StatelessWidget {
-  const Item(
-      {super.key,
-      required this.asset,
-      required this.name,
-      required this.color,
-      required this.viewModel});
+class SelectionItem extends StatelessWidget {
+  const SelectionItem({
+    super.key,
+    required this.tripType,
+    required this.viewModel,
+  });
 
-  final String asset, name;
-  final Color color;
   final TripViewModel viewModel;
+  final TripType tripType;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        viewModel.selectionItem(asset == SVGAssets.car);
-      },
-      child: Container(
-        width: AppSize.s170,
-        height: AppSize.s160,
-        padding: const EdgeInsets.all(AppPadding.p10),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(AppSize.s20),
-          border: Border.all(color: ColorManager.black),
-          color: color,
-        ),
-        child: Column(
-          children: [
-            SvgPicture.asset(asset, height: AppSize.s100),
-            Text(
-              name.substring(9),
-              style: AppTextStyles.SelectionTextStyle(
-                  context, ColorManager.white, FontSize.f22),
-            ),
-          ],
+    return Expanded(
+      child: GestureDetector(
+        onTap: () {
+          viewModel.setTripType = tripType;
+        },
+        child: Container(
+          padding: const EdgeInsets.all(AppPadding.p10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(AppSize.s20),
+            border: Border.all(color: ColorManager.black),
+            color: viewModel.getTripType == tripType
+                ? ColorManager.darkBlack
+                : ColorManager.transparent,
+          ),
+          child: Column(
+            children: [
+              SvgPicture.asset(
+                tripType == TripType.car ? SVGAssets.car : SVGAssets.tuktuk,
+                height: context.width() * .4,
+              ),
+              Text(
+                tripType == TripType.car ? 'Car' : 'Tuktuk',
+                style: AppTextStyles.SelectionTextStyle(
+                    context, ColorManager.white, FontSize.f22),
+              ),
+            ],
+          ),
         ),
       ),
     );
