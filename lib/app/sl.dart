@@ -8,8 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:speedy_go/data/network/firebase_app_check_factory.dart';
 import 'package:speedy_go/domain/usecase/register_usecase.dart';
 import 'package:speedy_go/domain/usecase/verify_otp_usecase.dart';
-import 'package:speedy_go/domain/usecase/verify_otp_usecase.dart';
-import 'package:speedy_go/domain/usecase/verify_otp_usecase.dart';
 
 import '../data/data_source/cache_data_source.dart';
 import '../data/data_source/local_data_source.dart';

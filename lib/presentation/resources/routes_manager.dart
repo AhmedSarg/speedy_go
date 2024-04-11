@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:speedy_go/presentation/main_layout/view/main_layout_view.dart';
 import 'package:speedy_go/presentation/onboarding_screen/view/onboarding_view.dart';
+import 'package:speedy_go/presentation/rating_screen/view/rate_view.dart';
 import 'package:speedy_go/presentation/trip_screen/view/trip_view.dart';
 
 import '../../app/sl.dart';
@@ -26,6 +27,7 @@ class Routes {
   static const String verificationRoute = "/verification";
   static const String mainLayoutRoute = "/mainLayout";
   static const String tripRoute = "/trip";
+  static const String rateRoute = "/rate";
 }
 
 class RouteGenerator {
@@ -54,6 +56,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const MainLayoutScreen());
       case Routes.tripRoute:
         return MaterialPageRoute(builder: (_) => const TripScreen());
+      case Routes.rateRoute:
+        return MaterialPageRoute(builder: (_) => const RateScreen());
       // case Routes.myCustomWidget:
       //   return MaterialPageRoute(builder: (_) => MyCustomWidget());
       default:

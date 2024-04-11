@@ -33,7 +33,9 @@ class Assets {
   static const String svgCash = 'assets/svg/cash.svg';
   static const String svgCheckmark = 'assets/svg/checkmark.svg';
   static const String svgEmail = 'assets/svg/email.svg';
+  static const String svgEmptyStar = 'assets/svg/empty_star.svg';
   static const String svgFillPhone = 'assets/svg/fillPhone.svg';
+  static const String svgFillStar = 'assets/svg/fill_star.svg';
   static const String svgId = 'assets/svg/id.svg';
   static const String svgImage = 'assets/svg/image.svg';
   static const String svgLocation = 'assets/svg/location.svg';
