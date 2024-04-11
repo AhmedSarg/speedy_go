@@ -8,14 +8,14 @@ import '../../../resources/text_styles.dart';
 import '../../../resources/values_manager.dart';
 import '../../viewmodel/trip_viewmodel.dart';
 
-class EditPrice extends StatelessWidget {
-  const EditPrice({super.key, required this.viewModel});
+class TripPrice extends StatelessWidget {
+  const TripPrice({super.key});
 
-  final TripViewModel viewModel;
+  static late TripViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {
-    viewModel.pageChange(2);
+    viewModel = TripViewModel.get(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -41,9 +41,9 @@ class EditPrice extends StatelessWidget {
             ],
           ),
         ),
-        const Spacer(),
-        SizedBox(
-          width: AppSize.s350,
+        Padding(
+          padding: const EdgeInsets.symmetric(
+              horizontal: AppPadding.p40, vertical: AppPadding.p30),
           child: TextField(
             controller: viewModel.newPrice,
             keyboardType: TextInputType.number,
@@ -54,7 +54,6 @@ class EditPrice extends StatelessWidget {
               hintText: "Cash",
               hintStyle: const TextStyle(color: ColorManager.white),
               hoverColor: ColorManager.lightBlue,
-              // prefixIcon: const Icon(Icons.attach_money),
               prefixIconConstraints: const BoxConstraints(),
               prefixIcon: Padding(
                 padding: const EdgeInsets.all(AppPadding.p10),
@@ -62,43 +61,63 @@ class EditPrice extends StatelessWidget {
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(AppSize.s14),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppSize.s14),
                 borderSide: const BorderSide(
-                  color: Colors.lightBlue,
-                  width: AppSize.s2,
+                  color: ColorManager.secondary,
+                  width: AppSize.s1,
                 ),
               ),
             ),
           ),
         ),
-        const Spacer(),
         Column(
           children: [
-            const Divider(
-              color: ColorManager.black,
-            ),
+            const Divider(color: ColorManager.black),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    AppStrings.cancel,
-                    style: AppTextStyles.SelectionTextStyle(
-                        context, ColorManager.error, FontSize.f22),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      viewModel.prevPage();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: ColorManager.error,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(AppSize.s10),
+                      ),
+                    ),
+                    child: Text(
+                      'Back',
+                      style: AppTextStyles.SelectionTextStyle(
+                          context, ColorManager.white, FontSize.f22),
+                    ),
                   ),
                 ),
-                TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    AppStrings.done,
-                    style: AppTextStyles.SelectionTextStyle(
-                        context, ColorManager.darkGreen, FontSize.f22),
+                const SizedBox(width: AppSize.s10),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      viewModel.nextPage();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: ColorManager.green,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(AppSize.s10),
+                      ),
+                    ),
+                    child: Text(
+                      'Next',
+                      style: AppTextStyles.SelectionTextStyle(
+                          context, ColorManager.white, FontSize.f22),
+                    ),
                   ),
                 ),
               ],
             ),
           ],
-        )
+        ),
       ],
     );
   }

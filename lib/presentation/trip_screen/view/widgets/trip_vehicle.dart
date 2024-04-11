@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:speedy_go/presentation/trip_screen/view/widgets/trip_body.dart';
 
 import '../../../../domain/models/enums.dart';
-import '../../../resources/assets_manager.dart';
 import '../../../resources/color_manager.dart';
 import '../../../resources/font_manager.dart';
 import '../../../resources/strings_manager.dart';
 import '../../../resources/text_styles.dart';
 import '../../../resources/values_manager.dart';
 import '../../viewmodel/trip_viewmodel.dart';
+import 'trip_body.dart';
 
-class Selection extends StatelessWidget {
-  const Selection({super.key, required this.viewModel});
+class TripVehicle extends StatelessWidget {
+  const TripVehicle({super.key});
 
-  final TripViewModel viewModel;
+  static late TripViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {
-    viewModel.pageChange(0);
+    viewModel = TripViewModel.get(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -35,23 +34,27 @@ class Selection extends StatelessWidget {
             ),
           ],
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Item(
-                asset: SVGAssets.car,
-                name: TripType.car.toString(),
-                color: viewModel.colorItemCar,
-                viewModel: viewModel),
-            Item(
-                asset: SVGAssets.tuktuk,
-                name: TripType.tuktuk.toString(),
-                color: viewModel.colorItemTuktuk,
-                viewModel: viewModel),
-          ],
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: AppPadding.p20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SelectionItem(
+                tripType: TripType.car,
+                viewModel: viewModel,
+              ),
+              const SizedBox(width: AppSize.s20),
+              SelectionItem(
+                tripType: TripType.tuktuk,
+                viewModel: viewModel,
+              ),
+            ],
+          ),
         ),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            viewModel.nextPage();
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: ColorManager.lightBlue,
             shape: RoundedRectangleBorder(
