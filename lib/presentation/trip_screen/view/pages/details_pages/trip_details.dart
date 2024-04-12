@@ -4,12 +4,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:speedy_go/app/extensions.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-import '../../../resources/assets_manager.dart';
-import '../../../resources/color_manager.dart';
-import '../../../resources/strings_manager.dart';
-import '../../../resources/text_styles.dart';
-import '../../../resources/values_manager.dart';
-import '../../viewmodel/trip_viewmodel.dart';
+import '../../../../resources/assets_manager.dart';
+import '../../../../resources/color_manager.dart';
+import '../../../../resources/strings_manager.dart';
+import '../../../../resources/text_styles.dart';
+import '../../../../resources/values_manager.dart';
+import '../../../viewmodel/trip_viewmodel.dart';
 
 class TripDetails extends StatelessWidget {
   const TripDetails({super.key});

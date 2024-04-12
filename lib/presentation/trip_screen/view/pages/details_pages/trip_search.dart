@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:speedy_go/app/extensions.dart';
 
-import '../../../../domain/models/enums.dart';
-import '../../../resources/assets_manager.dart';
-import '../../../resources/color_manager.dart';
-import '../../../resources/strings_manager.dart';
-import '../../../resources/text_styles.dart';
-import '../../../resources/values_manager.dart';
-import '../../viewmodel/trip_viewmodel.dart';
+import '../../../../../../domain/models/enums.dart';
+import '../../../../resources/assets_manager.dart';
+import '../../../../resources/color_manager.dart';
+import '../../../../resources/strings_manager.dart';
+import '../../../../resources/text_styles.dart';
+import '../../../../resources/values_manager.dart';
+import '../../../viewmodel/trip_viewmodel.dart';
 
 class TripSearch extends StatelessWidget {
   const TripSearch({super.key});
@@ -44,7 +44,7 @@ class TripSearch extends StatelessWidget {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(AppSize.s20),
                 border: Border.all(color: ColorManager.black),
-                color: ColorManager.darkBlack),
+                color: ColorManager.darkBlack,),
             child: Column(
               children: [
                 const Spacer(),
