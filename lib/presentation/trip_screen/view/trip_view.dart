@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:speedy_go/presentation/resources/routes_manager.dart';
-import 'package:speedy_go/presentation/trip_screen/view/states/trip_states.dart';
 
 import '../../base/base_states.dart';
 import '../../base/cubit_builder.dart';
 import '../../base/cubit_listener.dart';
 import '../../resources/assets_manager.dart';
 import '../../resources/color_manager.dart';
+import '../../resources/routes_manager.dart';
 import '../../resources/values_manager.dart';
 import '../viewmodel/trip_viewmodel.dart';
+import 'states/trip_states.dart';
 import 'widgets/trip_body.dart';
 
 class TripScreen extends StatelessWidget {
