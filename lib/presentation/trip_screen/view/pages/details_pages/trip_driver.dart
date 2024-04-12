@@ -1,15 +1,15 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:speedy_go/app/extensions.dart';
-import 'package:speedy_go/domain/models/domain.dart';
 
-import '../../../resources/assets_manager.dart';
-import '../../../resources/color_manager.dart';
-import '../../../resources/font_manager.dart';
-import '../../../resources/strings_manager.dart';
-import '../../../resources/text_styles.dart';
-import '../../../resources/values_manager.dart';
-import '../../viewmodel/trip_viewmodel.dart';
+import '../../../../../domain/models/domain.dart';
+import '../../../../resources/assets_manager.dart';
+import '../../../../resources/color_manager.dart';
+import '../../../../resources/strings_manager.dart';
+import '../../../../resources/text_styles.dart';
+import '../../../../resources/values_manager.dart';
+import '../../../viewmodel/trip_viewmodel.dart';
 
 class TripDriver extends StatelessWidget {
   const TripDriver({super.key});
@@ -25,9 +25,9 @@ class TripDriver extends StatelessWidget {
         Column(
           children: [
             Text(
-              AppStrings.selectDriver,
-              style: AppTextStyles.SelectionTextStyle(
-                  context, ColorManager.black, FontSize.f24),
+              AppStrings.tripScreenDriverSelectionPageTitle.tr(),
+              style: AppTextStyles.tripScreenDriverSelectionPageTitleTextStyle(
+                  context),
             ),
             const Divider(
               color: ColorManager.grey,
@@ -56,24 +56,27 @@ class TripDriver extends StatelessWidget {
           ),
         ),
         const SizedBox(height: AppSize.s20),
-        ElevatedButton(
-          onPressed: (viewModel.getSelectedDriver.id != -1)
-              ? () {
-                  viewModel.nextPage();
-                }
-              : null,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: ColorManager.darkGreen,
-            disabledBackgroundColor: ColorManager.green.withOpacity(0.7),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(AppSize.s15),
+        SizedBox(
+          height: AppSize.s50,
+          width: AppSize.infinity,
+          child: ElevatedButton(
+            onPressed: (viewModel.getSelectedDriver.id != -1)
+                ? () {
+                    viewModel.nextPage();
+                  }
+                : null,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: ColorManager.darkGreen,
+              disabledBackgroundColor: ColorManager.green.withOpacity(0.7),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppSize.s15),
+              ),
             ),
-            fixedSize: const Size(AppSize.s200, AppSize.s50),
-          ),
-          child: Text(
-            AppStrings.confirm,
-            style: AppTextStyles.SelectionTextStyle(
-                context, ColorManager.white, FontSize.f22),
+            child: Text(
+              AppStrings.tripScreenDriverSelectionPageConfirm.tr(),
+              style: AppTextStyles.tripScreenDriverSelectionPageButtonTextStyle(
+                  context),
+            ),
           ),
         ),
       ],
@@ -127,10 +130,10 @@ class Card extends StatelessWidget {
                     children: [
                       Text(
                         driver.name,
-                        style: AppTextStyles.SelectionTextStyle(
+                        style: AppTextStyles
+                            .tripScreenDriverSelectionPageNameTextStyle(
                           context,
                           textColor,
-                          FontSize.f18,
                         ),
                       ),
                       Row(
@@ -144,10 +147,10 @@ class Card extends StatelessWidget {
                           Expanded(
                             child: Text(
                               driver.location,
-                              style: AppTextStyles.SelectionTextStyle(
+                              style: AppTextStyles
+                                  .tripScreenDriverSelectionPageLocationTextStyle(
                                 context,
                                 textColor,
-                                FontSize.f12,
                               ),
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -161,11 +164,11 @@ class Card extends StatelessWidget {
                   width: (context.width() - AppSize.s130) * .3,
                   child: Center(
                     child: Text(
-                      "${driver.price}, cash",
-                      style: AppTextStyles.SelectionTextStyle(
+                      "${driver.price}, ${AppStrings.tripScreenDriverSelectionPageCash.tr()}",
+                      style: AppTextStyles
+                          .tripScreenDriverSelectionPagePriceTextStyle(
                         context,
                         textColor,
-                        FontSize.f12,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -183,18 +186,18 @@ class Card extends StatelessWidget {
                     children: [
                       Text(
                         driver.car,
-                        style: AppTextStyles.SelectionTextStyle(
+                        style: AppTextStyles
+                            .tripScreenDriverSelectionPageCarTextStyle(
                           context,
                           textColor,
-                          FontSize.f12,
                         ),
                       ),
                       Text(
                         driver.license,
-                        style: AppTextStyles.SelectionTextStyle(
+                        style: AppTextStyles
+                            .tripScreenDriverSelectionPageLicenseTextStyle(
                           context,
                           textColor,
-                          FontSize.f12,
                         ),
                       ),
                     ],
@@ -204,11 +207,11 @@ class Card extends StatelessWidget {
                   width: (context.width() - AppSize.s54) / 3,
                   child: Center(
                     child: Text(
-                      "Color: ${driver.color}",
-                      style: AppTextStyles.SelectionTextStyle(
+                      "${AppStrings.tripScreenDriverSelectionPageColor.tr()}: ${driver.color}",
+                      style: AppTextStyles
+                          .tripScreenDriverSelectionPageColorTextStyle(
                         context,
                         textColor,
-                        FontSize.f12,
                       ),
                     ),
                   ),
@@ -220,10 +223,10 @@ class Card extends StatelessWidget {
                     children: [
                       Text(
                         driver.rate.toString(),
-                        style: AppTextStyles.SelectionTextStyle(
+                        style: AppTextStyles
+                            .tripScreenDriverSelectionPageRateTextStyle(
                           context,
                           textColor,
-                          FontSize.f12,
                         ),
                       ),
                       const SizedBox(width: AppSize.s5),
@@ -235,11 +238,10 @@ class Card extends StatelessWidget {
             ),
             const SizedBox(height: AppSize.s5),
             Text(
-              "Will arrive in ${driver.time} mins.",
-              style: AppTextStyles.SelectionTextStyle(
+              "${AppStrings.tripScreenDriverSelectionPageArrival1.tr()}${driver.time}${AppStrings.tripScreenDriverSelectionPageArrival2.tr()}",
+              style: AppTextStyles.tripScreenDriverSelectionPageTimeTextStyle(
                 context,
                 textColor,
-                FontSize.f12,
               ),
             ),
           ],

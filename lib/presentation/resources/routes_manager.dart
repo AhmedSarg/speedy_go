@@ -6,15 +6,18 @@ import 'package:speedy_go/presentation/main_layout/view/main_layout_view.dart';
 import 'package:speedy_go/presentation/onboarding_screen/view/onboarding_view.dart';
 import 'package:speedy_go/presentation/rating_screen/view/rate_view.dart';
 import 'package:speedy_go/presentation/trip_screen/view/trip_view.dart';
+import 'package:speedy_go/presentation/trip_screen/view/pages/map_pages/view/pages/trip_map_from_to.dart';
 
 import '../../app/sl.dart';
 import '../common/transitions/transitions.dart';
 import '../login_screen/view/login_view.dart';
 import '../main_layout/view/main_layout_view.dart';
 import '../onboarding_screen/view/onboarding_view.dart';
+import '../rating_screen/view/rate_view.dart';
 import '../register_screen/view/register_view.dart';
 import '../selection_screen/view/selection_view.dart';
 import '../splash_screen/view/splash_view.dart';
+import '../trip_screen/view/trip_view.dart';
 import '../verification_screen/view/verification_view.dart';
 import 'strings_manager.dart';
 
@@ -32,6 +35,7 @@ class Routes {
   static const String rateRoute = "/rate";
   static const String busesRoute = "/buses";
   static const String scheduleRoute = "/schedule";
+  static const String fromToRoute = "/fromTo";
 }
 
 class RouteGenerator {
@@ -66,6 +70,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const BusesScreen());
       case Routes.scheduleRoute:
         return MaterialPageRoute(builder: (_) => const ScheduleScreen());
+      case Routes.fromToRoute:
+        return MaterialPageRoute(builder: (_) => const TripFromTo());
       // case Routes.myCustomWidget:
       //   return MaterialPageRoute(builder: (_) => MyCustomWidget());
       default:

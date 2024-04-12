@@ -238,4 +238,272 @@ class AppTextStyles {
         fontSize: FontSize.f20,
       );
 
+  ///Trip Screen
+
+  static TextStyle tripScreenVehicleSelectionPageTitleTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.black,
+        fontSize: FontSize.f22,
+      );
+
+  static TextStyle tripScreenVehicleSelectionPageItemTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f22,
+      );
+
+  static TextStyle tripScreenVehicleSelectionPageButtonTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f22,
+      );
+
+  static TextStyle tripScreenConfirmPageTitleTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.black,
+        fontSize: FontSize.f22,
+      );
+
+  static TextStyle tripScreenConfirmPageVehicleTypeTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f22,
+      );
+
+  static TextStyle tripScreenConfirmPageRecommendedFareTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.black,
+        fontSize: FontSize.f18,
+      );
+
+  static TextStyle tripScreenConfirmPageDescriptionTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.black,
+        fontSize: FontSize.f10,
+      );
+
+  static TextStyle tripScreenConfirmPageButtonTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f22,
+      );
+
+  static TextStyle tripScreenPricePageTitleTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.tertiary,
+        fontSize: FontSize.f28,
+      );
+
+  static TextStyle tripScreenPricePageDescriptionTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.black,
+        fontSize: FontSize.f16,
+      );
+
+  static TextStyle tripScreenPricePagePlaceholderTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f14,
+      );
+
+  static TextStyle tripScreenPricePageButtonTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f22,
+      );
+
+  static TextStyle tripScreenSearchPageTitleTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.black,
+        fontSize: FontSize.f22,
+      );
+
+  static TextStyle tripScreenSearchPageVehicleTypeTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f22,
+      );
+
+  static TextStyle tripScreenSearchPagePleaseWaitTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.black,
+        fontSize: FontSize.f22,
+      );
+
+  static TextStyle tripScreenSearchPageButtonTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f22,
+      );
+
+  static TextStyle tripScreenDriverSelectionPageTitleTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.black,
+        fontSize: FontSize.f22,
+      );
+
+  static TextStyle tripScreenDriverSelectionPageNameTextStyle(BuildContext context, Color color) =>
+      getBoldStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: color,
+        fontSize: FontSize.f18,
+      );
+
+  static TextStyle tripScreenDriverSelectionPageLocationTextStyle(BuildContext context, Color color) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: color,
+        fontSize: FontSize.f12,
+      );
+
+  static TextStyle tripScreenDriverSelectionPagePriceTextStyle(BuildContext context, Color color) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: color,
+        fontSize: FontSize.f12,
+      );
+
+  static TextStyle tripScreenDriverSelectionPageCarTextStyle(BuildContext context, Color color) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: color,
+        fontSize: FontSize.f10,
+      );
+
+  static TextStyle tripScreenDriverSelectionPageLicenseTextStyle(BuildContext context, Color color) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: color,
+        fontSize: FontSize.f10,
+      );
+
+  static TextStyle tripScreenDriverSelectionPageColorTextStyle(BuildContext context, Color color) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: color,
+        fontSize: FontSize.f10,
+      );
+
+  static TextStyle tripScreenDriverSelectionPageRateTextStyle(BuildContext context, Color color) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: color,
+        fontSize: FontSize.f10,
+      );
+
+  static TextStyle tripScreenDriverSelectionPageTimeTextStyle(BuildContext context, Color color) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: color,
+        fontSize: FontSize.f10,
+      );
+
+  static TextStyle tripScreenDriverSelectionPageButtonTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f22,
+      );
+
+  static TextStyle tripScreenDetailsPageTitleTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.black,
+        fontSize: FontSize.f22,
+      );
+
+  static TextStyle tripScreenDetailsPageNameTextStyle(BuildContext context) =>
+      getBoldStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f18,
+      );
+
+  static TextStyle tripScreenDetailsPageLocationTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f12,
+      );
+
+  static TextStyle tripScreenDetailsPageCarTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f10,
+      );
+
+  static TextStyle tripScreenDetailsPageLicenseTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f10,
+      );
+
+  static TextStyle tripScreenDetailsPageColorTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f10,
+      );
+
+  static TextStyle tripScreenDetailsPageRateTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f10,
+      );
+
+  static TextStyle tripScreenDetailsPageTimeTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f10,
+      );
+
+  static TextStyle tripScreenDetailsPageButtonTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f22,
+      );
+
+  static TextStyle rateScreenTitleTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f22,
+      );
+
+  static TextStyle rateScreenDescriptionTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f12,
+      );
+
+  static TextStyle rateScreenButtonTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f22,
+      );
+
 }

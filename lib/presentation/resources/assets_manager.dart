@@ -13,7 +13,7 @@ class ImageAssets {
 class IconsAssets {
   IconsAssets._();
 
-  static const String _basePath = "assets/icons/";
+  // static const String _basePath = "assets/icons/";
 }
 
 class SVGAssets {
@@ -32,6 +32,7 @@ class SVGAssets {
   static const String emptyStar = "${_basePath}empty_star.svg";
   static const String fillPhone = "${_basePath}fillPhone.svg";
   static const String location = "${_basePath}location.svg";
+  static const String locationOutlined = "${_basePath}mingcute_location-line.svg";
 
   static const String email = "${_basePath}email.svg";
   static const String id = "${_basePath}id.svg";

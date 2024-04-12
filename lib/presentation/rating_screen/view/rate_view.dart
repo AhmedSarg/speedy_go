@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:speedy_go/presentation/rating_screen/view/widgets/rate_body.dart';
-import 'package:speedy_go/presentation/resources/values_manager.dart';
 
 import '../../base/base_states.dart';
 import '../../base/cubit_builder.dart';
 import '../../base/cubit_listener.dart';
+import '../../resources/values_manager.dart';
 import '../viewmodel/rate_viewmodel.dart';
+import 'widgets/rate_body.dart';
 
 class RateScreen extends StatelessWidget {
   const RateScreen({super.key});

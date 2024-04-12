@@ -2,17 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:speedy_go/domain/models/domain.dart';
-import 'package:speedy_go/presentation/trip_screen/view/widgets/trip_details.dart';
 
-import '../../../domain/models/enums.dart';
+import '../../../../../../domain/models/domain.dart';
+import '../../../../../../domain/models/enums.dart';
 import '../../base/base_cubit.dart';
-import '../view/states/trip_states.dart';
-import '../view/widgets/trip_driver.dart';
-import '../view/widgets/trip_search.dart';
-import '../view/widgets/trip_confirm.dart';
-import '../view/widgets/trip_price.dart';
-import '../view/widgets/trip_vehicle.dart';
+import '../states/trip_states.dart';
+import '../view/pages/details_pages/trip_confirm.dart';
+import '../view/pages/details_pages/trip_details.dart';
+import '../view/pages/details_pages/trip_driver.dart';
+import '../view/pages/details_pages/trip_price.dart';
+import '../view/pages/details_pages/trip_search.dart';
+import '../view/pages/details_pages/trip_vehicle.dart';
 
 class TripViewModel extends BaseCubit
     implements TripViewModelInput, TripViewModelOutput {
@@ -134,6 +134,9 @@ class TripViewModel extends BaseCubit
     if (_pageIndex < 5) {
       _pageIndex += 1;
       _setPageContent();
+    }
+    else if (_pageIndex == 5) {
+      emit(RateDriverState());
     }
   }
 

@@ -1,16 +1,15 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:speedy_go/app/extensions.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-import '../../../resources/assets_manager.dart';
-import '../../../resources/color_manager.dart';
-import '../../../resources/font_manager.dart';
-import '../../../resources/strings_manager.dart';
-import '../../../resources/text_styles.dart';
-import '../../../resources/values_manager.dart';
-import '../../viewmodel/trip_viewmodel.dart';
+import '../../../../resources/assets_manager.dart';
+import '../../../../resources/color_manager.dart';
+import '../../../../resources/strings_manager.dart';
+import '../../../../resources/text_styles.dart';
+import '../../../../resources/values_manager.dart';
+import '../../../viewmodel/trip_viewmodel.dart';
 
 class TripDetails extends StatelessWidget {
   const TripDetails({super.key});
@@ -25,9 +24,8 @@ class TripDetails extends StatelessWidget {
         Column(
           children: [
             Text(
-              AppStrings.selectDriver,
-              style: AppTextStyles.SelectionTextStyle(
-                  context, ColorManager.black, FontSize.f24),
+              AppStrings.tripScreenDetailsPageTitle.tr(),
+              style: AppTextStyles.tripScreenDetailsPageTitleTextStyle(context),
             ),
             const Divider(
               color: ColorManager.grey,
@@ -58,11 +56,7 @@ class TripDetails extends StatelessWidget {
                       children: [
                         Text(
                           viewModel.getSelectedDriver.name,
-                          style: AppTextStyles.SelectionTextStyle(
-                            context,
-                            ColorManager.white,
-                            FontSize.f18,
-                          ),
+                          style: AppTextStyles.tripScreenDetailsPageNameTextStyle(context)
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -75,11 +69,7 @@ class TripDetails extends StatelessWidget {
                             Expanded(
                               child: Text(
                                 viewModel.getSelectedDriver.location,
-                                style: AppTextStyles.SelectionTextStyle(
-                                  context,
-                                  ColorManager.white,
-                                  FontSize.f12,
-                                ),
+                                style: AppTextStyles.tripScreenDetailsPageLocationTextStyle(context),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -111,19 +101,11 @@ class TripDetails extends StatelessWidget {
                       children: [
                         Text(
                           viewModel.getSelectedDriver.car,
-                          style: AppTextStyles.SelectionTextStyle(
-                            context,
-                            ColorManager.white,
-                            FontSize.f12,
-                          ),
+                          style: AppTextStyles.tripScreenDetailsPageCarTextStyle(context),
                         ),
                         Text(
                           viewModel.getSelectedDriver.license,
-                          style: AppTextStyles.SelectionTextStyle(
-                            context,
-                            ColorManager.white,
-                            FontSize.f12,
-                          ),
+                          style: AppTextStyles.tripScreenDetailsPageLicenseTextStyle(context),
                         ),
                       ],
                     ),
@@ -132,12 +114,8 @@ class TripDetails extends StatelessWidget {
                     width: (context.width() - AppSize.s54) / 3,
                     child: Center(
                       child: Text(
-                        "Color: ${viewModel.getSelectedDriver.color}",
-                        style: AppTextStyles.SelectionTextStyle(
-                          context,
-                          ColorManager.white,
-                          FontSize.f12,
-                        ),
+                        "${AppStrings.tripScreenDetailsPageColor.tr()}: ${viewModel.getSelectedDriver.color}",
+                        style: AppTextStyles.tripScreenDetailsPageColorTextStyle(context),
                       ),
                     ),
                   ),
@@ -148,11 +126,7 @@ class TripDetails extends StatelessWidget {
                       children: [
                         Text(
                           viewModel.getSelectedDriver.rate.toString(),
-                          style: AppTextStyles.SelectionTextStyle(
-                            context,
-                            ColorManager.white,
-                            FontSize.f12,
-                          ),
+                          style: AppTextStyles.tripScreenDetailsPageRateTextStyle(context),
                         ),
                         const SizedBox(width: AppSize.s5),
                         SvgPicture.asset(SVGAssets.star, height: AppSize.s10),
@@ -163,29 +137,29 @@ class TripDetails extends StatelessWidget {
               ),
               const SizedBox(height: AppSize.s10),
               Text(
-                "Will arrive in ${viewModel.getSelectedDriver.time} mins.",
-                style: AppTextStyles.SelectionTextStyle(
-                  context,
-                  ColorManager.white,
-                  FontSize.f12,
-                ),
+                "${AppStrings.tripScreenDetailsPageArrival1.tr()}${viewModel.getSelectedDriver.time}${AppStrings.tripScreenDetailsPageArrival2.tr()}",
+                style: AppTextStyles.tripScreenDetailsPageTimeTextStyle(context),
               ),
             ],
           ),
         ),
-        ElevatedButton(
-          onPressed: () {},
-          style: ElevatedButton.styleFrom(
-            backgroundColor: ColorManager.lightBlue,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(AppSize.s15),
+        SizedBox(
+          height: AppSize.s50,
+          width: AppSize.infinity,
+          child: ElevatedButton(
+            onPressed: () {
+              viewModel.nextPage();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: ColorManager.lightBlue,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppSize.s15),
+              ),
             ),
-            fixedSize: const Size(AppSize.s200, AppSize.s50),
-          ),
-          child: Text(
-            AppStrings.endTrip,
-            style: AppTextStyles.SelectionTextStyle(
-                context, ColorManager.white, FontSize.f22),
+            child: Text(
+              AppStrings.tripScreenDetailsPageEndTrip.tr(),
+              style: AppTextStyles.tripScreenDetailsPageButtonTextStyle(context),
+            ),
           ),
         ),
       ],
