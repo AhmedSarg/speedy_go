@@ -135,6 +135,9 @@ class TripViewModel extends BaseCubit
       _pageIndex += 1;
       _setPageContent();
     }
+    else if (_pageIndex == 5) {
+      emit(RateDriverState());
+    }
   }
 
   prevPage() {

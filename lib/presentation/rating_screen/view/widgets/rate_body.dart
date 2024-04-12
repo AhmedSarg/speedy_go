@@ -1,14 +1,16 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:speedy_go/presentation/rating_screen/viewmodel/rate_viewmodel.dart';
-import 'package:speedy_go/presentation/resources/assets_manager.dart';
+import 'package:speedy_go/app/extensions.dart';
+import 'package:speedy_go/presentation/resources/routes_manager.dart';
 
+import '../../../resources/assets_manager.dart';
 import '../../../resources/color_manager.dart';
 import '../../../resources/font_manager.dart';
-import '../../../resources/routes_manager.dart';
 import '../../../resources/strings_manager.dart';
 import '../../../resources/text_styles.dart';
 import '../../../resources/values_manager.dart';
+import '../../viewmodel/rate_viewmodel.dart';
 
 class RateBody extends StatelessWidget {
   const RateBody({super.key, required this.viewModel});
@@ -17,48 +19,58 @@ class RateBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        const Back(),
-        SvgPicture.asset(SVGAssets.logo,
-            height: AppSize.s80, width: AppSize.s100),
-        Column(
-          children: [
-            Text("How was last trip ?",
-                style: AppTextStyles.SelectionTextStyle(
-                    context, ColorManager.white, FontSize.f22)),
-
-            Rating(viewModel: viewModel),
-
-            Text("Help us by leaving feedback",
-                style: AppTextStyles.SelectionTextStyle(
-                    context, ColorManager.white, FontSize.f10)),
-          ],
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(AppPadding.p20),
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: ColorManager.error,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppSize.s10),
-                  ),
-                  fixedSize: const Size(AppSize.s200, AppSize.s50),
-                ),
-                child: Text(
-                  AppStrings.cancel,
-                  style: AppTextStyles.SelectionTextStyle(
-                      context, ColorManager.white, FontSize.f22),
+    return SafeArea(
+      child: Column(
+        children: [
+          const Spacer(),
+          SizedBox.square(
+            dimension: context.width() * .4,
+            child: SvgPicture.asset(SVGAssets.logo),
+          ),
+          const Spacer(),
+          Text(
+            AppStrings.rateScreenTitle.tr(),
+            style: AppTextStyles.rateScreenTitleTextStyle(context),
+          ),
+          const SizedBox(height: AppSize.s10),
+          RatingBar(viewModel: viewModel),
+          const SizedBox(height: AppSize.s10),
+          Text(
+            AppStrings.rateScreenDescription.tr(),
+            style: AppTextStyles.rateScreenDescriptionTextStyle(context),
+          ),
+          const Spacer(flex: 3),
+          Container(
+            width: AppSize.infinity,
+            height: AppSize.s50,
+            margin: const EdgeInsets.symmetric(horizontal: AppMargin.m64),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, Routes.mainLayoutRoute);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: ColorManager.error,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AppSize.s10),
                 ),
               ),
+              child: Text(
+                AppStrings.rateScreenCancel.tr(),
+                style: AppTextStyles.rateScreenButtonTextStyle(context),
+              ),
             ),
-            ElevatedButton(
-              onPressed: (viewModel.indexRate != 0) ? () {} : null,
+          ),
+          const SizedBox(height: AppSize.s20),
+          Container(
+            width: AppSize.infinity,
+            height: AppSize.s50,
+            margin: const EdgeInsets.symmetric(horizontal: AppMargin.m32),
+            child: ElevatedButton(
+              onPressed: (viewModel.indexRate != 0)
+                  ? () {
+                      Navigator.pushNamed(context, Routes.mainLayoutRoute);
+                    }
+                  : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: ColorManager.darkGreen,
                 disabledBackgroundColor:
@@ -66,118 +78,53 @@ class RateBody extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(AppSize.s15),
                 ),
-                fixedSize: const Size(AppSize.s300, AppSize.s50),
               ),
               child: Text(
-                AppStrings.confirm,
-                style: AppTextStyles.SelectionTextStyle(
-                    context, ColorManager.white, FontSize.f22),
+                AppStrings.rateScreenConfirm.tr(),
+                style: AppTextStyles.rateScreenButtonTextStyle(context),
               ),
             ),
-          ],
-        )
-      ],
-    );
-  }
-}
-
-class Back extends StatelessWidget {
-  const Back({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.topLeft,
-      child: Padding(
-        padding:
-            const EdgeInsets.only(left: AppPadding.p20, top: AppPadding.p80),
-        child: CircleAvatar(
-          radius: AppSize.s18,
-          backgroundColor: ColorManager.grey,
-          child: IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, Routes.registerRoute);
-            },
-            padding: const EdgeInsets.only(left: AppPadding.p4),
-            icon: const Icon(
-              Icons.arrow_back_ios,
-            ),
-            color: ColorManager.white,
-            iconSize: AppSize.s12,
           ),
-        ),
+          const Spacer(),
+        ],
       ),
     );
   }
 }
 
-SvgPicture star(bool ok) {
-  if (ok) {
-    return SvgPicture.asset(SVGAssets.fillStar);
-  } else {
-    return SvgPicture.asset(SVGAssets.emptyStar);
-  }
-}
-
-class Rating extends StatelessWidget {
-  const Rating({super.key, required this.viewModel});
+class RatingBar extends StatelessWidget {
+  const RatingBar({super.key, required this.viewModel});
 
   final RateViewModel viewModel;
 
+  SvgPicture star(bool ok) {
+    if (ok) {
+      return SvgPicture.asset(SVGAssets.fillStar);
+    } else {
+      return SvgPicture.asset(SVGAssets.emptyStar);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(AppPadding.p20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Spacer(flex: 8),
-          GestureDetector(
+    return SizedBox(
+      height: AppSize.s30,
+      child: Center(
+        child: ListView.separated(
+          itemCount: 5,
+          scrollDirection: Axis.horizontal,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemBuilder: (context, i) => GestureDetector(
             onTap: () {
-              viewModel.rated(1);
+              viewModel.rated(i + 1);
             },
             child: star(
-              viewModel.changeRate(1),
+              viewModel.changeRate(i + 1),
             ),
           ),
-          const Spacer(),
-          GestureDetector(
-            onTap: () {
-              viewModel.rated(2);
-            },
-            child: star(
-              viewModel.changeRate(2),
-            ),
-          ),
-          const Spacer(),
-          GestureDetector(
-            onTap: () {
-              viewModel.rated(3);
-            },
-            child: star(
-              viewModel.changeRate(3),
-            ),
-          ),
-          const Spacer(),
-          GestureDetector(
-            onTap: () {
-              viewModel.rated(4);
-            },
-            child: star(
-              viewModel.changeRate(4),
-            ),
-          ),
-          const Spacer(),
-          GestureDetector(
-            onTap: () {
-              viewModel.rated(5);
-            },
-            child: star(
-              viewModel.changeRate(5),
-            ),
-          ),
-          const Spacer(flex: 8),
-        ],
+          separatorBuilder: (_, __) => const SizedBox(width: AppSize.s10),
+        ),
       ),
     );
   }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:speedy_go/presentation/common/widget/main_app_bar.dart';
 import 'package:speedy_go/presentation/rating_screen/view/widgets/rate_body.dart';
+import 'package:speedy_go/presentation/resources/color_manager.dart';
 import 'package:speedy_go/presentation/resources/values_manager.dart';
 
 import '../../base/base_states.dart';

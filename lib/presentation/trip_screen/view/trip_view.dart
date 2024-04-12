@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:speedy_go/presentation/resources/routes_manager.dart';
+import 'package:speedy_go/presentation/trip_screen/view/states/trip_states.dart';
 
 import '../../base/base_states.dart';
 import '../../base/cubit_builder.dart';
@@ -39,6 +41,9 @@ class TripScreen extends StatelessWidget {
                 create: (context) => TripViewModel()..start(),
                 child: BlocConsumer<TripViewModel, BaseStates>(
                   listener: (context, state) {
+                    if (state is RateDriverState) {
+                      Navigator.pushNamed(context, Routes.rateRoute);
+                    }
                     baseListener(context, state);
                   },
                   builder: (context, state) {

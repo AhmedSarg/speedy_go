@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../resources/assets_manager.dart';
@@ -25,8 +26,7 @@ class TripPrice extends StatelessWidget {
             children: [
               Text(
                 "EGP ${viewModel.price.toString()}",
-                style: AppTextStyles.SelectionTextStyle(
-                    context, ColorManager.black, FontSize.f22),
+                style: AppTextStyles.tripScreenPricePageTitleTextStyle(context),
               ),
               const Divider(
                 color: ColorManager.black,
@@ -34,16 +34,15 @@ class TripPrice extends StatelessWidget {
                 endIndent: AppSize.s20,
               ),
               Text(
-                "Recommended fare, adjustable",
-                style: AppTextStyles.SelectionTextStyle(
-                    context, ColorManager.black, FontSize.f16),
+                AppStrings.tripScreenPricePageDescription.tr(),
+                style: AppTextStyles.tripScreenPricePageDescriptionTextStyle(context),
               ),
             ],
           ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(
-              horizontal: AppPadding.p40, vertical: AppPadding.p30),
+              horizontal: AppPadding.p40, vertical: AppPadding.p30,),
           child: TextField(
             controller: viewModel.newPrice,
             keyboardType: TextInputType.number,
@@ -51,8 +50,8 @@ class TripPrice extends StatelessWidget {
             decoration: InputDecoration(
               fillColor: ColorManager.darkShadeOfGrey,
               filled: true,
-              hintText: "Cash",
-              hintStyle: const TextStyle(color: ColorManager.white),
+              hintText: AppStrings.tripScreenPricePagePlaceholder.tr(),
+              hintStyle: AppTextStyles.tripScreenPricePagePlaceholderTextStyle(context),
               hoverColor: ColorManager.lightBlue,
               prefixIconConstraints: const BoxConstraints(),
               prefixIcon: Padding(
@@ -75,46 +74,47 @@ class TripPrice extends StatelessWidget {
         Column(
           children: [
             const Divider(color: ColorManager.black),
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      viewModel.prevPage();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: ColorManager.error,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppSize.s10),
+            SizedBox(
+              height: AppSize.s50,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        viewModel.prevPage();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: ColorManager.error,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(AppSize.s10),
+                        ),
+                      ),
+                      child: Text(
+                        AppStrings.tripScreenPricePageBack.tr(),
+                        style: AppTextStyles.tripScreenPricePageButtonTextStyle(context),
                       ),
                     ),
-                    child: Text(
-                      'Back',
-                      style: AppTextStyles.SelectionTextStyle(
-                          context, ColorManager.white, FontSize.f22),
-                    ),
                   ),
-                ),
-                const SizedBox(width: AppSize.s10),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      viewModel.nextPage();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: ColorManager.green,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppSize.s10),
+                  const SizedBox(width: AppSize.s10),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        viewModel.nextPage();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: ColorManager.green,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(AppSize.s10),
+                        ),
+                      ),
+                      child: Text(
+                        AppStrings.tripScreenPricePageNext.tr(),
+                        style: AppTextStyles.tripScreenPricePageButtonTextStyle(context),
                       ),
                     ),
-                    child: Text(
-                      'Next',
-                      style: AppTextStyles.SelectionTextStyle(
-                          context, ColorManager.white, FontSize.f22),
-                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

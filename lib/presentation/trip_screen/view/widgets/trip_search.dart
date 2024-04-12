@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:speedy_go/app/extensions.dart';
@@ -5,7 +6,6 @@ import 'package:speedy_go/app/extensions.dart';
 import '../../../../domain/models/enums.dart';
 import '../../../resources/assets_manager.dart';
 import '../../../resources/color_manager.dart';
-import '../../../resources/font_manager.dart';
 import '../../../resources/strings_manager.dart';
 import '../../../resources/text_styles.dart';
 import '../../../resources/values_manager.dart';
@@ -25,9 +25,8 @@ class TripSearch extends StatelessWidget {
         Column(
           children: [
             Text(
-              AppStrings.searchNearestDriver,
-              style: AppTextStyles.SelectionTextStyle(
-                  context, ColorManager.black, FontSize.f22),
+              AppStrings.tripScreenSearchPageTitle.tr(),
+              style: AppTextStyles.tripScreenSearchPageTitleTextStyle(context),
             ),
             const Divider(
               color: ColorManager.black,
@@ -45,30 +44,32 @@ class TripSearch extends StatelessWidget {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(AppSize.s20),
                 border: Border.all(color: ColorManager.black),
-                color: ColorManager.darkBlack
-            ),
+                color: ColorManager.darkBlack),
             child: Column(
               children: [
                 const Spacer(),
                 FittedBox(
                   child: SvgPicture.asset(
-                    viewModel.getTripType == TripType.car ? SVGAssets.car : SVGAssets.tuktuk,
+                    viewModel.getTripType == TripType.car
+                        ? SVGAssets.car
+                        : SVGAssets.tuktuk,
                   ),
                 ),
                 const Spacer(),
                 Text(
-                  viewModel.getTripType == TripType.car ? 'Car' : 'Tuktuk',
-                  style: AppTextStyles.SelectionTextStyle(
-                      context, ColorManager.white, FontSize.f22),
+                  viewModel.getTripType == TripType.car
+                      ? AppStrings.tripScreenSearchPageCar.tr()
+                      : AppStrings.tripScreenSearchPageTukTuk.tr(),
+                  style: AppTextStyles.tripScreenSearchPageVehicleTypeTextStyle(
+                      context),
                 ),
               ],
             ),
           ),
         ),
         Text(
-          AppStrings.pleaseWait,
-          style: AppTextStyles.SelectionTextStyle(
-              context, ColorManager.black, FontSize.f22),
+          AppStrings.tripScreenSearchPagePleaseWait.tr(),
+          style: AppTextStyles.tripScreenSearchPagePleaseWaitTextStyle(context),
         ),
         const SizedBox(height: AppSize.s5),
         const Row(
@@ -89,19 +90,21 @@ class TripSearch extends StatelessWidget {
           ],
         ),
         const SizedBox(height: AppSize.s20),
-        ElevatedButton(
-          onPressed: () {},
-          style: ElevatedButton.styleFrom(
-            backgroundColor: ColorManager.error,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(AppSize.s10),
+        SizedBox(
+          height: AppSize.s50,
+          width: AppSize.infinity,
+          child: ElevatedButton(
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              backgroundColor: ColorManager.error,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppSize.s10),
+              ),
             ),
-            fixedSize: const Size(AppSize.s300, AppSize.s50),
-          ),
-          child: Text(
-            AppStrings.cancel,
-            style: AppTextStyles.SelectionTextStyle(
-                context, ColorManager.white, FontSize.f22),
+            child: Text(
+              AppStrings.tripScreenSearchPageCancel.tr(),
+              style: AppTextStyles.tripScreenSearchPageButtonTextStyle(context),
+            ),
           ),
         ),
       ],
