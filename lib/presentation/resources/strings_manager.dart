@@ -145,6 +145,7 @@ class AppStrings {
   static const areYouSure = "areYouSure";
   static const sure = "sure";
   static const cancel = "Cancel";
+  static const close = "Close";
   static const done = "Done";
 
   ///Validations

@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:speedy_go/presentation/resources/assets_manager.dart';
 import 'package:speedy_go/presentation/resources/color_manager.dart';
 import 'package:speedy_go/presentation/resources/font_manager.dart';
+import 'package:speedy_go/presentation/resources/routes_manager.dart';
 import 'package:speedy_go/presentation/resources/styles_manager.dart';
 import 'package:speedy_go/presentation/resources/values_manager.dart';
 import 'package:speedy_go/presentation/trip_screen/view/pages/map_pages/viewmodel/trip_map_viewmodel.dart';
@@ -27,7 +28,7 @@ class TripMapBody extends StatelessWidget {
             target: LatLng(37.42796133580664, -122.085749655962),
             zoom: 14.4746,
           ),
-          style: viewModel.mapStyle,
+          // style: viewModel.mapStyle,
           onMapCreated: (mapController) async {
             viewModel.getMapStyle();
             viewModel.setMapController = mapController;
@@ -40,7 +41,9 @@ class TripMapBody extends StatelessWidget {
               vertical: AppPadding.p20,
             ),
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                  Navigator.pushNamed(context, Routes.searchMapRoute);
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: ColorManager.primary,
                 foregroundColor: ColorManager.black,

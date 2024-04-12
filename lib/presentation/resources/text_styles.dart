@@ -480,5 +480,24 @@ class AppTextStyles {
         color: ColorManager.white,
         fontSize: FontSize.f22,
       );
+  static TextStyle searchMapScreenChooseTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.charcoalGrey,
+        fontSize: FontSize.f14,
+      );
+  static TextStyle searchMapScreenTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.mutedBlue,
+        fontSize: FontSize.f18,
+      );
+
+  static TextStyle searchMapScreenButtonTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.mutedBlue,
+        fontSize: FontSize.f18,
+      );
 
 }
