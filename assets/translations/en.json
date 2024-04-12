@@ -84,5 +84,16 @@
   "verificationScreenDescription": "We've sent you sms with a validation code to your phone number\nenter the validation code",
   "verificationScreenButton": "Verify",
   "verificationScreenLoginSuccessMessage": "Account Verified Successfully",
-  "verificationScreenRegisterSuccessMessage": "Registered Successfully"
+  "verificationScreenRegisterSuccessMessage": "Registered Successfully",
+
+
+
+  "busesTitle": "Buses",
+  "busesschedule": "schedule",
+  "busesAddBus": "Add Bus",
+  "busesMyBuses": "My Buses",
+  "busesAddTrip": "Add Trip"
+
+
+
 }

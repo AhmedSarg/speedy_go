@@ -54,6 +54,22 @@ class AppStrings {
   static const verificationScreenLoginSuccessMessage = "verificationScreenLoginSuccessMessage";
   static const verificationScreenRegisterSuccessMessage = "verificationScreenRegisterSuccessMessage";
 
+
+  /// buses screen
+  static const  busesTitle =    "busesTitle";
+  static const  busesschedule = "busesschedule";
+  static const  busesAddBus =   "busesAddBus";
+  static const  busesMyBuses =  "busesMyBuses";
+  static const  busesAddTrip =  "busesAddTrip";
+
+
+
+
+
+
+
+
+
   ///General
   static const noRouteFound = "noRouteFound";
   static const retryAgain = "retryAgain";

@@ -1,5 +1,17 @@
 {
   "splashScreenTitleDriver": "السائق",
   "splashScreenTitlePassenger": "المسافر",
-  "splashSubScreenTitle": "وضع"
+  "splashSubScreenTitle": "وضع",
+
+
+
+
+
+
+  "busesTitle": "الباصات",
+  "busesschedule": "جدول المواعيد",
+  "busesAddBus": "إضافة حافلة",
+  "busesMyBuses": "الحافلات الخاصة بي",
+  "busesAddTrip": "إضافة رحلة"
+
 }

@@ -64,6 +64,7 @@ dependencies:
   animations:
   string_validator:
   firebase_app_check:
+  table_calendar: ^3.0.9
 #  map_location_picker:
 #  flutter_google_places:
 

@@ -40,6 +40,14 @@ class SVGAssets {
   static const String person = "${_basePath}person.svg";
   static const String phone = "${_basePath}phone.svg";
   static const String checkmark = "${_basePath}checkmark.svg";
+
+  static const String schedule = "${_basePath}Calendar--Streamline-Guidance.svg";
+  static const String addBus_1 = "${_basePath}Group 3105.svg";
+  static const String myBuses = "${_basePath}tabler_bus.svg";
+  static const String addTrip = "${_basePath}tabler_route-square.svg";
+  static const String calender = "${_basePath}Calendar.svg";
+
+
 }
 
 class LottieAssets {

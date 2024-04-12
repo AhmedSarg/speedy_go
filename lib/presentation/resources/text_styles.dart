@@ -213,4 +213,29 @@ class AppTextStyles {
         fontSize: FontSize.f12,
       );
 
+
+
+
+  ///Buses Screen
+  static TextStyle busesTitleTextStyle(BuildContext context) =>
+      getExtraBoldStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f24,
+
+      );
+
+  static TextStyle busesItemTextStyle(BuildContext context) =>
+      getMediumStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.lightShadeOfblue.withOpacity(.75),
+        fontSize: FontSize.f20,
+      );
+  static TextStyle busesSubItemTextStyle(BuildContext context) =>
+      getMediumStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white.withOpacity(.9),
+        fontSize: FontSize.f20,
+      );
+
 }
