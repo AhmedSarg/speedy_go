@@ -237,6 +237,25 @@ class AppTextStyles {
         color: ColorManager.white.withOpacity(.9),
         fontSize: FontSize.f20,
       );
+  static TextStyle busesItemHintTextStyle(BuildContext context) =>
+      getMediumStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.grey.withOpacity(.75),
+        fontSize: FontSize.f12,
+      );
+  static TextStyle busesItemTripTitleTextStyle(BuildContext context) =>
+      getMediumStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.lightBlue.withOpacity(.9),
+        fontSize: FontSize.f20,
+      );
+  static TextStyle busesItemTripTextStyle(BuildContext context) =>
+      getMediumStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.grey.withOpacity(.85),
+        fontSize: FontSize.f18,
+      );
+
 
   ///Trip Screen
 

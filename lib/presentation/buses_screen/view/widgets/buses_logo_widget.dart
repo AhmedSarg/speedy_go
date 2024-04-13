@@ -4,8 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import '../../../resources/assets_manager.dart';
 import '../../../resources/values_manager.dart';
 
-class BusesLogonWidget extends StatelessWidget {
-  const BusesLogonWidget({super.key});
+class BusesLogoWidget extends StatelessWidget {
+  const BusesLogoWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

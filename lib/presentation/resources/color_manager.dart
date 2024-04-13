@@ -8,6 +8,7 @@ class ColorManager {
   static const Color verylightGrey = Color(0xffA0A0A0);
   static const Color secondary = Color(0xffFE8723);
   static const Color tertiary = Color(0xff012053);
+  static const Color traditional = Color(0xff003E73);
   static const Color offwhite = Color(0xffD9D9D9);
   static const Color grey = Color(0xff3E3E3E);
   static const Color darkGrey = Color(0xff323334);
