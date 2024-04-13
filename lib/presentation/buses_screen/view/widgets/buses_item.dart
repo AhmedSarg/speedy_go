@@ -21,7 +21,7 @@ class BusesItem extends StatelessWidget {
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: AppMargin.m12),
-        width: MediaQuery.of(context).size.width*.85,
+        width: MediaQuery.of(context).size.width*.80,
         height: AppSize.s100,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppSize.s10),

@@ -125,10 +125,20 @@
 
 
   "busesTitle": "Buses",
-  "busesschedule": "schedule",
   "busesAddBus": "Add Bus",
   "busesMyBuses": "My Buses",
-  "busesAddTrip": "Add Trip"
+  "busesAddTrip": "Add Trip",
+  "busesschedule": "schedule",
+
+  "busesAddTripNum": "Num",
+  "busesAddTripNumHint": "choose num of bus",
+  "busesAddTripPrice": "Price",
+  "busesAddTripPriceHint": "write price of trip",
+  "busesAddTripFrom": "From",
+  "busesAddTripFromHint": "write trip start location",
+  "busesAddTripTo": "To",
+  "busesAddTripToHint": "write trip destination"
+
 
 
 
