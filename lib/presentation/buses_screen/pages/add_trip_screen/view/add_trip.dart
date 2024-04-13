@@ -27,6 +27,7 @@ class AddTripScreen extends StatelessWidget {
               context,
               state,
               AddTripBody(viewModel: AddTripViewModel()),
+
             );
           },
         ),
