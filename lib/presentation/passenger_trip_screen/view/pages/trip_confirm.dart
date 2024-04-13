@@ -3,22 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:speedy_go/app/extensions.dart';
 
-import '../../../../../domain/models/enums.dart';
-import '../../../../resources/assets_manager.dart';
-import '../../../../resources/color_manager.dart';
-import '../../../../resources/strings_manager.dart';
-import '../../../../resources/text_styles.dart';
-import '../../../../resources/values_manager.dart';
-import '../../../viewmodel/trip_viewmodel.dart';
+import '../../../../domain/models/enums.dart';
+import '../../../resources/assets_manager.dart';
+import '../../../resources/color_manager.dart';
+import '../../../resources/strings_manager.dart';
+import '../../../resources/text_styles.dart';
+import '../../../resources/values_manager.dart';
+import '../../viewmodel/passenger_trip_viewmodel.dart';
 
 class TripConfirm extends StatelessWidget {
   const TripConfirm({super.key});
 
-  static late TripViewModel viewModel;
+  static late PassengerTripViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {
-    viewModel = TripViewModel.get(context);
+    viewModel = PassengerTripViewModel.get(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [

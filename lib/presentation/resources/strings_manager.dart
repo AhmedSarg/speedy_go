@@ -113,6 +113,22 @@ class AppStrings {
   static const rateScreenCancel = "rateScreenCancel";
   static const rateScreenConfirm = "rateScreenConfirm";
 
+
+  /// buses screen
+  static const  busesTitle =    "busesTitle";
+  static const  busesschedule = "busesschedule";
+  static const  busesAddBus =   "busesAddBus";
+  static const  busesMyBuses =  "busesMyBuses";
+  static const  busesAddTrip =  "busesAddTrip";
+
+
+
+
+
+
+
+
+
   ///General
   static const noRouteFound = "noRouteFound";
   static const retryAgain = "retryAgain";

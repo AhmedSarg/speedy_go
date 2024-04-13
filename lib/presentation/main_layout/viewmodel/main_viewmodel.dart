@@ -4,9 +4,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:speedy_go/presentation/base/base_cubit.dart';
 import 'package:speedy_go/presentation/base/base_states.dart';
 
-class TripMapViewModel extends BaseCubit
-    implements TripMapViewModelInput, TripMapViewModelOutput {
-  static TripMapViewModel get(context) => BlocProvider.of(context);
+class MainViewModel extends BaseCubit
+    implements MainViewModelInput, MainViewModelOutput {
+  static MainViewModel get(context) => BlocProvider.of(context);
 
   late GoogleMapController _mapController;
 
@@ -26,8 +26,8 @@ class TripMapViewModel extends BaseCubit
   void start() {}
 }
 
-abstract class TripMapViewModelInput {
+abstract class MainViewModelInput {
   set setMapController(GoogleMapController mapController);
 }
 
-abstract class TripMapViewModelOutput {}
+abstract class MainViewModelOutput {}

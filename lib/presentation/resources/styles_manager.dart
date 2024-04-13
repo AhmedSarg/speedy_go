@@ -65,7 +65,7 @@ TextStyle getBoldStyle(
 
 TextStyle getExtraBoldStyle(
     {fontFamily = FontConstants.primaryEnglishFont, double fontSize = FontSize.f12, required Color color, List<Shadow>? shadows}) {
-  return _getTextStyle(fontFamily, fontSize, FontWeightManager.extraBold, color, shadows);
+  return _getTextStyle(fontFamily, fontSize, FontWeightManager.extraBold, color, shadows,);
 }
 
 // black style

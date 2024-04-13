@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../presentation/resources/routes_manager.dart';
 import '../presentation/resources/theme_manager.dart';
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -13,7 +12,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       debugShowCheckedModeBanner: false,
-      initialRoute: Routes.tripRoute,
+      initialRoute: Routes.mainLayoutRoute,
       theme: getApplicationTheme(),
       onGenerateRoute: RouteGenerator.getRoute,
     );

@@ -84,7 +84,6 @@
   "verificationScreenDescription": "We've sent you sms with a validation code to your phone number\nenter the validation code",
   "verificationScreenButton": "Verify",
   "verificationScreenLoginSuccessMessage": "Account Verified Successfully",
-  "verificationScreenRegisterSuccessMessage": "Registered Successfully",
 
   "tripScreenVehicleSelectionPageTitle": "Choose Your Vehicle",
   "tripScreenVehicleSelectionPageCar": "Car",
@@ -120,5 +119,17 @@
   "rateScreenTitle": "How Was Your Last Trip?",
   "rateScreenDescription": "Help us by leaving a feedback",
   "rateScreenCancel": "Cancel",
-  "rateScreenConfirm": "Confirm"
+  "rateScreenConfirm": "Confirm",
+  "verificationScreenRegisterSuccessMessage": "Registered Successfully",
+
+
+
+  "busesTitle": "Buses",
+  "busesschedule": "schedule",
+  "busesAddBus": "Add Bus",
+  "busesMyBuses": "My Buses",
+  "busesAddTrip": "Add Trip"
+
+
+
 }

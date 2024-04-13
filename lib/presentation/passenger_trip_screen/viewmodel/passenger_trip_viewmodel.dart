@@ -7,19 +7,21 @@ import '../../../../../../domain/models/domain.dart';
 import '../../../../../../domain/models/enums.dart';
 import '../../base/base_cubit.dart';
 import '../states/trip_states.dart';
-import '../view/pages/details_pages/trip_confirm.dart';
-import '../view/pages/details_pages/trip_details.dart';
-import '../view/pages/details_pages/trip_driver.dart';
-import '../view/pages/details_pages/trip_price.dart';
-import '../view/pages/details_pages/trip_search.dart';
-import '../view/pages/details_pages/trip_vehicle.dart';
+import '../view/pages/trip_confirm.dart';
+import '../view/pages/trip_details.dart';
+import '../view/pages/trip_driver.dart';
+import '../view/pages/trip_location.dart';
+import '../view/pages/trip_price.dart';
+import '../view/pages/trip_search.dart';
+import '../view/pages/trip_vehicle.dart';
 
-class TripViewModel extends BaseCubit
-    implements TripViewModelInput, TripViewModelOutput {
-  static TripViewModel get(context) => BlocProvider.of(context);
+class PassengerTripViewModel extends BaseCubit
+    implements PassengerTripViewModelInput, PassengerTripViewModelOutput {
+  static PassengerTripViewModel get(context) => BlocProvider.of(context);
   int _pageIndex = 0;
   Widget? _pageContent;
   TripType? _tripType;
+  bool _canPop = true;
   final List<TripDriverModel> _drivers = [
     TripDriverModel(
       id: 1,
@@ -78,11 +80,13 @@ class TripViewModel extends BaseCubit
 
   @override
   TripDriverModel get getSelectedDriver =>
-      _selectedDriver ??
-      TripDriverModel.fake();
+      _selectedDriver ?? TripDriverModel.fake();
 
   @override
   List<TripDriverModel> get getDrivers => _drivers;
+
+  @override
+  bool get getCanPop => _canPop;
 
   @override
   set setTripType(TripType tripType) {
@@ -102,24 +106,27 @@ class TripViewModel extends BaseCubit
     Widget res;
     switch (_pageIndex) {
       case 0:
-        res = TripVehicle();
+        res = const TripLocation();
         break;
       case 1:
-        res = const TripConfirm();
+        res = TripVehicle();
         break;
       case 2:
-        res = const TripPrice();
+        res = const TripConfirm();
         break;
       case 3:
+        res = const TripPrice();
+        break;
+      case 4:
         Future.delayed(const Duration(seconds: 2), () {
           nextPage();
         });
         res = const TripSearch();
         break;
-      case 4:
+      case 5:
         res = TripDriver();
         break;
-      case 5:
+      case 6:
         res = const TripDetails();
         break;
       default:
@@ -131,70 +138,33 @@ class TripViewModel extends BaseCubit
   }
 
   nextPage() {
-    if (_pageIndex < 5) {
+    _canPop = false;
+    if (_pageIndex < 6) {
       _pageIndex += 1;
       _setPageContent();
-    }
-    else if (_pageIndex == 5) {
+    } else if (_pageIndex == 6) {
       emit(RateDriverState());
     }
   }
 
   prevPage() {
+    if (_pageIndex == 1) {
+      _canPop = true;
+    }
     if (_pageIndex > 0) {
       _pageIndex -= 1;
       _setPageContent();
     }
   }
-
-// selectionCard(int index) {
-//   if (selectedCard == index) {
-//     selectedCard = -1;
-//   } else {
-//     selectedCard = index;
-//   }
-//   emit(SelectDriverState());
-// }
-
-// colorCardChange(int index) {
-//   if (index == selectedCard) {
-//     return ColorManager.darkBlack;
-//   } else {
-//     return ColorManager.transparent;
-//   }
-//   emit(ChangeColorCardState());
-// }
-
-// textColorCardChange(int index) {
-//   if (index == selectedCard) {
-//     return ColorManager.white;
-//   } else {
-//     return ColorManager.black;
-//   }
-// }
-
-// selectionItem(bool i) {
-//   if (i) {
-//     selectCar = !selectCar;
-//     selectTuktuk = false;
-//   } else {
-//     selectTuktuk = !selectTuktuk;
-//     selectCar = false;
-//   }
-//   // print("$selectCar c");
-//   // print("$selectTuktuk t");
-//   emit(SelectTripState());
-//   setColor();
-// }
 }
 
-abstract class TripViewModelInput {
+abstract class PassengerTripViewModelInput {
   set setTripType(TripType tripType);
 
   set setSelectedDriver(TripDriverModel selectedDriver);
 }
 
-abstract class TripViewModelOutput {
+abstract class PassengerTripViewModelOutput {
   Widget? get getPage;
 
   TripType? get getTripType;
@@ -204,4 +174,6 @@ abstract class TripViewModelOutput {
   TripDriverModel get getSelectedDriver;
 
   List<TripDriverModel> get getDrivers;
+
+  bool get getCanPop;
 }
