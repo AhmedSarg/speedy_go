@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:speedy_go/presentation/passenger_trip_screen/view/passenger_trip_view.dart';
 
 import '../../resources/assets_manager.dart';
 import '../../resources/color_manager.dart';
@@ -30,7 +29,8 @@ class MainLayoutBody extends StatelessWidget {
             target: LatLng(37.42796133580664, -122.085749655962),
             zoom: 14.4746,
           ),
-          // style: viewModel.mapStyle,
+          style: viewModel.mapStyle,
+          zoomControlsEnabled: false,
           onMapCreated: (mapController) async {
             viewModel.getMapStyle();
             viewModel.setMapController = mapController;
@@ -44,7 +44,7 @@ class MainLayoutBody extends StatelessWidget {
             ),
             child: ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, Routes.passengerTripRoute);
+                Navigator.pushNamed(context, Routes.passengerMapRoute);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: ColorManager.primary,

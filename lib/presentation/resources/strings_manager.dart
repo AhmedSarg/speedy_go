@@ -61,7 +61,11 @@ class AppStrings {
   static const verificationScreenRegisterSuccessMessage =
       "verificationScreenRegisterSuccessMessage";
 
-  ///Trip Screen
+  ///Trip Map Screen
+
+  static const tripMapScreenDone = "tripMapScreenDone";
+
+  ///Trip Details Screen
   static const tripScreenVehicleSelectionPageTitle =
       "tripScreenVehicleSelectionPageTitle";
   static const tripScreenVehicleSelectionPageCar =
@@ -113,29 +117,20 @@ class AppStrings {
   static const rateScreenCancel = "rateScreenCancel";
   static const rateScreenConfirm = "rateScreenConfirm";
 
-
   /// buses screen
-  static const  busesTitle =    "busesTitle";
-  static const  busesschedule = "busesschedule";
-  static const  busesAddBus =   "busesAddBus";
-  static const  busesMyBuses =  "busesMyBuses";
-  static const  busesAddTrip =  "busesAddTrip";
-  static const  busesAddTripNum =  "busesAddTripNum";
-  static const  busesAddTripNumHint =  "busesAddTripNumHint";
-  static const  busesAddTripPrice =  "busesAddTripPrice";
-  static const  busesAddTripPriceHint =  "busesAddTripPriceHint";
-  static const  busesAddTripFrom =  "busesAddTripFrom";
-  static const  busesAddTripFromHint =  "busesAddTripFromHint";
-  static const  busesAddTripTo =  "busesAddTripTo";
-  static const  busesAddTripToHint =  "busesAddTripToHint";
-
-
-
-
-
-
-
-
+  static const busesTitle = "busesTitle";
+  static const busesschedule = "busesschedule";
+  static const busesAddBus = "busesAddBus";
+  static const busesMyBuses = "busesMyBuses";
+  static const busesAddTrip = "busesAddTrip";
+  static const busesAddTripNum = "busesAddTripNum";
+  static const busesAddTripNumHint = "busesAddTripNumHint";
+  static const busesAddTripPrice = "busesAddTripPrice";
+  static const busesAddTripPriceHint = "busesAddTripPriceHint";
+  static const busesAddTripFrom = "busesAddTripFrom";
+  static const busesAddTripFromHint = "busesAddTripFromHint";
+  static const busesAddTripTo = "busesAddTripTo";
+  static const busesAddTripToHint = "busesAddTripToHint";
 
   ///General
   static const noRouteFound = "noRouteFound";
