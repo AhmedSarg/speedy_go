@@ -1,16 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:speedy_go/presentation/buses_screen/view/widgets/buses_item.dart';
 import 'package:speedy_go/presentation/buses_screen/view/widgets/buses_logo_widget.dart';
 import 'package:speedy_go/presentation/resources/color_manager.dart';
 import 'package:speedy_go/presentation/resources/routes_manager.dart';
-import 'package:speedy_go/presentation/resources/strings_manager.dart';
-import 'package:speedy_go/presentation/resources/strings_manager.dart';
-import 'package:speedy_go/presentation/resources/strings_manager.dart';
 import 'package:speedy_go/presentation/resources/strings_manager.dart';
 import 'package:speedy_go/presentation/resources/text_styles.dart';
 import 'package:speedy_go/presentation/resources/values_manager.dart';
