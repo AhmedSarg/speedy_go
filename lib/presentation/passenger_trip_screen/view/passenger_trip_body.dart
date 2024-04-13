@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 
-import '../../../../resources/assets_manager.dart';
-import '../../../../resources/color_manager.dart';
-import '../../../../resources/values_manager.dart';
-import '../../../viewmodel/trip_viewmodel.dart';
+import '../../resources/assets_manager.dart';
+import '../../resources/color_manager.dart';
+import '../../resources/values_manager.dart';
+import '../viewmodel/passenger_trip_viewmodel.dart';
 
-class TripDetailsBody extends StatelessWidget {
-  const TripDetailsBody({
+class PassengerTripBody extends StatelessWidget {
+  const PassengerTripBody({
     super.key,
     required this.viewModel,
   });
 
-  final TripViewModel viewModel;
+  final PassengerTripViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: false,
+      canPop: viewModel.getCanPop,
       onPopInvoked: (_) {
         viewModel.prevPage();
       },
@@ -47,7 +47,15 @@ class TripDetailsBody extends StatelessWidget {
                       alignment: Alignment.topLeft,
                       child: Padding(
                         padding: const EdgeInsets.all(AppPadding.p20),
-                        child: Back(onTap: viewModel.prevPage),
+                        child: Back(
+                          onTap: () {
+                            if (viewModel.getCanPop) {
+                              Navigator.pop(context);
+                            } else {
+                              viewModel.prevPage();
+                            }
+                          },
+                        ),
                       ),
                     ),
                     Container(
