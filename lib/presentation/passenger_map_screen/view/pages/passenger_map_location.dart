@@ -1,11 +1,13 @@
-import 'package:flutter/cupertino.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:speedy_go/domain/models/enums.dart';
 import 'package:speedy_go/presentation/common/widget/main_back_button.dart';
 import 'package:speedy_go/presentation/resources/color_manager.dart';
 import 'package:speedy_go/presentation/resources/font_manager.dart';
+import 'package:speedy_go/presentation/resources/strings_manager.dart';
 import 'package:speedy_go/presentation/resources/styles_manager.dart';
+import 'package:speedy_go/presentation/resources/text_styles.dart';
 import 'package:speedy_go/presentation/resources/values_manager.dart';
 
 import '../../viewmodel/passenger_map_viewmodel.dart';
@@ -80,11 +82,9 @@ class PassengerMapLocation extends StatelessWidget {
                         child: ElevatedButton(
                           onPressed: () {},
                           child: Text(
-                            'Done',
-                            style: getSemiBoldStyle(
-                              color: ColorManager.white,
-                              fontSize: FontSize.f22,
-                            ),
+                            AppStrings.tripMapScreenDone.tr(),
+                            style: AppTextStyles.tripMapScreenMapButtonTextStyle(
+                                context),
                           ),
                         ),
                       )

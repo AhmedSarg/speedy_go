@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:speedy_go/domain/models/enums.dart';
-import 'package:speedy_go/presentation/common/widget/main_app_bar.dart';
-import 'package:speedy_go/presentation/passenger_map_screen/states/passenger_map_states.dart';
-import 'package:speedy_go/presentation/passenger_map_screen/view/pages/passenger_map_body.dart';
-import 'package:speedy_go/presentation/passenger_map_screen/view/pages/passenger_map_location.dart';
-import 'package:speedy_go/presentation/passenger_map_screen/view/pages/passenger_map_permissions.dart';
-import 'package:speedy_go/presentation/resources/color_manager.dart';
 
+import '../../../domain/models/enums.dart';
 import '../../base/base_states.dart';
 import '../../base/cubit_builder.dart';
 import '../../base/cubit_listener.dart';
 import '../../resources/values_manager.dart';
+import '../states/passenger_map_states.dart';
 import '../viewmodel/passenger_map_viewmodel.dart';
+import 'pages/passenger_map_location.dart';
+import 'pages/passenger_map_permissions.dart';
+import 'pages/search_map.dart';
 
 class PassengerMapScreen extends StatelessWidget {
   const PassengerMapScreen({super.key});
@@ -48,7 +46,8 @@ class PassengerMapScreen extends StatelessWidget {
                   locationMapType: state.locationMapType,
                 );
               }
-              return baseBuilder(context, state, const PassengerMapBody());
+              // return baseBuilder(context, state, const PassengerMapBody());
+              return baseBuilder(context, state, const SearchMap());
             },
           ),
         ),

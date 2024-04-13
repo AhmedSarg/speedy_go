@@ -85,6 +85,8 @@
   "verificationScreenButton": "Verify",
   "verificationScreenLoginSuccessMessage": "Account Verified Successfully",
 
+  "tripMapScreenDone": "Done",
+
   "tripScreenVehicleSelectionPageTitle": "Choose Your Vehicle",
   "tripScreenVehicleSelectionPageCar": "Car",
   "tripScreenVehicleSelectionPageTukTuk": "Tuktuk",

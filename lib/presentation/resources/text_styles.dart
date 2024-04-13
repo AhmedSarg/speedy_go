@@ -256,8 +256,38 @@ class AppTextStyles {
         fontSize: FontSize.f18,
       );
 
+  ///Trip Map Screen
 
-  ///Trip Screen
+  static TextStyle tripMapScreenMapButtonTextStyle(BuildContext context) =>
+      getSemiBoldStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f22,
+      );
+
+  static TextStyle tripMapScreenPlaceholderTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.charcoalGrey,
+        fontSize: FontSize.f14,
+      );
+
+  static TextStyle tripMapScreenFromToTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.mutedBlue,
+        fontSize: FontSize.f18,
+      );
+
+  static TextStyle tripMapScreenFromToButtonTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.mutedBlue,
+        fontSize: FontSize.f18,
+      );
+
+
+  ///Trip Details Screen
 
   static TextStyle tripScreenVehicleSelectionPageTitleTextStyle(BuildContext context) =>
       getRegularStyle(
@@ -504,6 +534,8 @@ class AppTextStyles {
         fontSize: FontSize.f22,
       );
 
+  /// Rate Screen
+
   static TextStyle rateScreenTitleTextStyle(BuildContext context) =>
       getRegularStyle(
         fontFamily: AppLanguages.getPrimaryFont(context),
@@ -523,25 +555,6 @@ class AppTextStyles {
         fontFamily: AppLanguages.getPrimaryFont(context),
         color: ColorManager.white,
         fontSize: FontSize.f22,
-      );
-  static TextStyle searchMapScreenChooseTextStyle(BuildContext context) =>
-      getRegularStyle(
-        fontFamily: AppLanguages.getPrimaryFont(context),
-        color: ColorManager.charcoalGrey,
-        fontSize: FontSize.f14,
-      );
-  static TextStyle searchMapScreenTextStyle(BuildContext context) =>
-      getRegularStyle(
-        fontFamily: AppLanguages.getPrimaryFont(context),
-        color: ColorManager.mutedBlue,
-        fontSize: FontSize.f18,
-      );
-
-  static TextStyle searchMapScreenButtonTextStyle(BuildContext context) =>
-      getRegularStyle(
-        fontFamily: AppLanguages.getPrimaryFont(context),
-        color: ColorManager.mutedBlue,
-        fontSize: FontSize.f18,
       );
 
 }

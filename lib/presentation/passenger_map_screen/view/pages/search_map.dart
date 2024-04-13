@@ -1,5 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:path/path.dart';
+import 'package:speedy_go/app/extensions.dart';
 import 'package:speedy_go/presentation/resources/assets_manager.dart';
 import 'package:speedy_go/presentation/resources/color_manager.dart';
 import 'package:speedy_go/presentation/resources/strings_manager.dart';
@@ -11,9 +15,9 @@ class SearchMap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColorManager.black,
-      body: Column(
+    return Padding(
+      padding: const EdgeInsets.all(AppPadding.p20),
+      child: Column(
         children: [
           Align(
             alignment: Alignment.topLeft,
@@ -29,73 +33,114 @@ class SearchMap extends StatelessWidget {
           Stack(
             children: [
               Container(
+                height: AppSize.s100,
                 decoration: BoxDecoration(
-                  border: Border.all(),
+                  border: Border.all(
+                    width: AppSize.s1,
+                    strokeAlign: BorderSide.strokeAlignOutside,
+                  ),
                   borderRadius: const BorderRadius.only(
-                      topRight: Radius.circular(AppSize.s20),
-                      topLeft: Radius.circular(AppSize.s20)),
+                    topRight: Radius.circular(AppSize.s20),
+                    topLeft: Radius.circular(AppSize.s20),
+                  ),
                   color: ColorManager.lightShadeOfGrey,
                 ),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.all(AppPadding.p14),
-                          child: CircleAvatar(
-                            backgroundColor: ColorManager.lightGreen,
-                            radius: AppSize.s8,
-                          ),
-                        ),
-                        Text(
-                          "From : ",
-                          style:
-                              AppTextStyles.searchMapScreenTextStyle(context),
-                        ),
-                        GestureDetector(
-                          onTap: () {},
-                          child: Padding(
-                            padding: const EdgeInsets.all(AppPadding.p10),
-                            child: Text(
-                              "choose using map ",
-                              style:
-                                  AppTextStyles.searchMapScreenChooseTextStyle(
-                                      context),
-                            ),
-                          ),
-                        ),
-                      ],
+              ),
+              Positioned(
+                top: AppSize.s25 + AppSize.s4,
+                bottom: AppSize.s25 + AppSize.s4,
+                child: SizedBox(
+                  width: (context.width() - AppSize.s40 - AppSize.s2) * .2,
+                  child: Center(
+                    child: Container(
+                      color: ColorManager.black,
+                      width: AppSize.s1,
+                      height: AppSize.s42,
                     ),
-                    const Divider(color: ColorManager.mutedBlue),
-                    Row(
-                      children: [
-                        const Icon(Icons.arrow_drop_down, size: AppSize.s40),
-                        Text(
-                          "To : ",
-                          style:
-                              AppTextStyles.searchMapScreenTextStyle(context),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: AppSize.s100,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        print('frooom');
+                      },
+                      child: Container(
+                        height: AppSize.s49,
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width:
+                                  (context.width() - AppSize.s40 - AppSize.s2) *
+                                      .2,
+                              child: const Center(
+                                child: CircleAvatar(
+                                  backgroundColor: ColorManager.lightGreen,
+                                  radius: AppSize.s4,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              "From : ",
+                              style: AppTextStyles.tripMapScreenFromToTextStyle(
+                                  context),
+                            ),
+                            GestureDetector(
+                              onTap: () {},
+                              child: Text(
+                                "choose using map ",
+                                style: AppTextStyles
+                                    .tripMapScreenPlaceholderTextStyle(context),
+                              ),
+                            ),
+                          ],
                         ),
-                        GestureDetector(
-                          onTap: () {},
-                          child: Padding(
-                            padding: const EdgeInsets.all(AppPadding.p10),
-                            child: Text(
-                              "choose using map ",
-                              style:
-                                  AppTextStyles.searchMapScreenChooseTextStyle(
-                                      context),
+                      ),
+                    ),
+                    const Divider(
+                      color: ColorManager.mutedBlue,
+                      height: AppSize.s2,
+                    ),
+                    SizedBox(
+                      height: AppSize.s49,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width:
+                                (context.width() - AppSize.s40 - AppSize.s2) *
+                                    .2,
+                            child: const Center(
+                              child: Icon(
+                                Icons.arrow_drop_down,
+                                size: AppSize.s40,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                          Text(
+                            "To : ",
+                            style: AppTextStyles.tripMapScreenFromToTextStyle(
+                                context),
+                          ),
+                          GestureDetector(
+                            onTap: () {},
+                            child: Padding(
+                              padding: const EdgeInsets.all(AppPadding.p10),
+                              child: Text(
+                                "choose using map ",
+                                style: AppTextStyles
+                                    .tripMapScreenPlaceholderTextStyle(context),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-              ),
-              const Positioned(// مش شغاله
-                left: 10,
-                child: VerticalDivider(
-                    color: ColorManager.mutedBlue, thickness: 3),
               ),
             ],
           ),
@@ -105,12 +150,13 @@ class SearchMap extends StatelessWidget {
             children: [
               const Divider(color: ColorManager.mutedBlue),
               GestureDetector(
-                  onTap: () {},
-                  child: Text(
-                    AppStrings.cancel,
-                    style:
-                        AppTextStyles.searchMapScreenButtonTextStyle(context),
-                  ))
+                onTap: () {},
+                child: Text(
+                  AppStrings.cancel,
+                  style:
+                      AppTextStyles.tripMapScreenFromToButtonTextStyle(context),
+                ),
+              ),
             ],
           )
         ],

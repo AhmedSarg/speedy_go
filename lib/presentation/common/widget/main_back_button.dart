@@ -13,17 +13,18 @@ class Back extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(
-      radius: AppSize.s18,
-      backgroundColor: ColorManager.grey,
-      child: IconButton(
-        onPressed: onTap,
+    return ElevatedButton(
+      onPressed: onTap,
+      style: IconButton.styleFrom(
+        backgroundColor: ColorManager.grey,
+        foregroundColor: ColorManager.primary,
+        shape: const CircleBorder(),
         padding: const EdgeInsets.only(left: AppPadding.p4),
-        icon: const Icon(
-          Icons.arrow_back_ios,
-        ),
+      ),
+      child: const Icon(
+        Icons.arrow_back_ios,
+        size: AppSize.s12,
         color: ColorManager.white,
-        iconSize: AppSize.s12,
       ),
     );
   }
