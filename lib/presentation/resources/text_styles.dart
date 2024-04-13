@@ -237,6 +237,25 @@ class AppTextStyles {
         color: ColorManager.white.withOpacity(.9),
         fontSize: FontSize.f20,
       );
+  static TextStyle busesItemHintTextStyle(BuildContext context) =>
+      getMediumStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.grey.withOpacity(.75),
+        fontSize: FontSize.f12,
+      );
+  static TextStyle busesItemTripTitleTextStyle(BuildContext context) =>
+      getMediumStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.lightBlue.withOpacity(.9),
+        fontSize: FontSize.f20,
+      );
+  static TextStyle busesItemTripTextStyle(BuildContext context) =>
+      getMediumStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.grey.withOpacity(.85),
+        fontSize: FontSize.f18,
+      );
+
 
   ///Trip Screen
 
@@ -504,6 +523,25 @@ class AppTextStyles {
         fontFamily: AppLanguages.getPrimaryFont(context),
         color: ColorManager.white,
         fontSize: FontSize.f22,
+      );
+  static TextStyle searchMapScreenChooseTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.charcoalGrey,
+        fontSize: FontSize.f14,
+      );
+  static TextStyle searchMapScreenTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.mutedBlue,
+        fontSize: FontSize.f18,
+      );
+
+  static TextStyle searchMapScreenButtonTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.mutedBlue,
+        fontSize: FontSize.f18,
       );
 
 }

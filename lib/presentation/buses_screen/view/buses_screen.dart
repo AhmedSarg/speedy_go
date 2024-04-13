@@ -13,11 +13,14 @@ class BusesScreen extends StatelessWidget {
       backgroundColor: ColorManager.bgColor,
       appBar: AppBar(
         backgroundColor: ColorManager.bgColor,
-elevation: AppSize.s0,
+        elevation: AppSize.s0,
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(
-              icon: const Icon(Icons.menu,color: ColorManager.black,),
+              icon: const Icon(
+                Icons.menu,
+                color: ColorManager.black,
+              ),
               onPressed: () {
                 Scaffold.of(context).openDrawer();
               },
@@ -25,7 +28,7 @@ elevation: AppSize.s0,
           },
         ),
       ),
-      drawer:  const BusesDrawer(),
+      drawer: const BusesDrawer(),
       body: const BusesScreenBody(),
     );
   }

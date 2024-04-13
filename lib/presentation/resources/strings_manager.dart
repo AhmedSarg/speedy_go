@@ -120,6 +120,14 @@ class AppStrings {
   static const  busesAddBus =   "busesAddBus";
   static const  busesMyBuses =  "busesMyBuses";
   static const  busesAddTrip =  "busesAddTrip";
+  static const  busesAddTripNum =  "busesAddTripNum";
+  static const  busesAddTripNumHint =  "busesAddTripNumHint";
+  static const  busesAddTripPrice =  "busesAddTripPrice";
+  static const  busesAddTripPriceHint =  "busesAddTripPriceHint";
+  static const  busesAddTripFrom =  "busesAddTripFrom";
+  static const  busesAddTripFromHint =  "busesAddTripFromHint";
+  static const  busesAddTripTo =  "busesAddTripTo";
+  static const  busesAddTripToHint =  "busesAddTripToHint";
 
 
 
@@ -161,6 +169,7 @@ class AppStrings {
   static const areYouSure = "areYouSure";
   static const sure = "sure";
   static const cancel = "Cancel";
+  static const close = "Close";
   static const done = "Done";
 
   ///Validations

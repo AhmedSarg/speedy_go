@@ -12,6 +12,15 @@
   "busesschedule": "جدول المواعيد",
   "busesAddBus": "إضافة حافلة",
   "busesMyBuses": "الحافلات الخاصة بي",
-  "busesAddTrip": "إضافة رحلة"
+  "busesAddTrip": "إضافة رحلة",
+
+  "busesAddTripNum": "العدد",
+  "busesAddTripNumHint": "اختر عدد الحافلة",
+  "busesAddTripPrice": "السعر",
+  "busesAddTripPriceHint": "اكتب سعر الرحلة",
+  "busesAddTripFrom": "من",
+  "busesAddTripFromHint": "اكتب موقع بداية الرحلة",
+  "busesAddTripTo": "إلى",
+  "busesAddTripToHint": "اكتب وجهة الرحلة"
 
 }
