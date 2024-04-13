@@ -199,11 +199,17 @@ class AppTextStyles {
         fontSize: FontSize.f12,
       );
 
-  static TextStyle SelectionTextStyle(BuildContext context, Color color, double size) =>
+  static TextStyle chooseVehicleTextStyle(BuildContext context) =>
       getRegularStyle(
         fontFamily: AppLanguages.getPrimaryFont(context),
-        color: color,
-        fontSize: size,
+        color: ColorManager.white,
+        fontSize: FontSize.f22,
+      );
+  static TextStyle selectVehicleTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize:  FontSize.f32,
       );
 
   static TextStyle registerScreenVerifyDescriptionTextStyle(BuildContext context) =>
@@ -228,7 +234,7 @@ class AppTextStyles {
   static TextStyle busesItemTextStyle(BuildContext context) =>
       getMediumStyle(
         fontFamily: AppLanguages.getPrimaryFont(context),
-        color: ColorManager.lightShadeOfblue.withOpacity(.75),
+        color: ColorManager.lightShadeOfBlue.withOpacity(.75),
         fontSize: FontSize.f20,
       );
   static TextStyle busesSubItemTextStyle(BuildContext context) =>

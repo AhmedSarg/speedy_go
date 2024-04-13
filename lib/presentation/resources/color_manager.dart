@@ -25,7 +25,7 @@ class ColorManager {
   static const Color lightBlue = Color(0xff374487);
   static const Color darkBlack = Color(0xff3B3939);
   static const Color lightBlack = Color(0xffA0A0A0);
-  static const Color lightShadeOfblue = Color(0xff4053B2);
+  static const Color lightShadeOfBlue = Color(0xff4053B2);
 
   static const Color black = Color(0xff000000);
   static const Color white = Color(0xFFFFFFFF);

@@ -12,4 +12,8 @@ class AppConstants {
 
   //ongoing event layout
   static const int ongoingEventLayoutSwitchDur = 500;
+
+  //
+  static const int selectAnimationDur = 300;
+
 }

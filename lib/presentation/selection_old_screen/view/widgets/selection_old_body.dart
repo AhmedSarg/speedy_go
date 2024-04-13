@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:speedy_go/app/extensions.dart';
+import 'package:speedy_go/presentation/selection_old_screen/viewmodel/selection_old_viewmodel.dart';
 
 import '../../../../domain/models/enums.dart';
 import '../../../common/data_intent/data_intent.dart';
@@ -11,14 +12,11 @@ import '../../../resources/strings_manager.dart';
 import '../../../resources/values_manager.dart';
 import 'selection_old_tile.dart';
 
-class SelectionOldBody extends StatefulWidget {
-  const SelectionOldBody({super.key});
+class SelectionOldBody extends StatelessWidget {
+  const SelectionOldBody({super.key, required this.viewModel});
 
-  @override
-  State<SelectionOldBody> createState() => _SelectionOldBodyState();
-}
+  final SelectionViewModel viewModel;
 
-class _SelectionOldBodyState extends State<SelectionOldBody> {
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -30,18 +28,16 @@ class _SelectionOldBodyState extends State<SelectionOldBody> {
                 title: AppStrings.selectionScreenDriverTile.tr(),
                 imagePath: ImageAssets.driverSelectionTileImage,
                 onTap: () {
-                  setState(() {
-                    DataIntent.setSelection(Selection.driver);
-                  });
+                  viewModel.setSelected(Selection.driver);
+                    DataIntent.setSelection(viewModel.select);
                 }),
             SelectionOldTile(
                 type: Selection.passenger,
                 title: AppStrings.selectionScreenPassengerTile.tr(),
                 imagePath: ImageAssets.passengerSelectionTileImage,
                 onTap: () {
-                  setState(() {
-                    DataIntent.setSelection(Selection.passenger);
-                  });
+                    viewModel.setSelected(Selection.passenger);
+                    DataIntent.setSelection(viewModel.select);
                 }),
           ],
         ),
@@ -49,8 +45,8 @@ class _SelectionOldBodyState extends State<SelectionOldBody> {
           top: DataIntent.getSelection() == Selection.driver
               ? context.height() * .8 - AppSize.s35
               : (DataIntent.getSelection() == Selection.passenger
-                  ? context.height() * .2 - AppSize.s35
-                  : context.height() * .5 - AppSize.s35),
+              ? context.height() * .2 - AppSize.s35
+              : context.height() * .5 - AppSize.s35),
           left: context.width() / 2 - AppSize.s35,
           duration: const Duration(milliseconds: 300),
           child: SizedBox.square(
@@ -83,3 +79,6 @@ class _SelectionOldBodyState extends State<SelectionOldBody> {
     );
   }
 }
+
+
+

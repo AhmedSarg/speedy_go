@@ -5,6 +5,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:speedy_go/presentation/resources/assets_manager.dart';
 
 import '../../../app/functions.dart';
 import '../../../data/network/error_handler.dart';
@@ -27,6 +29,10 @@ class RegisterViewModel extends BaseCubit
     this._authenticateUseCase,
     this._registerCarDriverUseCase,
   );
+
+  int index = 0;
+  late SvgPicture icon;
+  late String nameVehicle;
 
   late Selection _registerType;
 
@@ -60,6 +66,8 @@ class RegisterViewModel extends BaseCubit
   @override
   void start() {
     _registerType = DataIntent.getSelection();
+    selectName();
+    selectIcon();
     if (_registerType == Selection.driver) {
       emit(RegisterVehicleSelectionState());
     } else {
@@ -388,6 +396,34 @@ class RegisterViewModel extends BaseCubit
 //     },
 //   );
 // }
+
+
+//selection
+  indexHandel(int select) {
+    if (select == 0) {
+      index--;
+    } else {
+      index++;
+    }
+    index = (index > 0) ? index % 3 : 0;
+    selectIcon();
+    selectName();
+    emit(ChangeVehicleState());
+  }
+
+  selectName() {
+    List<String> name = ['car', 'tuk-tuk', 'bus'];
+    nameVehicle = name[index];
+  }
+
+  selectIcon() {
+    List<SvgPicture> img = [
+      SvgPicture.asset(SVGAssets.car),
+      SvgPicture.asset(SVGAssets.tuktuk),
+      SvgPicture.asset(SVGAssets.bus)
+    ];
+    icon = img[index];
+  }
 }
 
 abstract class RegisterViewModelInput {

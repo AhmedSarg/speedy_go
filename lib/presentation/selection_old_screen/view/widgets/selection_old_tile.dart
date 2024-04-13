@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:speedy_go/app/extensions.dart';
+import 'package:speedy_go/presentation/resources/constants_manager.dart';
 
 import '../../../../domain/models/enums.dart';
 import '../../../common/data_intent/data_intent.dart';
@@ -32,7 +33,7 @@ class _SelectionOldTileState extends State<SelectionOldTile> {
     return GestureDetector(
       onTap: widget.onTap,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: AppConstants.selectAnimationDur),
         width: AppSize.infinity,
         height: context.height() *
             (selection == widget.type

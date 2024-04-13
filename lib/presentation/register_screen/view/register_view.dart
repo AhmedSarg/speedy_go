@@ -100,6 +100,9 @@ class RegisterScreen extends StatelessWidget {
                     } else if (state is LoadingState ||
                         state is ErrorState ||
                         state is SuccessState) {
+                    } else if (state is ChangeVehicleState) {
+                      viewModel.setContent =
+                          RegisterVehicleSelectionBody(viewModel: viewModel);
                     } else {
                       viewModel.setContent = RegisterBody(viewModel: viewModel);
                     }

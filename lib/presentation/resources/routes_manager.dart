@@ -7,11 +7,11 @@ import 'package:speedy_go/presentation/buses_screen/view/buses_screen.dart';
 import 'package:speedy_go/presentation/main_layout/view/main_layout_view.dart';
 import 'package:speedy_go/presentation/onboarding_screen/view/onboarding_view.dart';
 import 'package:speedy_go/presentation/rating_screen/view/rate_view.dart';
-import 'package:speedy_go/presentation/trip_screen/view/trip_view.dart';
-import 'package:speedy_go/presentation/trip_screen/view/pages/map_pages/view/pages/trip_map_from_to.dart';
+// import 'package:speedy_go/presentation/trip_screen/view/trip_view.dart';
+// import 'package:speedy_go/presentation/trip_screen/view/pages/map_pages/view/pages/trip_map_from_to.dart';
 
 import '../../app/sl.dart';
-import '../buses_screen/pages/schedule_screen.dart';
+// import '../buses_screen/pages/schedule_screen.dart';
 import '../buses_screen/view/buses_screen.dart';
 import '../buses_screen/pages/schedule_screen/schedule_screen.dart';
 import '../common/transitions/transitions.dart';
@@ -43,7 +43,7 @@ class Routes {
   static const String busesRoute = "/buses";
   static const String scheduleRoute = "/schedule";
   static const String addTripRoute = "/addTrip";
-  static const String fromToRoute = "/fromTo";
+  // static const String fromToRoute = "/fromTo";
 }
 
 class RouteGenerator {
@@ -86,8 +86,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const ScheduleScreen());
       case Routes.addTripRoute:
         return MaterialPageRoute(builder: (_) => const AddTripScreen());
-      case Routes.fromToRoute:
-        return MaterialPageRoute(builder: (_) => const TripFromTo());
+      // case Routes.fromToRoute:
+      //   return MaterialPageRoute(builder: (_) => const TripFromTo());
       // case Routes.myCustomWidget:
       //   return MaterialPageRoute(builder: (_) => MyCustomWidget());
       default:
