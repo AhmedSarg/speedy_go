@@ -44,7 +44,7 @@ class MainLayoutBody extends StatelessWidget {
             ),
             child: ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, Routes.passengerTripRoute);
+                Navigator.pushNamed(context, Routes.passengerMapRoute);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: ColorManager.primary,

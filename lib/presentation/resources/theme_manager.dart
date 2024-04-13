@@ -62,11 +62,10 @@ ThemeData getApplicationTheme() {
     // elevated button them
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        // textStyle: AppTextStyles.loginButtonTextStyle(null),
         foregroundColor: ColorManager.white,
-        backgroundColor: ColorManager.primary,
+        backgroundColor: ColorManager.secondary,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppSize.s100),
+          borderRadius: BorderRadius.circular(AppSize.s20),
         ),
       ),
     ),

@@ -106,27 +106,24 @@ class PassengerTripViewModel extends BaseCubit
     Widget res;
     switch (_pageIndex) {
       case 0:
-        res = const TripLocation();
-        break;
-      case 1:
         res = TripVehicle();
         break;
-      case 2:
+      case 1:
         res = const TripConfirm();
         break;
-      case 3:
+      case 2:
         res = const TripPrice();
         break;
-      case 4:
+      case 3:
         Future.delayed(const Duration(seconds: 2), () {
           nextPage();
         });
         res = const TripSearch();
         break;
-      case 5:
+      case 4:
         res = TripDriver();
         break;
-      case 6:
+      case 5:
         res = const TripDetails();
         break;
       default:
@@ -139,10 +136,10 @@ class PassengerTripViewModel extends BaseCubit
 
   nextPage() {
     _canPop = false;
-    if (_pageIndex < 6) {
+    if (_pageIndex < 5) {
       _pageIndex += 1;
       _setPageContent();
-    } else if (_pageIndex == 6) {
+    } else if (_pageIndex == 5) {
       emit(RateDriverState());
     }
   }
