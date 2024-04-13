@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:speedy_go/presentation/trip_screen/view/pages/map_pages/view/pages/search_map.dart';
-import 'package:speedy_go/presentation/trip_screen/view/pages/map_pages/view/pages/trip_map_from_to.dart';
+// import 'package:speedy_go/presentation/trip_screen/view/pages/map_pages/view/pages/trip_map_from_to.dart';
 
 import '../../app/sl.dart';
 import '../buses_screen/pages/schedule_screen.dart';
@@ -66,8 +66,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const PassengerTripScreen());
       case Routes.rateRoute:
         return MaterialPageRoute(builder: (_) => const RateScreen());
-      case Routes.fromToRoute:
-        return MaterialPageRoute(builder: (_) => const TripFromTo());
+      // case Routes.fromToRoute:
+      //   return MaterialPageRoute(builder: (_) => const TripFromTo());
       case Routes.searchMapRoute:
         return MaterialPageRoute(builder: (_) => const SearchMap());
       case Routes.busesRoute:

@@ -16,6 +16,7 @@ class SearchMap extends StatelessWidget {
       body: Column(
         children: [
           Align(
+            alignment: Alignment.topLeft,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: AppPadding.p50),
               child: SvgPicture.asset(
@@ -24,59 +25,92 @@ class SearchMap extends StatelessWidget {
                 height: AppSize.s60,
               ),
             ),
-            alignment: Alignment.topLeft,
           ),
-          Container(
-            decoration: BoxDecoration(
-              border: Border.all(),
-              borderRadius: const BorderRadius.only(
-                  topRight: Radius.circular(AppSize.s20), topLeft: Radius.circular(AppSize.s20)),
-              color: ColorManager.lightShadeOfGrey,
-            ),
-            child: Column(
-              children: [
-                Row(
+          Stack(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(),
+                  borderRadius: const BorderRadius.only(
+                      topRight: Radius.circular(AppSize.s20),
+                      topLeft: Radius.circular(AppSize.s20)),
+                  color: ColorManager.lightShadeOfGrey,
+                ),
+                child: Column(
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.all(AppPadding.p14),
-                      child: CircleAvatar(
-                        backgroundColor: ColorManager.lightGreen,
-                        radius: 7,
-                      ),
+                    Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.all(AppPadding.p14),
+                          child: CircleAvatar(
+                            backgroundColor: ColorManager.lightGreen,
+                            radius: AppSize.s8,
+                          ),
+                        ),
+                        Text(
+                          "From : ",
+                          style:
+                              AppTextStyles.searchMapScreenTextStyle(context),
+                        ),
+                        GestureDetector(
+                          onTap: () {},
+                          child: Padding(
+                            padding: const EdgeInsets.all(AppPadding.p10),
+                            child: Text(
+                              "choose using map ",
+                              style:
+                                  AppTextStyles.searchMapScreenChooseTextStyle(
+                                      context),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    Text("From : ",style: AppTextStyles.searchMapScreenTextStyle(context),),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Padding(
-                        padding: const EdgeInsets.all(AppPadding.p10),
-                        child: Text("choose using map ",style: AppTextStyles.searchMapScreenChooseTextStyle(context),),
-                      ),
+                    const Divider(color: ColorManager.mutedBlue),
+                    Row(
+                      children: [
+                        const Icon(Icons.arrow_drop_down, size: AppSize.s40),
+                        Text(
+                          "To : ",
+                          style:
+                              AppTextStyles.searchMapScreenTextStyle(context),
+                        ),
+                        GestureDetector(
+                          onTap: () {},
+                          child: Padding(
+                            padding: const EdgeInsets.all(AppPadding.p10),
+                            child: Text(
+                              "choose using map ",
+                              style:
+                                  AppTextStyles.searchMapScreenChooseTextStyle(
+                                      context),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-                const Divider(color: ColorManager.mutedBlue),
-                Row(
-                  children: [
-                    Icon(Icons.arrow_drop_down, size: AppSize.s40),
-                    Text("To : ",style: AppTextStyles.searchMapScreenTextStyle(context),),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Padding(
-                        padding: const EdgeInsets.all(AppPadding.p10),
-                        child: Text("choose using map ",style: AppTextStyles.searchMapScreenChooseTextStyle(context),),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+              ),
+              const Positioned(// مش شغاله
+                left: 10,
+                child: VerticalDivider(
+                    color: ColorManager.mutedBlue, thickness: 3),
+              ),
+            ],
           ),
           const Spacer(),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Divider(color: ColorManager.mutedBlue),
-              GestureDetector(onTap: (){}, child: Text(AppStrings.cancel,style: AppTextStyles.searchMapScreenButtonTextStyle(context),))
+              GestureDetector(
+                  onTap: () {},
+                  child: Text(
+                    AppStrings.cancel,
+                    style:
+                        AppTextStyles.searchMapScreenButtonTextStyle(context),
+                  ))
             ],
           )
         ],
