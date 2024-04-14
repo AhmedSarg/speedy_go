@@ -53,6 +53,8 @@ class UploadField extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: onPressed,
                 style: ElevatedButton.styleFrom(
+                  backgroundColor: ColorManager.transparent,
+                  elevation: AppSize.s0,
                   padding: const EdgeInsets.only(right: AppPadding.p5),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(AppSize.s10),

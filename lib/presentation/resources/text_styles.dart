@@ -199,17 +199,17 @@ class AppTextStyles {
         fontSize: FontSize.f12,
       );
 
-  static TextStyle chooseVehicleTextStyle(BuildContext context) =>
+  static TextStyle registerScreenSelectionTitleTextStyle(BuildContext context) =>
       getRegularStyle(
         fontFamily: AppLanguages.getPrimaryFont(context),
         color: ColorManager.white,
         fontSize: FontSize.f22,
       );
-  static TextStyle selectVehicleTextStyle(BuildContext context) =>
+  static TextStyle registerScreenSelectionTextStyle(BuildContext context) =>
       getRegularStyle(
         fontFamily: AppLanguages.getPrimaryFont(context),
         color: ColorManager.white,
-        fontSize:  FontSize.f32,
+        fontSize:  FontSize.f28,
       );
 
   static TextStyle registerScreenVerifyDescriptionTextStyle(BuildContext context) =>

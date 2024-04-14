@@ -1,14 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:path/path.dart';
 import 'package:speedy_go/app/extensions.dart';
-import 'package:speedy_go/presentation/resources/assets_manager.dart';
-import 'package:speedy_go/presentation/resources/color_manager.dart';
-import 'package:speedy_go/presentation/resources/strings_manager.dart';
-import 'package:speedy_go/presentation/resources/text_styles.dart';
-import 'package:speedy_go/presentation/resources/values_manager.dart';
+
+import '../../../resources/assets_manager.dart';
+import '../../../resources/color_manager.dart';
+import '../../../resources/strings_manager.dart';
+import '../../../resources/text_styles.dart';
+import '../../../resources/values_manager.dart';
 
 class SearchMap extends StatelessWidget {
   const SearchMap({super.key});
@@ -152,7 +150,7 @@ class SearchMap extends StatelessWidget {
               GestureDetector(
                 onTap: () {},
                 child: Text(
-                  AppStrings.cancel,
+                  'AppStrings.cancel',
                   style:
                       AppTextStyles.tripMapScreenFromToButtonTextStyle(context),
                 ),

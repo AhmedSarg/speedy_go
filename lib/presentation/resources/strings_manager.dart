@@ -51,6 +51,10 @@ class AppStrings {
   static const registerScreenCarLicenseHint = "registerScreenCarLicenseHint";
   static const registerScreenCarImageHint = "registerScreenCarImageHint";
   static const registerScreenTukTukImageHint = "registerScreenTukTukImageHint";
+  static const registerScreenSelectionTitle = "registerScreenSelectionTitle";
+  static const registerScreenSelectionCar = "registerScreenSelectionCar";
+  static const registerScreenSelectionTukTuk = "registerScreenSelectionTukTuk";
+  static const registerScreenSelectionBus = "registerScreenSelectionBus";
 
   ///Verification Screen
   static const verificationScreenTitle = "verificationScreenTitle";
@@ -137,8 +141,6 @@ class AppStrings {
   static const retryAgain = "retryAgain";
   static const success = "success";
 
-  static const chooseYourVehicle = "Choose your vehicle";
-
   ///Error Handler
   static const badRequestError = "badRequestError";
   static const noContent = "noContent";
@@ -163,9 +165,8 @@ class AppStrings {
   static const intentError = "intentError";
   static const areYouSure = "areYouSure";
   static const sure = "sure";
-  static const cancel = "Cancel";
-  static const close = "Close";
-  static const done = "Done";
+  static const cancel = "cancel";
+  static const done = "done";
 
   ///Validations
   static const validationsFieldRequired = "validationsFieldRequired";

@@ -4,8 +4,6 @@ import 'package:speedy_go/presentation/base/base_states.dart';
 
 class RegisterPassengerState extends BaseStates {}
 
-class ChangeVehicleState extends BaseStates {}
-
 class RegisterCarState extends BaseStates {}
 
 class RegisterTukTukState extends BaseStates {}

@@ -5,8 +5,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:speedy_go/presentation/resources/assets_manager.dart';
 
 import '../../../app/functions.dart';
 import '../../../data/network/error_handler.dart';
@@ -17,6 +15,8 @@ import '../../../domain/usecase/register_usecase.dart';
 import '../../base/base_cubit.dart';
 import '../../base/base_states.dart';
 import '../../common/data_intent/data_intent.dart';
+import '../../common/models/models.dart';
+import '../../resources/assets_manager.dart';
 import '../../resources/strings_manager.dart';
 import '../view/states/register_states.dart';
 
@@ -30,9 +30,22 @@ class RegisterViewModel extends BaseCubit
     this._registerCarDriverUseCase,
   );
 
-  int index = 0;
-  late SvgPicture icon;
-  late String nameVehicle;
+  int _selectionIndex = 0;
+
+  final List<VehicleSelectionModel> _registerVehicleSelection = [
+    VehicleSelectionModel(
+      name: AppStrings.registerScreenSelectionCar,
+      icon: SVGAssets.car,
+    ),
+    VehicleSelectionModel(
+      name: AppStrings.registerScreenSelectionTukTuk,
+      icon: SVGAssets.tuktuk,
+    ),
+    VehicleSelectionModel(
+      name: AppStrings.registerScreenSelectionBus,
+      icon: SVGAssets.bus,
+    ),
+  ];
 
   late Selection _registerType;
 
@@ -66,8 +79,6 @@ class RegisterViewModel extends BaseCubit
   @override
   void start() {
     _registerType = DataIntent.getSelection();
-    selectName();
-    selectIcon();
     if (_registerType == Selection.driver) {
       emit(RegisterVehicleSelectionState());
     } else {
@@ -80,6 +91,12 @@ class RegisterViewModel extends BaseCubit
 
   @override
   RegisterType get getRegisterBoxType => _registerBoxType;
+
+  @override
+  int get getSelectionIndex => _selectionIndex;
+
+  @override
+  List<VehicleSelectionModel> get getSelectionVehicles => _registerVehicleSelection;
 
   @override
   List<Widget> get getBoxContent => _boxContent;
@@ -227,7 +244,6 @@ class RegisterViewModel extends BaseCubit
     try {
       String path = await getImagesFromGallery();
       _carImage = File(path);
-      // _carImage = renameFile(_carImage!, 'car_image.jpg');
       emit(RegisterImagePickSuccessState(image: _carImage!));
       _oldRegisterType = Selection.driver;
       setRegisterBoxType = _registerBoxType;
@@ -305,7 +321,8 @@ class RegisterViewModel extends BaseCubit
       (value) {
         value.fold(
           (l) {
-            resultState = ErrorState(failure: l, displayType: DisplayType.popUpDialog);
+            resultState =
+                ErrorState(failure: l, displayType: DisplayType.popUpDialog);
           },
           (r) {
             resultState = SuccessState(
@@ -317,112 +334,21 @@ class RegisterViewModel extends BaseCubit
     return resultState;
   }
 
-// Future<void> startVerifyPhoneNumber() async {
-//   print('in verify');
-//   _streamController.add(_otpController.text.trim());
-//   _verifyPhoneNumberUseCase(
-//     VerifyPhoneNumberUseCaseInput(
-//       phoneNumber: _phoneNumberController.text.trim(),
-//       user: user,
-//       otp: _streamController.stream,
-//     ),
-//   ).then((value) {
-//     print('in value');
-//     value.fold(
-//       (l) {
-//         emit(ErrorState(failure: l, displayType: DisplayType.popUpDialog));
-//       },
-//       (r) {
-//         if (r) {
-//           switch (_registerBoxType) {
-//             case RegisterType.passenger:
-//               // TODO: Handle this case.
-//               break;
-//             case RegisterType.car:
-//               _registerCarDriver();
-//               break;
-//             case RegisterType.tuktuk:
-//               // TODO: Handle this case.
-//               break;
-//             case RegisterType.bus:
-//               // TODO: Handle this case.
-//               break;
-//           }
-//         }
-//       },
-//     );
-//   });
-// }
-//
-// Future<void> onVerify() async {
-//   emit(LoadingState());
-//   print('in add');
-//   print(_otpController.text.trim());
-//   _streamController.add(_otpController.text.trim());
-// }
-//
-// bool isVerified(BuildContext context) {
-//   if (user.phoneNumber == null) {
-//     return true;
-//   } else {
-//     return false;
-//   }
-// }
-//
-// void _registerCarDriver() {
-//   emit(LoadingState(displayType: DisplayType.popUpDialog));
-//   _registerCarDriverUseCase(
-//     RegisterCarDriverUseCaseInput(
-//       firstName: _firstNameController.text.trim(),
-//       lastName: _lastNameController.text.trim(),
-//       phoneNumber: _phoneNumberController.text.trim(),
-//       email: _emailController.text.trim(),
-//       nationalId: _nationalIdController.text.trim(),
-//       drivingLicense: _drivingLicense!,
-//       carLicense: _carLicense!,
-//       carImage: _carImage!,
-//       password: _passwordController.text.trim(),
-//     ),
-//   ).then(
-//     (value) {
-//       value.fold(
-//         (l) {
-//           emit(ErrorState(failure: l, displayType: DisplayType.popUpDialog));
-//         },
-//         (r) {
-//           emit(SuccessState(AppStrings.registerScreenSuccessMessage.tr()));
-//         },
-//       );
-//     },
-//   );
-// }
-
-
-//selection
-  indexHandel(int select) {
-    if (select == 0) {
-      index--;
+  indexHandle(int selection) {
+    if (selection == 0) {
+      _selectionIndex--;
     } else {
-      index++;
+      _selectionIndex++;
     }
-    index = (index > 0) ? index % 3 : 0;
-    selectIcon();
-    selectName();
-    emit(ChangeVehicleState());
+    _selectionIndex = (_selectionIndex > 0) ? _selectionIndex % 3 : 0;
+    emit(RegisterVehicleSelectionState());
   }
 
-  selectName() {
-    List<String> name = ['car', 'tuk-tuk', 'bus'];
-    nameVehicle = name[index];
-  }
-
-  selectIcon() {
-    List<SvgPicture> img = [
-      SvgPicture.asset(SVGAssets.car),
-      SvgPicture.asset(SVGAssets.tuktuk),
-      SvgPicture.asset(SVGAssets.bus)
-    ];
-    icon = img[index];
+  selectionCanceled() {
+    if (_oldRegisterType == Selection.passenger) {
+      _registerType = Selection.passenger;
+    }
+    emit(ContentState());
   }
 }
 
@@ -442,6 +368,10 @@ abstract class RegisterViewModelOutput {
   Selection get getRegisterType;
 
   RegisterType get getRegisterBoxType;
+
+  int get getSelectionIndex;
+
+  List<VehicleSelectionModel> get getSelectionVehicles;
 
   List<Widget> get getBoxContent;
 

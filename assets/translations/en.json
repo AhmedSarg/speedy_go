@@ -79,6 +79,10 @@
   "registerScreenCarLicenseHint": "Car License",
   "registerScreenCarImageHint": "Car Image",
   "registerScreenTukTukImageHint": "Tuk-Tuk Image",
+  "registerScreenSelectionTitle": "Choose Your Vehicle",
+  "registerScreenSelectionCar": "Car",
+  "registerScreenSelectionTukTuk": "Tuk-Tuk",
+  "registerScreenSelectionBus": "Bus",
 
   "verificationScreenTitle": "Verify Phone Number",
   "verificationScreenDescription": "We've sent you sms with a validation code to your phone number\nenter the validation code",
