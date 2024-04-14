@@ -48,6 +48,7 @@ class SVGAssets {
   static const String addTrip = "${_basePath}tabler_route-square.svg";
   static const String calender = "${_basePath}Calendar.svg";
   static const String pin = "${_basePath}pin.svg";
+  static const String calender_2 = "${_basePath}bitcoin-icons_calendar-outline.svg";
 
 
 }

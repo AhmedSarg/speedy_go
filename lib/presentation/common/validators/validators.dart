@@ -123,4 +123,16 @@ class AppValidators {
       return null;
     }
   }
+
+
+  static String? validateNotEmpty(String? val) {
+    if (val == null) {
+      return AppStrings.validationsFieldRequired.tr();
+    } else if (val.trim().isEmpty) {
+      return AppStrings.validationsFieldRequired.tr();
+    } else {
+      return null;
+    }
+  }
+
 }

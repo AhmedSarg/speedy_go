@@ -139,6 +139,8 @@ class AppStrings {
   static const busesAddTripFromHint = "busesAddTripFromHint";
   static const busesAddTripTo = "busesAddTripTo";
   static const busesAddTripToHint = "busesAddTripToHint";
+  static const busesAddDate = "busesAddDate";
+  static const busesAddDateHint = "busesAddDateHint";
 
   ///General
   static const noRouteFound = "noRouteFound";

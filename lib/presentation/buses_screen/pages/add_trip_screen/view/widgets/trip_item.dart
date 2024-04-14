@@ -16,6 +16,7 @@ class TripItem extends StatelessWidget {
       required this.textInputType,
       this.onTap,
       this.icon,
+        this.validation,
       this.inputFormatNumber,
       this.IconFunction, this.controller});
   final String title;
@@ -27,10 +28,12 @@ class TripItem extends StatelessWidget {
   final IconData? icon;
   final int? inputFormatNumber;
   final TextEditingController? controller;
+  final String? Function(String?)? validation;
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: onTap,
+
       child: Container(
         height: AppSize.s100,
         margin: const EdgeInsets.all(AppMargin.m5),
@@ -57,6 +60,7 @@ class TripItem extends StatelessWidget {
               cursorColor: ColorManager.lightGrey,
               hint: hintText,
               readOnly: read,
+              validation: validation,
               controller: controller,
               textInputType: textInputType,
               inputFormatters: [

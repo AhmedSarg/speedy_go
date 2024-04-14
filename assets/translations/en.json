@@ -147,7 +147,9 @@
   "busesAddTripFrom": "From",
   "busesAddTripFromHint": "write trip start location",
   "busesAddTripTo": "To",
-  "busesAddTripToHint": "write trip destination"
+  "busesAddTripToHint": "write trip destination",
+  "busesAddDate": "Departure Date",
+  "busesAddDateHint": "write departure date"
 
 
 

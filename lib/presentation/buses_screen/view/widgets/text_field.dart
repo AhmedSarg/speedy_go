@@ -57,71 +57,54 @@ class _MainTextFieldState extends State<BusesTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        TextFormField(
+    return TextFormField(
 
-          initialValue: widget.initialValue,
-          inputFormatters: widget.inputFormatters,
-          controller: widget.controller,
-          focusNode: widget.focusNode,
-          readOnly: widget.readOnly,
-          style:
-          widget.hintTextStyle ?? AppTextStyles.busesItemTripTextStyle(context),
-          obscureText: hidden,
-          keyboardType: widget.textInputType,
-          obscuringCharacter: '*',
+      initialValue: widget.initialValue,
+      inputFormatters: widget.inputFormatters,
+      controller: widget.controller,
+      focusNode: widget.focusNode,
+      readOnly: widget.readOnly,
+      style:
+      widget.hintTextStyle ?? AppTextStyles.busesItemTripTextStyle(context),
+      obscureText: hidden,
+      keyboardType: widget.textInputType,
+      obscuringCharacter: '*',
 
-          cursorColor: widget.cursorColor,
-          onTap: widget.onTap,
-          onEditingComplete: () {
-            widget.focusNode?.unfocus();
-            if (widget.nextFocus != null) {
-              FocusScope.of(context).requestFocus(widget.nextFocus);
-            }
-          },
-          textInputAction: widget.nextFocus == null
-              ? TextInputAction.done
-              : TextInputAction.next,
-          validator: (value) {
-            if (widget.validation == null) {
-              setState(() {
-                errorText = null;
-              });
-            } else {
-              setState(() {
-                errorText = widget.validation!(value);
-              });
-            }
-            return errorText;
-          },
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.all(AppPadding.p12),
-            hintText: widget.hint,
-            hintStyle: widget.hintTextStyle ??
-                AppTextStyles.busesItemHintTextStyle(context),
-            border: InputBorder.none,
+      cursorColor: widget.cursorColor,
+      onTap: widget.onTap,
+      onEditingComplete: () {
+        widget.focusNode?.unfocus();
+        if (widget.nextFocus != null) {
+          FocusScope.of(context).requestFocus(widget.nextFocus);
+        }
+      },
+      textInputAction: widget.nextFocus == null
+          ? TextInputAction.done
+          : TextInputAction.next,
+      validator: (value) {
+        if (widget.validation == null) {
+          setState(() {
+            errorText = null;
+          });
+        } else {
+          setState(() {
+            errorText = widget.validation!(value);
+          });
+        }
+        return errorText;
+      },
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.all(AppPadding.p12),
+        hintText: widget.hint,
+        hintStyle: widget.hintTextStyle ??
+            AppTextStyles.busesItemHintTextStyle(context),
+        border: InputBorder.none,
 
-            errorStyle: const TextStyle(
-              fontSize: AppSize.s0,
-              color: ColorManager.transparent,
-            ),
-          ),
+        errorStyle: const TextStyle(
+          fontSize: AppSize.s0,
+          color: ColorManager.transparent,
         ),
-        errorText == null
-            ? const SizedBox()
-            : Padding(
-          padding: const EdgeInsets.only(
-            top: AppPadding.p8,
-            left: AppPadding.p8,
-          ),
-          child: Text(
-            errorText!,
-            style: AppTextStyles.busesItemTextStyle(context),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

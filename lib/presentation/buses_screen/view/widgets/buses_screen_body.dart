@@ -30,7 +30,7 @@ class BusesScreenBody extends StatelessWidget {
             textStyle: AppTextStyles.busesItemTextStyle(context),
             imageIcon: SVGAssets.schedule,
             title: AppStrings.busesschedule.tr(),
-            backgroundColor: ColorManager.lightShadeOfGrey,
+            backgroundColor: ColorManager.verylightGrey,
             onTap: () {
               Navigator.pushNamed(context, Routes.scheduleRoute);
             },
@@ -41,21 +41,21 @@ class BusesScreenBody extends StatelessWidget {
             imageIconColor: ColorManager.lightShadeOfBlue.withOpacity(.75),
             imageIcon: SVGAssets.addBus_1,
             title: AppStrings.busesAddBus.tr(),
-            backgroundColor: ColorManager.lightShadeOfGrey,
+            backgroundColor: ColorManager.verylightGrey,
           ),
           BusesItem(
             textStyle: AppTextStyles.busesItemTextStyle(context),
             imageIconColor: ColorManager.lightShadeOfBlue.withOpacity(.75),
             imageIcon: SVGAssets.myBuses,
             title: AppStrings.busesMyBuses.tr(),
-            backgroundColor: ColorManager.lightShadeOfGrey,
+            backgroundColor: ColorManager.verylightGrey,
           ),
           BusesItem(
             textStyle: AppTextStyles.busesItemTextStyle(context),
             imageIconColor: ColorManager.lightShadeOfBlue.withOpacity(.75),
             imageIcon: SVGAssets.addTrip,
             title: AppStrings.busesAddTrip.tr(),
-            backgroundColor: ColorManager.lightShadeOfGrey,
+            backgroundColor: ColorManager.verylightGrey,
             onTap: () {
               Navigator.pushNamed(context, Routes.addTripRoute);
             },
