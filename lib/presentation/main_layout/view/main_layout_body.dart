@@ -29,7 +29,7 @@ class MainLayoutBody extends StatelessWidget {
             target: LatLng(37.42796133580664, -122.085749655962),
             zoom: 14.4746,
           ),
-          style: viewModel.mapStyle,
+          // style: viewModel.mapStyle,
           zoomControlsEnabled: false,
           onMapCreated: (mapController) async {
             viewModel.getMapStyle();

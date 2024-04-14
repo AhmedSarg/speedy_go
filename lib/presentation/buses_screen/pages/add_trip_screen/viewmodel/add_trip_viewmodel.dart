@@ -13,8 +13,10 @@ class AddTripViewModel extends BaseCubit
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _fromController = TextEditingController();
   final TextEditingController _toController = TextEditingController();
+  final TextEditingController _toSearchController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   String _num = '1';
+  String _toCity = '';
 
   @override
   void start() {}
@@ -32,10 +34,14 @@ class AddTripViewModel extends BaseCubit
   TextEditingController get getToController => _toController;
 
   @override
+  TextEditingController get getToSearchController => _toSearchController;
+
+  @override
   TextEditingController get getDateController => _dateController;
 
   @override
   String get getNum => _num;
+  String get getToCity => _toCity;
 
   @override
   void setNum(String number) {
@@ -43,10 +49,20 @@ class AddTripViewModel extends BaseCubit
     getNumController.text= _num;
 
   }
+
+
+
+  @override
+  void setTo(String toCity) {
+    _toCity = toCity;
+    getToSearchController.text = _toCity;
+    getToController.text= getToSearchController.text;
+  }
 }
 
 abstract class LoginViewModelInput {
   void setNum(String number);
+  void setTo(String toCity);
 
 }
 
@@ -59,6 +75,8 @@ abstract class LoginViewModelOutput {
   TextEditingController get getFromController;
 
   TextEditingController get getToController;
+
+  TextEditingController get getToSearchController;
 
   TextEditingController get getDateController;
 }

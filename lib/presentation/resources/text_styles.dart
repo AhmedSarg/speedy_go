@@ -261,6 +261,18 @@ class AppTextStyles {
         color: ColorManager.grey.withOpacity(.85),
         fontSize: FontSize.f18,
       );
+  static TextStyle busesItemTextBottonStyle(BuildContext context) =>
+      getMediumStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f18,
+      );
+  static TextStyle busesItemTextSearchStyle(BuildContext context) =>
+      getMediumStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f16,
+      );
 
   ///Trip Map Screen
 
@@ -292,6 +304,12 @@ class AppTextStyles {
         fontSize: FontSize.f18,
       );
 
+  static TextStyle busesItemSearchHintTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white.withOpacity(.75),
+        fontSize: FontSize.f16,
+      );
 
   ///Trip Details Screen
 

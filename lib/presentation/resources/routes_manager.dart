@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+// import 'package:speedy_go/presentation/trip_screen/view/pages/map_pages/view/pages/trip_map_from_to.dart';
+import 'package:speedy_go/presentation/buses_screen/pages/add_trip_screen/view/add_trip.dart';
+import 'package:speedy_go/presentation/buses_screen/view/buses_screen.dart';
+import 'package:speedy_go/presentation/main_layout/view/main_layout_view.dart';
+import 'package:speedy_go/presentation/onboarding_screen/view/onboarding_view.dart';
+import 'package:speedy_go/presentation/rating_screen/view/rate_view.dart';
 
 import '../../app/sl.dart';
+import '../buses_screen/view/buses_screen.dart';
 import '../buses_screen/pages/add_trip_screen/view/add_trip.dart';
 import '../buses_screen/pages/schedule_screen/schedule_screen.dart';
 import '../buses_screen/view/buses_screen.dart';
@@ -72,6 +79,9 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const ScheduleScreen());
       case Routes.addTripRoute:
         return MaterialPageRoute(builder: (_) => const AddTripScreen());
+
+      // case Routes.myCustomWidget:
+      //   return MaterialPageRoute(builder: (_) => MyCustomWidget());
       default:
         return unDefinedRoute();
     }

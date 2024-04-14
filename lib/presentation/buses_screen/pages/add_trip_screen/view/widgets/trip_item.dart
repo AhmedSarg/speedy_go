@@ -29,8 +29,9 @@ class TripItem extends StatelessWidget {
   final TextEditingController? controller;
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: onTap,
+
       child: Container(
         height: AppSize.s100,
         margin: const EdgeInsets.all(AppMargin.m5),

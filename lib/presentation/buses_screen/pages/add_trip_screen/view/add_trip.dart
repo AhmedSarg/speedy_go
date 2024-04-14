@@ -7,7 +7,6 @@ import 'package:speedy_go/presentation/resources/color_manager.dart';
 import '../../../../base/base_states.dart';
 import '../../../../base/cubit_builder.dart';
 import '../../../../base/cubit_listener.dart';
-import '../../../../login_screen/viewmodel/login_viewmodel.dart';
 
 class AddTripScreen extends StatelessWidget {
   const AddTripScreen({Key? key}) : super(key: key);

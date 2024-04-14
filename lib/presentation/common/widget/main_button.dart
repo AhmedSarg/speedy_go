@@ -13,7 +13,7 @@ class AppButton extends StatelessWidget {
     this.textStyle,
     this.color,
     this.child,
-    this.splash,
+    this.splash, this.bgcolor,
   });
 
   final String? text;
@@ -21,6 +21,7 @@ class AppButton extends StatelessWidget {
   final bool outlined;
   final TextStyle? textStyle;
   final Color? color;
+  final Color? bgcolor;
   final Widget? child;
   final Color? splash;
 
@@ -30,8 +31,10 @@ class AppButton extends StatelessWidget {
       width: double.infinity,
       height: AppSize.s40,
       child: TextButton(
+
         onPressed: onPressed,
         style: TextButton.styleFrom(
+
           foregroundColor: outlined
               ? (color ?? ColorManager.secondary)
               : (color ?? ColorManager.white),
@@ -45,7 +48,7 @@ class AppButton extends StatelessWidget {
                 : BorderSide.none,
           ),
           backgroundColor:
-              outlined ? ColorManager.transparent : ColorManager.secondary,
+          outlined ? ColorManager.transparent : bgcolor??ColorManager.secondary,
         ),
         child: child ??
             Text(
