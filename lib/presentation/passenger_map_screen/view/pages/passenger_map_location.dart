@@ -1,15 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:speedy_go/domain/models/enums.dart';
-import 'package:speedy_go/presentation/common/widget/main_back_button.dart';
-import 'package:speedy_go/presentation/resources/color_manager.dart';
-import 'package:speedy_go/presentation/resources/font_manager.dart';
-import 'package:speedy_go/presentation/resources/strings_manager.dart';
-import 'package:speedy_go/presentation/resources/styles_manager.dart';
-import 'package:speedy_go/presentation/resources/text_styles.dart';
-import 'package:speedy_go/presentation/resources/values_manager.dart';
 
+import '../../../../domain/models/enums.dart';
+import '../../../common/widget/main_back_button.dart';
+import '../../../resources/color_manager.dart';
+import '../../../resources/strings_manager.dart';
+import '../../../resources/text_styles.dart';
+import '../../../resources/values_manager.dart';
 import '../../viewmodel/passenger_map_viewmodel.dart';
 
 class PassengerMapLocation extends StatelessWidget {
@@ -39,6 +37,10 @@ class PassengerMapLocation extends StatelessWidget {
             onMapCreated: (mapController) {
               viewModel.setMapController = mapController;
             },
+            onTap: (location) {
+              viewModel.chooseLocation(location);
+            },
+            markers: viewModel.getMarkers,
             style: viewModel.getMapStyle,
             myLocationEnabled: true,
             myLocationButtonEnabled: false,
@@ -80,11 +82,22 @@ class PassengerMapLocation extends StatelessWidget {
                         width: AppSize.infinity,
                         height: AppSize.s50,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: viewModel.canClickDone()
+                              ? viewModel.exitMap
+                              : null,
+                          style: ElevatedButton.styleFrom(
+                            disabledBackgroundColor:
+                                ColorManager.darkShadeOfGrey,
+                          ),
                           child: Text(
                             AppStrings.tripMapScreenDone.tr(),
-                            style: AppTextStyles.tripMapScreenMapButtonTextStyle(
-                                context),
+                            style:
+                                AppTextStyles.tripMapScreenMapButtonTextStyle(
+                              context,
+                              viewModel.canClickDone()
+                                  ? ColorManager.white
+                                  : ColorManager.white.withOpacity(.2),
+                            ),
                           ),
                         ),
                       )

@@ -1,9 +1,14 @@
 import 'dart:async';
+import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:speedy_go/presentation/resources/assets_manager.dart';
+import 'package:speedy_go/presentation/resources/values_manager.dart';
 
 import '../../../domain/models/enums.dart';
 import '../../base/base_cubit.dart';
@@ -16,16 +21,33 @@ class PassengerMapViewModel extends BaseCubit
 
   LocationPermission _locationPermissions = LocationPermission.denied;
 
-  late LatLng _userLocation;
+  LatLng? _userLocation;
+  LatLng? _pickupLocation;
+  LatLng? _destinationLocation;
 
-  late String _mapStyle;
+  String? _mapStyle;
+
+  late LocationMapType _locationMapType;
 
   late GoogleMapController _mapController;
 
+  BitmapDescriptor? _pin;
+
+  Set<Marker> _pickupMarkers = {};
+  Set<Marker> _destinationMarkers = {};
+
   void goToMap(LocationMapType locationMapType) async {
     emit(LoadingState());
-    await _fetchUserLocation();
-    await _fetchMapStyle();
+    _locationMapType = locationMapType;
+    if (_userLocation == null) {
+      await _fetchUserLocation();
+    }
+    if (_mapStyle == null) {
+      await _fetchMapStyle();
+    }
+    if (_pin == null) {
+      await _fetchPinIcon();
+    }
     emit(LocationMapState(locationMapType));
   }
 
@@ -35,6 +57,71 @@ class PassengerMapViewModel extends BaseCubit
 
   Future<void> _fetchMapStyle() async {
     _mapStyle = await rootBundle.loadString('assets/maps/dark_map.json');
+  }
+
+  Future<BitmapDescriptor> _bitmapDescriptorFromSvgAsset(
+    String assetName, [
+    Size size = const Size.square(AppSize.s60),
+  ]) async {
+    final pictureInfo = await vg.loadPicture(SvgAssetLoader(assetName), null);
+
+    double devicePixelRatio =
+        PlatformDispatcher.instance.views.first.devicePixelRatio;
+    int width = (size.width * devicePixelRatio).toInt();
+    int height = (size.height * devicePixelRatio).toInt();
+
+    final scaleFactor = min(
+      width / pictureInfo.size.width,
+      height / pictureInfo.size.height,
+    );
+
+    final recorder = PictureRecorder();
+
+    Canvas(recorder)
+      ..scale(scaleFactor)
+      ..drawPicture(pictureInfo.picture);
+
+    final rasterPicture = recorder.endRecording();
+
+    final image = rasterPicture.toImageSync(width, height);
+    final bytes = (await image.toByteData(format: ImageByteFormat.png))!;
+
+    return BitmapDescriptor.fromBytes(bytes.buffer.asUint8List());
+  }
+
+  Future<void> _fetchPinIcon() async {
+    _pin = await _bitmapDescriptorFromSvgAsset(SVGAssets.pin);
+  }
+
+  Future<void> chooseLocation(LatLng location) async {
+    if (_locationMapType == LocationMapType.pickup) {
+      _pickupLocation = location;
+      _pickupMarkers = {
+        Marker(
+          markerId: const MarkerId('de'),
+          position: location,
+          icon: _pin!,
+        ),
+      };
+    } else {
+      _destinationLocation = location;
+      _destinationMarkers = {
+        Marker(
+          markerId: const MarkerId('de'),
+          position: location,
+          icon: _pin!,
+        ),
+      };
+    }
+    emit(LocationMapState(_locationMapType));
+  }
+
+  bool canClickDone() {
+    if (_locationMapType == LocationMapType.pickup) {
+      return _pickupLocation != null;
+    } else {
+      return _destinationLocation != null;
+    }
   }
 
   Future<void> _checkLocationServices() async {
@@ -96,13 +183,18 @@ class PassengerMapViewModel extends BaseCubit
   }
 
   @override
-  LatLng get getUserLocation => _userLocation;
+  LatLng get getUserLocation => _userLocation!;
 
   @override
-  String get getMapStyle => _mapStyle;
+  String get getMapStyle => _mapStyle!;
 
   @override
   GoogleMapController get getMapController => _mapController;
+
+  @override
+  Set<Marker> get getMarkers => _locationMapType == LocationMapType.pickup
+      ? _pickupMarkers
+      : _destinationMarkers;
 
   @override
   set setMapController(GoogleMapController controller) {
@@ -116,6 +208,10 @@ abstract class PassengerMapViewModelInput {
 
 abstract class PassengerMapViewModelOutput {
   LatLng get getUserLocation;
+
   String get getMapStyle;
+
   GoogleMapController get getMapController;
+
+  Set<Marker> get getMarkers;
 }

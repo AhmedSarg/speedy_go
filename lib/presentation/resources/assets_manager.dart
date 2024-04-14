@@ -47,6 +47,7 @@ class SVGAssets {
   static const String myBuses = "${_basePath}tabler_bus.svg";
   static const String addTrip = "${_basePath}tabler_route-square.svg";
   static const String calender = "${_basePath}Calendar.svg";
+  static const String pin = "${_basePath}pin.svg";
 
 
 }

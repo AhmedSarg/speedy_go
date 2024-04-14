@@ -264,10 +264,10 @@ class AppTextStyles {
 
   ///Trip Map Screen
 
-  static TextStyle tripMapScreenMapButtonTextStyle(BuildContext context) =>
+  static TextStyle tripMapScreenMapButtonTextStyle(BuildContext context, Color color) =>
       getSemiBoldStyle(
         fontFamily: AppLanguages.getPrimaryFont(context),
-        color: ColorManager.white,
+        color: color,
         fontSize: FontSize.f22,
       );
 
