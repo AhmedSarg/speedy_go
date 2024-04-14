@@ -67,6 +67,10 @@ class AppStrings {
 
   ///Trip Map Screen
 
+  static const tripMapScreenPlaceholder = "tripMapScreenPlaceholder";
+  static const tripMapScreenFrom = "tripMapScreenFrom";
+  static const tripMapScreenTo = "tripMapScreenTo";
+  static const tripMapScreenCancel = "tripMapScreenCancel";
   static const tripMapScreenDone = "tripMapScreenDone";
 
   ///Trip Details Screen

@@ -89,6 +89,10 @@
   "verificationScreenButton": "Verify",
   "verificationScreenLoginSuccessMessage": "Account Verified Successfully",
 
+  "tripMapScreenPlaceholder": "Choose using map",
+  "tripMapScreenFrom": "From",
+  "tripMapScreenTo": "To",
+  "tripMapScreenCancel": "Cancel",
   "tripMapScreenDone": "Done",
 
   "tripScreenVehicleSelectionPageTitle": "Choose Your Vehicle",

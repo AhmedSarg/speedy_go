@@ -4,10 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:speedy_go/domain/models/enums.dart';
-import 'package:speedy_go/presentation/base/base_states.dart';
 
+import '../../../domain/models/enums.dart';
 import '../../base/base_cubit.dart';
+import '../../base/base_states.dart';
 import '../states/passenger_map_states.dart';
 
 class PassengerMapViewModel extends BaseCubit
@@ -22,7 +22,10 @@ class PassengerMapViewModel extends BaseCubit
 
   late GoogleMapController _mapController;
 
-  void goToMap(LocationMapType locationMapType) {
+  void goToMap(LocationMapType locationMapType) async {
+    emit(LoadingState());
+    await _fetchUserLocation();
+    await _fetchMapStyle();
     emit(LocationMapState(locationMapType));
   }
 
@@ -30,22 +33,21 @@ class PassengerMapViewModel extends BaseCubit
     emit(ContentState());
   }
 
-  Future<void> fetchMapStyle() async {
+  Future<void> _fetchMapStyle() async {
     _mapStyle = await rootBundle.loadString('assets/maps/dark_map.json');
-    emit(ContentState());
   }
 
   Future<void> _checkLocationServices() async {
     emit(LoadingState());
-    Geolocator.getServiceStatusStream().listen((status) {
+    Geolocator.getServiceStatusStream().listen((status) async {
       if (status == ServiceStatus.disabled) {
         emit(LocationServiceDisabledState());
       } else {
-        _checkLocationPermissions();
+        await _checkLocationPermissions();
       }
     });
     if (await Geolocator.isLocationServiceEnabled()) {
-      _checkLocationPermissions();
+      await _checkLocationPermissions();
     } else {
       emit(LocationServiceDisabledState());
     }
@@ -62,7 +64,6 @@ class PassengerMapViewModel extends BaseCubit
     } else if (_locationPermissions == LocationPermission.deniedForever) {
       emit(LocationPermissionsDisabledState());
     } else {
-      fetchUserLocation();
       emit(ContentState());
     }
   }
@@ -81,7 +82,7 @@ class PassengerMapViewModel extends BaseCubit
     }
   }
 
-  fetchUserLocation() async {
+  Future<void> _fetchUserLocation() async {
     Position currentPosition = await Geolocator.getCurrentPosition();
     _userLocation = LatLng(currentPosition.latitude, currentPosition.longitude);
     Geolocator.getPositionStream().listen((position) {
@@ -92,7 +93,6 @@ class PassengerMapViewModel extends BaseCubit
   @override
   void start() async {
     await _checkLocationServices();
-    await fetchMapStyle();
   }
 
   @override

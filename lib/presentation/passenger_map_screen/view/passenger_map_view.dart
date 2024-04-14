@@ -8,9 +8,9 @@ import '../../base/cubit_listener.dart';
 import '../../resources/values_manager.dart';
 import '../states/passenger_map_states.dart';
 import '../viewmodel/passenger_map_viewmodel.dart';
+import 'pages/passenger_map_body.dart';
 import 'pages/passenger_map_location.dart';
 import 'pages/passenger_map_permissions.dart';
-import 'pages/search_map.dart';
 
 class PassengerMapScreen extends StatelessWidget {
   const PassengerMapScreen({super.key});
@@ -41,13 +41,11 @@ class PassengerMapScreen extends StatelessWidget {
                   viewModel: viewModel,
                 );
               } else if (state is LocationMapState) {
-                viewModel.fetchUserLocation();
                 return PassengerMapLocation(
                   locationMapType: state.locationMapType,
                 );
               }
-              // return baseBuilder(context, state, const PassengerMapBody());
-              return baseBuilder(context, state, const SearchMap());
+              return baseBuilder(context, state, const PassengerMapBody());
             },
           ),
         ),
