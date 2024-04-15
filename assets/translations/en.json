@@ -149,7 +149,17 @@
   "busesAddTripTo": "To",
   "busesAddTripToHint": "write trip destination",
   "busesAddDate": "Departure Date",
-  "busesAddDateHint": "write departure date"
+  "busesAddDateHint": "write departure date",
+
+
+  "bookTripSearchScreenTitle": "Book Your Trip",
+  "bookTripSearchScreenFromItem": "From",
+  "bookTripSearchScreenToItem": "To",
+  "bookTripSearchScreenDateItem": "Departure Date",
+  "bookTripSearchScreenSubTitleFromItem": "choose trip start location ",
+  "bookTripSearchScreenSubTitleToItem": "choose trip destination ",
+  "bookTripSearchScreenSubTitleDateItem": "Choose departure date",
+  "bookTripSearchScreenButtonItem": "Search"
 
 
 

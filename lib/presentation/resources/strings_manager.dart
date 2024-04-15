@@ -125,6 +125,17 @@ class AppStrings {
   static const rateScreenCancel = "rateScreenCancel";
   static const rateScreenConfirm = "rateScreenConfirm";
 
+  ///book trip Search screen
+  static const bookTripSearchScreenTitle = "bookTripSearchScreenTitle";
+  static const bookTripSearchScreenFromItem = "bookTripSearchScreenFromItem";
+  static const bookTripSearchScreenToItem = "bookTripSearchScreenToItem";
+  static const bookTripSearchScreenDateItem = "bookTripSearchScreenDateItem";
+  static const bookTripSearchScreenSubTitleFromItem = "bookTripSearchScreenSubTitleFromItem";
+  static const bookTripSearchScreenSubTitleToItem = "bookTripSearchScreenSubTitleToItem";
+  static const bookTripSearchScreenSubTitleDateItem = "bookTripSearchScreenSubTitleDateItem";
+  static const bookTripSearchScreenButtonItem = "bookTripSearchScreenButtonItem";
+
+
   /// buses screen
   static const busesTitle = "busesTitle";
   static const busesschedule = "busesschedule";

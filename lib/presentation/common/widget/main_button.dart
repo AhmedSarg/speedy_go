@@ -14,6 +14,7 @@ class AppButton extends StatelessWidget {
     this.color,
     this.child,
     this.splash, this.bgcolor, this.borderRadius,
+
   });
 
   final String? text;
