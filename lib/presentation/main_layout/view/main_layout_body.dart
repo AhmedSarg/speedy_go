@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:speedy_go/presentation/common/widget/bottom_curved_nav_bar.dart';
 import 'package:speedy_go/presentation/main_layout/view/pages/HomePage.dart';
 import 'package:speedy_go/presentation/main_layout/view/pages/book_trip_search.dart';
-import 'package:speedy_go/presentation/main_layout/view/pages/profile_page.dart';
+import 'package:speedy_go/presentation/main_layout/view/pages/profile_screen/view/profile_page.dart';
+import 'package:speedy_go/presentation/main_layout/view/pages/profile_screen/view/widgets/google_map.dart';
 
 import '../viewmodel/main_viewmodel.dart';
 
@@ -22,6 +23,7 @@ class MainLayoutBody extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
+          const GoogleMapScreenProfile(),
           Positioned.fill(
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 375),

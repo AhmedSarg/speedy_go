@@ -18,50 +18,53 @@ class BookTripSearchPage extends StatelessWidget {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     return SafeArea(
-      child: Column(
-        children: [
-          const BackgroundImg(),
-          Item(
-            viewModel: viewModel,
-            title: AppStrings.bookTripSearchScreenFromItem.tr(),
-            subTitle: AppStrings.bookTripSearchScreenSubTitleFromItem.tr(),
-            isDate: false,
-          ),
-          Item(
-            viewModel: viewModel,
-            title: AppStrings.bookTripSearchScreenToItem.tr(),
-            subTitle: AppStrings.bookTripSearchScreenSubTitleToItem.tr(),
-            isDate: false,
-          ),
-          Item(
-            viewModel: viewModel,
-            title: AppStrings.bookTripSearchScreenDateItem.tr(),
-            subTitle: AppStrings.bookTripSearchScreenSubTitleDateItem.tr(),
-            isDate: true,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: AppPadding.p20),
-            child: Container(
-              width: AppSize.infinity,
-              height: height / 18,
-              margin: const EdgeInsets.symmetric(horizontal: AppMargin.m64),
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: ColorManager.traditional,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppSize.s30),
+      child: Container(
+        color: ColorManager.lightGrey,
+        child: Column(
+          children: [
+            const BackgroundImg(),
+            Item(
+              viewModel: viewModel,
+              title: AppStrings.bookTripSearchScreenFromItem.tr(),
+              subTitle: AppStrings.bookTripSearchScreenSubTitleFromItem.tr(),
+              isDate: false,
+            ),
+            Item(
+              viewModel: viewModel,
+              title: AppStrings.bookTripSearchScreenToItem.tr(),
+              subTitle: AppStrings.bookTripSearchScreenSubTitleToItem.tr(),
+              isDate: false,
+            ),
+            Item(
+              viewModel: viewModel,
+              title: AppStrings.bookTripSearchScreenDateItem.tr(),
+              subTitle: AppStrings.bookTripSearchScreenSubTitleDateItem.tr(),
+              isDate: true,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: AppPadding.p20),
+              child: Container(
+                width: AppSize.infinity,
+                height: height / 18,
+                margin: const EdgeInsets.symmetric(horizontal: AppMargin.m64),
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: ColorManager.traditional,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppSize.s30),
+                    ),
                   ),
-                ),
-                child: Text(
-                  AppStrings.bookTripSearchScreenButtonItem.tr(),
-                  style: AppTextStyles.bookTripSearchScreenButtonItemTextStyle(
-                      context),
+                  child: Text(
+                    AppStrings.bookTripSearchScreenButtonItem.tr(),
+                    style: AppTextStyles.bookTripSearchScreenButtonItemTextStyle(
+                        context),
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

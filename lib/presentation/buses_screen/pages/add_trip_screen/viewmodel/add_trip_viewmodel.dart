@@ -7,7 +7,7 @@ import 'package:speedy_go/presentation/buses_screen/pages/add_trip_screen/states
 import '../../../../base/base_cubit.dart';
 
 class AddTripViewModel extends BaseCubit
-    implements LoginViewModelInput, LoginViewModelOutput {
+    implements AddTripViewModelInput, AddTripViewModelOutput {
   static AddTripViewModel get(context) => BlocProvider.of(context);
 
   final TextEditingController _numController = TextEditingController();
@@ -59,13 +59,13 @@ class AddTripViewModel extends BaseCubit
   }
 }
 
-abstract class LoginViewModelInput {
+abstract class AddTripViewModelInput {
   set setNum(String number);
 
   set setDate(DateTime date);
 }
 
-abstract class LoginViewModelOutput {
+abstract class AddTripViewModelOutput {
   TextEditingController get getNumController;
 
   TextEditingController get getPriceController;

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:speedy_go/presentation/main_layout/view/pages/profile_screen/view/widgets/google_map.dart';
 
 import '../../../resources/assets_manager.dart';
 import '../../../resources/color_manager.dart';
@@ -21,18 +22,6 @@ class HomePage extends StatelessWidget {
     return Stack(
       alignment: Alignment.topCenter,
       children: [
-        GoogleMap(
-          initialCameraPosition: const CameraPosition(
-            target: LatLng(37.42796133580664, -122.085749655962),
-            zoom: 14.4746,
-          ),
-          style: viewModel.mapStyle,
-          zoomControlsEnabled: false,
-          onMapCreated: (mapController) async {
-            viewModel.getMapStyle();
-            viewModel.setMapController = mapController;
-          },
-        ),
         SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(
