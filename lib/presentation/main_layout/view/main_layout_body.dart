@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:speedy_go/presentation/common/widget/navigation_bar_widget.dart';
+import 'package:speedy_go/presentation/common/widget/bottom_curved_nav_bar.dart';
 import 'package:speedy_go/presentation/main_layout/view/pages/HomePage.dart';
 import 'package:speedy_go/presentation/main_layout/view/pages/book_trip_search.dart';
 import 'package:speedy_go/presentation/main_layout/view/pages/profile_page.dart';
 
-import '../../resources/values_manager.dart';
 import '../viewmodel/main_viewmodel.dart';
 
 class MainLayoutBody extends StatelessWidget {
@@ -15,37 +14,42 @@ class MainLayoutBody extends StatelessWidget {
 
   final MainViewModel viewModel;
 
+  final double horizontalPadding = 50;
+  final double horizontalMargin = 20;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          PageView(
-            controller: viewModel.getPageController,
-            children: <Widget>[
-              HomePage(
-                viewModel: viewModel,
+          Positioned.fill(
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 375),
+              curve: Curves.easeOut,
+              child: PageView(
+                controller: viewModel.getPageController,
+                children: <Widget>[
+                  HomePage(
+                    viewModel: viewModel,
+                  ),
+                  BookTripSearchPage(
+                    viewModel: viewModel,
+                  ),
+                  ProfilePage(
+                    viewModel: viewModel,
+                  ),
+                ],
               ),
-              BookTripSearchPage(
-                viewModel: viewModel,
-              ),
-              ProfilePage(
-                viewModel: viewModel,
-              ),
-            ],
+            ),
           ),
           Positioned(
-              left: AppSize.s0,
-              right: AppSize.s0,
-              bottom: AppSize.s10,
-              child: NavigationBottomBar(viewModel: viewModel)),
+            bottom: horizontalMargin,
+            left: horizontalMargin,
+            child: CustomBottomBar(pageController: viewModel.getPageController,),
+            // child: NavigationBottomBar(viewModel: viewModel)
+          ),
         ],
       ),
     );
   }
 }
-
-
-
-
-
