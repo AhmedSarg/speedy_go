@@ -3,16 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:speedy_go/presentation/common/data_intent/data_intent.dart';
+import 'package:speedy_go/domain/usecase/calculate_two_points_usecase.dart';
+import 'package:speedy_go/presentation/base/base_states.dart';
 
 import '../../../../../../domain/models/domain.dart';
 import '../../../../../../domain/models/enums.dart';
+import '../../../domain/usecase/find_drivers_usecase.dart';
 import '../../base/base_cubit.dart';
+import '../../common/data_intent/data_intent.dart';
 import '../states/trip_states.dart';
 import '../view/pages/trip_confirm.dart';
 import '../view/pages/trip_details.dart';
 import '../view/pages/trip_driver.dart';
-import '../view/pages/trip_location.dart';
 import '../view/pages/trip_price.dart';
 import '../view/pages/trip_search.dart';
 import '../view/pages/trip_vehicle.dart';
@@ -20,12 +22,21 @@ import '../view/pages/trip_vehicle.dart';
 class PassengerTripViewModel extends BaseCubit
     implements PassengerTripViewModelInput, PassengerTripViewModelOutput {
   static PassengerTripViewModel get(context) => BlocProvider.of(context);
+
+  final FindDriversUseCase _findDriversUseCase;
+  final CalculateTwoPointsUseCase _calculateTwoPointsUseCase;
+
+  PassengerTripViewModel(
+      this._findDriversUseCase, this._calculateTwoPointsUseCase);
+
   int _pageIndex = 0;
   Widget? _pageContent;
   TripType? _tripType;
   bool _canPop = true;
   late LatLng _pickupLocation;
   late LatLng _destinationLocation;
+  double? _tripExpectedTime;
+  int? _tripDistance;
   final List<TripDriverModel> _drivers = [
     TripDriverModel(
       id: 1,
@@ -37,6 +48,7 @@ class PassengerTripViewModel extends BaseCubit
       color: 'Light Blue',
       license: 'ل م ط 554',
       rate: 5,
+      numberOfRates: 0,
       time: 30,
     ),
     TripDriverModel(
@@ -49,6 +61,7 @@ class PassengerTripViewModel extends BaseCubit
       color: 'Red',
       license: 'ل ث ق 433',
       rate: 4,
+      numberOfRates: 0,
       time: 2,
     ),
     TripDriverModel(
@@ -61,12 +74,13 @@ class PassengerTripViewModel extends BaseCubit
       color: 'Orange',
       license: 'ف ي م 986',
       rate: 2,
+      numberOfRates: 0,
       time: 14,
     ),
   ];
   TripDriverModel? _selectedDriver;
-  late int price = 50;
-  TextEditingController newPrice = TextEditingController();
+
+  final TextEditingController _priceController = TextEditingController();
 
   @override
   void start() {
@@ -93,6 +107,9 @@ class PassengerTripViewModel extends BaseCubit
 
   @override
   bool get getCanPop => _canPop;
+
+  @override
+  TextEditingController get getPriceController => _priceController;
 
   @override
   set setTripType(TripType tripType) {
@@ -159,6 +176,39 @@ class PassengerTripViewModel extends BaseCubit
       _setPageContent();
     }
   }
+
+  Future<void> calculateDetails() async {
+    emit(LoadingState());
+    await _calculateTwoPointsUseCase(CalculateTwoPointsUseCaseInput(
+            pointA: _pickupLocation, pointB: _destinationLocation))
+        .then(
+      (value) {
+        value.fold(
+          (l) {
+            emit(ErrorState(failure: l));
+          },
+          (r) {
+            _tripExpectedTime = r['time'];
+            _tripDistance = r['distance'];
+            _priceController.text = (_tripExpectedTime! * 3).toString();
+            emit(ContentState());
+          },
+        );
+      },
+    );
+  }
+
+  Future<void> findDrivers() async {
+    _findDriversUseCase(
+      FindDriversUseCaseInput(
+        passengerId: 'passengerId',
+        tripType: _tripType!,
+        pickupLocation: _pickupLocation,
+        destinationLocation: _destinationLocation,
+        price: int.parse(_priceController.text),
+      ),
+    );
+  }
 }
 
 abstract class PassengerTripViewModelInput {
@@ -179,4 +229,6 @@ abstract class PassengerTripViewModelOutput {
   List<TripDriverModel> get getDrivers;
 
   bool get getCanPop;
+
+  TextEditingController get getPriceController;
 }

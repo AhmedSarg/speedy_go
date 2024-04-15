@@ -25,7 +25,7 @@ class TripPrice extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                "EGP ${viewModel.price.toString()}",
+                "EGP ${viewModel.getPriceController.text}",
                 style: AppTextStyles.tripScreenPricePageTitleTextStyle(context),
               ),
               const Divider(
@@ -44,7 +44,7 @@ class TripPrice extends StatelessWidget {
           padding: const EdgeInsets.symmetric(
               horizontal: AppPadding.p40, vertical: AppPadding.p30,),
           child: TextField(
-            controller: viewModel.newPrice,
+            controller: viewModel.getPriceController,
             keyboardType: TextInputType.number,
             style: const TextStyle(color: ColorManager.white),
             decoration: InputDecoration(

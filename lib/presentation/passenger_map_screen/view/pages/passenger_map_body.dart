@@ -9,7 +9,6 @@ import '../../../resources/assets_manager.dart';
 import '../../../resources/color_manager.dart';
 import '../../../resources/routes_manager.dart';
 import '../../../resources/strings_manager.dart';
-import '../../../resources/styles_manager.dart';
 import '../../../resources/text_styles.dart';
 import '../../../resources/values_manager.dart';
 import '../../viewmodel/passenger_map_viewmodel.dart';
