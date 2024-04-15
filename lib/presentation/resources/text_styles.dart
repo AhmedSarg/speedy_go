@@ -581,4 +581,37 @@ class AppTextStyles {
         fontSize: FontSize.f22,
       );
 
+  /// book trip Search screen
+
+  static TextStyle bookTripSearchScreenTitleTextStyle(BuildContext context) =>
+      getBoldStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f24,
+      );
+  static TextStyle bookTripSearchScreenTitleItemTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.traditional,
+        fontSize: FontSize.f24,
+      );
+  static TextStyle bookTripSearchScreenSubTitleItemTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.grey.withOpacity(.5),
+        fontSize: FontSize.f14,
+      );
+  static TextStyle bookTripSearchScreenButtonItemTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f22,
+      );
+  static TextStyle bookTripSearchScreenTitleDialogTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.traditional,
+        fontSize: FontSize.f24,
+      );
+
 }
