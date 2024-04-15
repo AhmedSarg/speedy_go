@@ -68,10 +68,12 @@ class AppStrings {
   ///Trip Map Screen
 
   static const tripMapScreenPlaceholder = "tripMapScreenPlaceholder";
+  static const tripMapScreenUnknown = "tripMapScreenUnknown";
   static const tripMapScreenFrom = "tripMapScreenFrom";
   static const tripMapScreenTo = "tripMapScreenTo";
   static const tripMapScreenCancel = "tripMapScreenCancel";
   static const tripMapScreenDone = "tripMapScreenDone";
+  static const tripMapScreenError = "tripMapScreenError";
 
   ///Trip Details Screen
   static const tripScreenVehicleSelectionPageTitle =

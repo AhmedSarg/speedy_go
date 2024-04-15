@@ -4,6 +4,8 @@ enum LoginType { phoneNumber, emailPassword }
 
 enum RegisterType { passenger, car, tuktuk, bus }
 
+enum VehicleType { car, tuktuk, bus }
+
 enum TripType { car, tuktuk }
 
 enum Gender { male, female }

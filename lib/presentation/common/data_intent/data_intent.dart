@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../domain/models/enums.dart';
 
@@ -21,30 +22,6 @@ class DataIntent {
 
 //------------------------------------
   //Verification
-
-  // static late Stream<FirebaseAuthException?> _errorStream;
-  //
-  // static void setErrorStream(Stream<FirebaseAuthException?> errorStream) => _errorStream = errorStream;
-  //
-  // static Stream<FirebaseAuthException?> getErrorStream() {
-  //   return _errorStream;
-  // }
-  //
-  // static late StreamController<String?> _otpStreamController;
-  //
-  // static void setOtpStreamController(StreamController<String?> otpStreamController) => _otpStreamController = otpStreamController;
-  //
-  // static StreamController<String?> getOtpStreamController() {
-  //   return _otpStreamController;
-  // }
-  //
-  // static late String _verificationSuccessMessage;
-  //
-  // static void setVerificationSuccessMessage(String verificationSuccessMessage) => _verificationSuccessMessage = verificationSuccessMessage;
-  //
-  // static String getVerificationSuccessMessage() {
-  //   return _verificationSuccessMessage;
-  // }
 
   static String? _phoneNumber;
 
@@ -91,5 +68,29 @@ class DataIntent {
     return _onVerified;
   }
 
+//-----------------------------------
+
+//------------------------------------
+  //Passenger Trip
+
+  static LatLng? _pickupLocation;
+
+  static void pushPickupLocation(LatLng pickupLocation) => _pickupLocation = pickupLocation;
+
+  static LatLng popPickupLocation() {
+    LatLng value = _pickupLocation!;
+    _pickupLocation = null;
+    return value;
+  }
+
+  static LatLng? _destinationLocation;
+
+  static void pushDestinationLocation(LatLng destinationLocation) => _destinationLocation = destinationLocation;
+
+  static LatLng popDestinationLocation() {
+    LatLng value = _destinationLocation!;
+    _destinationLocation = null;
+    return value;
+  }
 //-----------------------------------
 }

@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:speedy_go/data/network/firebase_app_check_factory.dart';
+import 'package:speedy_go/domain/models/domain.dart';
 import 'package:speedy_go/domain/usecase/register_usecase.dart';
 import 'package:speedy_go/domain/usecase/verify_otp_usecase.dart';
 
@@ -52,48 +53,50 @@ Future<void> initAppModule() async {
   sl.registerLazySingleton<FirebaseStorage>(() => fireStorage);
   await FirebaseAppCheckFactoryImpl().create();
   sl.registerLazySingleton<AppServiceClient>(() => AppServiceClientImpl(sl()));
-  sl.registerLazySingleton<RemoteDataSource>(() => RemoteDataSourceImpl(sl(), sl(), sl()));
+  sl.registerLazySingleton<RemoteDataSource>(
+      () => RemoteDataSourceImpl(sl(), sl(), sl()));
   sl.registerLazySingleton<RuntimeDataSource>(() => RuntimeDataSourceImpl());
   sl.registerLazySingleton<CacheDataSource>(
-      () => CacheDataSourceImpl(sl(), sl()),);
+    () => CacheDataSourceImpl(sl(), sl()),
+  );
 
   sl.registerLazySingleton<LocalDataSource>(() => LocalDataSourceImpl(sl()));
 
-  sl.registerLazySingleton<Repository>(
-      () => RepositoryImpl(sl(), sl()));
+  sl.registerLazySingleton<Repository>(() => RepositoryImpl(sl(), sl()));
 }
 
 void initAuthenticateUseCase() {
   if (GetIt.instance.isRegistered<AuthenticateUseCase>() == false) {
-    sl.registerFactory<AuthenticateUseCase>(
-        () => AuthenticateUseCase(sl()));
+    sl.registerFactory<AuthenticateUseCase>(() => AuthenticateUseCase(sl()));
   }
 }
 
 void initStartVerifyUseCase() {
   if (GetIt.instance.isRegistered<StartVerifyUseCase>() == false) {
-    sl.registerFactory<StartVerifyUseCase>(
-        () => StartVerifyUseCase(sl()));
+    sl.registerFactory<StartVerifyUseCase>(() => StartVerifyUseCase(sl()));
   }
 }
 
 void initVerifyOtpUseCase() {
   if (GetIt.instance.isRegistered<VerifyOtpUseCase>() == false) {
-    sl.registerFactory<VerifyOtpUseCase>(
-        () => VerifyOtpUseCase(sl()));
+    sl.registerFactory<VerifyOtpUseCase>(() => VerifyOtpUseCase(sl()));
   }
 }
 
 void initRegisterUseCase() {
   if (GetIt.instance.isRegistered<RegisterUseCase>() == false) {
-    sl.registerFactory<RegisterUseCase>(
-            () => RegisterUseCase(sl()));
+    sl.registerFactory<RegisterUseCase>(() => RegisterUseCase(sl()));
   }
 }
 
 void initLoginUseCase() {
   if (GetIt.instance.isRegistered<LoginUseCase>() == false) {
-    sl.registerFactory<LoginUseCase>(
-            () => LoginUseCase(sl()));
+    sl.registerFactory<LoginUseCase>(() => LoginUseCase(sl()));
+  }
+}
+
+void initAppUser(UserModel user) {
+  if (GetIt.instance.isRegistered<UserModel>() == false) {
+    sl.registerFactory<UserModel>(() => user);
   }
 }

@@ -10,9 +10,15 @@ import 'package:speedy_go/presentation/resources/values_manager.dart';
 import '../../viewmodel/add_trip_viewmodel.dart';
 
 class SearchFuncationalityState extends StatefulWidget {
-  final AddTripViewModel viewModel = AddTripViewModel();
+  const SearchFuncationalityState({
+    super.key,
+    required this.viewModel,
+  });
+
+  final AddTripViewModel viewModel;
+
   @override
-  _SearchFuncationalityStateState createState() =>
+  State<SearchFuncationalityState> createState() =>
       _SearchFuncationalityStateState();
 }
 
@@ -143,17 +149,11 @@ class _SearchFuncationalityStateState extends State<SearchFuncationalityState> {
             itemBuilder: (BuildContext context, int index) {
               return GestureDetector(
                 onTap: () {
-                  print('1');
                   setState(() {
                     isSearching = true;
                     widget.viewModel.getToSearchController.text =
                         filteredList[index];
-                     widget.viewModel.setTo = widget.viewModel.getToSearchController.text;
-                 print('2');
                   });
-                  print(widget.viewModel.getToSearchController.text);
-
-                  print(widget.viewModel.getToController.text);
                 },
                 child: ListTile(
                   title: Text(
@@ -174,7 +174,8 @@ class _SearchFuncationalityStateState extends State<SearchFuncationalityState> {
                 bgcolor: ColorManager.lightBlue,
                 text: 'Confirm',
                 onPressed: () {
-
+                  widget.viewModel.getToController.text = widget.viewModel.getToSearchController.text;
+                  Navigator.pop(context);
                 },
               ),
             ),

@@ -3,9 +3,11 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:uuid/uuid.dart';
 
+import '../../domain/models/domain.dart';
 import '../../domain/models/enums.dart';
 import '../../domain/repository/repository.dart';
 import '../data_source/remote_data_source.dart';
@@ -177,48 +179,6 @@ class RepositoryImpl implements Repository {
     }
   }
 
-  // @override
-  // Future<Either<Failure, void>> verify({
-  //   required Stream<FirebaseAuthException?> errorStream,
-  //   required StreamController<String?> otpStreamController,
-  //   required String otp,
-  // }) async {
-  //   late StreamSubscription streamSubscription;
-  //   try {
-  //     if (await _networkInfo.isConnected) {
-  //       Completer<FirebaseAuthException?> retCompleter =
-  //           Completer<FirebaseAuthException?>();
-  //       streamSubscription = errorStream.listen((error) async {
-  //         retCompleter.complete(error);
-  //       });
-  //       if (otp.isEmpty) {
-  //         otpStreamController.add(null);
-  //       } else {
-  //         otpStreamController.add(otp);
-  //       }
-  //       FirebaseAuthException? result = await retCompleter.future;
-  //       if (result == null) {
-  //         void ret;
-  //         return Right(ret);
-  //       } else {
-  //         throw result;
-  //       }
-  //     } else {
-  //       return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
-  //     }
-  //   } on FirebaseAuthException catch (e) {
-  //     streamSubscription.cancel();
-  //     if (e.code == 'invalid-verification-code') {
-  //       return Left(DataSource.INVALID_VERIFICATION_CODE.getFailure());
-  //     } else {
-  //       return Left(ErrorHandler.handle(e).failure);
-  //     }
-  //   } catch (e) {
-  //     streamSubscription.cancel();
-  //     return Left(ErrorHandler.handle(e).failure);
-  //   }
-  // }
-
   @override
   Future<Either<Failure, void>> register({
     required String firstName,
@@ -307,4 +267,35 @@ class RepositoryImpl implements Repository {
       return Left(ErrorHandler.handle(e).failure);
     }
   }
+
+  // @override
+  // Future<Either<Failure, Stream<DriverModel>>> findDrivers({
+  //   required String passengerId,
+  //   required TripType tripType,
+  //   required LatLng pickupLocation,
+  //   required LatLng destinationLocation,
+  //   required int price,
+  // }) async {
+  //   try {
+  //     if (await _networkInfo.isConnected) {
+  //       Stream<Map<String, dynamic>> offersStream =
+  //           await _remoteDataSource.findDrivers(
+  //         passengerId: passengerId,
+  //         tripType: tripType,
+  //         pickupLocation: pickupLocation,
+  //         destinationLocation: destinationLocation,
+  //         price: price,
+  //       );
+  //       offersStream.listen(
+  //         (offers) async {
+  //           await _remoteDataSource.getDriverById(offers['id']).then(
+  //                 (driver) => DriverModel.fromMap(driver),
+  //               );
+  //         },
+  //       );
+  //     }
+  //   } catch (e) {
+  //     return Left(ErrorHandler.handle(e).failure);
+  //   }
+  // }
 }

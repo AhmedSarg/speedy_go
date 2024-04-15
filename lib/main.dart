@@ -1,5 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:speedy_go/data/data_source/remote_data_source.dart';
+import 'package:speedy_go/domain/models/enums.dart';
 import 'app/app.dart';
 import 'app/sl.dart';
 import 'presentation/resources/langauge_manager.dart';
@@ -19,6 +22,15 @@ void main() async {
   // if (kDebugMode) {
   //   test();
   // }
+  // var _rem = RemoteDataSourceImpl(sl(), sl(), sl());
+  //
+  // _rem.findDrivers(
+  //   passengerId: '9a2a6870-1a0b-1f5c-8a97-55979f1354eb',
+  //   tripType: TripType.car,
+  //   pickupLocation: const LatLng(0, 0),
+  //   destinationLocation: const LatLng(1, 1),
+  //   price: 10,
+  // );
 
   runApp(
     EasyLocalization(

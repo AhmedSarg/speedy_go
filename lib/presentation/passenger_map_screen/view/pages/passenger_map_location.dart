@@ -30,7 +30,6 @@ class PassengerMapLocation extends StatelessWidget {
       child: Stack(
         children: [
           GoogleMap(
-
             initialCameraPosition: CameraPosition(
               target: viewModel.getUserLocation,
               zoom: AppSize.s18,
@@ -42,12 +41,10 @@ class PassengerMapLocation extends StatelessWidget {
               viewModel.chooseLocation(location);
             },
             markers: viewModel.getMarkers,
-            // style: viewModel.getMapStyle,
-
+            style: viewModel.getMapStyle,
             myLocationEnabled: true,
             myLocationButtonEnabled: false,
             zoomControlsEnabled: false,
-
           ),
           SafeArea(
             child: Padding(
@@ -64,6 +61,19 @@ class PassengerMapLocation extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
+                      FloatingActionButton.small(
+                        onPressed: viewModel.goToPin,
+                        backgroundColor: ColorManager.lightGrey,
+                        foregroundColor: ColorManager.white,
+                        shape: const CircleBorder(),
+                        splashColor: ColorManager.primary.withOpacity(.1),
+                        elevation: AppSize.s10,
+                        child: const Icon(
+                          Icons.pin_drop_outlined,
+                          size: AppSize.s20,
+                        ),
+                      ),
+                      const SizedBox(height: AppSize.s10),
                       FloatingActionButton.small(
                         onPressed: () {
                           viewModel.getMapController.animateCamera(

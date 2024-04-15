@@ -90,10 +90,12 @@
   "verificationScreenLoginSuccessMessage": "Account Verified Successfully",
 
   "tripMapScreenPlaceholder": "Choose using map",
+  "tripMapScreenUnknown": "Unknown Location Name",
   "tripMapScreenFrom": "From",
   "tripMapScreenTo": "To",
   "tripMapScreenCancel": "Cancel",
   "tripMapScreenDone": "Done",
+  "tripMapScreenError": "Choose pickup and destination locations",
 
   "tripScreenVehicleSelectionPageTitle": "Choose Your Vehicle",
   "tripScreenVehicleSelectionPageCar": "Car",

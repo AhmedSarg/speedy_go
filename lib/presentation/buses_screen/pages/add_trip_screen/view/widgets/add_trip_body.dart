@@ -22,14 +22,15 @@ import '../../viewmodel/add_trip_viewmodel.dart';
 
 class AddTripBody extends StatelessWidget {
   const AddTripBody({super.key, required this.viewModel});
+
   final AddTripViewModel viewModel;
 
- static final List<String> numTrips = [
+  static final List<String> numTrips = [
     '1',
     '2',
   ];
 
-  static  String selectedValue = numTrips[0];
+  static String selectedValue = numTrips[0];
 
   static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -53,7 +54,6 @@ class AddTripBody extends StatelessWidget {
               imageIcon: SVGAssets.addTrip,
               title: AppStrings.busesAddTrip.tr(),
               backgroundColor: ColorManager.lightBlue,
-
             ),
             Row(
               children: [
@@ -69,7 +69,7 @@ class AddTripBody extends StatelessWidget {
                             (e) => OptionMenuItem(
                               text: e,
                               onPressed: () {
-                                viewModel.setNum(e);
+                                viewModel.setNum = e;
                               },
                             ),
                           )
@@ -81,9 +81,8 @@ class AddTripBody extends StatelessWidget {
                   title: AppStrings.busesAddTripNum.tr(),
                   hintText: AppStrings.busesAddTripNumHint.tr(),
                   read: true,
-                      validation: AppValidators.validateNotEmpty,
-
-                      textInputType: TextInputType.number,
+                  validation: AppValidators.validateNotEmpty,
+                  textInputType: TextInputType.number,
                   controller: viewModel.getNumController,
                 )),
                 Expanded(
@@ -92,7 +91,7 @@ class AddTripBody extends StatelessWidget {
                   hintText: AppStrings.busesAddTripPriceHint.tr(),
                   inputFormatNumber: 6,
                   read: false,
-                      validation: AppValidators.validateNotEmpty,
+                  validation: AppValidators.validateNotEmpty,
                   textInputType: TextInputType.phone,
                   controller: viewModel.getPriceController,
                 )),
@@ -106,20 +105,20 @@ class AddTripBody extends StatelessWidget {
                   title: AppStrings.busesAddTripFrom.tr(),
                   hintText: AppStrings.busesAddTripFromHint.tr(),
                   read: true,
-                      validation: AppValidators.validateNotEmpty,
-
-                      textInputType: TextInputType.text,
+                  validation: AppValidators.validateNotEmpty,
+                  textInputType: TextInputType.text,
                 )),
                 Expanded(
-                    child: TripItem(
-                  onTap: () {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (context) {
-                        return Padding(
-                          padding: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).viewInsets.bottom),
-                          child: Container(
+                  child: TripItem(
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return Padding(
+                            padding: EdgeInsets.only(
+                                bottom:
+                                    MediaQuery.of(context).viewInsets.bottom),
+                            child: Container(
                               height: 1000,
                               width: MediaQuery.of(context).size.width * .8,
                               padding: const EdgeInsets.only(
@@ -131,17 +130,21 @@ class AddTripBody extends StatelessWidget {
                                       topRight: Radius.circular(AppSize.s18),
                                       topLeft: Radius.circular(AppSize.s18)),
                                   color: ColorManager.darkGrey),
-                              child: SearchFuncationalityState()),
-                        );
-                      },
-                    );
-                  },
-                  title: AppStrings.busesAddTripTo.tr(),
-                  hintText: AppStrings.busesAddTripToHint.tr(),
-                  read: true,
-                  textInputType: TextInputType.text,
-                      controller: viewModel.getToController,
-                )),
+                              child: SearchFuncationalityState(
+                                viewModel: viewModel,
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                    title: AppStrings.busesAddTripTo.tr(),
+                    hintText: AppStrings.busesAddTripToHint.tr(),
+                    read: true,
+                    textInputType: TextInputType.text,
+                    controller: viewModel.getToController,
+                  ),
+                ),
               ],
             ),
             Container(
@@ -172,7 +175,6 @@ class AddTripBody extends StatelessWidget {
                           cursorColor: ColorManager.lightGrey,
                           readOnly: true,
                           validation: AppValidators.validateNotEmpty,
-
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(20),
                             FilteringTextInputFormatter.digitsOnly,
@@ -184,47 +186,49 @@ class AddTripBody extends StatelessWidget {
                     ),
                   ),
                   InkWell(
-                      onTap: () {
-
-                        showDatePicker(
-                          context: context,
-                          firstDate: DateTime.now(),
-                          initialDate: DateTime.now(),
-                          currentDate: DateTime.now(),
-                          lastDate: DateTime.now().add(const Duration(days: 365)),
-                          builder: (context, child) {
-                            return Theme(
-                              data: ThemeData.light().copyWith(
-                                datePickerTheme: DatePickerThemeData(
-                                  shape: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(AppSize.s16),
-                                  ),
+                    onTap: () {
+                      showDatePicker(
+                        context: context,
+                        firstDate: DateTime.now(),
+                        initialDate: DateTime.now(),
+                        currentDate: DateTime.now(),
+                        lastDate: DateTime.now().add(const Duration(days: 365)),
+                        builder: (context, child) {
+                          return Theme(
+                            data: ThemeData.light().copyWith(
+                              datePickerTheme: DatePickerThemeData(
+                                shape: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(AppSize.s16),
                                 ),
-                                colorScheme: const ColorScheme.light().copyWith(
-                                  primary: ColorManager.lightBlue,
-                                  onPrimary: Colors.white,
-                                  surface: ColorManager.white,
-                                  onSurface: ColorManager.black,
-                                ),
-                                dialogBackgroundColor: Colors.white,
                               ),
-                              child: child!,
-                            );
-                          },
-                        ).then((selectedDate) {
-                          if (selectedDate != null) {
-                            print('Selected date: $selectedDate');
-                            viewModel.setDate(selectedDate as DateTime);
-                          }
-                        });
-                      },
-                      child: SvgPicture.asset(SVGAssets.calender_2,
-                          width: AppSize.s50,
-                          colorFilter: const ColorFilter.mode(
-                            ColorManager.lightBlue,
-                            BlendMode.srcIn,
-                          ))),
+                              colorScheme: const ColorScheme.light().copyWith(
+                                primary: ColorManager.lightBlue,
+                                onPrimary: Colors.white,
+                                surface: ColorManager.white,
+                                onSurface: ColorManager.black,
+                              ),
+                              dialogBackgroundColor: Colors.white,
+                            ),
+                            child: child!,
+                          );
+                        },
+                      ).then((selectedDate) {
+                        if (selectedDate != null) {
+                          print('Selected date: $selectedDate');
+                          viewModel.setDate = selectedDate;
+                        }
+                      });
+                    },
+                    child: SvgPicture.asset(
+                      SVGAssets.calender_2,
+                      width: AppSize.s50,
+                      colorFilter: const ColorFilter.mode(
+                        ColorManager.lightBlue,
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                  ),
                   const SizedBox(
                     width: AppSize.s18,
                   )
@@ -242,9 +246,8 @@ class AddTripBody extends StatelessWidget {
                 text: 'Add Trip',
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-print('_______________12______________________');
+                    print('_______________12______________________');
                   }
-
                 },
               ),
             ),

@@ -5,7 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
-import 'package:speedy_go/domain/models/enums.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import '../../domain/models/enums.dart';
 
 abstract class RemoteDataSource {
   Future<RegisteredBeforeError?> doesUserExists({
@@ -64,6 +66,16 @@ abstract class RemoteDataSource {
     required String email,
     required String password,
   });
+
+  // Future<Stream<Map<String, dynamic>>> findDrivers({
+  //   required String passengerId,
+  //   required TripType tripType,
+  //   required LatLng pickupLocation,
+  //   required LatLng destinationLocation,
+  //   required int price,
+  // });
+
+  Future<Map<String, dynamic>> getDriverById(String driverId);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -323,5 +335,44 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       email: email,
       password: password,
     );
+  }
+
+  // @override
+  // Future<Stream<Map<String, dynamic>>> findDrivers({
+  //   required String passengerId,
+  //   required TripType tripType,
+  //   required LatLng pickupLocation,
+  //   required LatLng destinationLocation,
+  //   required int price,
+  // }) async {
+  //   late Stream<Map<String, dynamic>> driversStream;
+  //   List<Map<String, dynamic>>? oldDriversList;
+  //   await _firestore.collection('available_trips').add({
+  //     'passenger_uuid': passengerId,
+  //     'pickup_location':
+  //         GeoPoint(pickupLocation.latitude, pickupLocation.longitude),
+  //     'destination_location':
+  //         GeoPoint(destinationLocation.latitude, destinationLocation.longitude),
+  //     'price': price,
+  //     'trip_type': tripType.name,
+  //     'drivers': [],
+  //   }).then((tripRef) {
+  //     driversStream = tripRef.snapshots().map((event) {
+  //       if (oldDriversList != null) {
+  //         List<Map<String, dynamic>> newDriversList = event.data()!['drivers'];
+  //         return oldDriversList.toSet().difference(newDriversList.toSet()).toList();
+  //       }
+  //     });
+  //   });
+  //   return driversStream;
+  // }
+
+  @override
+  Future<Map<String, dynamic>> getDriverById(String driverId) async {
+    return await _firestore
+        .collection('users')
+        .doc(driverId)
+        .get()
+        .then((value) => value.data()!);
   }
 }

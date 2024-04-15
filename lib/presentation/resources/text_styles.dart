@@ -219,6 +219,13 @@ class AppTextStyles {
         fontSize: FontSize.f12,
       );
 
+  static TextStyle tripMapScreenErrorTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f14,
+      );
+
 
 
 

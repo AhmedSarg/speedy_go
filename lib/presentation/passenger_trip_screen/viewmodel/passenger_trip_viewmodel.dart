@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:speedy_go/presentation/common/data_intent/data_intent.dart';
 
 import '../../../../../../domain/models/domain.dart';
 import '../../../../../../domain/models/enums.dart';
@@ -22,6 +24,8 @@ class PassengerTripViewModel extends BaseCubit
   Widget? _pageContent;
   TripType? _tripType;
   bool _canPop = true;
+  late LatLng _pickupLocation;
+  late LatLng _destinationLocation;
   final List<TripDriverModel> _drivers = [
     TripDriverModel(
       id: 1,
@@ -66,6 +70,8 @@ class PassengerTripViewModel extends BaseCubit
 
   @override
   void start() {
+    _pickupLocation = DataIntent.popPickupLocation();
+    _destinationLocation = DataIntent.popDestinationLocation();
     _setPageContent();
   }
 

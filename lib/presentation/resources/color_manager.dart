@@ -5,7 +5,6 @@ class ColorManager {
 
   static const Color primary = Color(0xff2D2E2F);
   static const Color bgColor = Color(0xff525252);
-  static const Color veryLightGrey = Color(0xffA0A0A0);
   static const Color secondary = Color(0xffFE8723);
   static const Color tertiary = Color(0xff012053);
   static const Color traditional = Color(0xff003E73);
@@ -27,6 +26,7 @@ class ColorManager {
   static const Color lightBlack = Color(0xffA0A0A0);
   static const Color lightShadeOfBlue = Color(0xff4053B2);
   static const Color red = Color(0xffCA403D);
+  static const Color veryLightGrey = Color(0xffA0A0A0);
 
   static const Color black = Color(0xff000000);
   static const Color white = Color(0xFFFFFFFF);

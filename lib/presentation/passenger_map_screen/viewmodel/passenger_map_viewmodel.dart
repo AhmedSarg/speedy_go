@@ -2,12 +2,15 @@ import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:speedy_go/presentation/resources/assets_manager.dart';
+import 'package:speedy_go/presentation/resources/strings_manager.dart';
 import 'package:speedy_go/presentation/resources/values_manager.dart';
 
 import '../../../domain/models/enums.dart';
@@ -36,6 +39,9 @@ class PassengerMapViewModel extends BaseCubit
   Set<Marker> _pickupMarkers = {};
   Set<Marker> _destinationMarkers = {};
 
+  String? _pickupAddress;
+  String? _destinationAddress;
+
   void goToMap(LocationMapType locationMapType) async {
     emit(LoadingState());
     _locationMapType = locationMapType;
@@ -51,7 +57,34 @@ class PassengerMapViewModel extends BaseCubit
     emit(LocationMapState(locationMapType));
   }
 
-  void exitMap() {
+  void exitMap() async {
+    emit(LoadingState());
+    if (_pickupLocation != null) {
+      _pickupAddress = (await placemarkFromCoordinates(
+        _pickupLocation!.latitude,
+        _pickupLocation!.longitude,
+      ))[0]
+          .street!
+          .split('،')
+          .last
+          .trim();
+      if (_pickupAddress!.contains('+')) {
+        _pickupAddress = AppStrings.tripMapScreenUnknown.tr();
+      }
+    }
+    if (_destinationLocation != null) {
+      _destinationAddress = (await placemarkFromCoordinates(
+        _destinationLocation!.latitude,
+        _destinationLocation!.longitude,
+      ))[0]
+          .street!
+          .split('،')
+          .last
+          .trim();
+      if (_destinationAddress!.contains('+')) {
+        _destinationAddress = AppStrings.tripMapScreenUnknown.tr();
+      }
+    }
     emit(ContentState());
   }
 
@@ -124,6 +157,19 @@ class PassengerMapViewModel extends BaseCubit
     }
   }
 
+ goToPin() {
+    if (_locationMapType == LocationMapType.pickup && _pickupLocation != null) {
+        _mapController.animateCamera(
+                CameraUpdate.newLatLng(_pickupLocation!));
+    }
+    else {
+      if (_destinationLocation != null) {
+        _mapController.animateCamera(
+                CameraUpdate.newLatLng(_destinationLocation!));
+      }
+    }
+  }
+
   Future<void> _checkLocationServices() async {
     emit(LoadingState());
     Geolocator.getServiceStatusStream().listen((status) async {
@@ -186,6 +232,12 @@ class PassengerMapViewModel extends BaseCubit
   LatLng get getUserLocation => _userLocation!;
 
   @override
+  LatLng? get getPickupLocation => _pickupLocation;
+
+  @override
+  LatLng? get getDestinationLocation => _destinationLocation;
+
+  @override
   String get getMapStyle => _mapStyle!;
 
   @override
@@ -197,8 +249,15 @@ class PassengerMapViewModel extends BaseCubit
       : _destinationMarkers;
 
   @override
+  String? get getPickupAddress => _pickupAddress;
+
+  @override
+  String? get getDestinationAddress => _destinationAddress;
+
+  @override
   set setMapController(GoogleMapController controller) {
     _mapController = controller;
+    goToPin();
   }
 }
 
@@ -209,9 +268,17 @@ abstract class PassengerMapViewModelInput {
 abstract class PassengerMapViewModelOutput {
   LatLng get getUserLocation;
 
+  LatLng? get getPickupLocation;
+
+  LatLng? get getDestinationLocation;
+
   String get getMapStyle;
 
   GoogleMapController get getMapController;
 
   Set<Marker> get getMarkers;
+
+  String? get getPickupAddress;
+
+  String? get getDestinationAddress;
 }
