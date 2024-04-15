@@ -22,15 +22,6 @@ void main() async {
   // if (kDebugMode) {
   //   test();
   // }
-  // var _rem = RemoteDataSourceImpl(sl(), sl(), sl());
-  //
-  // _rem.findDrivers(
-  //   passengerId: '9a2a6870-1a0b-1f5c-8a97-55979f1354eb',
-  //   tripType: TripType.car,
-  //   pickupLocation: const LatLng(0, 0),
-  //   destinationLocation: const LatLng(1, 1),
-  //   price: 10,
-  // );
 
   runApp(
     EasyLocalization(

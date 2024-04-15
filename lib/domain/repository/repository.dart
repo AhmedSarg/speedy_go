@@ -4,20 +4,11 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:speedy_go/domain/models/domain.dart';
 
 import '../../data/network/failure.dart';
 import '../models/enums.dart';
 
 abstract class Repository {
-
-  // Future<Either<Failure, Stream<FirebaseAuthException?>>> authenticate({
-  //   required String email,
-  //   required String password,
-  //   required String phoneNumber,
-  //   required RegisterType registerType,
-  //   required Stream<String?> otpStream,
-  // });
 
   Future<Either<Failure, void>> doesUserExists({
     required String email,
@@ -58,11 +49,16 @@ abstract class Repository {
     required String password,
   });
 
-  // Future<Either<Failure, Stream<DriverModel>>> findDrivers({
-  //   required String passengerId,
-  //   required TripType tripType,
-  //   required LatLng pickupLocation,
-  //   required LatLng destinationLocation,
-  //   required int price,
-  // });
+  Future<Either<Failure, Stream<List<dynamic>>>> findDrivers({
+    required String passengerId,
+    required TripType tripType,
+    required LatLng pickupLocation,
+    required LatLng destinationLocation,
+    required int price,
+  });
+
+  Future<Either<Failure, Map<String, dynamic>>> calculateTwoPoints({
+    required LatLng pointA,
+    required LatLng pointB,
+  });
 }

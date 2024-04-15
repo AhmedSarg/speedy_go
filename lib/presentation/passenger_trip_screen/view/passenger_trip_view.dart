@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../app/sl.dart';
 import '../../base/base_states.dart';
 import '../../base/cubit_builder.dart';
 import '../../base/cubit_listener.dart';
@@ -15,7 +16,7 @@ class PassengerTripScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => PassengerTripViewModel()..start(),
+        create: (context) => PassengerTripViewModel(sl(), sl())..start(),
         child: BlocConsumer<PassengerTripViewModel, BaseStates>(
           listener: (context, state) {
             if (state is RateDriverState) {

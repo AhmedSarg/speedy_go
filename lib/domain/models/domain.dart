@@ -1,4 +1,3 @@
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:speedy_go/domain/models/enums.dart';
 
 ///User Model
@@ -52,7 +51,6 @@ class PassengerModel extends UserModel {
 class DriverModel extends UserModel {
   final String nationalId;
   final VehicleType vehicleType;
-  LatLng? lastKnownLocation;
 
   DriverModel({
     required super.uuid,
@@ -62,7 +60,6 @@ class DriverModel extends UserModel {
     required super.email,
     required this.nationalId,
     required this.vehicleType,
-    this.lastKnownLocation,
   });
 
   factory DriverModel.fake() => DriverModel(
@@ -73,18 +70,15 @@ class DriverModel extends UserModel {
         email: '',
         nationalId: '',
         vehicleType: VehicleType.car,
-        lastKnownLocation: const LatLng(-1, -1),
       );
 
   factory DriverModel.fromMap(Map<String, dynamic> data) {
     VehicleType vehicleType;
     if (data['type'] == 'car_driver') {
       vehicleType = VehicleType.car;
-    }
-    else if (data['type'] == 'tuktuk_driver') {
+    } else if (data['type'] == 'tuktuk_driver') {
       vehicleType = VehicleType.tuktuk;
-    }
-    else {
+    } else {
       vehicleType = VehicleType.bus;
     }
     return DriverModel(
@@ -110,7 +104,8 @@ class TripDriverModel {
   final String car;
   final String color;
   final String license;
-  final int rate;
+  final double rate;
+  final int numberOfRates;
   final int time;
 
   TripDriverModel({
@@ -123,6 +118,7 @@ class TripDriverModel {
     required this.color,
     required this.license,
     required this.rate,
+    required this.numberOfRates,
     required this.time,
   });
 
@@ -136,6 +132,23 @@ class TripDriverModel {
         color: '',
         license: '',
         rate: -1,
+        numberOfRates: -1,
         time: -1,
       );
+
+  factory TripDriverModel.fromMap(Map<String, dynamic> map) {
+    return TripDriverModel(
+      id: map['id'],
+      name: '${map['first_name']} ${map['last_name']}',
+      location: map['location'],
+      price: map['price'],
+      phoneNumber: map['phone_number'],
+      car: map['car_model'] ?? 'Tuk Tuk',
+      color: map['vehicle_color'],
+      license: map['vehicle_licence'],
+      rate: map['rate'],
+      numberOfRates: map['number_of_rates'],
+      time: map['time'],
+    );
+  }
 }

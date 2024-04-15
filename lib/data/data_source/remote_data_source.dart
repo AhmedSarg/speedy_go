@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
@@ -67,15 +68,17 @@ abstract class RemoteDataSource {
     required String password,
   });
 
-  // Future<Stream<Map<String, dynamic>>> findDrivers({
-  //   required String passengerId,
-  //   required TripType tripType,
-  //   required LatLng pickupLocation,
-  //   required LatLng destinationLocation,
-  //   required int price,
-  // });
+  Future<Stream<List<dynamic>>> findDrivers({
+    required String passengerId,
+    required TripType tripType,
+    required LatLng pickupLocation,
+    required LatLng destinationLocation,
+    required int price,
+  });
 
   Future<Map<String, dynamic>> getDriverById(String driverId);
+
+  Future<Map<String, dynamic>> calculateTwoPoints(LatLng pickup, LatLng destination);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -255,6 +258,11 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       'driving_license': drivingLicenseName,
       'car_license': carLicenseName,
       'car_image': carImageName,
+      'car_model': 'Nissan Sunny',
+      'vehicle_color': 'red',
+      'vehicle_license': 'ا ب ت - 1 2 3',
+      'rate': 3.5,
+      'number_of_rates': 0,
       'created_at': createdAt,
     });
     await _firestore.collection('users').doc(uuid).set({
@@ -267,6 +275,11 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       'driving_license': drivingLicenseName,
       'car_license': carLicenseName,
       'car_image': carImageName,
+      'car_model': 'Nissan Sunny',
+      'vehicle_color': 'red',
+      'vehicle_license': 'ا ب ت - 1 2 3',
+      'rate': 3.5,
+      'number_of_rates': 0,
       'created_at': createdAt,
       'type': 'car_driver',
     });
@@ -307,6 +320,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       'email': email,
       'national_id': nationalId,
       'tuktuk_image': tukTukImageName,
+      'vehicle_color': 'red',
+      'vehicle_license': 'ا ب ت - 1 2 3',
+      'rate': 3.5,
+      'number_of_rates': 0,
       'created_at': createdAt,
     });
     await _firestore.collection('users').doc(uuid).set({
@@ -317,6 +334,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       'email': email,
       'national_id': nationalId,
       'tuktuk_image': tukTukImageName,
+      'vehicle_color': 'red',
+      'vehicle_license': 'ا ب ت - 1 2 3',
+      'rate': 3.5,
+      'number_of_rates': 0,
       'created_at': createdAt,
       'type': 'tuktuk_driver',
     });
@@ -337,35 +358,31 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     );
   }
 
-  // @override
-  // Future<Stream<Map<String, dynamic>>> findDrivers({
-  //   required String passengerId,
-  //   required TripType tripType,
-  //   required LatLng pickupLocation,
-  //   required LatLng destinationLocation,
-  //   required int price,
-  // }) async {
-  //   late Stream<Map<String, dynamic>> driversStream;
-  //   List<Map<String, dynamic>>? oldDriversList;
-  //   await _firestore.collection('available_trips').add({
-  //     'passenger_uuid': passengerId,
-  //     'pickup_location':
-  //         GeoPoint(pickupLocation.latitude, pickupLocation.longitude),
-  //     'destination_location':
-  //         GeoPoint(destinationLocation.latitude, destinationLocation.longitude),
-  //     'price': price,
-  //     'trip_type': tripType.name,
-  //     'drivers': [],
-  //   }).then((tripRef) {
-  //     driversStream = tripRef.snapshots().map((event) {
-  //       if (oldDriversList != null) {
-  //         List<Map<String, dynamic>> newDriversList = event.data()!['drivers'];
-  //         return oldDriversList.toSet().difference(newDriversList.toSet()).toList();
-  //       }
-  //     });
-  //   });
-  //   return driversStream;
-  // }
+  @override
+  Future<Stream<List>> findDrivers({
+    required String passengerId,
+    required TripType tripType,
+    required LatLng pickupLocation,
+    required LatLng destinationLocation,
+    required int price,
+  }) async {
+    late Stream<List> driversStream;
+    await _firestore.collection('available_trips').add({
+      'passenger_uuid': passengerId,
+      'pickup_location':
+          GeoPoint(pickupLocation.latitude, pickupLocation.longitude),
+      'destination_location':
+          GeoPoint(destinationLocation.latitude, destinationLocation.longitude),
+      'price': price,
+      'trip_type': tripType.name,
+      'drivers': [],
+    }).then((tripRef) {
+      driversStream = tripRef.snapshots().map((event) {
+        return event.data()!['drivers'];
+      });
+    });
+    return driversStream;
+  }
 
   @override
   Future<Map<String, dynamic>> getDriverById(String driverId) async {
@@ -374,5 +391,34 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         .doc(driverId)
         .get()
         .then((value) => value.data()!);
+  }
+
+  @override
+  Future<Map<String, dynamic>> calculateTwoPoints(LatLng pointA, LatLng pointB) async {
+    const String baseUrl = "https://router.hereapi.com/v8/";
+    const String apiKey = "DW2EtICUSqlxaWY1Zy2ir8ABPQrq_F6LGh1PDa_qxsc";
+    const String endpoint = "routes";
+    const String url = baseUrl + endpoint;
+    final dio = Dio();
+    Map<String, dynamic> result = {
+      "data": -1
+    };
+    await dio.get(url, queryParameters: {
+      "apiKey": apiKey,
+      "transportMode": "car",
+      "origin": "${pointA.latitude},${pointA.longitude}",
+      "pointB":"${pointB.latitude},${pointB.longitude}",
+      "return":"summary,polyline",
+    }).then((value) {
+      double time = value.data["routes"][0]["sections"][0]["summary"]["duration"] / 60;
+      int distance = value.data["routes"][0]["sections"][0]["summary"]["length"];
+      String polylineCode = value.data["routes"][0]["sections"][0]["polyline"];
+      result = {
+        "time": time.round(),
+        "distance": distance,
+        "polylineCode": polylineCode,
+      };
+    });
+    return result;
   }
 }
