@@ -65,7 +65,7 @@ class SVGAssets {
   static const String calender_2 = "${_basePath}bitcoin-icons_calendar-outline.svg";
 
   //navbar
-  static const String home = "${_basePath}home.svg";
+  static const String home = "${_basePath}Home.svg";
   static const String busTrip = "${_basePath}book_trip.svg";
   static const String profile = "${_basePath}profile.svg";
 

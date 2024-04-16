@@ -16,6 +16,7 @@ class ProfilePage extends StatelessWidget {
     return const Stack(
       alignment: Alignment.topLeft,
       children: [
+
         ProfileScreenBody(),
 
       ],

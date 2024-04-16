@@ -1,25 +1,21 @@
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:speedy_go/presentation/common/widget/bottom_curved_nav_bar.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
+import 'package:speedy_go/presentation/resources/assets_manager.dart';
+import 'package:speedy_go/presentation/resources/color_manager.dart';
 import 'package:speedy_go/presentation/main_layout/view/pages/HomePage.dart';
 import 'package:speedy_go/presentation/main_layout/view/pages/book_trip_search.dart';
 import 'package:speedy_go/presentation/main_layout/view/pages/profile_screen/view/profile_page.dart';
 import 'package:speedy_go/presentation/main_layout/view/pages/profile_screen/view/widgets/google_map.dart';
-import 'package:speedy_go/presentation/resources/assets_manager.dart';
 import 'package:speedy_go/presentation/resources/values_manager.dart';
-
-import '../../resources/color_manager.dart';
-import '../../resources/text_styles.dart';
 import '../viewmodel/main_viewmodel.dart';
 
 class MainLayoutBody extends StatefulWidget {
   MainLayoutBody({
-    super.key,
+    Key? key,
     required this.viewModel,
-  });
+  }) : super(key: key);
 
   final MainViewModel viewModel;
 
@@ -29,6 +25,15 @@ class MainLayoutBody extends StatefulWidget {
 
 class _MainLayoutBodyState extends State<MainLayoutBody> {
   int selectedTabIndex = 0;
+  final _pageController = PageController(initialPage: 0);
+  final _controller = NotchBottomBarController(index: 0);
+  int maxCount = 5;
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   final GlobalKey<ScaffoldState> _key = GlobalKey();
 
@@ -49,29 +54,93 @@ class _MainLayoutBodyState extends State<MainLayoutBody> {
           }
         },
         child: Scaffold(
-          bottomNavigationBar: CurvedNavigationBar(
-            backgroundColor: ColorManager.lightGrey,
-            items: <Widget>[
-              SvgPicture.asset(SVGAssets.home),
-              SvgPicture.asset(SVGAssets.busTrip),
-              SvgPicture.asset(SVGAssets.profile),
-
-            ],
-            onTap: (index) {
-              //Handle button tap
-            },
-          ),
           key: _key,
-          resizeToAvoidBottomInset:
-              false, // Ensure bottom navigation is not cut off
-
+          resizeToAvoidBottomInset: false,
           body: Stack(
             children: [
               const GoogleMapScreenProfile(),
-              // tabs[selectedTabIndex],
-
+              PageView(
+                controller: _pageController,
+                physics: const NeverScrollableScrollPhysics(),
+                children: List.generate(
+                  tabs.length,
+                      (index) => tabs[index],
+                ),
+              ),
             ],
           ),
+          backgroundColor: ColorManager.lightGrey,
+          extendBody: selectedTabIndex != 1, // Check if second tab is selected
+          bottomNavigationBar: (tabs.length <= maxCount)
+              ? AnimatedNotchBottomBar(
+            notchBottomBarController: _controller,
+            color: ColorManager.lightGrey,
+            showLabel: false,
+            notchColor: ColorManager.CharredGrey,
+            removeMargins: false,
+            showTopRadius: true,
+            bottomBarWidth: MediaQuery.of(context).size.width * 0.8,
+            durationInMilliSeconds: 1,
+            bottomBarItems: [
+              BottomBarItem(
+                inActiveItem: SvgPicture.asset(
+                  SVGAssets.home,
+                  colorFilter: const ColorFilter.mode(
+                    ColorManager.offwhite,
+                    BlendMode.srcIn,
+                  ),
+                ),
+                activeItem: SvgPicture.asset(
+                  SVGAssets.home,
+                  colorFilter: const ColorFilter.mode(
+                    ColorManager.offwhite,
+                    BlendMode.srcIn,
+                  ),
+                ),
+              ),
+              BottomBarItem(
+                inActiveItem: SvgPicture.asset(
+                  SVGAssets.busTrip,
+                  colorFilter: const ColorFilter.mode(
+                    ColorManager.offwhite,
+                    BlendMode.srcIn,
+                  ),
+                ),
+                activeItem: SvgPicture.asset(
+                  SVGAssets.busTrip,
+                  colorFilter: const ColorFilter.mode(
+                    ColorManager.offwhite,
+                    BlendMode.srcIn,
+                  ),
+                ),
+              ),
+              BottomBarItem(
+                inActiveItem: SvgPicture.asset(
+                  SVGAssets.profile,
+                  colorFilter: const ColorFilter.mode(
+                    ColorManager.offwhite,
+                    BlendMode.srcIn,
+                  ),
+                ),
+                activeItem: SvgPicture.asset(
+                  SVGAssets.profile,
+                  colorFilter: const ColorFilter.mode(
+                    ColorManager.offwhite,
+                    BlendMode.srcIn,
+                  ),
+                ),
+              ),
+            ],
+            onTap: (index) {
+              _pageController.jumpToPage(index);
+              setState(() {
+                selectedTabIndex = index;
+              });
+            },
+            kIconSize: AppSize.s26,
+            kBottomRadius: AppSize.s35,
+          )
+              : null,
         ),
       ),
     );
@@ -83,100 +152,3 @@ class _MainLayoutBodyState extends State<MainLayoutBody> {
     const ProfilePage(),
   ];
 }
-
-
-
-
-
-
-
-
-
-
-// Positioned(
-//   left: 20,
-//   right: 20,
-//   bottom: 40,
-//   child: Container(
-//     height: 60,
-//     child: ClipRRect(
-//
-//       borderRadius: BorderRadius.circular(AppSize.s28),
-//       child: Column(
-//         children: [
-//           Container(
-//             child:BottomNavigationBar(
-//                              backgroundColor: ColorManager.CharredGrey,
-//                              showUnselectedLabels: false,
-//                              enableFeedback: false,
-//                              onTap: (index) {
-//                                setState(() {
-//                                  selectedTabIndex = index;
-//                                });
-//                              },
-//                              currentIndex: selectedTabIndex,
-//                              items: [
-//                                BottomNavigationBarItem(
-//                                  backgroundColor: ColorManager.lightGrey,
-//                                  icon: SvgPicture.asset(
-//                                    SVGAssets.home,
-//                                    colorFilter: const ColorFilter.mode(
-//                                      ColorManager.offwhite,
-//                                      BlendMode.srcIn,
-//                                    ),
-//                                  ),
-//                                  activeIcon: SvgPicture.asset(
-//                                    SVGAssets.home,
-//                                    colorFilter: const ColorFilter.mode(
-//                                      ColorManager.offwhite,
-//                                      BlendMode.srcIn,
-//                                    ),
-//                                  ),
-//                                  label: '',
-//                                ),
-//
-//                                BottomNavigationBarItem(
-//                                  backgroundColor: ColorManager.lightGrey,
-//                                  icon: SvgPicture.asset(
-//                                    SVGAssets.busTrip,
-//                                    colorFilter: const ColorFilter.mode(
-//                                      ColorManager.offwhite,
-//                                      BlendMode.srcIn,
-//                                    ),
-//                                  ),
-//                                  activeIcon: SvgPicture.asset(
-//                                    SVGAssets.busTrip,
-//                                    colorFilter: const ColorFilter.mode(
-//                                      ColorManager.offwhite,
-//                                      BlendMode.srcIn,
-//                                    ),
-//                                  ),
-//                                  label: '',
-//                                ),
-//                                BottomNavigationBarItem(
-//                                  backgroundColor: ColorManager.lightGrey,
-//                                  icon: SvgPicture.asset(
-//                                    SVGAssets.profile,
-//                                    colorFilter: const ColorFilter.mode(
-//                                      ColorManager.offwhite,
-//                                      BlendMode.srcIn,
-//                                    ),
-//                                  ),
-//                                  activeIcon: SvgPicture.asset(
-//                                    SVGAssets.profile,
-//                                    colorFilter: const ColorFilter.mode(
-//                                      ColorManager.offwhite,
-//                                      BlendMode.srcIn,
-//                                    ),
-//                                  ),
-//                                  label: '',
-//                                ),
-//
-//                              ],
-//                            )
-//           ),
-//         ],
-//       ),
-//     ),
-//   ),
-// ),
