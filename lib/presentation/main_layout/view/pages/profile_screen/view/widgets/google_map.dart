@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:speedy_go/presentation/resources/color_manager.dart';
+import 'package:speedy_go/presentation/resources/values_manager.dart';
 
 class GoogleMapScreenProfile extends StatefulWidget {
   const GoogleMapScreenProfile({Key? key}) : super(key: key);
@@ -108,7 +110,10 @@ class _GoogleMapScreenState extends State<GoogleMapScreenProfile> {
         ),
       )
           : const Center(
-        child: CircularProgressIndicator(),
+        child: SizedBox(
+            width: AppSize.s20,
+            height: AppSize.s20,
+            child: CircularProgressIndicator(color: ColorManager.offwhite,)),
       ),
     );
   }

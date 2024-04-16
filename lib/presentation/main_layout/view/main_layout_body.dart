@@ -70,13 +70,13 @@ class _MainLayoutBodyState extends State<MainLayoutBody> {
             ],
           ),
           backgroundColor: ColorManager.lightGrey,
-          extendBody: selectedTabIndex != 1, // Check if second tab is selected
+          extendBody: selectedTabIndex != 1,
           bottomNavigationBar: (tabs.length <= maxCount)
               ? AnimatedNotchBottomBar(
             notchBottomBarController: _controller,
-            color: ColorManager.lightGrey,
+            color: ColorManager.bgColor,
             showLabel: false,
-            notchColor: ColorManager.CharredGrey,
+            notchColor: ColorManager.bgColor,
             removeMargins: false,
             showTopRadius: true,
             bottomBarWidth: MediaQuery.of(context).size.width * 0.8,
