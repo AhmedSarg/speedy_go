@@ -92,7 +92,7 @@ class _GoogleMapScreenState extends State<GoogleMapScreenProfile> {
       body: initialCameraPosition != null
           ? GoogleMap(
         compassEnabled: false,
-        fortyFiveDegreeImageryEnabled: false,
+        // fortyFiveDegreeImageryEnabled: false,
         buildingsEnabled: false,
         scrollGesturesEnabled: false,
         myLocationEnabled: false,

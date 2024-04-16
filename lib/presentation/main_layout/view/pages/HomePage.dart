@@ -13,9 +13,9 @@ import '../../../resources/values_manager.dart';
 import '../../viewmodel/main_viewmodel.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key, required this.viewModel});
+  const HomePage({super.key, });
 
-  final MainViewModel viewModel;
+  // final MainViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {

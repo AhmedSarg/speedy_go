@@ -7,9 +7,9 @@ import '../../../../viewmodel/main_viewmodel.dart';
 import '../profile_pages/edite_profile/view/edite_profile_screen.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key, required this.viewModel});
+  const ProfilePage({super.key,});
 
-  final MainViewModel viewModel;
+  // final MainViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {

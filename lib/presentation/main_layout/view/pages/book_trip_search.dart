@@ -10,9 +10,9 @@ import '../../../resources/color_manager.dart';
 import '../../../resources/strings_manager.dart';
 
 class BookTripSearchPage extends StatelessWidget {
-  const BookTripSearchPage({super.key, required this.viewModel});
+  const BookTripSearchPage({super.key, });
 
-  final MainViewModel viewModel;
+  // final MainViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -24,19 +24,19 @@ class BookTripSearchPage extends StatelessWidget {
           children: [
             const BackgroundImg(),
             Item(
-              viewModel: viewModel,
+              // viewModel: viewModel,
               title: AppStrings.bookTripSearchScreenFromItem.tr(),
               subTitle: AppStrings.bookTripSearchScreenSubTitleFromItem.tr(),
               isDate: false,
             ),
             Item(
-              viewModel: viewModel,
+              // viewModel: viewModel,
               title: AppStrings.bookTripSearchScreenToItem.tr(),
               subTitle: AppStrings.bookTripSearchScreenSubTitleToItem.tr(),
               isDate: false,
             ),
             Item(
-              viewModel: viewModel,
+              // viewModel: viewModel,
               title: AppStrings.bookTripSearchScreenDateItem.tr(),
               subTitle: AppStrings.bookTripSearchScreenSubTitleDateItem.tr(),
               isDate: true,
@@ -101,12 +101,12 @@ class BackgroundImg extends StatelessWidget {
 class Item extends StatelessWidget {
   const Item(
       {super.key,
-      required this.viewModel,
+       this.viewModel,
       required this.title,
       required this.isDate,
       required this.subTitle});
 
-  final MainViewModel viewModel;
+  final MainViewModel? viewModel;
   final String title;
   final String subTitle;
   final bool isDate;
