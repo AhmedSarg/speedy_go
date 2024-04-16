@@ -4,6 +4,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:speedy_go/presentation/buses_screen/pages/add_trip_screen/view/add_trip.dart';
 import 'package:speedy_go/presentation/buses_screen/view/buses_screen.dart';
 import 'package:speedy_go/presentation/main_layout/view/main_layout_view.dart';
+import 'package:speedy_go/presentation/main_layout/view/pages/profile_screen/profile_pages/edite_profile/view/edite_profile_screen.dart';
+import 'package:speedy_go/presentation/main_layout/view/pages/profile_screen/profile_pages/my_trips/view/my_trips_screen.dart';
 import 'package:speedy_go/presentation/onboarding_screen/view/onboarding_view.dart';
 import 'package:speedy_go/presentation/rating_screen/view/rate_view.dart';
 
@@ -41,6 +43,8 @@ class Routes {
   static const String busesRoute = "/buses";
   static const String scheduleRoute = "/schedule";
   static const String addTripRoute = "/addTrip";
+  static const String profileEditeRoute = "/profileEdite";
+  static const String myTripsRoute = "/myTrips";
 }
 
 class RouteGenerator {
@@ -81,6 +85,10 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const ScheduleScreen());
       case Routes.addTripRoute:
         return MaterialPageRoute(builder: (_) => const AddTripScreen());
+      case Routes.profileEditeRoute:
+        return MaterialPageRoute(builder: (_) => const ProfileEditeScreen());
+      case Routes.myTripsRoute:
+        return MaterialPageRoute(builder: (_) => const MyTripsScreen());
 
       // case Routes.myCustomWidget:
       //   return MaterialPageRoute(builder: (_) => MyCustomWidget());

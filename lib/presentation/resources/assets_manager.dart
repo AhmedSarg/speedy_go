@@ -44,6 +44,16 @@ class SVGAssets {
   static const String person = "${_basePath}person.svg";
   static const String phone = "${_basePath}phone.svg";
   static const String checkmark = "${_basePath}checkmark.svg";
+//profile
+
+  static const String history = "${_basePath}history.svg";
+  static const String support = "${_basePath}Vector.svg";
+  static const String myTrips = "${_basePath}bx_trip.svg";
+  static const String safety = "${_basePath}safty.svg";
+  static const String halfCircle = "${_basePath}majesticons_logout-half-circle-line.svg";
+  static const String faceBook = "${_basePath}logos_facebook.svg";
+  static const String instagram = "${_basePath}skill-icons_instagram.svg";
+
 
   static const String schedule =
       "${_basePath}Calendar--Streamline-Guidance.svg";
@@ -55,9 +65,11 @@ class SVGAssets {
   static const String calender_2 = "${_basePath}bitcoin-icons_calendar-outline.svg";
 
   //navbar
-  static const String home = "${_basePath}home.svg";
+  static const String home = "${_basePath}system-uicons_home-alt.svg";
   static const String busTrip = "${_basePath}book_trip.svg";
   static const String profile = "${_basePath}profile.svg";
+  static const String pastTrip = "${_basePath}heroicons_ticket-solid.svg";
+  static const String redBus = "${_basePath}Vector (1).svg";
 
   static const String date = "${_basePath}date.svg";
 }

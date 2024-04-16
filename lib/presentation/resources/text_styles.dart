@@ -227,7 +227,65 @@ class AppTextStyles {
       );
 
 
+///Profile Screen
+  static TextStyle profileUserNameTextStyle(BuildContext context) =>
+      getMediumStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.black,
+        fontSize: FontSize.f20,
+      );
+  static TextStyle profileSmallTextStyle(BuildContext context,Color color) =>
+      getMediumStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: color,
+        fontSize: FontSize.f15,
+      );
+  static TextStyle profileGeneralItemTextStyle(BuildContext context,double fontSize) =>
+      getSemiBoldStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: fontSize,
+      );
+  static TextStyle profileGeneralTextStyle(BuildContext context,double fontSize,Color color) =>
+      getSemiBoldStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: color,
+        fontSize: fontSize,
+      );
+  static TextStyle profileHintTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.lightBlue.withOpacity(.5),
+        fontSize: FontSize.f14,
+      );
 
+
+  static TextStyle profileItemTextStyle(BuildContext context) =>
+      getSemiBoldStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f18,
+      );
+  static TextStyle profileItemUpdateFieldTextStyle(BuildContext context,Color color) =>
+      getSemiBoldStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: color,
+        fontSize: FontSize.f14,
+      );
+
+  static TextStyle profileTripsItemTextStyle(BuildContext context,Color color) =>
+      getSemiBoldStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: color,
+        fontSize: FontSize.f18,
+      );
+
+  static TextStyle profileItemUpdateSubFieldTextStyle(BuildContext context,Color color) =>
+      getSemiBoldStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: color,
+        fontSize: FontSize.f12,
+      );
 
   ///Buses Screen
   static TextStyle busesTitleTextStyle(BuildContext context) =>
