@@ -68,6 +68,8 @@ class SVGAssets {
   static const String home = "${_basePath}system-uicons_home-alt.svg";
   static const String busTrip = "${_basePath}book_trip.svg";
   static const String profile = "${_basePath}profile.svg";
+  static const String pastTrip = "${_basePath}heroicons_ticket-solid.svg";
+  static const String redBus = "${_basePath}Vector (1).svg";
 
   static const String date = "${_basePath}date.svg";
 }

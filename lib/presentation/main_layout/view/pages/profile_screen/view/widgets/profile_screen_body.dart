@@ -80,7 +80,10 @@ class ProfileScreenBody extends StatelessWidget {
               SizedBox(
                 height: AppSize.s18,
               ),
-              const ProfileItems(
+               ProfileItems(
+                onTap: () {
+                  Navigator.pushNamed(context, Routes.myTripsRoute);
+                },
                 text: 'My Trips',
                 image: SVGAssets.myTrips,
               ),

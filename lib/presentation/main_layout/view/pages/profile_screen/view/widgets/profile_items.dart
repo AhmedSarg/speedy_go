@@ -13,25 +13,26 @@ class ProfileItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: AppMargin.m12),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Expanded(
-              flex: 2,
-              child: SvgPicture.asset(image)),
+    return InkWell(
+      onTap: onTap,
 
-          Expanded(
-            flex: 3,
-            child: InkWell(
-              onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: AppMargin.m12),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Expanded(
+                flex: 2,
+                child: SvgPicture.asset(image)),
+
+            Expanded(
+              flex: 3,
               child: Text(text,style: AppTextStyles.profileItemTextStyle(context),),
             ),
-          ),
 
-        ],
+          ],
+        ),
       ),
     );
   }
