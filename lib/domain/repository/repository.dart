@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:speedy_go/domain/models/domain.dart';
 
 import '../../data/network/failure.dart';
 import '../models/enums.dart';
@@ -49,7 +50,7 @@ abstract class Repository {
     required String password,
   });
 
-  Future<Either<Failure, Stream<List<dynamic>>>> findDrivers({
+  Future<Either<Failure, Stream<List<Future<TripDriverModel>>>>> findDrivers({
     required String passengerId,
     required TripType tripType,
     required LatLng pickupLocation,

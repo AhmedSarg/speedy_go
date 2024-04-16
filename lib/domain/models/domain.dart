@@ -96,7 +96,7 @@ class DriverModel extends UserModel {
 ///Trip Screen
 
 class TripDriverModel {
-  final int id;
+  final String id;
   final String name;
   final String location;
   final int price;
@@ -123,7 +123,7 @@ class TripDriverModel {
   });
 
   factory TripDriverModel.fake() => TripDriverModel(
-        id: -1,
+        id: '',
         name: '',
         location: '',
         price: -1,
@@ -141,13 +141,13 @@ class TripDriverModel {
       id: map['id'],
       name: '${map['first_name']} ${map['last_name']}',
       location: map['location'],
-      price: map['price'],
+      price: map['price'].toInt(),
       phoneNumber: map['phone_number'],
       car: map['car_model'] ?? 'Tuk Tuk',
       color: map['vehicle_color'],
-      license: map['vehicle_licence'],
-      rate: map['rate'],
-      numberOfRates: map['number_of_rates'],
+      license: map['vehicle_license'],
+      rate: map['rate'].toDouble(),
+      numberOfRates: map['number_of_rates'].toInt(),
       time: map['time'],
     );
   }

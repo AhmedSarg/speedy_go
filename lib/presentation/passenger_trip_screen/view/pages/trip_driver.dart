@@ -1,7 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:lottie/lottie.dart';
 import 'package:speedy_go/app/extensions.dart';
+import 'package:speedy_go/presentation/passenger_trip_screen/view/pages/trip_search.dart';
 
 import '../../../../domain/models/domain.dart';
 import '../../../resources/assets_manager.dart';
@@ -19,67 +21,102 @@ class TripDriver extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     viewModel = PassengerTripViewModel.get(context);
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Column(
-          children: [
-            Text(
-              AppStrings.tripScreenDriverSelectionPageTitle.tr(),
-              style: AppTextStyles.tripScreenDriverSelectionPageTitleTextStyle(
-                  context),
-            ),
-            const Divider(
-              color: ColorManager.grey,
-              indent: AppSize.s20,
-              endIndent: AppSize.s20,
-            ),
-          ],
-        ),
-        const SizedBox(height: AppSize.s20),
-        Container(
-          constraints: BoxConstraints(
-            maxHeight: context.height() * .6,
-            minHeight: AppSize.s0,
-          ),
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: ListView.separated(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: viewModel.getDrivers.length,
-              itemBuilder: (context, index) =>
-                  Card(viewModel: viewModel, index: index),
-              separatorBuilder: (context, index) =>
-                  const SizedBox(height: AppSize.s20),
-            ),
-          ),
-        ),
-        const SizedBox(height: AppSize.s20),
-        SizedBox(
-          height: AppSize.s50,
-          width: AppSize.infinity,
-          child: ElevatedButton(
-            onPressed: (viewModel.getSelectedDriver.id != -1)
-                ? () {
-                    viewModel.nextPage();
-                  }
-                : null,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: ColorManager.darkGreen,
-              disabledBackgroundColor: ColorManager.green.withOpacity(0.7),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppSize.s15),
+    return StreamBuilder(
+      stream: viewModel.getDrivers,
+      builder: (context, drivers) {
+        if (drivers.hasData && drivers.data!.isNotEmpty) {
+          if (!viewModel.getDriversIds
+              .sublist(viewModel.getDriversIds.length - drivers.data!.length)
+              .contains(viewModel.getSelectedDriver.id)
+          && viewModel.getSelectedDriver.id.isNotEmpty) {
+            viewModel.setSelectedDriver = null;
+          }
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Column(
+                children: [
+                  Text(
+                    AppStrings.tripScreenDriverSelectionPageTitle.tr(),
+                    style: AppTextStyles
+                        .tripScreenDriverSelectionPageTitleTextStyle(context),
+                  ),
+                  const Divider(
+                    color: ColorManager.grey,
+                    indent: AppSize.s20,
+                    endIndent: AppSize.s20,
+                  ),
+                ],
               ),
-            ),
-            child: Text(
-              AppStrings.tripScreenDriverSelectionPageConfirm.tr(),
-              style: AppTextStyles.tripScreenDriverSelectionPageButtonTextStyle(
-                  context),
-            ),
-          ),
-        ),
-      ],
+              const SizedBox(height: AppSize.s20),
+              Container(
+                constraints: BoxConstraints(
+                  maxHeight: context.height() * .6,
+                  minHeight: AppSize.s0,
+                ),
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: drivers.data!.length,
+                    itemBuilder: (context, index) {
+                      return FutureBuilder<TripDriverModel>(
+                        future: drivers.data![index],
+                        builder: (context, driver) {
+                          if (driver.hasData) {
+                            viewModel.getDriversIds.add(driver.data!.id);
+                            return Card(
+                              viewModel: viewModel,
+                              driver: driver.data!,
+                            );
+                          } else {
+                            return Center(
+                              child: Lottie.asset(
+                                LottieAssets.loading,
+                                height: AppSize.s100,
+                              ),
+                            );
+                          }
+                        },
+                      );
+                    },
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: AppSize.s20),
+                  ),
+                ),
+              ),
+              const SizedBox(height: AppSize.s20),
+              SizedBox(
+                height: AppSize.s50,
+                width: AppSize.infinity,
+                child: ElevatedButton(
+                  onPressed: (viewModel.getSelectedDriver.id.isNotEmpty)
+                      ? () {
+                          viewModel.nextPage();
+                        }
+                      : null,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: ColorManager.darkGreen,
+                    disabledBackgroundColor:
+                        ColorManager.green.withOpacity(0.7),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppSize.s15),
+                    ),
+                  ),
+                  child: Text(
+                    AppStrings.tripScreenDriverSelectionPageConfirm.tr(),
+                    style: AppTextStyles
+                        .tripScreenDriverSelectionPageButtonTextStyle(context),
+                  ),
+                ),
+              ),
+            ],
+          );
+        } else {
+          return const TripSearch();
+        }
+      },
     );
   }
 }
@@ -88,21 +125,20 @@ class Card extends StatelessWidget {
   const Card({
     super.key,
     required this.viewModel,
-    required this.index,
+    required this.driver,
   });
 
   final PassengerTripViewModel viewModel;
-  final int index;
+  final TripDriverModel driver;
 
   @override
   Widget build(BuildContext context) {
-    final TripDriverModel driver = viewModel.getDrivers[index];
-    bool driverSelected = driver == viewModel.getSelectedDriver;
+    bool driverSelected = driver.id == viewModel.getSelectedDriver.id;
     Color textColor = driverSelected ? ColorManager.white : ColorManager.black;
     return GestureDetector(
       onTap: () {
         if (driverSelected) {
-          viewModel.setSelectedDriver = TripDriverModel.fake();
+          viewModel.setSelectedDriver = null;
         } else {
           viewModel.setSelectedDriver = driver;
         }

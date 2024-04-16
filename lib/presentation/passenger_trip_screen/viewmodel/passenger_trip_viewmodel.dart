@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:speedy_go/domain/usecase/calculate_two_points_usecase.dart';
 import 'package:speedy_go/presentation/base/base_states.dart';
+import 'package:speedy_go/presentation/passenger_trip_screen/view/pages/trip_loading.dart';
 
 import '../../../../../../domain/models/domain.dart';
 import '../../../../../../domain/models/enums.dart';
@@ -16,7 +19,6 @@ import '../view/pages/trip_confirm.dart';
 import '../view/pages/trip_details.dart';
 import '../view/pages/trip_driver.dart';
 import '../view/pages/trip_price.dart';
-import '../view/pages/trip_search.dart';
 import '../view/pages/trip_vehicle.dart';
 
 class PassengerTripViewModel extends BaseCubit
@@ -35,52 +37,16 @@ class PassengerTripViewModel extends BaseCubit
   bool _canPop = true;
   late LatLng _pickupLocation;
   late LatLng _destinationLocation;
-  double? _tripExpectedTime;
+  int? _tripExpectedTime;
   int? _tripDistance;
-  final List<TripDriverModel> _drivers = [
-    TripDriverModel(
-      id: 1,
-      name: 'Ahmed Sherief',
-      location: 'Kafr El Sheikh',
-      price: 50,
-      phoneNumber: '01003557871',
-      car: 'Toyota',
-      color: 'Light Blue',
-      license: 'ل م ط 554',
-      rate: 5,
-      numberOfRates: 0,
-      time: 30,
-    ),
-    TripDriverModel(
-      id: 2,
-      name: 'Ali Walid',
-      location: 'Kafr El Sheikh',
-      price: 20,
-      phoneNumber: '01003557872',
-      car: 'Lancer Shark',
-      color: 'Red',
-      license: 'ل ث ق 433',
-      rate: 4,
-      numberOfRates: 0,
-      time: 2,
-    ),
-    TripDriverModel(
-      id: 3,
-      name: 'Ahmed Sobhy',
-      location: 'Shubra',
-      price: 99,
-      phoneNumber: '01003557873',
-      car: 'Hyundai Elentra',
-      color: 'Orange',
-      license: 'ف ي م 986',
-      rate: 2,
-      numberOfRates: 0,
-      time: 14,
-    ),
-  ];
   TripDriverModel? _selectedDriver;
+  final List<String> _driversIds = [];
 
   final TextEditingController _priceController = TextEditingController();
+
+  Stream<List<Future<TripDriverModel>>>? _driversStream;
+
+  StreamSubscription<List<Future<TripDriverModel>>>? _driversSubscription;
 
   @override
   void start() {
@@ -103,7 +69,10 @@ class PassengerTripViewModel extends BaseCubit
       _selectedDriver ?? TripDriverModel.fake();
 
   @override
-  List<TripDriverModel> get getDrivers => _drivers;
+  List<String> get getDriversIds => _driversIds;
+
+  @override
+  Stream<List<Future<TripDriverModel>>> get getDrivers => _driversStream!;
 
   @override
   bool get getCanPop => _canPop;
@@ -119,15 +88,17 @@ class PassengerTripViewModel extends BaseCubit
   }
 
   @override
-  set setSelectedDriver(TripDriverModel selectedDriver) {
+  set setSelectedDriver(TripDriverModel? selectedDriver) {
     _selectedDriver = selectedDriver;
     _setPageContent();
     emit(SelectDriverState());
   }
 
-  void _setPageContent() {
+  void _setPageContent() async {
     Widget res;
     switch (_pageIndex) {
+      case -1:
+        res = const TripLoading();
       case 0:
         res = TripVehicle();
         break;
@@ -135,18 +106,22 @@ class PassengerTripViewModel extends BaseCubit
         res = const TripConfirm();
         break;
       case 2:
+        _loadingContent();
+        await _calculateDetails();
+        _priceController.text = (_tripExpectedTime! * 3).toString();
         res = const TripPrice();
+        _pageIndex = 2;
         break;
       case 3:
-        Future.delayed(const Duration(seconds: 2), () {
-          nextPage();
-        });
-        res = const TripSearch();
-        break;
-      case 4:
+        if (_driversStream == null) {
+          _loadingContent();
+          await _findDrivers();
+          _pageIndex = 3;
+        }
         res = TripDriver();
         break;
-      case 5:
+      case 4:
+        _driversSubscription!.cancel();
         res = const TripDetails();
         break;
       default:
@@ -157,28 +132,37 @@ class PassengerTripViewModel extends BaseCubit
     emit(ChangePageState());
   }
 
-  nextPage() {
+  nextPage() async {
     _canPop = false;
-    if (_pageIndex < 5) {
+    if (_pageIndex < 4) {
       _pageIndex += 1;
       _setPageContent();
-    } else if (_pageIndex == 5) {
+    } else if (_pageIndex == 4) {
       emit(RateDriverState());
     }
   }
 
   prevPage() {
-    if (_pageIndex == 1) {
-      _canPop = true;
-    }
-    if (_pageIndex > 0) {
-      _pageIndex -= 1;
-      _setPageContent();
+    if (_pageIndex != -1) {
+      if (_pageIndex == 3) {
+        //todo cancel trip
+      }
+      if (_pageIndex == 1) {
+        _canPop = true;
+      }
+      if (_pageIndex > 0) {
+        _pageIndex -= 1;
+        _setPageContent();
+      }
     }
   }
 
-  Future<void> calculateDetails() async {
-    emit(LoadingState());
+  void _loadingContent() {
+    _pageIndex = -1;
+    _setPageContent();
+  }
+
+  Future<void> _calculateDetails() async {
     await _calculateTwoPointsUseCase(CalculateTwoPointsUseCaseInput(
             pointA: _pickupLocation, pointB: _destinationLocation))
         .then(
@@ -198,8 +182,11 @@ class PassengerTripViewModel extends BaseCubit
     );
   }
 
-  Future<void> findDrivers() async {
-    _findDriversUseCase(
+  //select then driver leaves
+  //error state
+
+  Future<void> _findDrivers() async {
+    await _findDriversUseCase(
       FindDriversUseCaseInput(
         passengerId: 'passengerId',
         tripType: _tripType!,
@@ -207,6 +194,17 @@ class PassengerTripViewModel extends BaseCubit
         destinationLocation: _destinationLocation,
         price: int.parse(_priceController.text),
       ),
+    ).then(
+      (value) {
+        value.fold(
+          (l) {
+            emit(ErrorState(failure: l, displayType: DisplayType.popUpDialog));
+          },
+          (r) {
+            _driversStream = r;
+          },
+        );
+      },
     );
   }
 }
@@ -214,7 +212,7 @@ class PassengerTripViewModel extends BaseCubit
 abstract class PassengerTripViewModelInput {
   set setTripType(TripType tripType);
 
-  set setSelectedDriver(TripDriverModel selectedDriver);
+  set setSelectedDriver(TripDriverModel? selectedDriver);
 }
 
 abstract class PassengerTripViewModelOutput {
@@ -226,7 +224,9 @@ abstract class PassengerTripViewModelOutput {
 
   TripDriverModel get getSelectedDriver;
 
-  List<TripDriverModel> get getDrivers;
+  List<String> get getDriversIds;
+
+  Stream<List<Future<TripDriverModel>>> get getDrivers;
 
   bool get getCanPop;
 

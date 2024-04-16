@@ -42,9 +42,10 @@ class TripSearch extends StatelessWidget {
             height: context.width() * .5,
             width: context.width() * .5,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppSize.s20),
-                border: Border.all(color: ColorManager.black),
-                color: ColorManager.darkBlack,),
+              borderRadius: BorderRadius.circular(AppSize.s20),
+              border: Border.all(color: ColorManager.black),
+              color: ColorManager.darkBlack,
+            ),
             child: Column(
               children: [
                 const Spacer(),
@@ -94,7 +95,9 @@ class TripSearch extends StatelessWidget {
           height: AppSize.s50,
           width: AppSize.infinity,
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              viewModel.prevPage();
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: ColorManager.error,
               shape: RoundedRectangleBorder(

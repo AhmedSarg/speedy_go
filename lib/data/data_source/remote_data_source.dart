@@ -407,7 +407,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       "apiKey": apiKey,
       "transportMode": "car",
       "origin": "${pointA.latitude},${pointA.longitude}",
-      "pointB":"${pointB.latitude},${pointB.longitude}",
+      "destination":"${pointB.latitude},${pointB.longitude}",
       "return":"summary,polyline",
     }).then((value) {
       double time = value.data["routes"][0]["sections"][0]["summary"]["duration"] / 60;

@@ -7,6 +7,8 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:speedy_go/data/network/firebase_app_check_factory.dart';
 import 'package:speedy_go/domain/models/domain.dart';
+import 'package:speedy_go/domain/usecase/calculate_two_points_usecase.dart';
+import 'package:speedy_go/domain/usecase/calculate_two_points_usecase.dart';
 import 'package:speedy_go/domain/usecase/register_usecase.dart';
 import 'package:speedy_go/domain/usecase/verify_otp_usecase.dart';
 
@@ -25,6 +27,7 @@ import '../data/network/network_info.dart';
 import '../data/repository/repository_impl.dart';
 import '../domain/repository/repository.dart';
 import '../domain/usecase/authenticate_usecase.dart';
+import '../domain/usecase/find_drivers_usecase.dart';
 import '../domain/usecase/login_usecase.dart';
 import '../domain/usecase/start_verify_usecase.dart';
 import 'date_ntp.dart';
@@ -95,8 +98,21 @@ void initLoginUseCase() {
   }
 }
 
-void initAppUser(UserModel user) {
-  if (GetIt.instance.isRegistered<UserModel>() == false) {
-    sl.registerFactory<UserModel>(() => user);
+// void initAppUser(UserModel user) {
+//   if (GetIt.instance.isRegistered<UserModel>() == false) {
+//     sl.registerFactory<UserModel>(() => user);
+//   }
+// }
+
+void initFindDriversUseCase() {
+  if (GetIt.instance.isRegistered<FindDriversUseCase>() == false) {
+    sl.registerFactory<FindDriversUseCase>(() => FindDriversUseCase(sl()));
+  }
+}
+
+void initCalculateTwoPointsUseCase() {
+  if (GetIt.instance.isRegistered<CalculateTwoPointsUseCase>() == false) {
+    sl.registerFactory<CalculateTwoPointsUseCase>(
+        () => CalculateTwoPointsUseCase(sl()));
   }
 }

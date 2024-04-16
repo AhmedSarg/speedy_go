@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../data/network/failure.dart';
+import '../models/domain.dart';
 import '../models/enums.dart';
 import '../repository/repository.dart';
 import 'base_usecase.dart';
@@ -12,7 +13,7 @@ class FindDriversUseCase extends BaseUseCase<FindDriversUseCaseInput, void> {
   FindDriversUseCase(this._repository);
 
   @override
-  Future<Either<Failure, Stream<List<dynamic>>>> call(FindDriversUseCaseInput input) async {
+  Future<Either<Failure, Stream<List<Future<TripDriverModel>>>>> call(FindDriversUseCaseInput input) async {
     return _repository.findDrivers(
       passengerId: input.passengerId,
       tripType: input.tripType,

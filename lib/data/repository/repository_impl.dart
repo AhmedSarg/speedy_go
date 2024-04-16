@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -270,7 +269,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, Stream<List<dynamic>>>> findDrivers({
+  Future<Either<Failure, Stream<List<Future<TripDriverModel>>>>> findDrivers({
     required String passengerId,
     required TripType tripType,
     required LatLng pickupLocation,
@@ -279,32 +278,36 @@ class RepositoryImpl implements Repository {
   }) async {
     try {
       if (await _networkInfo.isConnected) {
-        Stream<List> offersStream = await _remoteDataSource
-            .findDrivers(
+        Stream<List<Future<TripDriverModel>>> offersStream =
+            await _remoteDataSource
+                .findDrivers(
           passengerId: passengerId,
           tripType: tripType,
           pickupLocation: pickupLocation,
           destinationLocation: destinationLocation,
           price: price,
         )
-            .then(
+                .then(
           (driversStream) {
             return driversStream.map(
               (offers) {
                 return offers.map(
                   (offer) async {
-                    await _remoteDataSource.getDriverById(offer['id']).then(
+                    return await _remoteDataSource
+                        .getDriverById(offer['id'])
+                        .then(
                       (driver) async {
+                        driver['id'] = offer['id'];
                         driver['price'] = offer['price'];
                         driver['location'] = offer['location'];
                         driver['time'] =
-                            await _remoteDataSource.calculateTwoPoints(
+                            (await _remoteDataSource.calculateTwoPoints(
                           LatLng(
                             offer['coordinates'].latitude,
                             offer['coordinates'].longitude,
                           ),
                           pickupLocation,
-                        );
+                        ))['time'];
                         return TripDriverModel.fromMap(driver);
                       },
                     );
@@ -315,8 +318,7 @@ class RepositoryImpl implements Repository {
           },
         );
         return Right(offersStream);
-      }
-      else {
+      } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
       }
     } catch (e) {
@@ -331,9 +333,10 @@ class RepositoryImpl implements Repository {
   }) async {
     try {
       if (await _networkInfo.isConnected) {
-        return Right(await _remoteDataSource.calculateTwoPoints(pointA, pointB));
-      }
-      else {
+        Map<String, dynamic> res =
+            await _remoteDataSource.calculateTwoPoints(pointA, pointB);
+        return Right(res);
+      } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
       }
     } catch (e) {
