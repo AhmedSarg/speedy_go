@@ -6,8 +6,8 @@ import 'package:speedy_go/presentation/resources/assets_manager.dart';
 import 'package:speedy_go/presentation/resources/text_styles.dart';
 import 'package:speedy_go/presentation/resources/values_manager.dart';
 
-import '../../../resources/color_manager.dart';
-import '../../../resources/strings_manager.dart';
+import '../../../../resources/color_manager.dart';
+import '../../../../resources/strings_manager.dart';
 
 class BookTripSearchPage extends StatelessWidget {
   const BookTripSearchPage({super.key, });
