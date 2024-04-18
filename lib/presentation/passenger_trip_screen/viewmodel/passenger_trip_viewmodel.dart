@@ -144,7 +144,7 @@ class PassengerTripViewModel extends BaseCubit
 
   prevPage() {
     if (_pageIndex != -1) {
-      if (_pageIndex == 3) {
+      if (_pageIndex == 3 && _driversStream != null) {
         //todo cancel trip
       }
       if (_pageIndex == 1) {

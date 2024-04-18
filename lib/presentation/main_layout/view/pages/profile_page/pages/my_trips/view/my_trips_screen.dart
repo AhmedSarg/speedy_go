@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:speedy_go/presentation/main_layout/view/pages/profile_screen/profile_pages/my_trips/view/widgets/my_current_trip.dart';
-import 'package:speedy_go/presentation/main_layout/view/pages/profile_screen/profile_pages/my_trips/view/widgets/my_past_trip.dart';
 import 'package:speedy_go/presentation/resources/color_manager.dart';
 import 'package:speedy_go/presentation/resources/font_manager.dart';
 import 'package:speedy_go/presentation/resources/text_styles.dart';
 import 'package:speedy_go/presentation/resources/values_manager.dart';
 
-import '../../../../../../../common/widget/main_app_bar.dart';
+import 'widgets/my_current_trip.dart';
+import 'widgets/my_past_trip.dart';
 
 class MyTripsScreen extends StatefulWidget {
   const MyTripsScreen({super.key});
@@ -68,7 +67,7 @@ class _MyTripsScreenState extends State<MyTripsScreen> {
                     onTap: () {
                       _pageController.animateToPage(
                         0,
-                        duration: Duration(milliseconds: 500),
+                        duration: const Duration(milliseconds: 500),
                         curve: Curves.ease,
                       );
                     },
@@ -88,7 +87,7 @@ class _MyTripsScreenState extends State<MyTripsScreen> {
                     onTap: () {
                       _pageController.animateToPage(
                         1,
-                        duration: Duration(milliseconds: 500),
+                        duration: const Duration(milliseconds: 500),
                         curve: Curves.ease,
                       );
                     },

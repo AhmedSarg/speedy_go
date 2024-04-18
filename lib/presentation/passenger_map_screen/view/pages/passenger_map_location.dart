@@ -30,7 +30,6 @@ class PassengerMapLocation extends StatelessWidget {
       child: Stack(
         children: [
           GoogleMap(
-
             initialCameraPosition: CameraPosition(
               target: viewModel.getUserLocation,
               zoom: AppSize.s18,
@@ -42,7 +41,7 @@ class PassengerMapLocation extends StatelessWidget {
               viewModel.chooseLocation(location);
             },
             markers: viewModel.getMarkers,
-            // style: viewModel.getMapStyle,
+            style: viewModel.getMapStyle,
             myLocationEnabled: true,
             myLocationButtonEnabled: false,
             zoomControlsEnabled: false,

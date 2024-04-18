@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:speedy_go/presentation/main_layout/view/pages/profile_screen/view/widgets/profile_items.dart';
 import 'package:speedy_go/presentation/resources/routes_manager.dart';
 
 import '../../../../../../resources/assets_manager.dart';
 import '../../../../../../resources/color_manager.dart';
 import '../../../../../../resources/text_styles.dart';
 import '../../../../../../resources/values_manager.dart';
+import 'profile_items.dart';
 
 class ProfileScreenBody extends StatelessWidget {
   const ProfileScreenBody({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
-      margin:
-      EdgeInsets.only(top: MediaQuery.of(context).size.height * .08),
+    return Container(
+      margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * .08),
       width: MediaQuery.of(context).size.width * .8,
       height: MediaQuery.of(context).size.height * .75,
       decoration: const BoxDecoration(
@@ -32,7 +31,7 @@ class ProfileScreenBody extends StatelessWidget {
             children: [
               InkWell(
                 onTap: () {
-                        Navigator.pushNamed(context, Routes.profileEditeRoute);
+                  Navigator.pushNamed(context, Routes.profileEditRoute);
                 },
                 child: Container(
                   margin: const EdgeInsets.only(
@@ -55,8 +54,7 @@ class ProfileScreenBody extends StatelessWidget {
                     ),
                     title: Text(
                       'Ahmed',
-                      style:
-                      AppTextStyles.profileUserNameTextStyle(context),
+                      style: AppTextStyles.profileUserNameTextStyle(context),
                     ),
                     subtitle: Row(
                       children: [
@@ -77,10 +75,10 @@ class ProfileScreenBody extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: AppSize.s18,
               ),
-               ProfileItems(
+              ProfileItems(
                 onTap: () {
                   Navigator.pushNamed(context, Routes.myTripsRoute);
                 },
@@ -99,17 +97,20 @@ class ProfileScreenBody extends StatelessWidget {
                 text: 'Support',
                 image: SVGAssets.support,
               ),
-              SizedBox(height: MediaQuery.of(context).size.height*.08,),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * .08,
+              ),
               Center(
                 child: Column(
-          
                   children: [
                     SizedBox(
-                      width: MediaQuery.of(context).size.width*.55,
+                      width: MediaQuery.of(context).size.width * .55,
                       height: AppSize.s50,
                       child: ElevatedButton(
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(ColorManager.lightBlue), // Change the color as needed
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              ColorManager
+                                  .lightBlue), // Change the color as needed
                         ),
                         onPressed: () {
                           // onPressed action
@@ -118,20 +119,26 @@ class ProfileScreenBody extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             SvgPicture.asset(SVGAssets.halfCircle),
-                            Text('log out',style: AppTextStyles.profileItemTextStyle(context),),
+                            Text(
+                              'log out',
+                              style:
+                                  AppTextStyles.profileItemTextStyle(context),
+                            ),
                           ],
                         ),
                       ),
                     ),
-                    const SizedBox(height: AppSize.s20,),
-          
+                    const SizedBox(
+                      height: AppSize.s20,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SvgPicture.asset(SVGAssets.faceBook),
-                        const SizedBox(width: AppSize.s32,),
+                        const SizedBox(
+                          width: AppSize.s32,
+                        ),
                         SvgPicture.asset(SVGAssets.instagram),
-          
                       ],
                     )
                   ],
