@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:speedy_go/app/extensions.dart';
 
 import '../../../../../../../../resources/assets_manager.dart';
 import '../../../../../../../../resources/color_manager.dart';
@@ -41,8 +42,131 @@ class CurrentTripItem extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const Divider(color: ColorManager.lightGrey,height: AppSize.s0_5,),
+                    const Divider(
+                      color: ColorManager.mutedBlue,
+                      height: AppSize.s0_5,
+                    ),
+                    Container(
+                      height: AppSize.s100,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Stack(
+                            children: [
+                              Container(
+                                height: AppSize.s100,
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width:
+                                              (context.width() - AppSize.s62) *
+                                                  .2,
+                                          child: const Center(
+                                            child: CircleAvatar(
+                                              backgroundColor:
+                                                  ColorManager.lightGreen,
+                                              radius: AppSize.s4,
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                            child: Row(
+                                          children: [
+                                            Text(
+                                              'Cairo',
+                                              style: AppTextStyles
+                                                  .profileGeneralTextStyle(
+                                                      context,
+                                                      FontSize.f16,
+                                                      ColorManager.lightBlue
+                                                          .withOpacity(.8)),
+                                            ),
+                                            SizedBox(
+                                              width: AppSize.s10,
+                                            ),
+                                            Text(
+                                              '02:00 pm',
+                                              style: AppTextStyles
+                                                  .profileGeneralTextStyle(
+                                                      context,
+                                                      FontSize.f12,
+                                                      ColorManager.lightBlue
+                                                          .withOpacity(.6)),
+                                            ),
+                                          ],
+                                        )),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width:
+                                          (context.width() - AppSize.s62) *
+                                              .2,
+                                          child: const Center(
+                                            child: Icon(
+                                              Icons.arrow_drop_down,
+                                              size: AppSize.s40,
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                            child: Text('Ismailia',
+                                                style: AppTextStyles
+                                                    .profileGeneralTextStyle(
+                                                    context,
+                                                    FontSize.f16,
+                                                    ColorManager.lightBlue
+                                                        .withOpacity(.8)))),
+                                      ],
+                                    ),
 
+                                  ],
+                                ),
+                              ),
+                              Positioned(
+                                top: AppSize.s8 + AppSize.s4,
+                                bottom: AppSize.s25 + AppSize.s4,
+                                left: AppSize.s0,
+                                child: SizedBox(
+                                  width: (context.width() - AppSize.s62) * .2,
+                                  child: Center(
+                                    child: Container(
+                                      color: ColorManager.black,
+                                      width: AppSize.s1,
+                                      height: AppSize.s26,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: AppSize.s10,),
+                          Row(
+                            children: [
+                              Text('Thursday',
+                                  style: AppTextStyles
+                                      .profileGeneralTextStyle(
+                                      context,
+                                      FontSize.f20,
+                                      ColorManager.lightBlue
+                                  )),
+                              Text('May 18, 2024',
+                                  style: AppTextStyles
+                                      .profileGeneralTextStyle(
+                                      context,
+                                      FontSize.f16,
+                                      ColorManager.lightBlue
+                                          .withOpacity(.8))),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
