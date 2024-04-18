@@ -7,7 +7,7 @@ import '../../resources/assets_manager.dart';
 import '../../resources/color_manager.dart';
 import '../../resources/values_manager.dart';
 import '../viewmodel/main_viewmodel.dart';
-import 'pages/bus_page/book_trip_search.dart';
+import 'pages/bus_page/view/book_trip.dart';
 import 'pages/google_map.dart';
 import 'pages/home_page/home_page.dart';
 import 'pages/profile_page/view/profile_page.dart';
@@ -70,7 +70,7 @@ class _MainLayoutBodyState extends State<MainLayoutBody> {
               ),
             ],
           ),
-          backgroundColor: ColorManager.lightGrey,
+          backgroundColor: ColorManager.bgColor,
           extendBody: selectedTabIndex != 1,
           bottomNavigationBar: (tabs.length <= maxCount)
               ? AnimatedNotchBottomBar(
@@ -153,7 +153,7 @@ class _MainLayoutBodyState extends State<MainLayoutBody> {
 
   List<Widget> tabs = [
     const HomePage(),
-    const BookTripSearchPage(),
+    const BookTripScreen(),
     const ProfilePage(),
   ];
 }

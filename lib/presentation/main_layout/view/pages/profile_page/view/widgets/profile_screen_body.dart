@@ -21,7 +21,7 @@ class ProfileScreenBody extends StatelessWidget {
           borderRadius: BorderRadius.only(
               topRight: Radius.circular(AppSize.s18),
               bottomRight: Radius.circular(AppSize.s18)),
-          color: ColorManager.CharredGrey),
+          color: ColorManager.bgColor),
       child: Scaffold(
         backgroundColor: ColorManager.transparent,
         body: SingleChildScrollView(

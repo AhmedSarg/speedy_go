@@ -97,7 +97,7 @@ class _MainTextFieldState extends State<BusesTextField> {
         contentPadding: const EdgeInsets.all(AppPadding.p12),
         hintText: widget.hint,
         hintStyle: widget.hintTextStyle ??
-            AppTextStyles.busesItemHintTextStyle(context),
+            AppTextStyles.bookTripSearchScreenSubTitleItemTextStyle(context),
         border: InputBorder.none,
 
         errorStyle: const TextStyle(
