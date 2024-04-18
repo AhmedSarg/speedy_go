@@ -168,7 +168,7 @@ class dialogData extends StatelessWidget {
           ),
         ],
       ),
-      actionsOverflowButtonSpacing: 20,
+      actionsOverflowButtonSpacing: AppSize.s20,
       actions: [
         InkWell(
           onTap: onTap_1,

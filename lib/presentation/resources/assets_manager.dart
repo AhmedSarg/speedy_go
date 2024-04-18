@@ -72,6 +72,7 @@ class SVGAssets {
   static const String redBus = "${_basePath}Vector (1).svg";
 
   static const String date = "${_basePath}date.svg";
+  static const String seat = "${_basePath}emojione-monotone_seat.svg";
 }
 
 class LottieAssets {
