@@ -9,8 +9,9 @@ class ColorManager {
   static const Color tertiary = Color(0xff012053);
   static const Color traditional = Color(0xff003E73);
   static const Color offwhite = Color(0xffD9D9D9);
+  static  Color offwhite_2 = const Color(0xffD9D9D9).withOpacity(.2);
   static const Color grey = Color(0xff3E3E3E);
-  static const Color darkGrey = Color(0xff323334);
+  static const Color darkGrey = Color(0xff3F3F3F);
   static const Color lightGrey = Color(0xff464748);
 
   static const Color lightShadeOfGrey = Color(0xff303030);

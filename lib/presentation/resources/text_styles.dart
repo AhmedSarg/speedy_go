@@ -264,6 +264,12 @@ class AppTextStyles {
         color: ColorManager.lightBlue.withOpacity(.5),
         fontSize: FontSize.f14,
       );
+  static TextStyle requestTextStyle(BuildContext context) =>
+      getLightStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.offwhite,
+        fontSize: FontSize.f18,
+      );
 
   static TextStyle profileItemTextStyle(BuildContext context) =>
       getSemiBoldStyle(
