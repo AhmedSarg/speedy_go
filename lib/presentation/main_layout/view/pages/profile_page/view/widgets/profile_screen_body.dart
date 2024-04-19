@@ -91,11 +91,18 @@ class ProfileScreenBody extends StatelessWidget {
                     text: 'request history ',
                     image: SVGAssets.history,
                   ),
-                  const ProfileItems(
+                   ProfileItems(
+                    onTap: () {
+                      Navigator.pushNamed(context, Routes.saftyRoute);
+                    },
                     text: 'Safety',
                     image: SVGAssets.safety,
                   ),
-                  const ProfileItems(
+                   ProfileItems(
+                    onTap: () {
+                      Navigator.pushNamed(context, Routes.supportRoute);
+
+                    },
                     text: 'Support',
                     image: SVGAssets.support,
                   ),

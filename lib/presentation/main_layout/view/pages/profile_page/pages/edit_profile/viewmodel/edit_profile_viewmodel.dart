@@ -12,8 +12,7 @@ class EditProfileViewModel extends BaseCubit
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  final String _num = '1';
-  String _selectedDate = '';
+
 
   @override
   void start() {}
