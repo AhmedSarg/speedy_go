@@ -100,7 +100,7 @@ class PassengerTripViewModel extends BaseCubit
       case -1:
         res = const TripLoading();
       case 0:
-        res = TripVehicle();
+        res = const TripVehicle();
         break;
       case 1:
         res = const TripConfirm();
@@ -118,7 +118,7 @@ class PassengerTripViewModel extends BaseCubit
           await _findDrivers();
           _pageIndex = 3;
         }
-        res = TripDriver();
+        res = const TripDriver();
         break;
       case 4:
         _driversSubscription!.cancel();

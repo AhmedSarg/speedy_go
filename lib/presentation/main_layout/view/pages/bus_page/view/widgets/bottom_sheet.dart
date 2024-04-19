@@ -20,7 +20,7 @@ final String tittle;
               IconButton(onPressed: () {
                 Navigator.pop(context);
               }, icon: const Icon(Icons.close,color: ColorManager.grey,)),
-              SizedBox(width: AppSize.s5,),
+              const SizedBox(width: AppSize.s5,),
               Text(tittle,style: AppTextStyles.profileGeneralTextStyle(context, FontSize.f20,ColorManager.lightBlue),),
             ],
           ),

@@ -161,7 +161,21 @@
   "bookTripSearchScreenSubTitleFromItem": "choose trip start location ",
   "bookTripSearchScreenSubTitleToItem": "choose trip destination ",
   "bookTripSearchScreenSubTitleDateItem": "Choose departure date",
-  "bookTripSearchScreenButtonItem": "Search"
+  "bookTripSearchScreenButtonItem": "Search",
+
+  "runModeScreenTitleContainer" : "You are at Offline mode",
+  "runModeScreenTurnInto" : "Turn into ",
+  "runModeScreenOnlineMode" : "Online",
+  "runModeScreenOfflineMode" : "Offline",
+  "runModeScreenButtonClose" : "Close",
+
+  "waitingSearchingForPassengersScreenTitle" : "Searching for passengers",
+  "waitingSearchingForPassengersScreenPleaseWait" : "Please wait",
+  "waitingSearchingForPassengersScreenButton" : "Cancel",
+
+  "acceptingPassengersScreenTitle" : "Searching for passengers",
+  "acceptingPassengersScreenButtonAccept" : "Accept Ride",
+  "acceptingPassengersScreenButtonCancel" : "Cancel"
 
 
 

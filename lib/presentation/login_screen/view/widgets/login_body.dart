@@ -395,7 +395,11 @@ class _CountryCodeInputState extends State<CountryCodeInput> {
                 (e) => OptionMenuItem(
                   text: e,
                   onPressed: () {
-                    widget.viewModel.setCountryCode(e);
+                    // widget.viewModel.setCountryCode(e);
+                    setState(() {
+                      selectedValue = e;
+                      widget.viewModel.setCountryCode(selectedValue);
+                    });
                   },
                 ),
               )

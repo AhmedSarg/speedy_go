@@ -6,6 +6,7 @@ import '../buses_screen/pages/add_trip_screen/view/add_trip.dart';
 import '../buses_screen/pages/schedule_screen/schedule_screen.dart';
 import '../buses_screen/view/buses_screen.dart';
 import '../common/transitions/transitions.dart';
+import '../driver_trip_screen/view/driver_trip_view.dart';
 import '../login_screen/view/login_view.dart';
 import '../main_layout/view/main_layout_view.dart';
 import '../main_layout/view/pages/profile_page/pages/edit_profile/view/edit_profile_screen.dart';
@@ -38,6 +39,7 @@ class Routes {
   static const String addTripRoute = "/addTrip";
   static const String profileEditRoute = "/profileEdit";
   static const String myTripsRoute = "/myTrips";
+  static const String driverTripRoute = "/driverTrip";
 }
 
 class RouteGenerator {
@@ -82,6 +84,9 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const ProfileEditPage());
       case Routes.myTripsRoute:
         return MaterialPageRoute(builder: (_) => const MyTripsScreen());
+      case Routes.driverTripRoute:
+        return MaterialPageRoute(builder: (_) => const DriverTripScreen());
+
       default:
         return unDefinedRoute();
     }
