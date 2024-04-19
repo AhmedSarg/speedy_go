@@ -59,34 +59,46 @@ class PassengerMapViewModel extends BaseCubit
 
   void exitMap() async {
     emit(LoadingState());
+
     if (_pickupLocation != null) {
-      _pickupAddress = (await placemarkFromCoordinates(
-        _pickupLocation!.latitude,
-        _pickupLocation!.longitude,
-      ))[0]
-          .street!
-          .split('،')
-          .last
-          .trim();
-      if (_pickupAddress!.contains('+')) {
-        _pickupAddress = AppStrings.tripMapScreenUnknown.tr();
-      }
+      _pickupAddress = await findNearestPopularPlace(_pickupLocation!);
+      _pickupAddress ??= AppStrings.tripMapScreenUnknown.tr();
     }
+
     if (_destinationLocation != null) {
-      _destinationAddress = (await placemarkFromCoordinates(
-        _destinationLocation!.latitude,
-        _destinationLocation!.longitude,
-      ))[0]
-          .street!
-          .split('،')
-          .last
-          .trim();
-      if (_destinationAddress!.contains('+')) {
-        _destinationAddress = AppStrings.tripMapScreenUnknown.tr();
-      }
+      _destinationAddress = await findNearestPopularPlace(_destinationLocation!);
+      _destinationAddress ??= AppStrings.tripMapScreenUnknown.tr();
     }
+
     emit(ContentState());
   }
+
+  Future<String?> findNearestPopularPlace(LatLng latLng) async {
+    try {
+      // Perform reverse geocoding to get the address from the coordinates
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        latLng.latitude,
+        latLng.longitude,
+      );
+
+      if (placemarks.isNotEmpty) {
+        for (Placemark placemark in placemarks) {
+          if (placemark.name != null &&
+              placemark.name!.isNotEmpty &&
+              !placemark.name!.contains(RegExp(r'[0-9]')) &&
+              !placemark.name!.contains('+')) {
+            return placemark.name;
+          }
+        }
+      }
+
+      return null;
+    } catch (e) {
+      print('Error finding nearest popular place: $e');
+      return null;
+    }
+  }
+
 
   Future<void> _fetchMapStyle() async {
     _mapStyle = await rootBundle.loadString('assets/maps/dark_map.json');
@@ -259,6 +271,7 @@ class PassengerMapViewModel extends BaseCubit
     _mapController = controller;
     goToPin();
   }
+
 }
 
 abstract class PassengerMapViewModelInput {
