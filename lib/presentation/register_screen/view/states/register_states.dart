@@ -28,3 +28,5 @@ class RegisterImagePickFailedState extends ErrorState {
 }
 
 class RegisterVerifyPhoneNumberState extends BaseStates {}
+
+class RegisterTypeSelectionState extends BaseStates {}

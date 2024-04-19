@@ -73,7 +73,11 @@ class RegisterScreen extends StatelessWidget {
                         ),
                       );
                     } else if (state is RegisterImagePickFailedState) {
-                    } else if (state is RegisterVerifyPhoneNumberState) {
+                    }
+                    else if (state is RegisterTypeSelectionState) {
+                      Navigator.pop(context);
+                    }
+                    else if (state is RegisterVerifyPhoneNumberState) {
                       Navigator.pop(context);
                       Navigator.pushNamed(context, Routes.verificationRoute);
                     } else if (state is SuccessState) {
@@ -99,7 +103,7 @@ class RegisterScreen extends StatelessWidget {
                       viewModel.setContent = RegisterBody(viewModel: viewModel);
                     } else if (state is LoadingState ||
                         state is ErrorState ||
-                        state is SuccessState) {
+                        state is SuccessState || state is RegisterTypeSelectionState) {
                     } else {
                       viewModel.setContent = RegisterBody(viewModel: viewModel);
                     }

@@ -49,7 +49,7 @@ class RegisterViewModel extends BaseCubit
 
   late Selection _registerType;
 
-  late Selection _oldRegisterType = Selection.driver;
+  Selection? _oldRegisterType;
 
   late RegisterType _registerBoxType = RegisterType.passenger;
 
@@ -96,7 +96,8 @@ class RegisterViewModel extends BaseCubit
   int get getSelectionIndex => _selectionIndex;
 
   @override
-  List<VehicleSelectionModel> get getSelectionVehicles => _registerVehicleSelection;
+  List<VehicleSelectionModel> get getSelectionVehicles =>
+      _registerVehicleSelection;
 
   @override
   List<Widget> get getBoxContent => _boxContent;
@@ -193,7 +194,7 @@ class RegisterViewModel extends BaseCubit
   }
 
   void animateToDriver() {
-    _registerType = _oldRegisterType;
+    _registerType = _oldRegisterType!;
     Future.delayed(const Duration(milliseconds: 10), () {
       _registerType = Selection.driver;
       emit(ContentState());
@@ -345,10 +346,13 @@ class RegisterViewModel extends BaseCubit
   }
 
   selectionCanceled() {
-    if (_oldRegisterType == Selection.passenger) {
-      _registerType = Selection.passenger;
+    if (_oldRegisterType != null) {
+      setRegisterType = _oldRegisterType!;
+      setRegisterBoxType = _registerBoxType;
     }
-    emit(ContentState());
+    else {
+      emit(RegisterTypeSelectionState());
+    }
   }
 }
 
