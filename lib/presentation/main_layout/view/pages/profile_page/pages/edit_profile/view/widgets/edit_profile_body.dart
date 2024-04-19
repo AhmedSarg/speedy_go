@@ -21,25 +21,18 @@ class EditProfileBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * .08),
-      width: MediaQuery.of(context).size.width * .8,
-      height: MediaQuery.of(context).size.height * .75,
-      decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-              topRight: Radius.circular(AppSize.s18),
-              bottomRight: Radius.circular(AppSize.s18)),
-          color: ColorManager.CharredGrey),
-      child: Scaffold(
-        backgroundColor: ColorManager.transparent,
-        body: SingleChildScrollView(
+    return Scaffold(
+      backgroundColor: ColorManager.CharredGrey,
+      body: SingleChildScrollView(
+        child: Container(
+          width: double.infinity,
           child: Form(
             key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(
-                  height: AppSize.s18,
+                  height: AppSize.s50,
                 ),
                 Row(
                   children: [
@@ -59,9 +52,7 @@ class EditProfileBody extends StatelessWidget {
                               Icons.arrow_back,
                               color: ColorManager.white,
                             ))),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * .15,
-                    ),
+                    const Spacer(),
                     const Center(
                       child: CircleAvatar(
                         radius: AppSize.s50,
@@ -71,6 +62,8 @@ class EditProfileBody extends StatelessWidget {
                         ),
                       ),
                     ),
+                    const Spacer(),
+const SizedBox(width: AppSize.s60,),
                   ],
                 ),
                 Padding(

@@ -29,6 +29,8 @@ class SVGAssets {
   static const String bus = "${_basePath}bus.svg";
 
   static const String cash = "${_basePath}cash.svg";
+  static const String time = "${_basePath}time.svg";
+  static const String routeSquare = "${_basePath}route_square.svg";
   static const String star = "${_basePath}star.svg";
   static const String fillStar = "${_basePath}fill_star.svg";
   static const String emptyStar = "${_basePath}empty_star.svg";
@@ -72,6 +74,7 @@ class SVGAssets {
   static const String redBus = "${_basePath}Vector (1).svg";
 
   static const String date = "${_basePath}date.svg";
+  static const String seat = "${_basePath}emojione-monotone_seat.svg";
 }
 
 class LottieAssets {

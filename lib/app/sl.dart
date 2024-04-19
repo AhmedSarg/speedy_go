@@ -8,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:speedy_go/data/network/firebase_app_check_factory.dart';
 import 'package:speedy_go/domain/models/domain.dart';
 import 'package:speedy_go/domain/usecase/calculate_two_points_usecase.dart';
-import 'package:speedy_go/domain/usecase/calculate_two_points_usecase.dart';
 import 'package:speedy_go/domain/usecase/register_usecase.dart';
 import 'package:speedy_go/domain/usecase/verify_otp_usecase.dart';
 

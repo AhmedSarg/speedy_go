@@ -34,42 +34,34 @@ class TripItem extends StatelessWidget {
     return InkWell(
       onTap: onTap,
 
-      child: Container(
-        height: AppSize.s100,
-        margin: const EdgeInsets.all(AppMargin.m5),
-        padding: const EdgeInsets.all(AppPadding.p5),
-        decoration: BoxDecoration(
-            color: ColorManager.offwhite,
-            borderRadius: BorderRadius.circular(AppSize.s18)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: Row(children: [
-                Text(
-                  title,
-                  style: AppTextStyles.busesItemTripTitleTextStyle(context),
-                ),
-                if (icon != null)
-                  IconFunction!
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: Row(children: [
+              Text(
+                title,
+                style: AppTextStyles.busesItemTripTitleTextStyle(context),
+              ),
+              if (icon != null)
+                IconFunction!
 
-              ]),
-            ),
-            BusesTextField(
-              cursorColor: ColorManager.lightGrey,
-              hint: hintText,
-              readOnly: read,
-              validation: validation,
-              controller: controller,
-              textInputType: textInputType,
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(inputFormatNumber),
-                FilteringTextInputFormatter.digitsOnly,
-              ],
-            )
-          ],
-        ),
+            ]),
+          ),
+          BusesTextField(
+            cursorColor: ColorManager.lightGrey,
+            hint: hintText,
+            readOnly: read,
+            validation: validation,
+            controller: controller,
+            textInputType: textInputType,
+            inputFormatters: [
+              LengthLimitingTextInputFormatter(inputFormatNumber),
+              FilteringTextInputFormatter.digitsOnly,
+            ],
+          )
+        ],
       ),
     );
   }

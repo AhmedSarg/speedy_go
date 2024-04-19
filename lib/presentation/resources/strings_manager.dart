@@ -138,6 +138,21 @@ class AppStrings {
   static const bookTripSearchScreenButtonItem = "bookTripSearchScreenButtonItem";
 
 
+  ///run mode screen
+  static const runModeScreenTitleContainer = "runModeScreenTitleContainer";
+  static const runModeScreenTurnInto = "runModeScreenTurnInto";
+  static const runModeScreenOnlineMode = "runModeScreenOnlineMode";
+  static const runModeScreenOfflineMode = "runModeScreenOfflineMode";
+  static const runModeScreenButtonClose = "runModeScreenButtonClose";
+  ///waiting searching for passengers
+  static const waitingSearchingForPassengersScreenTitle = "waitingSearchingForPassengersScreenTitle";
+  static const waitingSearchingForPassengersScreenPleaseWait = "waitingSearchingForPassengersScreenPleaseWait";
+  static const waitingSearchingForPassengersScreenButton = "waitingSearchingForPassengersScreenButton";
+  ///accepting passengers
+  static const acceptingPassengersScreenTitle = "acceptingPassengersScreenTitle";
+  static const acceptingPassengersScreenButtonAccept = "acceptingPassengersScreenButtonAccept";
+  static const acceptingPassengersScreenButtonCancel = "acceptingPassengersScreenButtonCancel";
+
   /// buses screen
   static const busesTitle = "busesTitle";
   static const busesschedule = "busesschedule";
