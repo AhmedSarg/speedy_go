@@ -75,7 +75,6 @@ class PassengerMapViewModel extends BaseCubit
 
   Future<String?> findNearestPopularPlace(LatLng latLng) async {
     try {
-      // Perform reverse geocoding to get the address from the coordinates
       List<Placemark> placemarks = await placemarkFromCoordinates(
         latLng.latitude,
         latLng.longitude,
