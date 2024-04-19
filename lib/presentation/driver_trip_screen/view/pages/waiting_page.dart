@@ -8,12 +8,16 @@ import '../../../resources/color_manager.dart';
 import '../../../resources/strings_manager.dart';
 import '../../../resources/text_styles.dart';
 import '../../../resources/values_manager.dart';
+import '../../viewmodel/driver_trip_viewmodel.dart';
 
 class WaitingSearchingForPassengers extends StatelessWidget {
   const WaitingSearchingForPassengers({super.key});
 
+  static late DriverTripViewModel viewModel;
+
   @override
   Widget build(BuildContext context) {
+    viewModel = DriverTripViewModel.get(context);
     return SizedBox(
       height: context.height() / 4,
       child: Column(
@@ -44,7 +48,8 @@ class WaitingSearchingForPassengers extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () {
                 ///cancel search
-                Navigator.pop(context);
+                // viewModel.toggleShowContainer();
+                viewModel.nextPage();
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: ColorManager.error,

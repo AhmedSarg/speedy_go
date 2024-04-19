@@ -10,12 +10,16 @@ import '../../../resources/color_manager.dart';
 import '../../../resources/strings_manager.dart';
 import '../../../resources/text_styles.dart';
 import '../../../resources/values_manager.dart';
+import '../../viewmodel/driver_trip_viewmodel.dart';
 
 class RunningTrip extends StatelessWidget {
   const RunningTrip({super.key});
 
+  static late DriverTripViewModel viewModel;
+
   @override
   Widget build(BuildContext context) {
+    viewModel = DriverTripViewModel.get(context);
     return SizedBox(
       height: context.height() / 2.2,
       child: Column(
@@ -23,7 +27,10 @@ class RunningTrip extends StatelessWidget {
         children: [
           Column(
             children: [
-              Text("Trip is running ... "),
+              Text(AppStrings.runningTripScreenTitle.tr(),
+                style: AppTextStyles
+                    .runningTripScreenTitleTextStyle(
+                    context),),
               Divider(
                 color: ColorManager.grey.withOpacity(.5),
               ),
@@ -50,6 +57,7 @@ class RunningTrip extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () {
                 ///cancel Ride
+                viewModel.prevPage();
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: ColorManager.error,
@@ -58,9 +66,9 @@ class RunningTrip extends StatelessWidget {
                 ),
               ),
               child: Text(
-                AppStrings.acceptingPassengersScreenButtonCancel.tr(),
+                AppStrings.runningTripScreenButton.tr(),
                 style: AppTextStyles
-                    .acceptingPassengersScreenButtonTextStyle(
+                    .runningTripScreenButtonTextStyle(
                     context),
               ),
             ),

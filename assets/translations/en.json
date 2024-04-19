@@ -175,7 +175,13 @@
 
   "acceptingPassengersScreenTitle" : "Searching for passengers",
   "acceptingPassengersScreenButtonAccept" : "Accept Ride",
-  "acceptingPassengersScreenButtonCancel" : "Cancel"
+  "acceptingPassengersScreenButtonCancel" : "Cancel",
+
+  "runningTripScreenTitle" : "Trip is running ... ",
+  "runningTripScreenButton" : "Cancel",
+
+  "endTripScreenTitle" : "Trip finished ",
+  "endTripScreenButton" : "End Trip"
 
 
 

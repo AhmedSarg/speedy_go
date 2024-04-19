@@ -138,6 +138,7 @@ class AppStrings {
   static const bookTripSearchScreenButtonItem = "bookTripSearchScreenButtonItem";
 
 
+  ///passengers screen
   ///run mode screen
   static const runModeScreenTitleContainer = "runModeScreenTitleContainer";
   static const runModeScreenTurnInto = "runModeScreenTurnInto";
@@ -152,6 +153,14 @@ class AppStrings {
   static const acceptingPassengersScreenTitle = "acceptingPassengersScreenTitle";
   static const acceptingPassengersScreenButtonAccept = "acceptingPassengersScreenButtonAccept";
   static const acceptingPassengersScreenButtonCancel = "acceptingPassengersScreenButtonCancel";
+  ///running trip
+  static const runningTripScreenTitle = "runningTripScreenTitle";
+  static const runningTripScreenButton = "runningTripScreenButton";
+
+  ///end trip
+  static const endTripScreenTitle = "endTripScreenTitle";
+  static const endTripScreenButton = "endTripScreenButton";
+
 
   /// buses screen
   static const busesTitle = "busesTitle";

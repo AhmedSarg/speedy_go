@@ -744,7 +744,7 @@ class AppTextStyles {
       getRegularStyle(
         fontFamily: AppLanguages.getPrimaryFont(context),
         color: ColorManager.black,
-        fontSize: FontSize.f20,
+        fontSize: FontSize.f22,
       );
   static TextStyle waitingSearchingForPassengersScreenPleaseWaitTextStyle(
           BuildContext context) =>
@@ -768,7 +768,7 @@ class AppTextStyles {
       getRegularStyle(
         fontFamily: AppLanguages.getPrimaryFont(context),
         color: ColorManager.black,
-        fontSize: FontSize.f20,
+        fontSize: FontSize.f22,
       );
   static TextStyle acceptingPassengersScreenPassengerRateTextStyle(
           BuildContext context) =>
@@ -819,4 +819,36 @@ class AppTextStyles {
         color: ColorManager.white,
         fontSize: FontSize.f20,
       );
+  //running trip
+  static TextStyle runningTripScreenTitleTextStyle(
+      BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f22,
+      );
+  static TextStyle runningTripScreenButtonTextStyle(
+      BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f20,
+      );
+
+//end trip
+  static TextStyle endTripScreenTitleTextStyle(
+      BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f22,
+      );
+  static TextStyle endTripScreenButtonTextStyle(
+      BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.white,
+        fontSize: FontSize.f20,
+      );
+
 }

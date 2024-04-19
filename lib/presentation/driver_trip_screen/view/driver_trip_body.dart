@@ -24,7 +24,7 @@ class DriverTripBody extends StatelessWidget {
     return PopScope(
       // canPop: viewModel.getCanPop,
       onPopInvoked: (_) {
-        // viewModel.prevPage();
+         viewModel.prevPage();
       },
       child: Stack(
         children: [
@@ -64,8 +64,7 @@ class DriverTripBody extends StatelessWidget {
                                 topRight: Radius.circular(AppSize.s20),
                               ),
                             ),
-                            child: const RunningTrip()
-                            // child: viewModel.getPage,
+                             child: viewModel.getPage,
                           )
                         : const SizedBox.shrink(),
                   ],

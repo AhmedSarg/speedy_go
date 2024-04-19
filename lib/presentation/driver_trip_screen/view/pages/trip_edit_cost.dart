@@ -10,12 +10,13 @@ import '../../../resources/values_manager.dart';
 import '../../viewmodel/driver_trip_viewmodel.dart';
 
 class EditCost extends StatelessWidget {
-  const EditCost({super.key, required this.viewModel});
+  const EditCost({super.key});
 
-  final DriverTripViewModel viewModel;
+  static late DriverTripViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {
+    viewModel = DriverTripViewModel.get(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -86,7 +87,7 @@ class EditCost extends StatelessWidget {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        // viewModel.prevPage();
+                        viewModel.prevPage();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: ColorManager.error,
@@ -105,7 +106,7 @@ class EditCost extends StatelessWidget {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        // viewModel.nextPage();
+                        viewModel.nextPage();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: ColorManager.green,

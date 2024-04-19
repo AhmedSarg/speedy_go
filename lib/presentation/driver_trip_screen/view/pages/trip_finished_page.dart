@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:speedy_go/app/extensions.dart';
+import 'package:speedy_go/presentation/driver_trip_screen/viewmodel/driver_trip_viewmodel.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../resources/assets_manager.dart';
@@ -15,8 +16,12 @@ import '../widgets/card_passenger.dart';
 class TripEnd extends StatelessWidget {
   const TripEnd({super.key});
 
+  static late DriverTripViewModel viewModel;
+
+
   @override
   Widget build(BuildContext context) {
+    viewModel = DriverTripViewModel.get(context);
     return SizedBox(
       height: context.height() / 2.2,
       child: Column(
@@ -24,7 +29,7 @@ class TripEnd extends StatelessWidget {
         children: [
           Column(
             children: [
-              Text("Trip finished "),
+              Text(AppStrings.endTripScreenTitle.tr(),style: AppTextStyles.endTripScreenTitleTextStyle(context),),
               Divider(
                 color: ColorManager.grey.withOpacity(.5),
               ),
@@ -51,7 +56,7 @@ class TripEnd extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () {
                 ///EndTrip
-                Navigator.pushNamed(context, Routes.rateRoute);
+                viewModel.nextPage();
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: ColorManager.lightBlue,
@@ -60,9 +65,9 @@ class TripEnd extends StatelessWidget {
                 ),
               ),
               child: Text(
-                AppStrings.acceptingPassengersScreenButtonCancel.tr(),
+                AppStrings.endTripScreenButton.tr(),
                 style: AppTextStyles
-                    .acceptingPassengersScreenButtonTextStyle(
+                    .endTripScreenButtonTextStyle(
                     context),
               ),
             ),

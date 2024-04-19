@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:speedy_go/app/extensions.dart';
+import 'package:speedy_go/presentation/driver_trip_screen/viewmodel/driver_trip_viewmodel.dart';
 
 import '../../../resources/assets_manager.dart';
 import '../../../resources/color_manager.dart';
@@ -24,11 +25,15 @@ class CardPassenger extends StatelessWidget {
   final int? id;
   final double passengerRate;
   final Widget? widget;
+
+  static late DriverTripViewModel viewModel;
+
   @override
   Widget build(BuildContext context) {
+    viewModel = DriverTripViewModel.get(context);
     return Container(
       height: context.height() / 3.35,
-      width: context.width() / 1.25,
+      width: context.width() / 1.28,
       decoration: BoxDecoration(
         color: ColorManager.grey,
         border: const Border(),
@@ -106,6 +111,7 @@ class CardPassenger extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   ///goto edit cost page
+                  viewModel.nextPage();
                 },
                 child: Text(
                   "EGP $tripCost",

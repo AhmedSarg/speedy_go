@@ -12,12 +12,14 @@ import '../../viewmodel/driver_trip_viewmodel.dart';
 import '../widgets/card_passenger.dart';
 
 class AcceptRide extends StatelessWidget {
-  const AcceptRide({super.key, required this.viewModel});
+  const AcceptRide({super.key});
 
-  final DriverTripViewModel viewModel;
+  static late DriverTripViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {
+    viewModel = DriverTripViewModel.get(context);
+    print(viewModel.getIsAccepted);
     return SizedBox(
       height: context.height() / 2,
       child: Column(
@@ -78,7 +80,11 @@ class AcceptRide extends StatelessWidget {
                 onPressed: !viewModel.getIsAccepted
                     ? () {
                         ///Accept Ride
-                        viewModel.setIsAccepted(true);
+                        viewModel.setIsAccepted = true;
+                        // viewModel.nextPage();
+                        // viewModel.updatePage(1);
+                        // print(viewModel.getIsAccepted);
+                        // print(viewModel.getIndexPage);
                       }
                     : null,
                 style: ElevatedButton.styleFrom(
@@ -94,8 +100,7 @@ class AcceptRide extends StatelessWidget {
                     : Text(
                         AppStrings.acceptingPassengersScreenButtonAccept.tr(),
                         style: AppTextStyles
-                            .acceptingPassengersScreenButtonTextStyle(
-                                context),
+                            .acceptingPassengersScreenButtonTextStyle(context),
                       ),
               ),
             ),
@@ -107,7 +112,7 @@ class AcceptRide extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       ///cancel Ride
-                      viewModel.setIsAccepted(false);
+                      viewModel.setIsAccepted= false;
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: ColorManager.error,
@@ -118,8 +123,7 @@ class AcceptRide extends StatelessWidget {
                     child: Text(
                       AppStrings.acceptingPassengersScreenButtonCancel.tr(),
                       style: AppTextStyles
-                          .acceptingPassengersScreenButtonTextStyle(
-                              context),
+                          .acceptingPassengersScreenButtonTextStyle(context),
                     ),
                   ),
                 )
