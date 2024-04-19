@@ -1,15 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:speedy_go/app/extensions.dart';
-import 'package:speedy_go/presentation/common/validators/validators.dart';
-import 'package:speedy_go/presentation/common/widget/options_menu.dart';
 
 import '../../../../domain/models/enums.dart';
+import '../../../common/validators/validators.dart';
 import '../../../common/widget/main_button.dart';
+import '../../../common/widget/options_menu.dart';
 import '../../../resources/assets_manager.dart';
 import '../../../resources/color_manager.dart';
 import '../../../resources/routes_manager.dart';
@@ -348,7 +347,7 @@ class LoginTypeItem extends StatelessWidget {
   }
 }
 
-class CountryCodeInput extends StatefulWidget {
+class CountryCodeInput extends StatelessWidget {
   const CountryCodeInput({
     super.key,
     required this.viewModel,
@@ -357,24 +356,10 @@ class CountryCodeInput extends StatefulWidget {
   final LoginViewModel viewModel;
 
   @override
-  State<CountryCodeInput> createState() => _CountryCodeInputState();
-}
-
-class _CountryCodeInputState extends State<CountryCodeInput> {
-  final List<String> countryCodes = [
-    '---',
-    '+20',
-    '+966',
-  ];
-
-  late String selectedValue = countryCodes[0];
-
-  @override
   Widget build(BuildContext context) {
     return FormField(
       validator: (v) {
-        print(selectedValue);
-        if (selectedValue == countryCodes[0]) {
+        if (viewModel.getCountryCode == viewModel.getCountryCodes[0]) {
           return AppStrings.validationsFieldRequired.tr();
         }
         return null;
@@ -386,16 +371,18 @@ class _CountryCodeInputState extends State<CountryCodeInput> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppSize.s10),
           border: Border.all(
-              color: error.hasError ? ColorManager.error : ColorManager.white,
-              width: AppSize.s0_5),
+            color: error.hasError ? ColorManager.error : ColorManager.white,
+            width: AppSize.s0_5,
+          ),
         ),
         child: OptionMenu(
-          items: countryCodes
+          selectedValue: viewModel.getCountryCode,
+          items: viewModel.getCountryCodes
               .map(
                 (e) => OptionMenuItem(
                   text: e,
                   onPressed: () {
-                    widget.viewModel.setCountryCode(e);
+                    viewModel.setCountryCode(e);
                   },
                 ),
               )

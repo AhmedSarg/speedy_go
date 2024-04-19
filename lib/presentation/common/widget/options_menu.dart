@@ -21,8 +21,10 @@ class OptionMenu extends StatefulWidget {
   const OptionMenu({
     super.key,
     required this.items,
-    required this.mainIcon, this.color, this.Bgcolor, this.selectedValue,
-
+    required this.mainIcon,
+    this.color,
+    this.Bgcolor,
+    this.selectedValue,
   });
 
   final IconData mainIcon;
@@ -44,13 +46,7 @@ class _OptionMenuState extends State<OptionMenu> {
     for (OptionMenuItem item in items) {
       list.add(
         PopupMenuItem(
-
-          onTap: () {
-            setState(() {
-              selectedValue = item.text;
-            });
-            item.onPressed();
-          },
+          onTap: item.onPressed,
           child: Row(
             children: [
               Text(
@@ -71,8 +67,6 @@ class _OptionMenuState extends State<OptionMenu> {
     return list;
   }
 
-  late String selectedValue = widget.items[0].text;
-
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
@@ -83,10 +77,10 @@ class _OptionMenuState extends State<OptionMenu> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-            Text(
-              widget.selectedValue ?? selectedValue,
-              style: AppTextStyles.optionsMenuOptionTextStyle(context),
-            ),
+          Text(
+            widget.selectedValue!,
+            style: AppTextStyles.optionsMenuOptionTextStyle(context),
+          ),
           Icon(
             widget.mainIcon,
             color: widget.color ?? ColorManager.white,

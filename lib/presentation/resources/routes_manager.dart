@@ -22,6 +22,7 @@ import 'strings_manager.dart';
 
 class Routes {
   Routes._();
+
   //todo make splash initial route
   static const String splashRoute = "/splash";
   static const String onBoardingRoute = "/onBoarding";
@@ -46,14 +47,23 @@ class RouteGenerator {
   static Route<dynamic> getRoute(RouteSettings settings) {
     switch (settings.name) {
       case Routes.splashRoute:
-        return MaterialPageRoute(builder: (_) => const SplashScreen());
+        return MaterialPageRoute(
+          builder: (_) => const SplashScreen(),
+        );
       case Routes.onBoardingRoute:
         return goTo(const OnBoardingScreen());
       case Routes.loginRoute:
         initLoginUseCase();
-        return MaterialPageRoute(builder: (_) => const LoginScreen());
+        print(settings);
+        print(settings.name);
+        return MaterialPageRoute(
+          settings: RouteSettings(name: settings.name),
+          builder: (_) => const LoginScreen(),
+        );
       case Routes.selectionRoute:
-        return MaterialPageRoute(builder: (_) => const SelectionScreen());
+        return MaterialPageRoute(
+          builder: (_) => const SelectionScreen(),
+        );
       case Routes.registerRoute:
         initAuthenticateUseCase();
         initRegisterUseCase();
@@ -61,7 +71,12 @@ class RouteGenerator {
       case Routes.verificationRoute:
         initStartVerifyUseCase();
         initVerifyOtpUseCase();
-        return MaterialPageRoute(builder: (_) => const VerificationScreen());
+        print(settings);
+        print(settings.name);
+        return MaterialPageRoute(
+          settings: RouteSettings(name: settings.name),
+          builder: (_) => const VerificationScreen(),
+        );
       case Routes.mainLayoutRoute:
         return MaterialPageRoute(builder: (_) => const MainLayoutScreen());
       case Routes.passengerMapRoute:

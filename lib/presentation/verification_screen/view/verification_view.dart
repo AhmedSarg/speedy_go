@@ -33,7 +33,7 @@ class VerificationScreen extends StatelessWidget {
             child: BlocConsumer<VerificationViewModel, BaseStates>(
               listener: (context, state) {
                 if (state is ErrorState) {
-                  Navigator.of(context, rootNavigator: true).pop();
+                  Navigator.pop(context);
                 } else if (state is SuccessState) {
                   Navigator.pushNamedAndRemoveUntil(
                     context,
@@ -47,7 +47,9 @@ class VerificationScreen extends StatelessWidget {
                 return baseBuilder(
                   context,
                   state,
-                  VerificationBody(viewModel: VerificationViewModel.get(context)),
+                  VerificationBody(
+                    viewModel: VerificationViewModel.get(context),
+                  ),
                 );
               },
             ),

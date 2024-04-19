@@ -35,50 +35,6 @@ class RepositoryImpl implements Repository {
     // this._dateNTP,
   );
 
-  // @override
-  // Future<Either<Failure, Stream<FirebaseAuthException?>>> authenticate({
-  //   required String email,
-  //   required String password,
-  //   required String phoneNumber,
-  //   required RegisterType registerType,
-  //   required Stream<String?> otpStream,
-  // }) async {
-  //   try {
-  //     if (await _networkInfo.isConnected) {
-  //       RegisteredBeforeError? error = await _remoteDataSource.doesUserExists(
-  //         email: email,
-  //         phoneNumber: phoneNumber,
-  //         registerType: registerType,
-  //       );
-  //       if (error == null) {
-  //         Stream<FirebaseAuthException?> errorStream =
-  //             await _remoteDataSource.verifyPhoneNumber(
-  //           email: email,
-  //           password: password,
-  //           phoneNumber: phoneNumber,
-  //           otpStream: otpStream,
-  //           authType: AuthType.register,
-  //         );
-  //         return Right(errorStream);
-  //       } else {
-  //         switch (error) {
-  //           case RegisteredBeforeError.emailUsed:
-  //             return Left(DataSource.EMAIL_ALREADY_EXISTS.getFailure());
-  //           case RegisteredBeforeError.phoneNumberUsed:
-  //             return Left(DataSource.PHONE_NUMBER_ALREADY_EXISTS.getFailure());
-  //           case RegisteredBeforeError.emailAndPhoneNumberUsed:
-  //             return Left(DataSource.EMAIL_AND_PHONE_NUMBER_ALREADY_EXISTS
-  //                 .getFailure());
-  //         }
-  //       }
-  //     } else {
-  //       return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
-  //     }
-  //   } catch (e) {
-  //     return Left(ErrorHandler.handle(e).failure);
-  //   }
-  // }
-
   @override
   Future<Either<Failure, void>> doesUserExists({
     required String email,

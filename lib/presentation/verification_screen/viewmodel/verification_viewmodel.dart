@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:speedy_go/data/network/error_handler.dart';
 import '../../../domain/models/enums.dart';
 import '../../../domain/usecase/start_verify_usecase.dart';
 import '../../../domain/usecase/verify_otp_usecase.dart';
@@ -57,16 +58,28 @@ class VerificationViewModel extends BaseCubit
         otpStreamController: _otpStreamController,
         authType: _authType,
       ),
-    ).then((value) {
-      value.fold(
-        (l) {
-          emit(ErrorState(failure: l, displayType: DisplayType.popUpDialog));
-        },
-        (r) {
-          _verificationErrorStream = r;
-        },
-      );
-    });
+    ).then(
+      (value) {
+        value.fold(
+          (l) {
+            emit(ErrorState(failure: l, displayType: DisplayType.popUpDialog));
+          },
+          (r) {
+            _verificationErrorStream = r;
+            _verificationErrorStream.listen(
+              (error) {
+                emit(
+                  ErrorState(
+                    failure: ErrorHandler.handle(error).failure,
+                    displayType: DisplayType.popUpDialog,
+                  ),
+                );
+              },
+            );
+          },
+        );
+      },
+    );
   }
 
   Future<void> verifyOtp() async {

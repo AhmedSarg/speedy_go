@@ -30,7 +30,6 @@ class LoginScreen extends StatelessWidget {
               Navigator.pop(context);
             }
             else if (state is LoginVerifyPhoneNumberState) {
-              Navigator.pop(context);
               Navigator.pushNamed(context, Routes.verificationRoute);
             }
             baseListener(context, state);

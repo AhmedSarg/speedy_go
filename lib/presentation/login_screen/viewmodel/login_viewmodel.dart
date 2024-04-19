@@ -24,7 +24,14 @@ class LoginViewModel extends BaseCubit
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  String _countryCode = '---';
+
+  final List<String> _countryCodes = [
+    '---',
+    '+20',
+    '+966',
+  ];
+
+  late String _countryCode = _countryCodes[0];
 
   @override
   void start() {}
@@ -79,8 +86,12 @@ class LoginViewModel extends BaseCubit
   String get getCountryCode => _countryCode;
 
   @override
+  List<String> get getCountryCodes => _countryCodes;
+
+  @override
   void setCountryCode(String countryCode) {
     _countryCode = countryCode;
+    emit(ContentState());
   }
 }
 
@@ -100,4 +111,6 @@ abstract class LoginViewModelOutput {
   TextEditingController get getPasswordController;
 
   String get getCountryCode;
+
+  List<String> get getCountryCodes;
 }

@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       debugShowCheckedModeBanner: false,
-      initialRoute: Routes.mainLayoutRoute,
+      initialRoute: Routes.loginRoute,
       theme: getApplicationTheme(),
       onGenerateRoute: RouteGenerator.getRoute,
     );
