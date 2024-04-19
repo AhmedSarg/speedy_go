@@ -81,7 +81,7 @@ class _MainLayoutBodyState extends State<MainLayoutBody> {
                   removeMargins: false,
                   showTopRadius: true,
                   bottomBarWidth: context.width() * 0.8,
-                  durationInMilliSeconds: 1,
+                  durationInMilliSeconds: 3,
                   bottomBarItems: [
                     BottomBarItem(
                       inActiveItem: SvgPicture.asset(

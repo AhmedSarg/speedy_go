@@ -75,6 +75,9 @@ class SVGAssets {
 
   static const String date = "${_basePath}date.svg";
   static const String seat = "${_basePath}emojione-monotone_seat.svg";
+  static const String safetyIcon = "${_basePath}safety_icon.svg";
+  static const String callIcon = "${_basePath}mingcute_phone-line.svg";
+  static const String lightcallIcon = "${_basePath}mingcute_phon.svg";
 }
 
 class LottieAssets {

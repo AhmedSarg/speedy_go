@@ -194,11 +194,17 @@ class RegisterViewModel extends BaseCubit
   }
 
   void animateToDriver() {
-    _registerType = _oldRegisterType!;
-    Future.delayed(const Duration(milliseconds: 10), () {
-      _registerType = Selection.driver;
-      emit(ContentState());
-    });
+    if (_oldRegisterType != null) {
+      _registerType = _oldRegisterType!;
+      Future.delayed(const Duration(milliseconds: 10), () {
+        _registerType = Selection.driver;
+        emit(ContentState());
+      });
+    } else {
+
+
+
+    }
   }
 
   void chooseDrivingLicense() async {
