@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:speedy_go/presentation/main_layout/view/pages/profile_page/pages/request_history/view/request_history_screen.dart';
 import 'package:speedy_go/presentation/main_layout/view/pages/profile_page/pages/safty/safety.dart';
 import 'package:speedy_go/presentation/main_layout/view/pages/profile_page/pages/support/view/support_screen.dart';
 
@@ -45,6 +46,7 @@ class Routes {
   static const String driverTripRoute = "/driverTrip";
   static const String saftyRoute = "/safty";
   static const String supportRoute = "/support";
+  static const String requestHistoryRoute = "/requestHistory";
 }
 
 class RouteGenerator {
@@ -109,6 +111,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const SafetyScreen());
       case Routes.supportRoute:
         return MaterialPageRoute(builder: (_) => const SupportScreen());
+        case Routes.requestHistoryRoute:
+      return MaterialPageRoute(builder: (_) => const RequestHistoryScreen());
 
       default:
         return unDefinedRoute();

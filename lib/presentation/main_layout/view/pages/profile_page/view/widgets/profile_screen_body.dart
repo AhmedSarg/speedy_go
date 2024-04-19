@@ -87,7 +87,11 @@ class ProfileScreenBody extends StatelessWidget {
                     text: 'My Trips',
                     image: SVGAssets.myTrips,
                   ),
-                  const ProfileItems(
+                   ProfileItems(
+                    onTap: () {
+                      Navigator.pushNamed(context, Routes.requestHistoryRoute);
+
+                    },
                     text: 'request history ',
                     image: SVGAssets.history,
                   ),
