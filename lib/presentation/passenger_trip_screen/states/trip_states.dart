@@ -7,5 +7,3 @@ class ChangePageState extends BaseStates {}
 class SelectDriverState extends BaseStates {}
 
 class RateDriverState extends BaseStates {}
-
-class BackToHomeState extends BaseStates {}

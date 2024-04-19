@@ -158,6 +158,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         errorStreamController.add(null);
       },
       verificationFailed: (e) {
+        print('THE ERROR');
+        print(e);
         errorStreamController.add(e);
       },
       codeSent: (String verificationId, int? resendToken) {
@@ -190,8 +192,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
                 }
               }
             } else {
-              errorStreamController.add(
-                  FirebaseAuthException(code: 'invalid-verification-code'));
+              errorStreamController.add(FirebaseAuthException(code: 'invalid-verification-code'));
             }
           },
         );

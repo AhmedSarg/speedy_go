@@ -17,6 +17,7 @@ class TripPrice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     viewModel = PassengerTripViewModel.get(context);
+    print('built');
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -25,7 +26,7 @@ class TripPrice extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                "EGP ${viewModel.getPriceController.text}",
+                "EGP ${viewModel.getPrice.toString()}",
                 style: AppTextStyles.tripScreenPricePageTitleTextStyle(context),
               ),
               const Divider(
@@ -35,23 +36,31 @@ class TripPrice extends StatelessWidget {
               ),
               Text(
                 AppStrings.tripScreenPricePageDescription.tr(),
-                style: AppTextStyles.tripScreenPricePageDescriptionTextStyle(context),
+                style: AppTextStyles.tripScreenPricePageDescriptionTextStyle(
+                    context),
               ),
             ],
           ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(
-              horizontal: AppPadding.p40, vertical: AppPadding.p30,),
+            horizontal: AppPadding.p40,
+            vertical: AppPadding.p30,
+          ),
           child: TextField(
             controller: viewModel.getPriceController,
             keyboardType: TextInputType.number,
             style: const TextStyle(color: ColorManager.white),
+            onChanged: (v) {
+              print(v);
+              viewModel.setPrice = v;
+            },
             decoration: InputDecoration(
               fillColor: ColorManager.darkShadeOfGrey,
               filled: true,
               hintText: AppStrings.tripScreenPricePagePlaceholder.tr(),
-              hintStyle: AppTextStyles.tripScreenPricePagePlaceholderTextStyle(context),
+              hintStyle: AppTextStyles.tripScreenPricePagePlaceholderTextStyle(
+                  context),
               hoverColor: ColorManager.lightBlue,
               prefixIconConstraints: const BoxConstraints(),
               prefixIcon: Padding(
@@ -91,7 +100,8 @@ class TripPrice extends StatelessWidget {
                       ),
                       child: Text(
                         AppStrings.tripScreenPricePageBack.tr(),
-                        style: AppTextStyles.tripScreenPricePageButtonTextStyle(context),
+                        style: AppTextStyles.tripScreenPricePageButtonTextStyle(
+                            context),
                       ),
                     ),
                   ),
@@ -109,7 +119,8 @@ class TripPrice extends StatelessWidget {
                       ),
                       child: Text(
                         AppStrings.tripScreenPricePageNext.tr(),
-                        style: AppTextStyles.tripScreenPricePageButtonTextStyle(context),
+                        style: AppTextStyles.tripScreenPricePageButtonTextStyle(
+                            context),
                       ),
                     ),
                   ),
