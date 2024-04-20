@@ -62,8 +62,6 @@ class RouteGenerator {
         return goTo(const OnBoardingScreen());
       case Routes.loginRoute:
         initLoginUseCase();
-        print(settings);
-        print(settings.name);
         return MaterialPageRoute(
           settings: RouteSettings(name: settings.name),
           builder: (_) => const LoginScreen(),
@@ -79,19 +77,19 @@ class RouteGenerator {
       case Routes.verificationRoute:
         initStartVerifyUseCase();
         initVerifyOtpUseCase();
-        print(settings);
-        print(settings.name);
         return MaterialPageRoute(
           settings: RouteSettings(name: settings.name),
           builder: (_) => const VerificationScreen(),
         );
       case Routes.mainLayoutRoute:
+        initCurrentUserUseCase();
         return MaterialPageRoute(builder: (_) => const MainLayoutScreen());
       case Routes.passengerMapRoute:
         return MaterialPageRoute(builder: (_) => const PassengerMapScreen());
       case Routes.passengerTripRoute:
         initFindDriversUseCase();
         initCalculateTwoPointsUseCase();
+        initCancelTripUseCase();
         return MaterialPageRoute(builder: (_) => const PassengerTripScreen());
       case Routes.rateRoute:
         return MaterialPageRoute(builder: (_) => const RateScreen());

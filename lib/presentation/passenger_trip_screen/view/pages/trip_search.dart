@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:lottie/lottie.dart';
 import 'package:speedy_go/app/extensions.dart';
 
 import '../../../../../domain/models/enums.dart';
@@ -73,23 +74,7 @@ class TripSearch extends StatelessWidget {
           style: AppTextStyles.tripScreenSearchPagePleaseWaitTextStyle(context),
         ),
         const SizedBox(height: AppSize.s5),
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.circle,
-              size: AppSize.s12,
-            ),
-            Icon(
-              Icons.circle,
-              size: AppSize.s12,
-            ),
-            Icon(
-              Icons.circle,
-              size: AppSize.s12,
-            ),
-          ],
-        ),
+        Lottie.asset(LottieAssets.loadingDotsBlack),
         const SizedBox(height: AppSize.s20),
         SizedBox(
           height: AppSize.s50,

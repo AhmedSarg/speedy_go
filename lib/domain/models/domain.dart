@@ -8,6 +8,7 @@ class UserModel {
   final String lastName;
   final String phoneNumber;
   final String email;
+  final Selection type;
 
   UserModel({
     required this.uuid,
@@ -15,14 +16,17 @@ class UserModel {
     required this.lastName,
     required this.phoneNumber,
     required this.email,
+    required this.type,
   });
 
-  factory UserModel.fake() => UserModel(
+  factory UserModel.fake() =>
+      UserModel(
         uuid: '',
         firstName: '',
         lastName: '',
         phoneNumber: '',
         email: '',
+        type: Selection.passenger,
       );
 }
 
@@ -36,9 +40,11 @@ class PassengerModel extends UserModel {
     required super.phoneNumber,
     required super.email,
     required this.gender,
+    super.type = Selection.passenger,
   });
 
-  factory PassengerModel.fake() => PassengerModel(
+  factory PassengerModel.fake() =>
+      PassengerModel(
         uuid: '',
         firstName: '',
         lastName: '',
@@ -46,6 +52,29 @@ class PassengerModel extends UserModel {
         email: '',
         gender: Gender.male,
       );
+
+  factory PassengerModel.fromMap(Map<String, dynamic> user) {
+    return PassengerModel(
+      uuid: user['uuid'],
+      firstName: user['first_name'],
+      lastName: user['last_name'],
+      phoneNumber: user['phone_number'],
+      email: user['email'],
+      gender: user['gender'] == 'female' ? Gender.female : Gender.male,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'uuid': uuid,
+      'first_name': firstName,
+      'last_name': lastName,
+      'phone_number': phoneNumber,
+      'email': email,
+      'gender': gender == Gender.female ? 'female' : 'male',
+      'type': type.name,
+    };
+  }
 }
 
 class DriverModel extends UserModel {
@@ -60,9 +89,11 @@ class DriverModel extends UserModel {
     required super.email,
     required this.nationalId,
     required this.vehicleType,
+    super.type = Selection.driver,
   });
 
-  factory DriverModel.fake() => DriverModel(
+  factory DriverModel.fake() =>
+      DriverModel(
         uuid: '',
         firstName: '',
         lastName: '',
@@ -90,6 +121,26 @@ class DriverModel extends UserModel {
       nationalId: data['national_id'],
       vehicleType: vehicleType,
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    String vehicleType;
+    if (this.vehicleType == VehicleType.car) {
+      vehicleType = 'car_driver';
+    } else if (this.vehicleType == VehicleType.tuktuk) {
+      vehicleType = 'tuktuk_driver';
+    } else {
+      vehicleType = 'bus_driver';
+    }
+    return {
+      'uuid': uuid,
+      'first_name': firstName,
+      'last_name': lastName,
+      'phone_number': phoneNumber,
+      'email': email,
+      'national_id': nationalId,
+      'type': vehicleType,
+    };
   }
 }
 
@@ -122,7 +173,8 @@ class TripDriverModel {
     required this.time,
   });
 
-  factory TripDriverModel.fake() => TripDriverModel(
+  factory TripDriverModel.fake() =>
+      TripDriverModel(
         id: '',
         name: '',
         location: '',

@@ -25,10 +25,9 @@ class TripDriver extends StatelessWidget {
       stream: viewModel.getDrivers,
       builder: (context, drivers) {
         if (drivers.hasData && drivers.data!.isNotEmpty) {
-          if (!viewModel.getDriversIds
+          if (viewModel.getSelectedDriver.id.isNotEmpty && !viewModel.getDriversIds
               .sublist(viewModel.getDriversIds.length - drivers.data!.length)
-              .contains(viewModel.getSelectedDriver.id)
-          && viewModel.getSelectedDriver.id.isNotEmpty) {
+              .contains(viewModel.getSelectedDriver.id)) {
             viewModel.setSelectedDriver = null;
           }
           return Column(

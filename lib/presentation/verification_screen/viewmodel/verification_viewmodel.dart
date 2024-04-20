@@ -68,12 +68,14 @@ class VerificationViewModel extends BaseCubit
             _verificationErrorStream = r;
             _verificationErrorStream.listen(
               (error) {
-                emit(
-                  ErrorState(
-                    failure: ErrorHandler.handle(error).failure,
-                    displayType: DisplayType.popUpDialog,
-                  ),
-                );
+                if (error != null) {
+                  emit(
+                    ErrorState(
+                      failure: ErrorHandler.handle(error).failure,
+                      displayType: DisplayType.popUpDialog,
+                    ),
+                  );
+                }
               },
             );
           },
@@ -89,6 +91,8 @@ class VerificationViewModel extends BaseCubit
         otpStreamController: _otpStreamController,
         errorStream: _verificationErrorStream,
         otp: _otpController.text.trim(),
+        phoneNumber: _phoneNumber,
+        authType: _authType,
       ),
     ).then(
       (value) {

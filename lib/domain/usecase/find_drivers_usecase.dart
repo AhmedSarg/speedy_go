@@ -13,7 +13,7 @@ class FindDriversUseCase extends BaseUseCase<FindDriversUseCaseInput, void> {
   FindDriversUseCase(this._repository);
 
   @override
-  Future<Either<Failure, Stream<List<Future<TripDriverModel>>>>> call(FindDriversUseCaseInput input) async {
+  Future<Either<Failure, (Stream<List<Future<TripDriverModel>>>, String)>> call(FindDriversUseCaseInput input) async {
     return _repository.findDrivers(
       passengerId: input.passengerId,
       tripType: input.tripType,

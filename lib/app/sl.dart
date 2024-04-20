@@ -5,11 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:speedy_go/data/network/firebase_app_check_factory.dart';
-import 'package:speedy_go/domain/models/domain.dart';
-import 'package:speedy_go/domain/usecase/calculate_two_points_usecase.dart';
-import 'package:speedy_go/domain/usecase/register_usecase.dart';
-import 'package:speedy_go/domain/usecase/verify_otp_usecase.dart';
+
 
 import '../data/data_source/cache_data_source.dart';
 import '../data/data_source/local_data_source.dart';
@@ -20,15 +16,23 @@ import '../data/network/app_prefs.dart';
 import '../data/network/assets_loader.dart';
 import '../data/network/dio_factory.dart';
 import '../data/network/fireauth_factory.dart';
+import '../data/network/firebase_app_check_factory.dart';
 import '../data/network/firestorage_factory.dart';
 import '../data/network/firestore_factory.dart';
 import '../data/network/network_info.dart';
 import '../data/repository/repository_impl.dart';
+import '../domain/models/domain.dart';
+import '../domain/models/user_manager.dart';
 import '../domain/repository/repository.dart';
 import '../domain/usecase/authenticate_usecase.dart';
+import '../domain/usecase/calculate_two_points_usecase.dart';
+import '../domain/usecase/cancel_trip_usecase.dart';
+import '../domain/usecase/current_user_usecase.dart';
 import '../domain/usecase/find_drivers_usecase.dart';
 import '../domain/usecase/login_usecase.dart';
+import '../domain/usecase/register_usecase.dart';
 import '../domain/usecase/start_verify_usecase.dart';
+import '../domain/usecase/verify_otp_usecase.dart';
 import 'date_ntp.dart';
 
 final sl = GetIt.instance;
@@ -54,17 +58,20 @@ Future<void> initAppModule() async {
   var fireStorage = await FireStorageFactoryImpl().create();
   sl.registerLazySingleton<FirebaseStorage>(() => fireStorage);
   await FirebaseAppCheckFactoryImpl().create();
+  // sl.registerLazySingleton<UserManager>(() => UserManager());
+  sl.registerLazySingleton<UserManager<PassengerModel>>(() => UserManager<PassengerModel>());
+  sl.registerLazySingleton<UserManager<DriverModel>>(() => UserManager<DriverModel>());
   sl.registerLazySingleton<AppServiceClient>(() => AppServiceClientImpl(sl()));
   sl.registerLazySingleton<RemoteDataSource>(
       () => RemoteDataSourceImpl(sl(), sl(), sl()));
   sl.registerLazySingleton<RuntimeDataSource>(() => RuntimeDataSourceImpl());
   sl.registerLazySingleton<CacheDataSource>(
-    () => CacheDataSourceImpl(sl(), sl()),
+    () => CacheDataSourceImpl(sl()),
   );
 
   sl.registerLazySingleton<LocalDataSource>(() => LocalDataSourceImpl(sl()));
 
-  sl.registerLazySingleton<Repository>(() => RepositoryImpl(sl(), sl()));
+  sl.registerLazySingleton<Repository>(() => RepositoryImpl(sl(), sl(), sl(), sl(), sl()));
 }
 
 void initAuthenticateUseCase() {
@@ -113,5 +120,19 @@ void initCalculateTwoPointsUseCase() {
   if (GetIt.instance.isRegistered<CalculateTwoPointsUseCase>() == false) {
     sl.registerFactory<CalculateTwoPointsUseCase>(
         () => CalculateTwoPointsUseCase(sl()));
+  }
+}
+
+void initCancelTripUseCase() {
+  if (GetIt.instance.isRegistered<CancelTripUseCase>() == false) {
+    sl.registerFactory<CancelTripUseCase>(
+        () => CancelTripUseCase(sl()));
+  }
+}
+
+void initCurrentUserUseCase() {
+  if (GetIt.instance.isRegistered<CurrentUserUseCase>() == false) {
+    sl.registerFactory<CurrentUserUseCase>(
+        () => CurrentUserUseCase(sl()));
   }
 }

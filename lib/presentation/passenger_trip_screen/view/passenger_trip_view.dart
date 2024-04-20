@@ -16,22 +16,23 @@ class PassengerTripScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => PassengerTripViewModel(sl(), sl())..start(),
-        child: BlocConsumer<PassengerTripViewModel, BaseStates>(
-          listener: (context, state) {
-            if (state is RateDriverState) {
-              Navigator.pushNamed(context, Routes.rateRoute);
-            }
-            baseListener(context, state);
-          },
-          builder: (context, state) {
-            return baseBuilder(
-              context,
-              state,
-              PassengerTripBody(viewModel: PassengerTripViewModel.get(context)),
-            );
-          },
-        ),
-      );
+      create: (context) =>
+          PassengerTripViewModel(sl(), sl(), sl(), sl())..start(),
+      child: BlocConsumer<PassengerTripViewModel, BaseStates>(
+        listener: (context, state) {
+          if (state is RateDriverState) {
+            Navigator.pushNamed(context, Routes.rateRoute);
+          }
+          baseListener(context, state);
+        },
+        builder: (context, state) {
+          return baseBuilder(
+            context,
+            state,
+            PassengerTripBody(viewModel: PassengerTripViewModel.get(context)),
+          );
+        },
+      ),
+    );
   }
 }

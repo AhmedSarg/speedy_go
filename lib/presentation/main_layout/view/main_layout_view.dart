@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../app/sl.dart';
 import '../../../domain/models/enums.dart';
 import '../../base/base_states.dart';
 import '../../base/cubit_builder.dart';
@@ -17,7 +18,7 @@ class MainLayoutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-        create: (context) => MainViewModel()..start(),
+        create: (context) => MainViewModel(sl(), sl(), sl())..start(),
         child: BlocConsumer<MainViewModel, BaseStates>(
           listener: (context, state) {
             baseListener(context, state);

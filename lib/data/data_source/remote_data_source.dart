@@ -68,7 +68,7 @@ abstract class RemoteDataSource {
     required String password,
   });
 
-  Future<Stream<List<dynamic>>> findDrivers({
+  Future<(Stream<List<dynamic>>, String)> findDrivers({
     required String passengerId,
     required TripType tripType,
     required LatLng pickupLocation,
@@ -78,7 +78,13 @@ abstract class RemoteDataSource {
 
   Future<Map<String, dynamic>> getDriverById(String driverId);
 
-  Future<Map<String, dynamic>> calculateTwoPoints(LatLng pickup, LatLng destination);
+  Future<Map<String, dynamic>> calculateTwoPoints(
+      LatLng pickup, LatLng destination);
+
+  Future<void> cancelTrip(String tripId);
+
+  Future<Map<String, dynamic>> getUserData(
+      {String? email, String? phoneNumber});
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -158,7 +164,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         errorStreamController.add(null);
       },
       verificationFailed: (e) {
-        print('THE ERROR');
+        print('THE ERRORRR');
         print(e);
         errorStreamController.add(e);
       },
@@ -192,7 +198,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
                 }
               }
             } else {
-              errorStreamController.add(FirebaseAuthException(code: 'invalid-verification-code'));
+              errorStreamController.add(
+                  FirebaseAuthException(code: 'invalid-verification-code'));
             }
           },
         );
@@ -360,7 +367,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<Stream<List>> findDrivers({
+  Future<(Stream<List>, String)> findDrivers({
     required String passengerId,
     required TripType tripType,
     required LatLng pickupLocation,
@@ -368,6 +375,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required int price,
   }) async {
     late Stream<List> driversStream;
+    late String tripId;
     await _firestore.collection('available_trips').add({
       'passenger_uuid': passengerId,
       'pickup_location':
@@ -378,11 +386,12 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       'trip_type': tripType.name,
       'drivers': [],
     }).then((tripRef) {
+      tripId = tripRef.id;
       driversStream = tripRef.snapshots().map((event) {
         return event.data()!['drivers'];
       });
     });
-    return driversStream;
+    return (driversStream, tripId);
   }
 
   @override
@@ -395,24 +404,25 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<Map<String, dynamic>> calculateTwoPoints(LatLng pointA, LatLng pointB) async {
+  Future<Map<String, dynamic>> calculateTwoPoints(
+      LatLng pointA, LatLng pointB) async {
     const String baseUrl = "https://router.hereapi.com/v8/";
     const String apiKey = "DW2EtICUSqlxaWY1Zy2ir8ABPQrq_F6LGh1PDa_qxsc";
     const String endpoint = "routes";
     const String url = baseUrl + endpoint;
     final dio = Dio();
-    Map<String, dynamic> result = {
-      "data": -1
-    };
+    Map<String, dynamic> result = {"data": -1};
     await dio.get(url, queryParameters: {
       "apiKey": apiKey,
       "transportMode": "car",
       "origin": "${pointA.latitude},${pointA.longitude}",
-      "destination":"${pointB.latitude},${pointB.longitude}",
-      "return":"summary,polyline",
+      "destination": "${pointB.latitude},${pointB.longitude}",
+      "return": "summary,polyline",
     }).then((value) {
-      double time = value.data["routes"][0]["sections"][0]["summary"]["duration"] / 60;
-      int distance = value.data["routes"][0]["sections"][0]["summary"]["length"];
+      double time =
+          value.data["routes"][0]["sections"][0]["summary"]["duration"] / 60;
+      int distance =
+          value.data["routes"][0]["sections"][0]["summary"]["length"];
       String polylineCode = value.data["routes"][0]["sections"][0]["polyline"];
       result = {
         "time": time.round(),
@@ -421,5 +431,36 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       };
     });
     return result;
+  }
+
+  @override
+  Future<void> cancelTrip(String tripId) async {
+    await _firestore.collection('available_trips').doc(tripId).delete();
+  }
+
+  @override
+  Future<Map<String, dynamic>> getUserData({
+    String? phoneNumber,
+    String? email,
+  }) async {
+    String key, value;
+    if (phoneNumber != null) {
+      key = 'phone_number';
+      value = phoneNumber;
+    } else {
+      key = 'email';
+      value = email!;
+    }
+    late Map<String, dynamic> user;
+    await _firestore
+        .collection('users')
+        .where(key, isEqualTo: value)
+        .get()
+        .then(
+      (value) {
+        user = value.docs[0].data();
+      },
+    );
+    return user;
   }
 }

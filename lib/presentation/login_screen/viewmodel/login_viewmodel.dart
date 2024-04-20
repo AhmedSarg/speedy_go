@@ -58,7 +58,7 @@ class LoginViewModel extends BaseCubit
           emit(ErrorState(failure: l, displayType: DisplayType.popUpDialog));
         },
         (r) {
-          emit(SuccessState('Login Success'));
+          emit(SuccessState(AppStrings.verificationScreenLoginSuccessMessage));
         },
       );
     });

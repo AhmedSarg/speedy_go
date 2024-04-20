@@ -71,7 +71,7 @@ class TripConfirm extends StatelessWidget {
         Column(
           children: [
             Text(
-              "EGP 50, cash",
+              "EGP ${viewModel.getPrice}, cash",
               style: AppTextStyles
                   .tripScreenConfirmPageRecommendedFareTextStyle(context),
             ),

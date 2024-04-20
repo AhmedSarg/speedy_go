@@ -32,6 +32,7 @@ class VerificationScreen extends StatelessWidget {
             create: (context) => VerificationViewModel(sl(), sl())..start(),
             child: BlocConsumer<VerificationViewModel, BaseStates>(
               listener: (context, state) {
+                print(state);
                 if (state is ErrorState) {
                   Navigator.pop(context);
                 } else if (state is SuccessState) {

@@ -4,12 +4,14 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:speedy_go/domain/models/user_manager.dart';
 
 import 'package:uuid/uuid.dart';
 
 import '../../domain/models/domain.dart';
 import '../../domain/models/enums.dart';
 import '../../domain/repository/repository.dart';
+import '../data_source/cache_data_source.dart';
 import '../data_source/remote_data_source.dart';
 import '../network/error_handler.dart';
 import '../network/failure.dart';
@@ -17,20 +19,25 @@ import '../network/network_info.dart';
 
 class RepositoryImpl implements Repository {
   final RemoteDataSource _remoteDataSource;
+  final CacheDataSource _cacheDataSource;
+  final NetworkInfo _networkInfo;
+  final UserManager<PassengerModel> _passengerManager;
+  final UserManager<DriverModel> _driverManager;
 
   // final LocalDataSource _localDataSource;
-  // final CacheDataSource _cacheDataSource;
-  final NetworkInfo _networkInfo;
-
   // final GSheetFactory _gSheetFactory;
   // final DateNTP _dateNTP;
+  // final UserManager _userManager;
   final Uuid _uuidGenerator = const Uuid();
 
   RepositoryImpl(
     this._remoteDataSource,
-    // this._localDataSource,
     this._networkInfo,
-    // this._cacheDataSource,
+    this._cacheDataSource,
+    this._passengerManager,
+    this._driverManager,
+    // this._localDataSource,
+    // this._userManager,
     // this._gSheetFactory,
     // this._dateNTP,
   );
@@ -99,6 +106,8 @@ class RepositoryImpl implements Repository {
     required Stream<FirebaseAuthException?> errorStream,
     required StreamController<String?> otpStreamController,
     required String otp,
+    required String phoneNumber,
+    required AuthType authType,
   }) async {
     late StreamSubscription streamSubscription;
     try {
@@ -115,6 +124,9 @@ class RepositoryImpl implements Repository {
         }
         FirebaseAuthException? result = await retCompleter.future;
         if (result == null) {
+          if (authType == AuthType.login) {
+            await _storeCurrentUser(phoneNumber: phoneNumber);
+          }
           return const Right(null);
         } else {
           throw result;
@@ -188,8 +200,8 @@ class RepositoryImpl implements Repository {
             createdAt: DateTime.now(),
           );
         }
-        void ret;
-        return Right(ret);
+        await _storeCurrentUser(phoneNumber: phoneNumber);
+        return const Right(null);
       } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
       }
@@ -209,6 +221,7 @@ class RepositoryImpl implements Repository {
           email: email,
           password: password,
         );
+        await _storeCurrentUser(email: email);
         return const Right(null);
       } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
@@ -225,7 +238,8 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, Stream<List<Future<TripDriverModel>>>>> findDrivers({
+  Future<Either<Failure, (Stream<List<Future<TripDriverModel>>>, String)>>
+      findDrivers({
     required String passengerId,
     required TripType tripType,
     required LatLng pickupLocation,
@@ -234,7 +248,7 @@ class RepositoryImpl implements Repository {
   }) async {
     try {
       if (await _networkInfo.isConnected) {
-        Stream<List<Future<TripDriverModel>>> offersStream =
+        (Stream<List<Future<TripDriverModel>>>, String) offersStream =
             await _remoteDataSource
                 .findDrivers(
           passengerId: passengerId,
@@ -244,32 +258,35 @@ class RepositoryImpl implements Repository {
           price: price,
         )
                 .then(
-          (driversStream) {
-            return driversStream.map(
-              (offers) {
-                return offers.map(
-                  (offer) async {
-                    return await _remoteDataSource
-                        .getDriverById(offer['id'])
-                        .then(
-                      (driver) async {
-                        driver['id'] = offer['id'];
-                        driver['price'] = offer['price'];
-                        driver['location'] = offer['location'];
-                        driver['time'] =
-                            (await _remoteDataSource.calculateTwoPoints(
-                          LatLng(
-                            offer['coordinates'].latitude,
-                            offer['coordinates'].longitude,
-                          ),
-                          pickupLocation,
-                        ))['time'];
-                        return TripDriverModel.fromMap(driver);
-                      },
-                    );
-                  },
-                ).toList();
-              },
+          (tripStream) {
+            return (
+              tripStream.$1.map(
+                (offers) {
+                  return offers.map(
+                    (offer) async {
+                      return await _remoteDataSource
+                          .getDriverById(offer['id'])
+                          .then(
+                        (driver) async {
+                          driver['id'] = offer['id'];
+                          driver['price'] = offer['price'];
+                          driver['location'] = offer['location'];
+                          driver['time'] =
+                              (await _remoteDataSource.calculateTwoPoints(
+                            LatLng(
+                              offer['coordinates'].latitude,
+                              offer['coordinates'].longitude,
+                            ),
+                            pickupLocation,
+                          ))['time'];
+                          return TripDriverModel.fromMap(driver);
+                        },
+                      );
+                    },
+                  ).toList();
+                },
+              ),
+              tripStream.$2,
             );
           },
         );
@@ -295,6 +312,51 @@ class RepositoryImpl implements Repository {
       } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
       }
+    } catch (e) {
+      return Left(ErrorHandler.handle(e).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> cancelTrip(String tripId) async {
+    try {
+      if (await _networkInfo.isConnected) {
+        await _remoteDataSource.cancelTrip(tripId);
+        return const Right(null);
+      } else {
+        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+      }
+    } catch (e) {
+      return Left(ErrorHandler.handle(e).failure);
+    }
+  }
+
+  Future<void> _storeCurrentUser({String? email, String? phoneNumber}) async {
+    Map<String, dynamic> userData = await _remoteDataSource.getUserData(
+      email: email,
+      phoneNumber: phoneNumber,
+    );
+    userData['created_at'] = userData['created_at'].toString();
+    _cacheDataSource.setCurrentUser(userData);
+    if (userData['type'] == 'passenger') {
+      _passengerManager.setCurrentUser(PassengerModel.fromMap(userData));
+    } else {
+      _driverManager.setCurrentUser(DriverModel.fromMap(userData));
+    }
+  }
+
+ @override
+  Either<Failure, void> getCurrentUser() {
+    try {
+      Map<String, dynamic>? userData = _cacheDataSource.getCurrentUser();
+      if (userData != null) {
+        if (userData['type'] == 'passenger') {
+          _passengerManager.setCurrentUser(PassengerModel.fromMap(userData));
+        } else {
+          _driverManager.setCurrentUser(DriverModel.fromMap(userData));
+        }
+      }
+      return const Right(null);
     } catch (e) {
       return Left(ErrorHandler.handle(e).failure);
     }

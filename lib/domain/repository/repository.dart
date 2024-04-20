@@ -4,13 +4,12 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:speedy_go/domain/models/domain.dart';
 
 import '../../data/network/failure.dart';
+import '../models/domain.dart';
 import '../models/enums.dart';
 
 abstract class Repository {
-
   Future<Either<Failure, void>> doesUserExists({
     required String email,
     required String phoneNumber,
@@ -28,6 +27,8 @@ abstract class Repository {
     required Stream<FirebaseAuthException?> errorStream,
     required StreamController<String?> otpStreamController,
     required String otp,
+    required String phoneNumber,
+    required AuthType authType,
   });
 
   Future<Either<Failure, void>> register({
@@ -50,7 +51,8 @@ abstract class Repository {
     required String password,
   });
 
-  Future<Either<Failure, Stream<List<Future<TripDriverModel>>>>> findDrivers({
+  Future<Either<Failure, (Stream<List<Future<TripDriverModel>>>, String)>>
+      findDrivers({
     required String passengerId,
     required TripType tripType,
     required LatLng pickupLocation,
@@ -62,4 +64,8 @@ abstract class Repository {
     required LatLng pointA,
     required LatLng pointB,
   });
+
+  Future<Either<Failure, void>> cancelTrip(String tripId);
+
+  Either<Failure, void> getCurrentUser();
 }

@@ -1,8 +1,12 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:speedy_go/domain/models/domain.dart';
+import 'package:speedy_go/domain/models/user_manager.dart';
+import 'package:speedy_go/domain/usecase/current_user_usecase.dart';
 import 'package:speedy_go/presentation/base/base_cubit.dart';
 import 'package:speedy_go/presentation/base/base_states.dart';
 
@@ -11,6 +15,16 @@ import '../states/main_states.dart';
 class MainViewModel extends BaseCubit
     implements MainViewModelInput, MainViewModelOutput {
   static MainViewModel get(context) => BlocProvider.of(context);
+
+  final CurrentUserUseCase _currentUserUseCase;
+  final UserManager<PassengerModel> _passengerManager;
+  final UserManager<DriverModel> _driverManager;
+
+  MainViewModel(
+    this._currentUserUseCase,
+    this._passengerManager,
+    this._driverManager,
+  );
 
   late final PageController _pageController = PageController();
 
@@ -27,12 +41,9 @@ class MainViewModel extends BaseCubit
   Future<void> _checkLocationServices() async {
     emit(LoadingState());
     Geolocator.getServiceStatusStream().listen((status) async {
-      print(2.2);
       if (status == ServiceStatus.disabled) {
-        print(2.3);
         emit(LocationServiceDisabledState());
       } else {
-        print(2.4);
         await _checkLocationPermissions();
       }
     });
@@ -53,8 +64,7 @@ class MainViewModel extends BaseCubit
       emit(LocationPermissionsDisabledState());
     } else if (_locationPermissions == LocationPermission.deniedForever) {
       emit(LocationPermissionsDisabledState());
-    }
-    else {
+    } else {
       _permissionsPermitted();
     }
   }
@@ -92,8 +102,34 @@ class MainViewModel extends BaseCubit
     emit(ContentState());
   }
 
+  Future<void> _fetchUser() async {
+    emit(LoadingState());
+    _currentUserUseCase(null).then(
+      (value) {
+        value.fold(
+          (l) {
+            emit(ErrorState(failure: l));
+          },
+          (r) {
+            if (_passengerManager.currentUser != null) {
+              if (kDebugMode) {
+                print(_passengerManager.currentUser!.firstName);
+              }
+            }
+            if (_driverManager.currentUser != null) {
+              if (kDebugMode) {
+                print(_driverManager.currentUser!.firstName);
+              }
+            }
+          },
+        );
+      },
+    );
+  }
+
   @override
   void start() async {
+    await _fetchUser();
     await _checkLocationServices();
   }
 
