@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:speedy_go/app/extensions.dart';
-import 'package:speedy_go/presentation/passenger_trip_screen/view/pages/trip_search.dart';
 
 import '../../../../domain/models/domain.dart';
 import '../../../resources/assets_manager.dart';
@@ -12,6 +11,7 @@ import '../../../resources/strings_manager.dart';
 import '../../../resources/text_styles.dart';
 import '../../../resources/values_manager.dart';
 import '../../viewmodel/passenger_trip_viewmodel.dart';
+import 'trip_search.dart';
 
 class TripDriver extends StatelessWidget {
   const TripDriver({super.key});
@@ -92,7 +92,7 @@ class TripDriver extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: (viewModel.getSelectedDriver.id.isNotEmpty)
                       ? () {
-                          viewModel.nextPage();
+                          viewModel.acceptDriver();
                         }
                       : null,
                   style: ElevatedButton.styleFrom(

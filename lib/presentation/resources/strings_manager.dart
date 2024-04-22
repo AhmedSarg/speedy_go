@@ -117,8 +117,6 @@ class AppStrings {
       "tripScreenDriverSelectionPageConfirm";
   static const tripScreenDetailsPageTitle = "tripScreenDetailsPageTitle";
   static const tripScreenDetailsPageColor = "tripScreenDetailsPageColor";
-  static const tripScreenDetailsPageArrival1 = "tripScreenDetailsPageArrival1";
-  static const tripScreenDetailsPageArrival2 = "tripScreenDetailsPageArrival2";
   static const tripScreenDetailsPageEndTrip = "tripScreenDetailsPageEndTrip";
 
   ///Rate Screen

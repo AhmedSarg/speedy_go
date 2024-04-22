@@ -92,5 +92,17 @@ class DataIntent {
     _destinationLocation = null;
     return value;
   }
+
+  static String? _driverId;
+
+  static void pushDriverId(String driverId) => _driverId = driverId;
+
+  static String popDriverId() {
+    String value = _driverId!;
+    _driverId = null;
+    return value;
+  }
+
+
 //-----------------------------------
 }

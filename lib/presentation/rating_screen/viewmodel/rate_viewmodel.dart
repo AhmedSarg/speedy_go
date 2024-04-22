@@ -20,6 +20,10 @@ class RateViewModel extends BaseCubit
   bool changeRate(int rate) {
     return rate <= indexRate;
   }
+
+  Future<void> rateDriver() async {
+
+  }
 }
 
 abstract class RateViewModelInput {}

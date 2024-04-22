@@ -17,11 +17,15 @@ class PassengerTripScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          PassengerTripViewModel(sl(), sl(), sl(), sl())..start(),
+          PassengerTripViewModel(sl(), sl(), sl(), sl(), sl(), sl())..start(),
       child: BlocConsumer<PassengerTripViewModel, BaseStates>(
         listener: (context, state) {
           if (state is RateDriverState) {
-            Navigator.pushNamed(context, Routes.rateRoute);
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              Routes.rateRoute,
+              ModalRoute.withName(Routes.mainLayoutRoute),
+            );
           }
           baseListener(context, state);
         },

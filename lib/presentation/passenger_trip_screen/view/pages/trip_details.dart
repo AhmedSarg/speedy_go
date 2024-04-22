@@ -135,11 +135,6 @@ class TripDetails extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: AppSize.s10),
-              Text(
-                "${AppStrings.tripScreenDetailsPageArrival1.tr()}${viewModel.getSelectedDriver.time}${AppStrings.tripScreenDetailsPageArrival2.tr()}",
-                style: AppTextStyles.tripScreenDetailsPageTimeTextStyle(context),
-              ),
             ],
           ),
         ),
@@ -148,7 +143,7 @@ class TripDetails extends StatelessWidget {
           width: AppSize.infinity,
           child: ElevatedButton(
             onPressed: () {
-              viewModel.nextPage();
+              viewModel.endTrip();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: ColorManager.lightBlue,

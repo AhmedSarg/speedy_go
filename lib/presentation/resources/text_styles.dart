@@ -644,13 +644,6 @@ class AppTextStyles {
         fontSize: FontSize.f10,
       );
 
-  static TextStyle tripScreenDetailsPageTimeTextStyle(BuildContext context) =>
-      getRegularStyle(
-        fontFamily: AppLanguages.getPrimaryFont(context),
-        color: ColorManager.white,
-        fontSize: FontSize.f10,
-      );
-
   static TextStyle tripScreenDetailsPageButtonTextStyle(BuildContext context) =>
       getRegularStyle(
         fontFamily: AppLanguages.getPrimaryFont(context),
