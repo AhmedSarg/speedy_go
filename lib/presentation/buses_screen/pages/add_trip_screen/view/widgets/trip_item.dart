@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:speedy_go/presentation/resources/text_styles.dart';
 
-import '../../../../../common/widget/options_menu.dart';
 import '../../../../../resources/color_manager.dart';
-import '../../../../../resources/values_manager.dart';
 import '../../../../view/widgets/text_field.dart';
 
 class TripItem extends StatelessWidget {
@@ -18,13 +16,13 @@ class TripItem extends StatelessWidget {
       this.icon,
         this.validation,
       this.inputFormatNumber,
-      this.IconFunction, this.controller});
+      this.iconFunction, this.controller});
   final String title;
   final String hintText;
   final bool read;
   final TextInputType textInputType;
   final void Function()? onTap;
-  final Widget? IconFunction;
+  final Widget? iconFunction;
   final IconData? icon;
   final int? inputFormatNumber;
   final TextEditingController? controller;
@@ -33,7 +31,6 @@ class TripItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -45,7 +42,7 @@ class TripItem extends StatelessWidget {
                 style: AppTextStyles.busesItemTripTitleTextStyle(context),
               ),
               if (icon != null)
-                IconFunction!
+                iconFunction!
 
             ]),
           ),

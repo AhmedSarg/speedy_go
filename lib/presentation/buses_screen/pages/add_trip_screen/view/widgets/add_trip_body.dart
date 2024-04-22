@@ -10,8 +10,6 @@ import 'package:speedy_go/presentation/resources/values_manager.dart';
 
 import '../../../../../common/validators/validators.dart';
 import '../../../../../common/widget/options_menu.dart';
-import '../../../../../common/widget/search_text_field.dart';
-import '../../../../../register_screen/view/widgets/register_body.dart';
 import '../../../../../resources/assets_manager.dart';
 import '../../../../../resources/color_manager.dart';
 import '../../../../../resources/strings_manager.dart';
@@ -59,7 +57,7 @@ class AddTripBody extends StatelessWidget {
               children: [
                 Expanded(
                     child: TripItem(
-                  IconFunction: Center(
+                  iconFunction: Center(
                     child: OptionMenu(
                       selectedValue: '',
                       color: ColorManager.lightBlue.withOpacity(.9),
@@ -241,7 +239,7 @@ class AddTripBody extends StatelessWidget {
             SizedBox(
               width: MediaQuery.of(context).size.width * .8,
               child: AppButton(
-                bgcolor: ColorManager.lightBlue,
+                bgColor: ColorManager.lightBlue,
                 borderRadius: AppSize.s25,
                 text: 'Add Trip',
                 onPressed: () {
@@ -257,7 +255,7 @@ class AddTripBody extends StatelessWidget {
             SizedBox(
               width: MediaQuery.of(context).size.width * .5,
               child: AppButton(
-                bgcolor: ColorManager.red,
+                bgColor: ColorManager.red,
                 text: 'Cancel',
                 onPressed: () {
                   viewModel.getNumController.clear();

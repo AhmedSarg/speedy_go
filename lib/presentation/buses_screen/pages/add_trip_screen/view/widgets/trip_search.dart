@@ -171,7 +171,7 @@ class _SearchFuncationalityStateState extends State<SearchFuncationalityState> {
               width: MediaQuery.of(context).size.width * .35,
               child: AppButton(
                 textStyle: AppTextStyles.busesItemTextBottonStyle(context),
-                bgcolor: ColorManager.lightBlue,
+                bgColor: ColorManager.lightBlue,
                 text: 'Confirm',
                 onPressed: () {
                   widget.viewModel.getToController.text = widget.viewModel.getToSearchController.text;

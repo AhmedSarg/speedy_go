@@ -9,13 +9,12 @@ class BusesLogoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return         Center(
+    return Center(
       child: SizedBox(
         height: AppSize.s90,
-        width: AppSize. s90,
+        width: AppSize.s90,
         child: SvgPicture.asset(SVGAssets.logo),
       ),
     );
-
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:speedy_go/app/extensions.dart';
 import 'package:speedy_go/presentation/resources/values_manager.dart';
 
 import '../../../resources/color_manager.dart';
@@ -10,7 +11,7 @@ class BusesDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(left: AppPadding.p8),
-      height: MediaQuery.of(context).size.height*.8,
+      height: context.height()*.8,
       child: Drawer(
 backgroundColor: ColorManager.lightShadeOfGrey,
         child: ListView(

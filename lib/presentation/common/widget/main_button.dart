@@ -13,7 +13,7 @@ class AppButton extends StatelessWidget {
     this.textStyle,
     this.color,
     this.child,
-    this.splash, this.bgcolor, this.borderRadius,
+    this.splash, this.bgColor, this.borderRadius,
   });
 
   final String? text;
@@ -21,7 +21,7 @@ class AppButton extends StatelessWidget {
   final bool outlined;
   final TextStyle? textStyle;
   final Color? color;
-  final Color? bgcolor;
+  final Color? bgColor;
   final Widget? child;
   final Color? splash;
   final double? borderRadius;
