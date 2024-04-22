@@ -74,6 +74,8 @@ abstract class RemoteDataSource {
     required LatLng pickupLocation,
     required LatLng destinationLocation,
     required int price,
+    required int expectedTime,
+    required int distance,
   });
 
   Future<Map<String, dynamic>> getDriverById(String driverId);
@@ -85,6 +87,13 @@ abstract class RemoteDataSource {
 
   Future<Map<String, dynamic>> getUserData(
       {String? email, String? phoneNumber});
+
+  Future<void> acceptDriver({
+    required String tripId,
+    required String driverId,
+  });
+
+  Future<void> endTrip(String tripId);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -373,6 +382,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required LatLng pickupLocation,
     required LatLng destinationLocation,
     required int price,
+    required int expectedTime,
+    required int distance,
   }) async {
     late Stream<List> driversStream;
     late String tripId;
@@ -384,6 +395,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
           GeoPoint(destinationLocation.latitude, destinationLocation.longitude),
       'price': price,
       'trip_type': tripType.name,
+      'expectedTime': expectedTime,
+      'distance': distance,
       'drivers': [],
     }).then((tripRef) {
       tripId = tripRef.id;
@@ -462,5 +475,27 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       },
     );
     return user;
+  }
+
+  @override
+  Future<void> acceptDriver({
+    required String tripId,
+    required String driverId,
+  }) async {
+    await _firestore.collection('available_trips').doc(tripId).update({
+      'drivers': FieldValue.delete(),
+      'driver_id': driverId,
+    });
+  }
+
+  @override
+  Future<void> endTrip(String tripId) async {
+    DocumentReference<Map<String, dynamic>> doc = _firestore
+        .collection('available_trips')
+        .doc(tripId);
+    await doc.get().then((trip) {
+      _firestore.collection('finished_trips').add(trip.data()!);
+    });
+    await doc.delete();
   }
 }

@@ -24,10 +24,12 @@ import '../data/repository/repository_impl.dart';
 import '../domain/models/domain.dart';
 import '../domain/models/user_manager.dart';
 import '../domain/repository/repository.dart';
+import '../domain/usecase/accept_driver_usecase.dart';
 import '../domain/usecase/authenticate_usecase.dart';
 import '../domain/usecase/calculate_two_points_usecase.dart';
 import '../domain/usecase/cancel_trip_usecase.dart';
 import '../domain/usecase/current_user_usecase.dart';
+import '../domain/usecase/end_trip_usecase.dart';
 import '../domain/usecase/find_drivers_usecase.dart';
 import '../domain/usecase/login_usecase.dart';
 import '../domain/usecase/register_usecase.dart';
@@ -134,5 +136,19 @@ void initCurrentUserUseCase() {
   if (GetIt.instance.isRegistered<CurrentUserUseCase>() == false) {
     sl.registerFactory<CurrentUserUseCase>(
         () => CurrentUserUseCase(sl()));
+  }
+}
+
+void initAcceptDriverUseCase() {
+  if (GetIt.instance.isRegistered<AcceptDriverUseCase>() == false) {
+    sl.registerFactory<AcceptDriverUseCase>(
+        () => AcceptDriverUseCase(sl()));
+  }
+}
+
+void initEndTripUseCase() {
+  if (GetIt.instance.isRegistered<EndTripUseCase>() == false) {
+    sl.registerFactory<EndTripUseCase>(
+        () => EndTripUseCase(sl()));
   }
 }

@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:speedy_go/domain/usecase/accept_driver_usecase.dart';
 import 'package:speedy_go/domain/usecase/calculate_two_points_usecase.dart';
 import 'package:speedy_go/domain/usecase/cancel_trip_usecase.dart';
+import 'package:speedy_go/domain/usecase/end_trip_usecase.dart';
 import 'package:speedy_go/presentation/base/base_states.dart';
 import 'package:speedy_go/presentation/common/widget/app_lifecycle_observer.dart';
 import 'package:speedy_go/presentation/passenger_trip_screen/view/pages/trip_loading.dart';
@@ -32,12 +34,16 @@ class PassengerTripViewModel extends BaseCubit
   final FindDriversUseCase _findDriversUseCase;
   final CalculateTwoPointsUseCase _calculateTwoPointsUseCase;
   final CancelTripUseCase _cancelTripUseCase;
+  final AcceptDriverUseCase _acceptDriversUseCase;
+  final EndTripUseCase _endTripUseCase;
 
   PassengerTripViewModel(
     this._userManager,
     this._findDriversUseCase,
     this._calculateTwoPointsUseCase,
     this._cancelTripUseCase,
+    this._acceptDriversUseCase,
+    this._endTripUseCase,
   );
 
   final AppLifecycleObserver _appLifecycleObserver = AppLifecycleObserver();
@@ -139,10 +145,8 @@ class PassengerTripViewModel extends BaseCubit
         break;
       case 1:
         if (_recommendedPrice == null) {
-          _loadingContent();
           await _calculateDetails();
         }
-        _pageIndex = 1;
         res = const TripConfirm();
         break;
       case 2:
@@ -150,9 +154,7 @@ class PassengerTripViewModel extends BaseCubit
         break;
       case 3:
         if (_driversStream == null) {
-          _loadingContent();
           await _findDrivers();
-          _pageIndex = 3;
         }
         res = TripDriver();
         break;
@@ -172,8 +174,6 @@ class PassengerTripViewModel extends BaseCubit
     if (_pageIndex < 4) {
       _pageIndex += 1;
       _setPageContent();
-    } else if (_pageIndex == 4) {
-      emit(RateDriverState());
     }
   }
 
@@ -185,7 +185,7 @@ class PassengerTripViewModel extends BaseCubit
       if (_pageIndex == 1) {
         _canPop = true;
       }
-      if (_pageIndex > 0) {
+      if (_pageIndex > 0 && _pageIndex < 4) {
         _pageIndex -= 1;
         _setPageContent();
       }
@@ -194,7 +194,6 @@ class PassengerTripViewModel extends BaseCubit
 
   Future<void> cancelTrip() async {
     _loadingContent();
-    _pageIndex = 3;
     await _cancelTripUseCase(
       CancelTripUseCaseInput(
         tripId: _tripId!,
@@ -215,11 +214,14 @@ class PassengerTripViewModel extends BaseCubit
   }
 
   void _loadingContent() {
+    int tmp = _pageIndex;
     _pageIndex = -1;
     _setPageContent();
+    _pageIndex = tmp;
   }
 
   Future<void> _calculateDetails() async {
+    _loadingContent();
     await _calculateTwoPointsUseCase(CalculateTwoPointsUseCaseInput(
             pointA: _pickupLocation, pointB: _destinationLocation))
         .then(
@@ -244,6 +246,7 @@ class PassengerTripViewModel extends BaseCubit
   }
 
   Future<void> _findDrivers() async {
+    _loadingContent();
     await _findDriversUseCase(
       FindDriversUseCaseInput(
         passengerId: _userManager.currentUser!.uuid,
@@ -251,6 +254,8 @@ class PassengerTripViewModel extends BaseCubit
         pickupLocation: _pickupLocation,
         destinationLocation: _destinationLocation,
         price: _price!,
+        expectedTime: _tripExpectedTime!,
+        distance: _tripDistance!,
       ),
     ).then(
       (value) {
@@ -261,6 +266,54 @@ class PassengerTripViewModel extends BaseCubit
           (r) {
             _driversStream = r.$1;
             _tripId = r.$2;
+          },
+        );
+      },
+    );
+  }
+
+  Future<void> acceptDriver() async {
+    _loadingContent();
+    await _acceptDriversUseCase(
+      AcceptDriverUseCaseInput(
+        tripId: _tripId!,
+        driverId: _selectedDriver!.id,
+      ),
+    ).then(
+      (value) {
+        value.fold(
+          (l) {
+            emit(
+              ErrorState(
+                failure: l,
+                displayType: DisplayType.popUpDialog,
+              ),
+            );
+          },
+          (r) {
+            nextPage();
+          },
+        );
+      },
+    );
+  }
+
+  Future<void> endTrip() async {
+    _loadingContent();
+    await _endTripUseCase(EndTripUseCaseInput(
+      tripId: _tripId!,
+    )).then(
+      (value) {
+        value.fold(
+          (l) {
+            emit(ErrorState(
+              failure: l,
+              displayType: DisplayType.popUpDialog,
+            ),);
+          },
+          (r) {
+            DataIntent.pushDriverId(_selectedDriver!.id);
+            emit(RateDriverState());
           },
         );
       },

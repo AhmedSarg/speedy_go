@@ -58,6 +58,8 @@ abstract class Repository {
     required LatLng pickupLocation,
     required LatLng destinationLocation,
     required int price,
+    required int expectedTime,
+    required int distance,
   });
 
   Future<Either<Failure, Map<String, dynamic>>> calculateTwoPoints({
@@ -68,4 +70,11 @@ abstract class Repository {
   Future<Either<Failure, void>> cancelTrip(String tripId);
 
   Either<Failure, void> getCurrentUser();
+
+  Future<Either<Failure, void>> acceptDriver({
+    required String tripId,
+    required String driverId,
+  });
+
+  Future<Either<Failure, void>> endTrip(String tripId);
 }

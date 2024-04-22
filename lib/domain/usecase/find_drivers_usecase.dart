@@ -20,6 +20,8 @@ class FindDriversUseCase extends BaseUseCase<FindDriversUseCaseInput, void> {
       pickupLocation: input.pickupLocation,
       destinationLocation: input.destinationLocation,
       price: input.price,
+      expectedTime: input.expectedTime,
+      distance: input.distance,
     );
   }
 }
@@ -30,6 +32,8 @@ class FindDriversUseCaseInput {
   final LatLng pickupLocation;
   final LatLng destinationLocation;
   final int price;
+  final int expectedTime;
+  final int distance;
 
   FindDriversUseCaseInput({
     required this.passengerId,
@@ -37,5 +41,7 @@ class FindDriversUseCaseInput {
     required this.pickupLocation,
     required this.destinationLocation,
     required this.price,
+    required this.expectedTime,
+    required this.distance,
   });
 }

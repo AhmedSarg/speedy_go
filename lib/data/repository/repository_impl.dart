@@ -245,6 +245,8 @@ class RepositoryImpl implements Repository {
     required LatLng pickupLocation,
     required LatLng destinationLocation,
     required int price,
+    required int expectedTime,
+    required int distance,
   }) async {
     try {
       if (await _networkInfo.isConnected) {
@@ -256,6 +258,8 @@ class RepositoryImpl implements Repository {
           pickupLocation: pickupLocation,
           destinationLocation: destinationLocation,
           price: price,
+          expectedTime: expectedTime,
+          distance: distance,
         )
                 .then(
           (tripStream) {
@@ -345,7 +349,7 @@ class RepositoryImpl implements Repository {
     }
   }
 
- @override
+  @override
   Either<Failure, void> getCurrentUser() {
     try {
       Map<String, dynamic>? userData = _cacheDataSource.getCurrentUser();
@@ -357,6 +361,40 @@ class RepositoryImpl implements Repository {
         }
       }
       return const Right(null);
+    } catch (e) {
+      return Left(ErrorHandler.handle(e).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> acceptDriver({
+    required String tripId,
+    required String driverId,
+  }) async {
+    try {
+      if (await _networkInfo.isConnected) {
+        await _remoteDataSource.acceptDriver(
+          tripId: tripId,
+          driverId: driverId,
+        );
+        return const Right(null);
+      } else {
+        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+      }
+    } catch (e) {
+      return Left(ErrorHandler.handle(e).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> endTrip(String tripId) async {
+    try {
+      if (await _networkInfo.isConnected) {
+        await _remoteDataSource.endTrip(tripId);
+        return const Right(null);
+      } else {
+        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+      }
     } catch (e) {
       return Left(ErrorHandler.handle(e).failure);
     }

@@ -90,6 +90,8 @@ class RouteGenerator {
         initFindDriversUseCase();
         initCalculateTwoPointsUseCase();
         initCancelTripUseCase();
+        initAcceptDriverUseCase();
+        initEndTripUseCase();
         return MaterialPageRoute(builder: (_) => const PassengerTripScreen());
       case Routes.rateRoute:
         return MaterialPageRoute(builder: (_) => const RateScreen());
