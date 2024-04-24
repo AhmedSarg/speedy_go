@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:speedy_go/presentation/login_screen/view/login_view.dart';
 import 'package:speedy_go/presentation/resources/routes_manager.dart';
 
 import '../../../../../../resources/assets_manager.dart';
@@ -126,8 +128,12 @@ class ProfileScreenBody extends StatelessWidget {
                                       .lightBlue), // Change the color as needed
                             ),
                             onPressed: () {
-                              // onPressed action
-                            },
+                              FirebaseAuth.instance.signOut();
+
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(builder: (_) => const LoginScreen()),
+                              );
+                              },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [

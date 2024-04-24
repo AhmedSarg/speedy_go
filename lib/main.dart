@@ -17,6 +17,7 @@ void main() async {
   // ]);
   engine = WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+
   // Bloc.observer = MyBlocObserver();
 
   // await (await SharedPreferences.getInstance()).clear();

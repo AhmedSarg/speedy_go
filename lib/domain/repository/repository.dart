@@ -22,6 +22,7 @@ abstract class Repository {
     required StreamController<String?> otpStreamController,
     required AuthType authType,
   });
+  Future<Either<Failure, User?>> getSignedUser();
 
   Future<Either<Failure, void>> verifyOtp({
     required Stream<FirebaseAuthException?> errorStream,

@@ -41,6 +41,15 @@ class RepositoryImpl implements Repository {
     // this._gSheetFactory,
     // this._dateNTP,
   );
+  @override
+  Future<Either<Failure, User?>> getSignedUser() async {
+    try {
+      User? data = _cacheDataSource.getSignedUser();
+      return Right(data);
+    } catch (e) {
+      return Left(ErrorHandler.handle(e).failure);
+    }
+  }
 
   @override
   Future<Either<Failure, void>> doesUserExists({
