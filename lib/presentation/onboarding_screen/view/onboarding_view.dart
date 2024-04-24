@@ -1,22 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-
-import 'package:speedy_go/presentation/onboarding_screen/view/widgets/onboarding_body.dart';
-
-import '../../base/base_states.dart';
-import '../../base/cubit_builder.dart';
-import '../../base/cubit_listener.dart';
-import '../../buses_screen/pages/add_trip_screen/viewmodel/add_trip_viewmodel.dart';
 import '../../resources/assets_manager.dart';
 import '../../resources/color_manager.dart';
 import '../../resources/routes_manager.dart';
 import '../../resources/strings_manager.dart';
 import '../../resources/text_styles.dart';
 import '../../resources/values_manager.dart';
-import '../viewmodel/onboarding_viewmodel.dart';
 
 
 

@@ -14,6 +14,7 @@ abstract class Repository {
     required String email,
     required String phoneNumber,
   });
+  Future<Either<Failure, void>> logout();
 
   Future<Either<Failure, Stream<FirebaseAuthException?>>> startVerify({
     String? email,

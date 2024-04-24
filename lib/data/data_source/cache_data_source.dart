@@ -7,6 +7,7 @@ const String _currentUser = "currentUser";
 abstract class CacheDataSource {
   Map<String, dynamic>? getCurrentUser();
   User? getSignedUser();
+  Future<void> logout();
 
   Future<void> setCurrentUser(Map<String, dynamic> currentUser);
 }
@@ -21,6 +22,8 @@ class CacheDataSourceImpl implements CacheDataSource {
   Map<String, dynamic>? getCurrentUser() {
     return _preferences.getMap(_currentUser);
   }
+
+
   @override
   User? getSignedUser() {
     return _firebaseAuth?.currentUser;
@@ -28,5 +31,10 @@ class CacheDataSourceImpl implements CacheDataSource {
   @override
   Future<void> setCurrentUser(Map<String, dynamic> currentUser) async {
     await _preferences.setMap(_currentUser, currentUser);
+  }
+
+  @override
+  Future<void> logout() async {
+    await _firebaseAuth?.signOut();
   }
 }

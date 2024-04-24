@@ -25,6 +25,7 @@ import '../data/repository/repository_impl.dart';
 import '../domain/models/domain.dart';
 import '../domain/models/user_manager.dart';
 import '../domain/repository/repository.dart';
+import '../domain/usecase/Log_out_useCase.dart';
 import '../domain/usecase/accept_driver_usecase.dart';
 import '../domain/usecase/authenticate_usecase.dart';
 import '../domain/usecase/calculate_two_points_usecase.dart';
@@ -122,6 +123,11 @@ void initRegisterUseCase() {
 void initLoginUseCase() {
   if (GetIt.instance.isRegistered<LoginUseCase>() == false) {
     sl.registerFactory<LoginUseCase>(() => LoginUseCase(sl()));
+  }
+}
+void initLogOutUseCase() {
+  if (GetIt.instance.isRegistered<LogOutUseCase>() == false) {
+    sl.registerFactory<LogOutUseCase>(() => LogOutUseCase(sl()));
   }
 }
 
