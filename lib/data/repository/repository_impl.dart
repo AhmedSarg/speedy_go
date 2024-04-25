@@ -41,25 +41,6 @@ class RepositoryImpl implements Repository {
     // this._gSheetFactory,
     // this._dateNTP,
   );
-  @override
-  Future<Either<Failure, User?>> getSignedUser() async {
-    try {
-      User? data = _cacheDataSource.getSignedUser();
-      return Right(data);
-    } catch (e) {
-      return Left(ErrorHandler.handle(e).failure);
-    }
-  }
-  @override
-  Future<Either<Failure, void>> logout() async {
-    try {
-      void response;
-      await _cacheDataSource.logout();
-      return Right(response);
-    } catch (e) {
-      return Left(ErrorHandler.handle(e).failure);
-    }
-  }
 
   @override
   Future<Either<Failure, void>> doesUserExists({
@@ -414,6 +395,27 @@ class RepositoryImpl implements Repository {
       } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
       }
+    } catch (e) {
+      return Left(ErrorHandler.handle(e).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, User?>> getSignedUser() async {
+    try {
+      User? data = _cacheDataSource.getSignedUser();
+      return Right(data);
+    } catch (e) {
+      return Left(ErrorHandler.handle(e).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> logout() async {
+    try {
+      void response;
+      await _cacheDataSource.logout();
+      return Right(response);
     } catch (e) {
       return Left(ErrorHandler.handle(e).failure);
     }

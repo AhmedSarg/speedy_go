@@ -4,10 +4,10 @@ import '../../data/network/failure.dart';
 import '../repository/repository.dart';
 import 'base_usecase.dart';
 
-class LogOutUseCase extends BaseUseCase<void, void> {
+class LogoutUseCase extends BaseUseCase<void, void> {
   final Repository _repository;
 
-  LogOutUseCase(this._repository);
+  LogoutUseCase(this._repository);
 
   @override
   Future<Either<Failure, void>> call(void input) async {

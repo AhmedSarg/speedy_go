@@ -14,7 +14,6 @@ abstract class Repository {
     required String email,
     required String phoneNumber,
   });
-  Future<Either<Failure, void>> logout();
 
   Future<Either<Failure, Stream<FirebaseAuthException?>>> startVerify({
     String? email,
@@ -23,7 +22,6 @@ abstract class Repository {
     required StreamController<String?> otpStreamController,
     required AuthType authType,
   });
-  Future<Either<Failure, User?>> getSignedUser();
 
   Future<Either<Failure, void>> verifyOtp({
     required Stream<FirebaseAuthException?> errorStream,
@@ -79,4 +77,8 @@ abstract class Repository {
   });
 
   Future<Either<Failure, void>> endTrip(String tripId);
+
+  Future<Either<Failure, User?>> getSignedUser();
+
+  Future<Either<Failure, void>> logout();
 }

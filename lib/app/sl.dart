@@ -25,12 +25,12 @@ import '../data/repository/repository_impl.dart';
 import '../domain/models/domain.dart';
 import '../domain/models/user_manager.dart';
 import '../domain/repository/repository.dart';
-import '../domain/usecase/Log_out_useCase.dart';
+import '../domain/usecase/logout_usecase.dart';
 import '../domain/usecase/accept_driver_usecase.dart';
 import '../domain/usecase/authenticate_usecase.dart';
 import '../domain/usecase/calculate_two_points_usecase.dart';
 import '../domain/usecase/cancel_trip_usecase.dart';
-import '../domain/usecase/checkLoginUseCase.dart';
+import '../domain/usecase/signed_user_usecase.dart';
 import '../domain/usecase/current_user_usecase.dart';
 import '../domain/usecase/end_trip_usecase.dart';
 import '../domain/usecase/find_drivers_usecase.dart';
@@ -126,8 +126,8 @@ void initLoginUseCase() {
   }
 }
 void initLogOutUseCase() {
-  if (GetIt.instance.isRegistered<LogOutUseCase>() == false) {
-    sl.registerFactory<LogOutUseCase>(() => LogOutUseCase(sl()));
+  if (GetIt.instance.isRegistered<LogoutUseCase>() == false) {
+    sl.registerFactory<LogoutUseCase>(() => LogoutUseCase(sl()));
   }
 }
 
