@@ -22,6 +22,7 @@ class GoogleMapScreenProfile extends StatelessWidget {
       compassEnabled: false,
       myLocationEnabled: true,
       myLocationButtonEnabled: false,
+      zoomControlsEnabled: false,
       mapType: MapType.normal,
       style: viewModel.getMapStyle,
       onMapCreated: (controller) {

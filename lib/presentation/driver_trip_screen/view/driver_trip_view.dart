@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:speedy_go/presentation/driver_trip_screen/view/states/driver_trip_states.dart';
 
 import '../../base/base_states.dart';
 import '../../base/cubit_builder.dart';
@@ -8,6 +7,7 @@ import '../../base/cubit_listener.dart';
 import '../../resources/routes_manager.dart';
 import '../viewmodel/driver_trip_viewmodel.dart';
 import 'driver_trip_body.dart';
+import 'states/driver_trip_states.dart';
 
 class DriverTripScreen extends StatelessWidget {
   const DriverTripScreen({super.key});

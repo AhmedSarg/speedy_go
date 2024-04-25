@@ -19,9 +19,7 @@ class AcceptRide extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     viewModel = DriverTripViewModel.get(context);
-    print(viewModel.getIsAccepted);
     return SizedBox(
-      height: context.height() / 2,
       child: Column(
         children: [
           Column(
@@ -36,83 +34,73 @@ class AcceptRide extends StatelessWidget {
               ),
             ],
           ),
-          const Spacer(),
-          Row(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  //back
-                  viewModel.updateIndexPassenger(false);
-                },
-                child: const Icon(
-                  Icons.arrow_back_ios,
-                  color: ColorManager.white,
-                ),
-              ),
-              CardPassenger(
-                passengerRate: 3.5,
-                passengerName: "ahmed",
-                time: 6,
-                tripCost: 30,
-                tripTime: 12,
-                tripDistance: 3,
-                id: viewModel.getIndexPassenger,
-              ),
-              GestureDetector(
-                onTap: () {
-                  //next
-                  viewModel.updateIndexPassenger(true);
-                },
-                child: const Icon(
-                  Icons.arrow_forward_ios,
-                  color: ColorManager.white,
-                ),
-              ),
-            ],
-          ),
-          const Spacer(),
-          Padding(
-            padding: const EdgeInsets.all(AppPadding.p20),
-            child: SizedBox(
-              width: context.width() / 2,
-              height: context.width() / 10,
-              child: ElevatedButton(
-                onPressed: !viewModel.getIsAccepted
-                    ? () {
-                        ///Accept Ride
-                        viewModel.setIsAccepted = true;
-                        // viewModel.nextPage();
-                        // viewModel.updatePage(1);
-                        // print(viewModel.getIsAccepted);
-                        // print(viewModel.getIndexPage);
-                      }
-                    : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: ColorManager.lightBlue,
-                  disabledBackgroundColor:
-                      ColorManager.lightBlue.withOpacity(.5),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppSize.s10),
+          const SizedBox(height: AppSize.s10),
+          FittedBox(
+            child: Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    viewModel.updateIndexPassenger(false);
+                  },
+                  child: const Icon(
+                    Icons.arrow_back_ios,
+                    color: ColorManager.white,
                   ),
                 ),
-                child: viewModel.getIsAccepted
-                    ? Lottie.asset(LottieAssets.loadingDotsWhite)
-                    : Text(
-                        AppStrings.acceptingPassengersScreenButtonAccept.tr(),
-                        style: AppTextStyles
-                            .acceptingPassengersScreenButtonTextStyle(context),
-                      ),
-              ),
+                CardPassenger(
+                  passengerRate: 3.5,
+                  passengerName: "ahmed",
+                  time: 6,
+                  tripCost: 30,
+                  tripTime: 12,
+                  tripDistance: 3,
+                  id: viewModel.getIndexPassenger,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    viewModel.updateIndexPassenger(true);
+                  },
+                  child: const Icon(
+                    Icons.arrow_forward_ios,
+                    color: ColorManager.white,
+                  ),
+                ),
+              ],
             ),
           ),
+          const SizedBox(height: AppSize.s20),
+          SizedBox(
+            width: context.width() / 2,
+            child: ElevatedButton(
+              onPressed: !viewModel.getIsAccepted
+                  ? () {
+                      viewModel.setIsAccepted = true;
+                    }
+                  : null,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: ColorManager.lightBlue,
+                disabledBackgroundColor:
+                    ColorManager.lightBlue.withOpacity(.5),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AppSize.s10),
+                ),
+              ),
+              child: viewModel.getIsAccepted
+                  ? Lottie.asset(LottieAssets.loadingDotsWhite)
+                  : Text(
+                      AppStrings.acceptingPassengersScreenButtonAccept.tr(),
+                      style: AppTextStyles
+                          .acceptingPassengersScreenButtonTextStyle(context),
+                    ),
+            ),
+          ),
+          const SizedBox(height: AppSize.s10),
           viewModel.getIsAccepted
               ? SizedBox(
                   width: context.width() / 2,
-                  height: context.width() / 10,
                   child: ElevatedButton(
                     onPressed: () {
-                      ///cancel Ride
-                      viewModel.setIsAccepted= false;
+                      viewModel.setIsAccepted = false;
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: ColorManager.error,
@@ -127,7 +115,7 @@ class AcceptRide extends StatelessWidget {
                     ),
                   ),
                 )
-              : const Spacer(),
+              : const SizedBox(),
         ],
       ),
     );

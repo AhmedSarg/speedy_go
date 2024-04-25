@@ -2,8 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:speedy_go/app/extensions.dart';
-import 'package:speedy_go/presentation/resources/assets_manager.dart';
 
+import '../../../resources/assets_manager.dart';
 import '../../../resources/color_manager.dart';
 import '../../../resources/strings_manager.dart';
 import '../../../resources/text_styles.dart';
@@ -19,7 +19,6 @@ class WaitingSearchingForPassengers extends StatelessWidget {
   Widget build(BuildContext context) {
     viewModel = DriverTripViewModel.get(context);
     return SizedBox(
-      height: context.height() / 4,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -35,20 +34,21 @@ class WaitingSearchingForPassengers extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(height: AppSize.s20),
           Text(
             AppStrings.waitingSearchingForPassengersScreenPleaseWait.tr(),
             style: AppTextStyles
                 .waitingSearchingForPassengersScreenPleaseWaitTextStyle(
                     context),
           ),
+          const SizedBox(height: AppSize.s10),
           Lottie.asset(LottieAssets.loadingDotsBlack),
+          const SizedBox(height: AppSize.s20),
           SizedBox(
             width: context.width() / 1.5,
             height: context.width() / 10,
             child: ElevatedButton(
               onPressed: () {
-                ///cancel search
-                // viewModel.toggleShowContainer();
                 viewModel.nextPage();
               },
               style: ElevatedButton.styleFrom(

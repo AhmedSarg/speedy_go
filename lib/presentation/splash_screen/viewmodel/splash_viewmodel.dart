@@ -15,6 +15,7 @@ class SplashViewModel extends BaseCubit
 
   @override
   void start() async {
+    // await Future.delayed(const Duration(seconds: 5));
     await _signedUserUseCase(null).then(
       (value) {
         value.fold(

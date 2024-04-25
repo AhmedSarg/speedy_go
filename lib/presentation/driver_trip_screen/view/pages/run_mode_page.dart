@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:speedy_go/app/extensions.dart';
 import 'package:speedy_go/presentation/driver_trip_screen/viewmodel/driver_trip_viewmodel.dart';
@@ -22,26 +23,33 @@ class RunMode extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(AppPadding.p20),
             child: GestureDetector(
-              onTap: (){
+              onTap: () {
                 viewModel.toggleShowContainer();
               },
               child: ShowMode(
-                  mode: mode(viewModel.getMode),
-                  color: colorMode(viewModel.getMode)),
+                mode: mode(viewModel.getMode),
+                color: colorMode(viewModel.getMode),
+              ),
             ),
           ),
         ),
         SizedBox(
           height: context.height() / 3.5,
         ),
-        viewModel.getShowContainer ? TurnOn(viewModel: viewModel) : const SizedBox(),
+        viewModel.getShowContainer
+            ? TurnOn(viewModel: viewModel)
+            : const SizedBox(),
       ],
     );
   }
 }
 
 class ShowMode extends StatelessWidget {
-  const ShowMode({super.key, required this.mode, required this.color});
+  const ShowMode({
+    super.key,
+    required this.mode,
+    required this.color,
+  });
 
   final String mode;
   final Color color;
@@ -68,16 +76,19 @@ class ShowMode extends StatelessWidget {
 
 class TurnOn extends StatelessWidget {
   const TurnOn({super.key, required this.viewModel});
+
   final DriverTripViewModel viewModel;
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: context.width() / 1.7,
-      height: context.height() / 5,
+      width: context.width() * .7,
+      padding: const EdgeInsets.all(AppPadding.p30),
       decoration: const BoxDecoration(
-        color: ColorManager.grey,
-        border: Border(),
-        borderRadius: BorderRadius.all(Radius.circular(AppSize.s5)),
+        color: ColorManager.primary,
+        borderRadius: BorderRadius.all(
+          Radius.circular(AppSize.s20),
+        ),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -87,6 +98,7 @@ class TurnOn extends StatelessWidget {
             AppStrings.runModeScreenTitleContainer.tr(),
             style: AppTextStyles.runModeScreenTitleContainerTextStyle(context),
           ),
+          const SizedBox(height: AppSize.s20),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -95,44 +107,44 @@ class TurnOn extends StatelessWidget {
                 style: AppTextStyles.runModeScreenTurnIntoTextStyle(context),
               ),
               Container(
-                width: context.width() / 4,
-                height: AppSize.s25,
+                height: AppSize.s30,
                 decoration: BoxDecoration(
-                  color: colorMode(viewModel.getMode),
-                  border: const Border(),
-                  borderRadius: const BorderRadius.all(Radius.circular(20)),
+                  color: colorMode(!viewModel.getMode),
+                  borderRadius: const BorderRadius.all(Radius.circular(AppSize.s15)),
                 ),
                 child: Center(
                   child: GestureDetector(
-                      onTap: () {
-                        viewModel.toggleMode();
-                        if (viewModel.getMode) {
-                          // Navigator.pushNamed(context, Routes.wait);
-                        }
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(AppPadding.p5),
-                        child: Text(
-                          "${mode(viewModel.getMode)} mode",
-                          style:
-                              AppTextStyles.runModeScreenModeTextStyle(context),
-                        ),
-                      )),
+                    onTap: () {
+                      viewModel.toggleMode();
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(AppPadding.p5),
+                      child: Text(
+                        "${mode(!viewModel.getMode)} mode",
+                        style:
+                            AppTextStyles.runModeScreenModeTextStyle(context),
+                      ),
+                    ),
+                  ),
                 ),
               )
             ],
           ),
-          SizedBox(
-            width: context.width() / 4.7,
-            height: context.height() / 30,
+          const SizedBox(height: AppSize.s20),
+          Container(
+            width: context.width(),
+            height: AppSize.s30,
+            padding: const EdgeInsets.symmetric(horizontal: AppSize.s50),
             child: ElevatedButton(
               onPressed: () {
-                Navigator.pop(context);
+                viewModel.toggleShowContainer();
               },
               style: ElevatedButton.styleFrom(
-                  backgroundColor: ColorManager.error,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10))),
+                backgroundColor: ColorManager.error,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AppSize.s12),
+                ),
+              ),
               child: Text(AppStrings.runModeScreenButtonClose.tr(),
                   style:
                       AppTextStyles.runModeScreenButtonCloseTextStyle(context)),

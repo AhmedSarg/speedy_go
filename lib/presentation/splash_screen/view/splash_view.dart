@@ -91,20 +91,19 @@ class _SplashScreenState extends State<SplashScreen>
         create: (context) => SplashViewModel(sl())..start(),
         child: BlocConsumer<SplashViewModel, BaseStates>(
           listener: (context, state) {
-            if (state is UserNotSignedState || state is UserSignedState) {
+            if (state is UserNotSignedState) {
               startAnimation();
               Future.delayed(
                 const Duration(milliseconds: 3100),
                 () {
-                  if (state is UserNotSignedState) {
-                    Navigator.pushReplacementNamed(
-                        context, Routes.onBoardingRoute);
-                  } else if (state is UserSignedState) {
-                    Navigator.pushReplacementNamed(
-                        context, Routes.mainLayoutRoute);
-                  }
+                  Navigator.pushReplacementNamed(
+                      context, Routes.onBoardingRoute);
                 },
               );
+            } else if (state is UserSignedState) {
+              Future.delayed(const Duration(seconds: 1), () {
+                Navigator.pushReplacementNamed(context, Routes.driverTripRoute);
+              });
             }
             baseListener(context, state);
           },

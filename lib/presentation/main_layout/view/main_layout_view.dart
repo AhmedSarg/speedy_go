@@ -24,11 +24,8 @@ class MainLayoutScreen extends StatelessWidget {
             baseListener(context, state);
           },
           builder: (context, state) {
-            print(state);
-            MainViewModel viewModel =
-            MainViewModel.get(context);
-            if (state is LocationServiceDisabledState)
-            {
+            MainViewModel viewModel = MainViewModel.get(context);
+            if (state is LocationServiceDisabledState) {
               return MainPermissionsPage(
                 locationError: LocationError.services,
                 viewModel: viewModel,

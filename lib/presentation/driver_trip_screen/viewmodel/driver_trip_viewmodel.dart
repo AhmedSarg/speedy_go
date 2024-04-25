@@ -72,19 +72,19 @@ class DriverTripViewModel extends BaseCubit
 
   toggleShowContainer() {
     _showContainer = !_showContainer;
-    emit(ChangeShowContainerState());
+    updatePage();
   }
 
   updateIndexPassenger(bool isIncrement) {
     //get next or previous id
     _indexPassenger = isIncrement ? _indexPassenger + 1 : _indexPassenger - 1;
-    emit(UpdateIndexPassengerState());
+    updatePage();
   }
 
   @override
   set setIsAccepted(bool isAccepted) {
     _isAccepted = isAccepted;
-    emit(AcceptedState());
+    updatePage();
   }
 
   @override
