@@ -98,7 +98,6 @@ class PassengerMapViewModel extends BaseCubit
     }
   }
 
-
   Future<void> _fetchMapStyle() async {
     _mapStyle = await rootBundle.loadString('assets/maps/dark_map.json');
   }

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -54,6 +55,8 @@ class PassengerTripViewModel extends BaseCubit
 
   TripType? _tripType;
 
+  String? _mapStyle;
+
   bool _canPop = true;
   String? _tripId;
   late LatLng _pickupLocation;
@@ -72,6 +75,7 @@ class PassengerTripViewModel extends BaseCubit
 
   @override
   void start() {
+    _fetchMapStyle();
     _appLifecycleObserver.initialize(() {
       if (_tripId != null) {
         prevPage();
@@ -111,6 +115,15 @@ class PassengerTripViewModel extends BaseCubit
   int get getPrice => _price!;
 
   @override
+  String get getMapStyle => _mapStyle!;
+
+  @override
+  LatLng get getPickupLocation => _pickupLocation;
+
+  @override
+  LatLng get getDestinationLocation => _destinationLocation;
+
+  @override
   set setTripType(TripType tripType) {
     _tripType = tripType;
     _setPageContent();
@@ -132,6 +145,12 @@ class PassengerTripViewModel extends BaseCubit
     _selectedDriver = selectedDriver;
     _setPageContent();
     emit(SelectDriverState());
+  }
+
+  Future<void> _fetchMapStyle() async {
+    emit(LoadingState());
+    _mapStyle = await rootBundle.loadString('assets/maps/dark_map.json');
+    emit(ContentState());
   }
 
   void _setPageContent() async {
@@ -347,4 +366,10 @@ abstract class PassengerTripViewModelOutput {
   TextEditingController get getPriceController;
 
   int get getPrice;
+
+  String get getMapStyle;
+
+  LatLng get getPickupLocation;
+
+  LatLng get getDestinationLocation;
 }

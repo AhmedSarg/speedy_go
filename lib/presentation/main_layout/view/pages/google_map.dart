@@ -20,11 +20,8 @@ class GoogleMapScreenProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GoogleMap(
       compassEnabled: false,
-      buildingsEnabled: false,
-      scrollGesturesEnabled: false,
-      myLocationEnabled: false,
-      zoomControlsEnabled: false,
-
+      myLocationEnabled: true,
+      myLocationButtonEnabled: false,
       mapType: MapType.normal,
       style: viewModel.getMapStyle,
       onMapCreated: (controller) {
@@ -32,7 +29,7 @@ class GoogleMapScreenProfile extends StatelessWidget {
       },
       initialCameraPosition: CameraPosition(
         target: viewModel.getUserLocation,
-        zoom: AppSize.s14,
+        zoom: AppSize.s18,
       ),
     );
   }
