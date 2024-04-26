@@ -10,14 +10,16 @@ import '../../../resources/values_manager.dart';
 import '../../../resources/text_styles.dart';
 
 class RunMode extends StatelessWidget {
-  const RunMode({super.key, required this.viewModel});
+  const RunMode({super.key});
 
-  final DriverTripViewModel viewModel;
+  static late DriverTripViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {
+    viewModel = DriverTripViewModel.get(context);
     return Column(
       children: [
+        viewModel.getIndexPage < 2?
         Align(
           alignment: Alignment.topRight,
           child: Padding(
@@ -32,7 +34,8 @@ class RunMode extends StatelessWidget {
               ),
             ),
           ),
-        ),
+        ):const SizedBox.shrink(),
+
         SizedBox(
           height: context.height() / 3.5,
         ),

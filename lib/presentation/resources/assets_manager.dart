@@ -46,6 +46,8 @@ class SVGAssets {
   static const String person = "${_basePath}person.svg";
   static const String phone = "${_basePath}phone.svg";
   static const String checkmark = "${_basePath}checkmark.svg";
+  static const String close = "${_basePath}close.svg";
+  static const String arrowBack = "${_basePath}arrow_back.svg";
 //profile
 
   static const String history = "${_basePath}history.svg";
