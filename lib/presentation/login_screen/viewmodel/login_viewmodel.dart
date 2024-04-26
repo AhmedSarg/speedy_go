@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:speedy_go/domain/models/user_manager.dart';
 
 import '../../../domain/models/enums.dart';
 import '../../../domain/usecase/login_usecase.dart';
@@ -14,8 +15,9 @@ import '../states/login_states.dart';
 class LoginViewModel extends BaseCubit
     implements LoginViewModelInput, LoginViewModelOutput {
   final LoginUseCase _loginUseCase;
+  final UserManager _userManager;
 
-  LoginViewModel(this._loginUseCase);
+  LoginViewModel(this._loginUseCase, this._userManager);
 
   LoginType _selection = LoginType.phoneNumber;
 
@@ -59,9 +61,15 @@ class LoginViewModel extends BaseCubit
         },
         (r) {
           emit(SuccessState(AppStrings.verificationScreenLoginSuccessMessage));
+          if (_userManager.getCurrentUserType == UserType.driver) {
+            emit(UserIsDriverState());
+          }
+          else {
+            emit(UserIsPassengerState());
+          }
         },
       );
-    });
+    },);
   }
 
   void loginWithPhoneNumber() {

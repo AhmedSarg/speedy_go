@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,7 +20,6 @@ import '../data/network/firestorage_factory.dart';
 import '../data/network/firestore_factory.dart';
 import '../data/network/network_info.dart';
 import '../data/repository/repository_impl.dart';
-import '../domain/models/domain.dart';
 import '../domain/models/user_manager.dart';
 import '../domain/repository/repository.dart';
 import '../domain/usecase/logout_usecase.dart';
@@ -64,11 +61,11 @@ Future<void> initAppModule() async {
   var fireStorage = await FireStorageFactoryImpl().create();
   sl.registerLazySingleton<FirebaseStorage>(() => fireStorage);
   await FirebaseAppCheckFactoryImpl().create();
-  // sl.registerLazySingleton<UserManager>(() => UserManager());
-  sl.registerLazySingleton<UserManager<PassengerModel>>(
-      () => UserManager<PassengerModel>());
-  sl.registerLazySingleton<UserManager<DriverModel>>(
-      () => UserManager<DriverModel>());
+  sl.registerLazySingleton<UserManager>(() => UserManager());
+  // sl.registerLazySingleton<UserManager<PassengerModel>>(
+  //     () => UserManager<PassengerModel>());
+  // sl.registerLazySingleton<UserManager<DriverModel>>(
+  //     () => UserManager<DriverModel>());
   sl.registerLazySingleton<AppServiceClient>(() => AppServiceClientImpl(sl()));
   sl.registerLazySingleton<RemoteDataSource>(
       () => RemoteDataSourceImpl(sl(), sl(), sl()));
@@ -80,25 +77,7 @@ Future<void> initAppModule() async {
   sl.registerLazySingleton<LocalDataSource>(() => LocalDataSourceImpl(sl()));
 
   sl.registerLazySingleton<Repository>(
-      () => RepositoryImpl(sl(), sl(), sl(), sl(), sl()));
-
-  // Register GetSignedUserUseCase with GetIt
-  // Adjust the import path and actual implementation accordingly
-  sl.registerLazySingleton<GetSignedUserUseCase>(
-      () => GetSignedUserUseCase(sl()));
-
-  // Initialize other use cases
-  initAuthenticateUseCase();
-  initStartVerifyUseCase();
-  initVerifyOtpUseCase();
-  initRegisterUseCase();
-  initLoginUseCase();
-  initFindDriversUseCase();
-  initCalculateTwoPointsUseCase();
-  initCancelTripUseCase();
-  initCurrentUserUseCase();
-  initAcceptDriverUseCase();
-  initEndTripUseCase();
+      () => RepositoryImpl(sl(), sl(), sl(), sl()));
 }
 
 void initAuthenticateUseCase() {
@@ -177,5 +156,11 @@ void initEndTripUseCase() {
 void initRateUseCase() {
   if (GetIt.instance.isRegistered<RateUseCase>() == false) {
     sl.registerFactory<RateUseCase>(() => RateUseCase(sl()));
+  }
+}
+
+void initGetSignedUserUseCase() {
+  if (GetIt.instance.isRegistered<GetSignedUserUseCase>() == false) {
+    sl.registerFactory<GetSignedUserUseCase>(() => GetSignedUserUseCase(sl()));
   }
 }

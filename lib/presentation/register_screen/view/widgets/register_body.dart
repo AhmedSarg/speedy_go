@@ -152,7 +152,7 @@ class RegisterTypeSelector extends StatelessWidget {
         children: [
           AnimatedPositioned(
             duration: const Duration(milliseconds: 400),
-            left: viewModel.getRegisterType == Selection.passenger
+            left: viewModel.getRegisterType == UserType.passenger
                 ? 0
                 : itemWidth,
             child: Container(
@@ -167,12 +167,12 @@ class RegisterTypeSelector extends StatelessWidget {
           Row(
             children: [
               RegisterTypeItem(
-                type: Selection.passenger,
+                type: UserType.passenger,
                 text: AppStrings.registerScreenSelectorPassenger.tr(),
                 viewModel: viewModel,
               ),
               RegisterTypeItem(
-                type: Selection.driver,
+                type: UserType.driver,
                 text: AppStrings.registerScreenSelectorDriver.tr(),
                 viewModel: viewModel,
               ),
@@ -192,7 +192,7 @@ class RegisterTypeItem extends StatelessWidget {
     required this.viewModel,
   });
 
-  final Selection type;
+  final UserType type;
   final String text;
   final RegisterViewModel viewModel;
 

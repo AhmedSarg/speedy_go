@@ -24,27 +24,27 @@ class SelectionOldBody extends StatelessWidget {
         Column(
           children: [
             SelectionOldTile(
-                type: Selection.driver,
+                type: UserType.driver,
                 title: AppStrings.selectionScreenDriverTile.tr(),
                 imagePath: ImageAssets.driverSelectionTileImage,
                 onTap: () {
-                  viewModel.setSelected(Selection.driver);
+                  viewModel.setSelected(UserType.driver);
                     DataIntent.setSelection(viewModel.select);
                 }),
             SelectionOldTile(
-                type: Selection.passenger,
+                type: UserType.passenger,
                 title: AppStrings.selectionScreenPassengerTile.tr(),
                 imagePath: ImageAssets.passengerSelectionTileImage,
                 onTap: () {
-                    viewModel.setSelected(Selection.passenger);
+                    viewModel.setSelected(UserType.passenger);
                     DataIntent.setSelection(viewModel.select);
                 }),
           ],
         ),
         AnimatedPositioned(
-          top: DataIntent.getSelection() == Selection.driver
+          top: DataIntent.getSelection() == UserType.driver
               ? context.height() * .8 - AppSize.s35
-              : (DataIntent.getSelection() == Selection.passenger
+              : (DataIntent.getSelection() == UserType.passenger
               ? context.height() * .2 - AppSize.s35
               : context.height() * .5 - AppSize.s35),
           left: context.width() / 2 - AppSize.s35,

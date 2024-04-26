@@ -17,13 +17,19 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-        create: (context) => LoginViewModel(sl())..start(),
+        create: (context) => LoginViewModel(sl(), sl())..start(),
         child: BlocConsumer<LoginViewModel, BaseStates>(
           listener: (context, state) {
-            if (state is SuccessState) {
+            if (state is UserIsPassengerState) {
               Navigator.pushNamedAndRemoveUntil(
                 context,
                 Routes.mainLayoutRoute,
+                ModalRoute.withName('/'),
+              );
+            } else if (state is UserIsDriverState) {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                Routes.driverTripRoute,
                 ModalRoute.withName('/'),
               );
             } else if (state is ErrorState) {

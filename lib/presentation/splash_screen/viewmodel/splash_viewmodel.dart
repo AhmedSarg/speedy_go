@@ -1,17 +1,20 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:speedy_go/domain/models/enums.dart';
+import 'package:speedy_go/domain/models/user_manager.dart';
 
 import '../../../domain/usecase/signed_user_usecase.dart';
 import '../../base/base_cubit.dart';
 import '../../base/base_states.dart';
-import 'splash_states.dart';
+import '../states/splash_states.dart';
 
 class SplashViewModel extends BaseCubit
     implements SplashViewModelInput, SplashViewModelOutput {
   static SplashViewModel get(context) => BlocProvider.of(context);
 
   final GetSignedUserUseCase _signedUserUseCase;
+  final UserManager _userManager;
 
-  SplashViewModel(this._signedUserUseCase);
+  SplashViewModel(this._signedUserUseCase, this._userManager);
 
   @override
   void start() async {
@@ -22,11 +25,16 @@ class SplashViewModel extends BaseCubit
           (l) {
             ErrorState(failure: l);
           },
-          (r) {
+          (r) async {
             if (r == null) {
               emit(UserNotSignedState());
             } else {
-              emit(UserSignedState());
+              if (_userManager.getCurrentUserType == UserType.driver) {
+                emit(DriverSignedState());
+              }
+              else {
+                emit(PassengerSignedState());
+              }
             }
           },
         );

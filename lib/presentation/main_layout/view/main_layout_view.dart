@@ -18,7 +18,7 @@ class MainLayoutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-        create: (context) => MainViewModel(sl(), sl(), sl())..start(),
+        create: (context) => MainViewModel(sl())..start(),
         child: BlocConsumer<MainViewModel, BaseStates>(
           listener: (context, state) {
             baseListener(context, state);

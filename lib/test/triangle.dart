@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../domain/models/enums.dart';
 
 class SelectionTrianglePainter extends CustomPainter {
-  final Selection type;
+  final UserType type;
   final bool selected;
 
   SelectionTrianglePainter({
@@ -27,13 +27,13 @@ class SelectionTrianglePainter extends CustomPainter {
 
     path.moveTo(0, height); // Bottom left corner
 
-    if (selected && type == Selection.passenger) {
+    if (selected && type == UserType.passenger) {
       print('redraw2');
       path.lineTo(0, height * 1 / 3);
       path.lineTo(width * 1 / 3, 0);
     }
 
-    if (selected && type == Selection.driver) {
+    if (selected && type == UserType.driver) {
         print('redraw3');
         path.lineTo(width * 2 / 3, height);
         path.lineTo(width, height * 2 / 3);
@@ -41,7 +41,7 @@ class SelectionTrianglePainter extends CustomPainter {
 
     path.lineTo(width, 0); // Top right corner
 
-    type == Selection.driver ? path.lineTo(0, 0) : path.lineTo(width, height);
+    type == UserType.driver ? path.lineTo(0, 0) : path.lineTo(width, height);
 
     // path.moveTo(0, height); // Top right corner
     //
@@ -64,7 +64,7 @@ class SelectionTrianglePainter extends CustomPainter {
     // path.lineTo(0, 0); // Top left corner
     path.close();
 
-    final paint = Paint()..color = type == Selection.driver ? Colors.blue : Colors.red;
+    final paint = Paint()..color = type == UserType.driver ? Colors.blue : Colors.red;
 
     canvas.drawPath(path, paint);
   }

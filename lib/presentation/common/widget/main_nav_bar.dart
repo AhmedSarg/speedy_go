@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../resources/color_manager.dart';
-import '../../resources/langauge_manager.dart';
+import '../../resources/language_manager.dart';
 import '../../resources/values_manager.dart';
 import '../../../app/extensions.dart';
 

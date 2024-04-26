@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../app/extensions.dart';
 
-import '../../resources/langauge_manager.dart';
+import '../../resources/language_manager.dart';
 
 class ShiftAnimWidget extends StatefulWidget {
   const ShiftAnimWidget({

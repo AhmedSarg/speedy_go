@@ -1,4 +1,4 @@
-enum Selection { passenger, driver, none }
+enum UserType { passenger, driver, none }
 
 enum LoginType { phoneNumber, emailPassword }
 

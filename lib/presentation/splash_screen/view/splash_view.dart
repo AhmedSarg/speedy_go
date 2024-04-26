@@ -12,7 +12,7 @@ import '../../resources/assets_manager.dart';
 import '../../resources/color_manager.dart';
 import '../../resources/routes_manager.dart';
 import '../../resources/values_manager.dart';
-import '../viewmodel/splash_states.dart';
+import '../states/splash_states.dart';
 import '../viewmodel/splash_viewmodel.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -88,7 +88,7 @@ class _SplashScreenState extends State<SplashScreen>
     return Scaffold(
       backgroundColor: ColorManager.black,
       body: BlocProvider(
-        create: (context) => SplashViewModel(sl())..start(),
+        create: (context) => SplashViewModel(sl(), sl())..start(),
         child: BlocConsumer<SplashViewModel, BaseStates>(
           listener: (context, state) {
             if (state is UserNotSignedState) {
@@ -100,9 +100,13 @@ class _SplashScreenState extends State<SplashScreen>
                       context, Routes.onBoardingRoute);
                 },
               );
-            } else if (state is UserSignedState) {
+            } else if (state is PassengerSignedState) {
               Future.delayed(const Duration(seconds: 1), () {
                 Navigator.pushReplacementNamed(context, Routes.mainLayoutRoute);
+              });
+            } else if (state is DriverSignedState) {
+              Future.delayed(const Duration(seconds: 1), () {
+                Navigator.pushReplacementNamed(context, Routes.driverTripRoute);
               });
             }
             baseListener(context, state);
@@ -110,7 +114,7 @@ class _SplashScreenState extends State<SplashScreen>
           builder: (context, state) {
             return Stack(
               children: [
-                (state is UserNotSignedState || state is UserSignedState)
+                (state is UserNotSignedState)
                     ? Image.asset(
                         ImageAssets.loginBackgroundImage,
                         height: AppSize.infinity,

@@ -1,15 +1,12 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:speedy_go/domain/models/domain.dart';
-import 'package:speedy_go/domain/models/user_manager.dart';
-import 'package:speedy_go/domain/usecase/current_user_usecase.dart';
-import 'package:speedy_go/presentation/base/base_cubit.dart';
-import 'package:speedy_go/presentation/base/base_states.dart';
 
+import '../../../domain/usecase/current_user_usecase.dart';
+import '../../base/base_cubit.dart';
+import '../../base/base_states.dart';
 import '../states/main_states.dart';
 
 class MainViewModel extends BaseCubit
@@ -17,13 +14,9 @@ class MainViewModel extends BaseCubit
   static MainViewModel get(context) => BlocProvider.of(context);
 
   final CurrentUserUseCase _currentUserUseCase;
-  final UserManager<PassengerModel> _passengerManager;
-  final UserManager<DriverModel> _driverManager;
 
   MainViewModel(
     this._currentUserUseCase,
-    this._passengerManager,
-    this._driverManager,
   );
 
   late final PageController _pageController = PageController();
@@ -111,16 +104,6 @@ class MainViewModel extends BaseCubit
             emit(ErrorState(failure: l));
           },
           (r) {
-            if (_passengerManager.currentUser != null) {
-              if (kDebugMode) {
-                print(_passengerManager.currentUser!.firstName);
-              }
-            }
-            if (_driverManager.currentUser != null) {
-              if (kDebugMode) {
-                print(_driverManager.currentUser!.firstName);
-              }
-            }
           },
         );
       },

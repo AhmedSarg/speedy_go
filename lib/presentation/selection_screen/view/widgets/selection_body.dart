@@ -53,7 +53,7 @@ class SelectionBox extends StatelessWidget {
             text: 'Driver',
             onPressed: () {
               Navigator.pushNamed(context, Routes.registerRoute);
-              DataIntent.setSelection(Selection.driver);
+              DataIntent.setSelection(UserType.driver);
             },
             textStyle: AppTextStyles.selectionScreenButtonTextStyle(context),
           ),
@@ -62,7 +62,7 @@ class SelectionBox extends StatelessWidget {
             text: 'Passeneger',
             onPressed: () {
               Navigator.pushNamed(context, Routes.registerRoute);
-              DataIntent.setSelection(Selection.passenger);
+              DataIntent.setSelection(UserType.passenger);
             },
             textStyle: AppTextStyles.selectionScreenButtonTextStyle(context),
           ),

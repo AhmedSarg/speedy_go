@@ -6,14 +6,14 @@ import '../../base/base_cubit.dart';
 
 class SelectionViewModel extends BaseCubit
     implements SelectionViewModelInput, SelectionViewModelOutput {
-  Selection select = Selection.none;
+  UserType select = UserType.none;
 
   static SelectionViewModel get(context) => BlocProvider.of(context);
 
   @override
   void start() {}
 
-  void setSelected(Selection s){
+  void setSelected(UserType s){
     select = s;
     emit(ChangeSelectState());
   }

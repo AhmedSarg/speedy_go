@@ -1,22 +1,28 @@
-// import 'domain.dart';
-//
-// class UserManager {
-//   UserModel? _currentUser;
-//
-//   UserModel get currentUser => _currentUser!;
-//
-//   void setCurrentUser(UserModel user) {
-//     _currentUser = user;
-//   }
-// }
 import 'domain.dart';
+import 'enums.dart';
 
-class UserManager<Type> {
-  Type? _currentUser;
+class UserManager {
+  PassengerModel? _currentPassenger;
 
-  Type? get currentUser => _currentUser;
+  DriverModel? _currentDriver;
 
-  void setCurrentUser(Type user) {
-    _currentUser = user;
+  UserType? _currentUserType;
+
+  PassengerModel? get getCurrentPassenger => _currentPassenger;
+
+  DriverModel? get getCurrentDriver => _currentDriver;
+
+  UserType? get getCurrentUserType => _currentUserType;
+
+  void setCurrentPassenger(PassengerModel passengerModel) {
+    _currentPassenger = passengerModel;
+    _currentUserType = UserType.passenger;
+    _currentDriver = null;
+  }
+
+  void setCurrentDriver(DriverModel driverModel) {
+    _currentDriver = driverModel;
+    _currentUserType = UserType.driver;
+    _currentPassenger = null;
   }
 }

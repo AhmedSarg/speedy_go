@@ -55,6 +55,7 @@ class RouteGenerator {
   static Route<dynamic> getRoute(RouteSettings settings) {
     switch (settings.name) {
       case Routes.splashRoute:
+        initGetSignedUserUseCase();
         return MaterialPageRoute(
           builder: (_) => const SplashScreen(),
         );

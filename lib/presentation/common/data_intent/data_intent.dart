@@ -10,11 +10,11 @@ class DataIntent {
 
 //------------------------------------
   //Selection
-  static Selection _selection = Selection.none;
+  static UserType _selection = UserType.none;
 
-  static void setSelection(Selection item) => _selection = item;
+  static void setSelection(UserType item) => _selection = item;
 
-  static Selection getSelection() {
+  static UserType getSelection() {
     return _selection;
   }
 

@@ -17,7 +17,7 @@ class SelectionOldTile extends StatefulWidget {
     required this.onTap,
   });
 
-  final Selection type;
+  final UserType type;
   final String title;
   final String imagePath;
   final Function() onTap;
@@ -29,7 +29,7 @@ class SelectionOldTile extends StatefulWidget {
 class _SelectionOldTileState extends State<SelectionOldTile> {
   @override
   Widget build(BuildContext context) {
-    Selection selection = DataIntent.getSelection();
+    UserType selection = DataIntent.getSelection();
     return GestureDetector(
       onTap: widget.onTap,
       child: AnimatedContainer(
@@ -38,7 +38,7 @@ class _SelectionOldTileState extends State<SelectionOldTile> {
         height: context.height() *
             (selection == widget.type
                 ? .8
-                : (selection == Selection.none ? .5 : .2)),
+                : (selection == UserType.none ? .5 : .2)),
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage(widget.imagePath),
@@ -46,13 +46,13 @@ class _SelectionOldTileState extends State<SelectionOldTile> {
           ),
           color: ColorManager.primary,
           border: Border(
-            top: widget.type == Selection.passenger
+            top: widget.type == UserType.passenger
                 ? const BorderSide(
                     color: ColorManager.white,
                     width: AppSize.s2,
                   )
                 : BorderSide.none,
-            bottom: widget.type == Selection.driver
+            bottom: widget.type == UserType.driver
                 ? const BorderSide(
                     color: ColorManager.white,
                     width: AppSize.s2,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:speedy_go/presentation/resources/langauge_manager.dart';
+import 'package:speedy_go/presentation/resources/language_manager.dart';
 
 import 'color_manager.dart';
 import 'font_manager.dart';

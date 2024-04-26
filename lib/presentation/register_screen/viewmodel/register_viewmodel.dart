@@ -47,9 +47,9 @@ class RegisterViewModel extends BaseCubit
     ),
   ];
 
-  late Selection _registerType;
+  late UserType _registerType;
 
-  Selection? _oldRegisterType;
+  UserType? _oldRegisterType;
 
   late RegisterType _registerBoxType = RegisterType.passenger;
 
@@ -79,7 +79,7 @@ class RegisterViewModel extends BaseCubit
   @override
   void start() {
     _registerType = DataIntent.getSelection();
-    if (_registerType == Selection.driver) {
+    if (_registerType == UserType.driver) {
       emit(RegisterVehicleSelectionState());
     } else {
       emit(RegisterPassengerState());
@@ -87,7 +87,7 @@ class RegisterViewModel extends BaseCubit
   }
 
   @override
-  Selection get getRegisterType => _registerType;
+  UserType get getRegisterType => _registerType;
 
   @override
   RegisterType get getRegisterBoxType => _registerBoxType;
@@ -146,10 +146,10 @@ class RegisterViewModel extends BaseCubit
   Gender? get getGender => _gender;
 
   @override
-  set setRegisterType(Selection registerType) {
+  set setRegisterType(UserType registerType) {
     _oldRegisterType = _registerType;
     _registerType = registerType;
-    if (registerType == Selection.driver) {
+    if (registerType == UserType.driver) {
       emit(RegisterVehicleSelectionState());
     } else {
       setRegisterBoxType = RegisterType.passenger;
@@ -197,7 +197,7 @@ class RegisterViewModel extends BaseCubit
     if (_oldRegisterType != null) {
       _registerType = _oldRegisterType!;
       Future.delayed(const Duration(milliseconds: 10), () {
-        _registerType = Selection.driver;
+        _registerType = UserType.driver;
         emit(ContentState());
       });
     } else {
@@ -213,7 +213,7 @@ class RegisterViewModel extends BaseCubit
       _drivingLicense = File(path);
       // _drivingLicense = renameFile(_drivingLicense!, 'driving_license.jpg');
       emit(RegisterImagePickSuccessState(image: _drivingLicense!));
-      _oldRegisterType = Selection.driver;
+      _oldRegisterType = UserType.driver;
       setRegisterBoxType = _registerBoxType;
     } catch (e) {
       emit(
@@ -233,7 +233,7 @@ class RegisterViewModel extends BaseCubit
       _carLicense = File(path);
       // _carLicense = renameFile(_carLicense!, 'car_license.jpg');
       emit(RegisterImagePickSuccessState(image: _carLicense!));
-      _oldRegisterType = Selection.driver;
+      _oldRegisterType = UserType.driver;
       setRegisterBoxType = _registerBoxType;
     } catch (e) {
       emit(
@@ -252,7 +252,7 @@ class RegisterViewModel extends BaseCubit
       String path = await getImagesFromGallery();
       _carImage = File(path);
       emit(RegisterImagePickSuccessState(image: _carImage!));
-      _oldRegisterType = Selection.driver;
+      _oldRegisterType = UserType.driver;
       setRegisterBoxType = _registerBoxType;
     } catch (e) {
       emit(
@@ -271,7 +271,7 @@ class RegisterViewModel extends BaseCubit
       String path = await getImagesFromGallery();
       _tukTukImage = File(path);
       emit(RegisterImagePickSuccessState(image: _tukTukImage!));
-      _oldRegisterType = Selection.driver;
+      _oldRegisterType = UserType.driver;
       setRegisterBoxType = _registerBoxType;
     } catch (e) {
       emit(
@@ -363,7 +363,7 @@ class RegisterViewModel extends BaseCubit
 }
 
 abstract class RegisterViewModelInput {
-  set setRegisterType(Selection registerType);
+  set setRegisterType(UserType registerType);
 
   set setRegisterBoxType(RegisterType registerBoxType);
 
@@ -375,7 +375,7 @@ abstract class RegisterViewModelInput {
 }
 
 abstract class RegisterViewModelOutput {
-  Selection get getRegisterType;
+  UserType get getRegisterType;
 
   RegisterType get getRegisterBoxType;
 

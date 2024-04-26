@@ -31,7 +31,7 @@ class PassengerTripViewModel extends BaseCubit
     implements PassengerTripViewModelInput, PassengerTripViewModelOutput {
   static PassengerTripViewModel get(context) => BlocProvider.of(context);
 
-  final UserManager<PassengerModel> _userManager;
+  final UserManager _userManager;
   final FindDriversUseCase _findDriversUseCase;
   final CalculateTwoPointsUseCase _calculateTwoPointsUseCase;
   final CancelTripUseCase _cancelTripUseCase;
@@ -268,7 +268,7 @@ class PassengerTripViewModel extends BaseCubit
     _loadingContent();
     await _findDriversUseCase(
       FindDriversUseCaseInput(
-        passengerId: _userManager.currentUser!.uuid,
+        passengerId: _userManager.getCurrentPassenger!.uuid,
         tripType: _tripType!,
         pickupLocation: _pickupLocation,
         destinationLocation: _destinationLocation,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:speedy_go/presentation/resources/text_styles.dart';
 import '../../resources/color_manager.dart';
-import '../../resources/langauge_manager.dart';
+import '../../resources/language_manager.dart';
 import '../../resources/values_manager.dart';
 
 class CustomTextField extends StatefulWidget {

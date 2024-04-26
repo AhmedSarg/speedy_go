@@ -8,7 +8,7 @@ class UserModel {
   final String lastName;
   final String phoneNumber;
   final String email;
-  final Selection type;
+  final UserType type;
 
   UserModel({
     required this.uuid,
@@ -26,7 +26,7 @@ class UserModel {
         lastName: '',
         phoneNumber: '',
         email: '',
-        type: Selection.passenger,
+        type: UserType.passenger,
       );
 }
 
@@ -40,7 +40,7 @@ class PassengerModel extends UserModel {
     required super.phoneNumber,
     required super.email,
     required this.gender,
-    super.type = Selection.passenger,
+    super.type = UserType.passenger,
   });
 
   factory PassengerModel.fake() =>
@@ -89,7 +89,7 @@ class DriverModel extends UserModel {
     required super.email,
     required this.nationalId,
     required this.vehicleType,
-    super.type = Selection.driver,
+    super.type = UserType.driver,
   });
 
   factory DriverModel.fake() =>

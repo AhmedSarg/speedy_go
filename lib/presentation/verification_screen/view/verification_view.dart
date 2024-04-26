@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:speedy_go/presentation/verification_screen/states/verification_states.dart';
 
 import '../../../app/sl.dart';
 import '../../base/base_states.dart';
@@ -29,16 +30,21 @@ class VerificationScreen extends StatelessWidget {
             ),
           ),
           BlocProvider(
-            create: (context) => VerificationViewModel(sl(), sl())..start(),
+            create: (context) => VerificationViewModel(sl(), sl(), sl())..start(),
             child: BlocConsumer<VerificationViewModel, BaseStates>(
               listener: (context, state) {
-                print(state);
                 if (state is ErrorState) {
                   Navigator.pop(context);
-                } else if (state is SuccessState) {
+                } else if (state is UserIsPassengerState) {
                   Navigator.pushNamedAndRemoveUntil(
                     context,
                     Routes.mainLayoutRoute,
+                    ModalRoute.withName('/'),
+                  );
+                } else if (state is UserIsDriverState) {
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    Routes.driverTripRoute,
                     ModalRoute.withName('/'),
                   );
                 }

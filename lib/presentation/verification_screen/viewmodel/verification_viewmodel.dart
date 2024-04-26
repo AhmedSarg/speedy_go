@@ -4,21 +4,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:speedy_go/data/network/error_handler.dart';
+import 'package:speedy_go/domain/models/user_manager.dart';
 import '../../../domain/models/enums.dart';
 import '../../../domain/usecase/start_verify_usecase.dart';
 import '../../../domain/usecase/verify_otp_usecase.dart';
 import '../../base/base_cubit.dart';
 import '../../base/base_states.dart';
 import '../../common/data_intent/data_intent.dart';
+import '../states/verification_states.dart';
 
 class VerificationViewModel extends BaseCubit
     implements VerificationViewModelInput, VerificationViewModelOutput {
   final StartVerifyUseCase _startVerifyUseCase;
   final VerifyOtpUseCase _verifyOtpUseCase;
+  final UserManager _userManager;
 
   VerificationViewModel(
     this._startVerifyUseCase,
     this._verifyOtpUseCase,
+    this._userManager,
   );
 
   static VerificationViewModel get(context) => BlocProvider.of(context);
@@ -102,6 +106,12 @@ class VerificationViewModel extends BaseCubit
           },
           (r) async {
             emit(await _onVerified());
+            if (_userManager.getCurrentUserType == UserType.driver) {
+              emit(UserIsDriverState());
+            }
+            else {
+              emit(UserIsPassengerState());
+            }
           },
         );
       },

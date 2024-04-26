@@ -21,8 +21,7 @@ class RepositoryImpl implements Repository {
   final RemoteDataSource _remoteDataSource;
   final CacheDataSource _cacheDataSource;
   final NetworkInfo _networkInfo;
-  final UserManager<PassengerModel> _passengerManager;
-  final UserManager<DriverModel> _driverManager;
+  final UserManager _userManager;
 
   // final LocalDataSource _localDataSource;
   // final GSheetFactory _gSheetFactory;
@@ -34,8 +33,7 @@ class RepositoryImpl implements Repository {
     this._remoteDataSource,
     this._networkInfo,
     this._cacheDataSource,
-    this._passengerManager,
-    this._driverManager,
+    this._userManager,
     // this._localDataSource,
     // this._userManager,
     // this._gSheetFactory,
@@ -343,9 +341,11 @@ class RepositoryImpl implements Repository {
     userData['created_at'] = userData['created_at'].toString();
     _cacheDataSource.setCurrentUser(userData);
     if (userData['type'] == 'passenger') {
-      _passengerManager.setCurrentUser(PassengerModel.fromMap(userData));
+      print('p');
+      _userManager.setCurrentPassenger(PassengerModel.fromMap(userData));
     } else {
-      _driverManager.setCurrentUser(DriverModel.fromMap(userData));
+      print('d');
+      _userManager.setCurrentDriver(DriverModel.fromMap(userData));
     }
   }
 
@@ -355,9 +355,9 @@ class RepositoryImpl implements Repository {
       Map<String, dynamic>? userData = _cacheDataSource.getCurrentUser();
       if (userData != null) {
         if (userData['type'] == 'passenger') {
-          _passengerManager.setCurrentUser(PassengerModel.fromMap(userData));
+          _userManager.setCurrentPassenger(PassengerModel.fromMap(userData));
         } else {
-          _driverManager.setCurrentUser(DriverModel.fromMap(userData));
+          _userManager.setCurrentDriver(DriverModel.fromMap(userData));
         }
       }
       return const Right(null);
@@ -404,6 +404,7 @@ class RepositoryImpl implements Repository {
   Future<Either<Failure, User?>> getSignedUser() async {
     try {
       User? data = _cacheDataSource.getSignedUser();
+      getCurrentUser();
       return Right(data);
     } catch (e) {
       return Left(ErrorHandler.handle(e).failure);
