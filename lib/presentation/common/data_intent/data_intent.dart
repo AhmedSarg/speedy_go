@@ -93,13 +93,13 @@ class DataIntent {
     return value;
   }
 
-  static String? _driverId;
+  static String? _ratedUserId;
 
-  static void pushDriverId(String driverId) => _driverId = driverId;
+  static void pushRatedUserId(String driverId) => _ratedUserId = driverId;
 
-  static String popDriverId() {
-    String value = _driverId!;
-    _driverId = null;
+  static String popRatedUserId() {
+    String value = _ratedUserId!;
+    _ratedUserId = null;
     return value;
   }
 

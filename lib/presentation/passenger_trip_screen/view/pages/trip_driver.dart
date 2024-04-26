@@ -257,7 +257,7 @@ class Card extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        driver.rate.toString(),
+                        driver.rate.toStringAsFixed(1),
                         style: AppTextStyles
                             .tripScreenDriverSelectionPageRateTextStyle(
                           context,

@@ -125,7 +125,7 @@ class TripDetails extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          viewModel.getSelectedDriver.rate.toString(),
+                          viewModel.getSelectedDriver.rate.toStringAsFixed(1),
                           style: AppTextStyles.tripScreenDetailsPageRateTextStyle(context),
                         ),
                         const SizedBox(width: AppSize.s5),

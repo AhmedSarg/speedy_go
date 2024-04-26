@@ -29,19 +29,14 @@ class DriverTripViewModel extends BaseCubit
   updatePage() {
     if (_indexPage == 0) {
       _contentPage = WaitingSearchingForPassengers();
-      // emit(WaitingSearchingForPassengersState());
     } else if (_indexPage == 1) {
       _contentPage = AcceptRide();
-      // emit(AcceptRideState());
     } else if (_indexPage == 2) {
       _contentPage = EditCost();
-      // emit(EditCostState());
     } else if (_indexPage == 3) {
       _contentPage = RunningTrip();
-      // emit(RunningTripState());
     } else if (_indexPage == 4) {
       _contentPage = TripEnd();
-      // emit(EndTripState());
     } else if (_indexPage == 5) {
       emit(RatePassengerState());
     } else {
@@ -76,7 +71,6 @@ class DriverTripViewModel extends BaseCubit
   }
 
   updateIndexPassenger(bool isIncrement) {
-    //get next or previous id
     _indexPassenger = isIncrement ? _indexPassenger + 1 : _indexPassenger - 1;
     updatePage();
   }
@@ -118,10 +112,16 @@ abstract class DriverTripViewModelInput {
 
 abstract class DriverTripViewModelOutput {
   bool get getMode;
+
   bool get getIsAccepted;
+
   bool get getShowContainer;
+
   int get getIndexPassenger;
+
   int get getIndexPage;
+
   TextEditingController get getNewCostController;
+
   Widget? get getPage;
 }

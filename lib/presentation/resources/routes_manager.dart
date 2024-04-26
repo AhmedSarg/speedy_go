@@ -94,6 +94,7 @@ class RouteGenerator {
         initEndTripUseCase();
         return MaterialPageRoute(builder: (_) => const PassengerTripScreen());
       case Routes.rateRoute:
+        initRateUseCase();
         return MaterialPageRoute(builder: (_) => const RateScreen());
       case Routes.busesRoute:
         return MaterialPageRoute(builder: (_) => const BusesScreen());
@@ -111,8 +112,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const SafetyScreen());
       case Routes.supportRoute:
         return MaterialPageRoute(builder: (_) => const SupportScreen());
-        case Routes.requestHistoryRoute:
-      return MaterialPageRoute(builder: (_) => const RequestHistoryScreen());
+      case Routes.requestHistoryRoute:
+        return MaterialPageRoute(builder: (_) => const RequestHistoryScreen());
 
       default:
         return unDefinedRoute();

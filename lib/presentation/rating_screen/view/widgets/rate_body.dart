@@ -67,7 +67,7 @@ class RateBody extends StatelessWidget {
             child: ElevatedButton(
               onPressed: (viewModel.indexRate != 0)
                   ? () {
-                      Navigator.pushNamed(context, Routes.mainLayoutRoute);
+                      viewModel.rateDriver();
                     }
                   : null,
               style: ElevatedButton.styleFrom(

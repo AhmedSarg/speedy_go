@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:speedy_go/app/extensions.dart';
 
@@ -23,13 +25,14 @@ class PassengerTripBody extends StatelessWidget {
         viewModel.prevPage();
       },
       child: Stack(
+        alignment: Alignment.topLeft,
         children: [
           Scaffold(
-            resizeToAvoidBottomInset: false,
+            resizeToAvoidBottomInset: true,
             body: Container(
               height: AppSize.infinity,
               width: AppSize.infinity,
-              padding: EdgeInsets.only(bottom: context.height() * .4),
+              padding: EdgeInsets.only(bottom: context.height() * .3),
               child: GoogleMap(
                 initialCameraPosition: CameraPosition(
                   target: viewModel.getPickupLocation,
@@ -43,46 +46,35 @@ class PassengerTripBody extends StatelessWidget {
                 zoomControlsEnabled: false,
               )
             ),
-          ),
-          Scaffold(
-            resizeToAvoidBottomInset: true,
-            backgroundColor: ColorManager.transparent,
-            body: SizedBox(
-              width: AppSize.infinity,
-              height: AppSize.infinity,
-              child: SafeArea(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.all(AppPadding.p20),
-                        child: Back(
-                          onTap: () {
-                            if (viewModel.getCanPop) {
-                              Navigator.pop(context);
-                            } else {
-                              viewModel.prevPage();
-                            }
-                          },
-                        ),
-                      ),
+            bottomSheet: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: AppSize.infinity,
+                  padding: const EdgeInsets.all(AppPadding.p16),
+                  decoration: const BoxDecoration(
+                    color: ColorManager.lightBlack,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(AppSize.s20),
+                      topRight: Radius.circular(AppSize.s20),
                     ),
-                    Container(
-                      width: AppSize.infinity,
-                      padding: const EdgeInsets.all(AppPadding.p16),
-                      decoration: const BoxDecoration(
-                        color: ColorManager.lightBlack,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(AppSize.s20),
-                          topRight: Radius.circular(AppSize.s20),
-                        ),
-                      ),
-                      child: viewModel.getPage,
-                    ),
-                  ],
+                  ),
+                  child: viewModel.getPage,
                 ),
+              ],
+            ),
+          ),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(AppPadding.p10),
+              child: Back(
+                onTap: () {
+                  if (viewModel.getCanPop) {
+                    Navigator.pop(context);
+                  } else {
+                    viewModel.prevPage();
+                  }
+                },
               ),
             ),
           ),

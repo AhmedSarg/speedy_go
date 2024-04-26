@@ -331,7 +331,7 @@ class PassengerTripViewModel extends BaseCubit
             ),);
           },
           (r) {
-            DataIntent.pushDriverId(_selectedDriver!.id);
+            DataIntent.pushRatedUserId(_selectedDriver!.id);
             emit(RateDriverState());
           },
         );

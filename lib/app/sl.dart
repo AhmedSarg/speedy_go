@@ -30,6 +30,7 @@ import '../domain/usecase/accept_driver_usecase.dart';
 import '../domain/usecase/authenticate_usecase.dart';
 import '../domain/usecase/calculate_two_points_usecase.dart';
 import '../domain/usecase/cancel_trip_usecase.dart';
+import '../domain/usecase/rate_usecase.dart';
 import '../domain/usecase/signed_user_usecase.dart';
 import '../domain/usecase/current_user_usecase.dart';
 import '../domain/usecase/end_trip_usecase.dart';
@@ -48,7 +49,7 @@ Future<void> initAppModule() async {
   sl.registerLazySingleton<AppPrefs>(() => AppPrefsImpl(sharedPreferences));
 
   sl.registerLazySingleton<NetworkInfo>(
-          () => NetworkInfoImpl(InternetConnection()));
+      () => NetworkInfoImpl(InternetConnection()));
 
   // sl.registerLazySingleton<GSheetFactory>(() => GSheetFactoryImpl());
 
@@ -64,23 +65,27 @@ Future<void> initAppModule() async {
   sl.registerLazySingleton<FirebaseStorage>(() => fireStorage);
   await FirebaseAppCheckFactoryImpl().create();
   // sl.registerLazySingleton<UserManager>(() => UserManager());
-  sl.registerLazySingleton<UserManager<PassengerModel>>(() => UserManager<PassengerModel>());
-  sl.registerLazySingleton<UserManager<DriverModel>>(() => UserManager<DriverModel>());
+  sl.registerLazySingleton<UserManager<PassengerModel>>(
+      () => UserManager<PassengerModel>());
+  sl.registerLazySingleton<UserManager<DriverModel>>(
+      () => UserManager<DriverModel>());
   sl.registerLazySingleton<AppServiceClient>(() => AppServiceClientImpl(sl()));
   sl.registerLazySingleton<RemoteDataSource>(
-          () => RemoteDataSourceImpl(sl(), sl(), sl()));
+      () => RemoteDataSourceImpl(sl(), sl(), sl()));
   sl.registerLazySingleton<RuntimeDataSource>(() => RuntimeDataSourceImpl());
   sl.registerLazySingleton<CacheDataSource>(
-        () => CacheDataSourceImpl(sl(),sl()),
+    () => CacheDataSourceImpl(sl(), sl()),
   );
 
   sl.registerLazySingleton<LocalDataSource>(() => LocalDataSourceImpl(sl()));
 
-  sl.registerLazySingleton<Repository>(() => RepositoryImpl(sl(), sl(), sl(), sl(), sl()));
+  sl.registerLazySingleton<Repository>(
+      () => RepositoryImpl(sl(), sl(), sl(), sl(), sl()));
 
   // Register GetSignedUserUseCase with GetIt
   // Adjust the import path and actual implementation accordingly
-  sl.registerLazySingleton<GetSignedUserUseCase>(() => GetSignedUserUseCase(sl()));
+  sl.registerLazySingleton<GetSignedUserUseCase>(
+      () => GetSignedUserUseCase(sl()));
 
   // Initialize other use cases
   initAuthenticateUseCase();
@@ -125,6 +130,7 @@ void initLoginUseCase() {
     sl.registerFactory<LoginUseCase>(() => LoginUseCase(sl()));
   }
 }
+
 void initLogOutUseCase() {
   if (GetIt.instance.isRegistered<LogoutUseCase>() == false) {
     sl.registerFactory<LogoutUseCase>(() => LogoutUseCase(sl()));
@@ -140,34 +146,36 @@ void initFindDriversUseCase() {
 void initCalculateTwoPointsUseCase() {
   if (GetIt.instance.isRegistered<CalculateTwoPointsUseCase>() == false) {
     sl.registerFactory<CalculateTwoPointsUseCase>(
-            () => CalculateTwoPointsUseCase(sl()));
+        () => CalculateTwoPointsUseCase(sl()));
   }
 }
 
 void initCancelTripUseCase() {
   if (GetIt.instance.isRegistered<CancelTripUseCase>() == false) {
-    sl.registerFactory<CancelTripUseCase>(
-            () => CancelTripUseCase(sl()));
+    sl.registerFactory<CancelTripUseCase>(() => CancelTripUseCase(sl()));
   }
 }
 
 void initCurrentUserUseCase() {
   if (GetIt.instance.isRegistered<CurrentUserUseCase>() == false) {
-    sl.registerFactory<CurrentUserUseCase>(
-            () => CurrentUserUseCase(sl()));
+    sl.registerFactory<CurrentUserUseCase>(() => CurrentUserUseCase(sl()));
   }
 }
 
 void initAcceptDriverUseCase() {
   if (GetIt.instance.isRegistered<AcceptDriverUseCase>() == false) {
-    sl.registerFactory<AcceptDriverUseCase>(
-            () => AcceptDriverUseCase(sl()));
+    sl.registerFactory<AcceptDriverUseCase>(() => AcceptDriverUseCase(sl()));
   }
 }
 
 void initEndTripUseCase() {
   if (GetIt.instance.isRegistered<EndTripUseCase>() == false) {
-    sl.registerFactory<EndTripUseCase>(
-            () => EndTripUseCase(sl()));
+    sl.registerFactory<EndTripUseCase>(() => EndTripUseCase(sl()));
+  }
+}
+
+void initRateUseCase() {
+  if (GetIt.instance.isRegistered<RateUseCase>() == false) {
+    sl.registerFactory<RateUseCase>(() => RateUseCase(sl()));
   }
 }

@@ -94,6 +94,8 @@ abstract class RemoteDataSource {
   });
 
   Future<void> endTrip(String tripId);
+
+  Future<void> rate(String userId, int rate);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -490,14 +492,28 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<void> endTrip(String tripId) async {
-    DocumentReference<Map<String, dynamic>> doc = _firestore
-        .collection('available_trips')
-        .doc(tripId);
+    DocumentReference<Map<String, dynamic>> doc =
+        _firestore.collection('available_trips').doc(tripId);
     await doc.get().then((trip) {
       _firestore.collection('finished_trips').add(trip.data()!);
     });
     await doc.delete();
   }
 
-
+  @override
+  Future<void> rate(String userId, int rate) async {
+    double? newRate;
+    await _firestore.collection('users').doc(userId).get().then((value) {
+      num oldRate = value.data()!['rate'];
+      num numberOfRates = value.data()!['number_of_rates'];
+      newRate = ((oldRate * numberOfRates.toDouble()) + rate.toDouble()) /
+          (numberOfRates.toDouble() + 1);
+    });
+    if (newRate != null) {
+      await _firestore.collection('users').doc(userId).update({
+        'rate': newRate!,
+        'number_of_rates': FieldValue.increment(1),
+      });
+    }
+  }
 }

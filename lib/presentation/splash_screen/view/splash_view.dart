@@ -102,7 +102,7 @@ class _SplashScreenState extends State<SplashScreen>
               );
             } else if (state is UserSignedState) {
               Future.delayed(const Duration(seconds: 1), () {
-                Navigator.pushReplacementNamed(context, Routes.driverTripRoute);
+                Navigator.pushReplacementNamed(context, Routes.mainLayoutRoute);
               });
             }
             baseListener(context, state);
