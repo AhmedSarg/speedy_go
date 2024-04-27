@@ -16,6 +16,14 @@ import '../view/pages/running_trip.dart';
 import '../view/pages/trip_edit_cost.dart';
 import '../view/pages/trip_finished_page.dart';
 import '../view/pages/waiting_page.dart';
+import '../../base/base_cubit.dart';
+import '../view/pages/accept_ride_page.dart';
+import '../view/pages/run_mode_page.dart';
+import '../view/pages/running_trip.dart';
+import '../view/pages/trip_edit_cost.dart';
+import '../view/pages/trip_finished_page.dart';
+import '../view/pages/waiting_page.dart';
+import '../view/states/driver_trip_states.dart';
 
 class DriverTripViewModel extends BaseCubit
     implements DriverTripViewModelInput, DriverTripViewModelOutput {
@@ -42,16 +50,18 @@ class DriverTripViewModel extends BaseCubit
 
   updatePage() {
     if (_indexPage == 0) {
-      _contentPage = WaitingSearchingForPassengers();
+      _contentPage = RunMode();
     } else if (_indexPage == 1) {
-      _contentPage = AcceptRide();
+      _contentPage = WaitingSearchingForPassengers();
     } else if (_indexPage == 2) {
-      _contentPage = EditCost();
+      _contentPage = AcceptRide();
     } else if (_indexPage == 3) {
-      _contentPage = RunningTrip();
+      _contentPage = EditCost();
     } else if (_indexPage == 4) {
-      _contentPage = TripEnd();
+      _contentPage = RunningTrip();
     } else if (_indexPage == 5) {
+      _contentPage = TripEnd();
+    } else if (_indexPage == 6) {
       emit(RatePassengerState());
     } else {
       _driverStatus = false;
@@ -60,7 +70,7 @@ class DriverTripViewModel extends BaseCubit
   }
 
   nextPage() {
-    if (_indexPage < 6) {
+    if (_indexPage <= 6) {
       _indexPage++;
       updatePage();
     }
@@ -75,6 +85,11 @@ class DriverTripViewModel extends BaseCubit
 
   toggleChangeStatusDialog() {
     emit(ChangeDriverStatusState());
+  }
+
+  reset(){
+    _indexPage = 0;
+    updatePage();
   }
 
   Future<void> toggleDriverStatusUi() async {
