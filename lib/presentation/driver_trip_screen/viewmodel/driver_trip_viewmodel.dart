@@ -1,30 +1,44 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:speedy_go/presentation/base/base_cubit.dart';
-import 'package:speedy_go/presentation/driver_trip_screen/view/pages/accept_ride_page.dart';
-import 'package:speedy_go/presentation/driver_trip_screen/view/pages/running_trip.dart';
-import 'package:speedy_go/presentation/driver_trip_screen/view/pages/trip_edit_cost.dart';
-import 'package:speedy_go/presentation/driver_trip_screen/view/pages/trip_finished_page.dart';
-import 'package:speedy_go/presentation/driver_trip_screen/view/pages/waiting_page.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../view/states/driver_trip_states.dart';
+import '../../../domain/models/user_manager.dart';
+import '../../../domain/usecase/change_driver_status_usecase.dart';
+import '../../base/base_cubit.dart';
+import '../../base/base_states.dart';
+import '../states/driver_trip_states.dart';
+import '../view/pages/accept_ride_page.dart';
+import '../view/pages/running_trip.dart';
+import '../view/pages/trip_edit_cost.dart';
+import '../view/pages/trip_finished_page.dart';
+import '../view/pages/waiting_page.dart';
 
 class DriverTripViewModel extends BaseCubit
     implements DriverTripViewModelInput, DriverTripViewModelOutput {
-  bool _mode = false, _showContainer = false, _isAccepted = false;
-  int _indexPassenger = 0;
-  late final TextEditingController _costController = TextEditingController();
-
-  int _indexPage = 0;
-  Widget? _contentPage;
-
   static DriverTripViewModel get(context) => BlocProvider.of(context);
 
-  @override
-  void start() {
-    updatePage();
-  }
+  final UserManager _userManager;
+  final ChangeDriverStatusUseCase _changeDriverStatusUseCase;
+
+  DriverTripViewModel(this._userManager, this._changeDriverStatusUseCase);
+
+  bool _driverStatus = false, _isAccepted = false;
+
+  Stream<LatLng>? _positionStream;
+
+  StreamSubscription<LatLng>? _positionSubscription;
+
+  int _indexPassenger = 0;
+
+  final TextEditingController _costController = TextEditingController();
+
+  int _indexPage = 0;
+
+  Widget? _contentPage;
 
   updatePage() {
     if (_indexPage == 0) {
@@ -40,7 +54,7 @@ class DriverTripViewModel extends BaseCubit
     } else if (_indexPage == 5) {
       emit(RatePassengerState());
     } else {
-      //error
+      _driverStatus = false;
     }
     emit(ChangePageState());
   }
@@ -59,15 +73,61 @@ class DriverTripViewModel extends BaseCubit
     }
   }
 
-  toggleMode() {
-    _mode = !_mode;
-    if (_mode) _showContainer = false;
-    emit(ChangeModeState());
+  toggleChangeStatusDialog() {
+    emit(ChangeDriverStatusState());
   }
 
-  toggleShowContainer() {
-    _showContainer = !_showContainer;
-    updatePage();
+  Future<void> toggleDriverStatusUi() async {
+    emit(LoadingState(displayType: DisplayType.popUpDialog));
+    if (!_driverStatus) {
+      _getLocationStream();
+      _positionSubscription = _positionStream?.listen(null);
+    } else {
+      toggleDriverStatusRemote();
+    }
+  }
+
+  Future<void> toggleDriverStatusRemote() async {
+    await _changeDriverStatusUseCase(
+      ChangeDriverStatusUseCaseInput(
+        online: !_driverStatus,
+        driverId: _userManager.getCurrentDriver!.uuid,
+        coordinatesSubscription: _positionSubscription,
+      ),
+    ).then(
+      (value) {
+        value.fold(
+          (l) {
+            emit(
+              ErrorState(
+                failure: l,
+                displayType: DisplayType.popUpDialog,
+              ),
+            );
+          },
+          (r) {
+            _driverStatus = !_driverStatus;
+            if (!_driverStatus) {
+              _positionStream = null;
+              _positionSubscription = null;
+              _indexPage = 0;
+              updatePage();
+            }
+          },
+        );
+      },
+    );
+    emit(DriverStatusChangedState());
+  }
+
+  _getLocationStream() {
+    emit(CheckPermissionsState());
+    _positionStream = Geolocator.getPositionStream().map(
+          (gPos) => LatLng(
+        gPos.latitude,
+        gPos.longitude,
+      ),
+    );
   }
 
   updateIndexPassenger(bool isIncrement) {
@@ -76,8 +136,7 @@ class DriverTripViewModel extends BaseCubit
   }
 
   @override
-  set setIsAccepted(bool isAccepted) {
-    _isAccepted = isAccepted;
+  void start() {
     updatePage();
   }
 
@@ -88,10 +147,7 @@ class DriverTripViewModel extends BaseCubit
   }
 
   @override
-  bool get getMode => _mode;
-
-  @override
-  bool get getShowContainer => _showContainer;
+  bool get getDriverStatus => _driverStatus;
 
   @override
   bool get getIsAccepted => _isAccepted;
@@ -104,6 +160,12 @@ class DriverTripViewModel extends BaseCubit
 
   @override
   Widget? get getPage => _contentPage;
+
+  @override
+  set setIsAccepted(bool isAccepted) {
+    _isAccepted = isAccepted;
+    updatePage();
+  }
 }
 
 abstract class DriverTripViewModelInput {
@@ -111,11 +173,9 @@ abstract class DriverTripViewModelInput {
 }
 
 abstract class DriverTripViewModelOutput {
-  bool get getMode;
+  bool get getDriverStatus;
 
   bool get getIsAccepted;
-
-  bool get getShowContainer;
 
   int get getIndexPassenger;
 

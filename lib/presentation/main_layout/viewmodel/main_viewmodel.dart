@@ -21,59 +21,12 @@ class MainViewModel extends BaseCubit
 
   late final PageController _pageController = PageController();
 
-  LocationPermission _locationPermissions = LocationPermission.denied;
-
   late final GoogleMapController _mapController;
   LatLng? _userLocation;
   String? _mapStyle;
 
   Future<void> _fetchMapStyle() async {
     _mapStyle = await rootBundle.loadString('assets/maps/dark_map.json');
-  }
-
-  Future<void> _checkLocationServices() async {
-    emit(LoadingState());
-    Geolocator.getServiceStatusStream().listen((status) async {
-      if (status == ServiceStatus.disabled) {
-        emit(LocationServiceDisabledState());
-      } else {
-        await _checkLocationPermissions();
-      }
-    });
-    if (await Geolocator.isLocationServiceEnabled()) {
-      await _checkLocationPermissions();
-    } else {
-      emit(LocationServiceDisabledState());
-    }
-  }
-
-  Future<void> askForLocationServices() async {
-    await Geolocator.openLocationSettings();
-  }
-
-  Future<void> _checkLocationPermissions() async {
-    _locationPermissions = await Geolocator.checkPermission();
-    if (_locationPermissions == LocationPermission.denied) {
-      emit(LocationPermissionsDisabledState());
-    } else if (_locationPermissions == LocationPermission.deniedForever) {
-      emit(LocationPermissionsDisabledState());
-    } else {
-      _permissionsPermitted();
-    }
-  }
-
-  Future<void> askForLocationPermissions() async {
-    if (_locationPermissions != LocationPermission.deniedForever) {
-      LocationPermission permissions = await Geolocator.requestPermission();
-      if (permissions == LocationPermission.deniedForever) {
-        _locationPermissions = permissions;
-      } else {
-        await _checkLocationPermissions();
-      }
-    } else {
-      await Geolocator.openAppSettings();
-      await _checkLocationPermissions();
-    }
   }
 
   Future<void> _fetchUserLocation() async {
@@ -84,13 +37,13 @@ class MainViewModel extends BaseCubit
     });
   }
 
-  Future<void> _permissionsPermitted() async {
+  Future<void> permissionsPermitted() async {
     emit(LoadingState());
-    if (_userLocation == null) {
-      await _fetchUserLocation();
-    }
     if (_mapStyle == null) {
       await _fetchMapStyle();
+    }
+    if (_userLocation == null) {
+      await _fetchUserLocation();
     }
     emit(ContentState());
   }
@@ -103,8 +56,7 @@ class MainViewModel extends BaseCubit
           (l) {
             emit(ErrorState(failure: l));
           },
-          (r) {
-          },
+          (r) {},
         );
       },
     );
@@ -112,8 +64,10 @@ class MainViewModel extends BaseCubit
 
   @override
   void start() async {
+    emit(LoadingState());
     await _fetchUser();
-    await _checkLocationServices();
+    emit(CheckLocationPermissionsState());
+    emit(LoadingState());
   }
 
   @override

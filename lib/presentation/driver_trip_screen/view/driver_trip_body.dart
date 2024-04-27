@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:speedy_go/presentation/driver_trip_screen/view/pages/run_mode_page.dart';
+import 'package:speedy_go/presentation/driver_trip_screen/view/pages/offline_page.dart';
 
 import '../../resources/assets_manager.dart';
 import '../../resources/color_manager.dart';
@@ -47,7 +47,7 @@ class DriverTripBody extends StatelessWidget {
                     RunMode(
                       viewModel: viewModel,
                     ),
-                    viewModel.getMode
+                    viewModel.getDriverStatus
                         ? Container(
                             width: AppSize.infinity,
                             padding: const EdgeInsets.all(AppPadding.p16),

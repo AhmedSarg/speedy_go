@@ -22,6 +22,7 @@ import '../data/network/network_info.dart';
 import '../data/repository/repository_impl.dart';
 import '../domain/models/user_manager.dart';
 import '../domain/repository/repository.dart';
+import '../domain/usecase/change_driver_status_usecase.dart';
 import '../domain/usecase/logout_usecase.dart';
 import '../domain/usecase/accept_driver_usecase.dart';
 import '../domain/usecase/authenticate_usecase.dart';
@@ -162,5 +163,11 @@ void initRateUseCase() {
 void initGetSignedUserUseCase() {
   if (GetIt.instance.isRegistered<GetSignedUserUseCase>() == false) {
     sl.registerFactory<GetSignedUserUseCase>(() => GetSignedUserUseCase(sl()));
+  }
+}
+
+void initChangeDriverStatusUseCase() {
+  if (GetIt.instance.isRegistered<ChangeDriverStatusUseCase>() == false) {
+    sl.registerFactory<ChangeDriverStatusUseCase>(() => ChangeDriverStatusUseCase(sl()));
   }
 }

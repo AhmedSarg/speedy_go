@@ -1,6 +1,8 @@
-import '../../../base/base_states.dart';
+import '../../base/base_states.dart';
 
-class ChangeModeState extends BaseStates {}
+class ChangeDriverStatusState extends BaseStates {}
+
+class DriverStatusChangedState extends BaseStates {}
 
 class ChangeShowContainerState extends BaseStates {}
 
@@ -21,3 +23,5 @@ class RunningTripState extends BaseStates {}
 class EndTripState extends BaseStates {}
 
 class ChangePageState extends BaseStates {}
+
+class CheckPermissionsState extends BaseStates {}

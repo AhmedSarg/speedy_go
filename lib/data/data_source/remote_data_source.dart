@@ -96,6 +96,14 @@ abstract class RemoteDataSource {
   Future<void> endTrip(String tripId);
 
   Future<void> rate(String userId, int rate);
+
+  Future<void> changeDriverStatus({
+    required bool online,
+    required String driverId,
+    StreamSubscription<LatLng>? coordinatesSubscription,
+  });
+
+  Stream<Map<String, dynamic>> findTrips();
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -390,7 +398,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     late Stream<List> driversStream;
     late String tripId;
     await _firestore.collection('available_trips').add({
-      'passenger_uuid': passengerId,
+      'passenger_id': passengerId,
       'pickup_location':
           GeoPoint(pickupLocation.latitude, pickupLocation.longitude),
       'destination_location':
@@ -488,14 +496,20 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       'drivers': FieldValue.delete(),
       'driver_id': driverId,
     });
+    DocumentReference<Map<String, dynamic>> doc =
+        _firestore.collection('available_trips').doc(tripId);
+    await doc.get().then((trip) {
+      _firestore.collection('running_trips').doc(trip.id).set(trip.data()!);
+    });
+    await doc.delete();
   }
 
   @override
   Future<void> endTrip(String tripId) async {
     DocumentReference<Map<String, dynamic>> doc =
-        _firestore.collection('available_trips').doc(tripId);
+        _firestore.collection('running_trips').doc(tripId);
     await doc.get().then((trip) {
-      _firestore.collection('finished_trips').add(trip.data()!);
+      _firestore.collection('finished_trips').doc(trip.id).set(trip.data()!);
     });
     await doc.delete();
   }
@@ -515,5 +529,54 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         'number_of_rates': FieldValue.increment(1),
       });
     }
+  }
+
+  @override
+  Future<void> changeDriverStatus({
+    required bool online,
+    required String driverId,
+    StreamSubscription<LatLng>? coordinatesSubscription,
+  }) async {
+    if (online) {
+      await _firestore.collection('online_drivers').doc(driverId).set({
+        'coordinates': null,
+      });
+      coordinatesSubscription!.onData((location) async {
+        await _firestore.collection('online_drivers').doc(driverId).update(
+          {
+            'coordinates': GeoPoint(location.latitude, location.longitude),
+          },
+        );
+      });
+    } else {
+      print('n');
+      coordinatesSubscription!.cancel();
+      await _firestore.collection('online_drivers').doc(driverId).delete();
+    }
+  }
+
+  @override
+  Stream<Map<String, dynamic>> findTrips() {
+    StreamController<Map<String, dynamic>> tripsStreamController =
+        StreamController<Map<String, dynamic>>();
+    _firestore.collection('available_trips').snapshots().map(
+      (snapshot) {
+        return snapshot.docs.map(
+          (e) {
+            Map<String, dynamic> res;
+            res = e.data();
+            res['id'] = e.id;
+            return res;
+          },
+        ).toList();
+      },
+    ).listen(
+      (trips) {
+        for (Map<String, dynamic> trip in trips) {
+          tripsStreamController.add(trip);
+        }
+      },
+    );
+    return tripsStreamController.stream.distinct();
   }
 }

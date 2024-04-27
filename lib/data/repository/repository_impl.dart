@@ -341,10 +341,8 @@ class RepositoryImpl implements Repository {
     userData['created_at'] = userData['created_at'].toString();
     _cacheDataSource.setCurrentUser(userData);
     if (userData['type'] == 'passenger') {
-      print('p');
       _userManager.setCurrentPassenger(PassengerModel.fromMap(userData));
     } else {
-      print('d');
       _userManager.setCurrentDriver(DriverModel.fromMap(userData));
     }
   }
@@ -428,8 +426,30 @@ class RepositoryImpl implements Repository {
       if (await _networkInfo.isConnected) {
         await _remoteDataSource.rate(userId, rate);
         return const Right(null);
+      } else {
+        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
       }
-      else {
+    } catch (e) {
+      return Left(ErrorHandler.handle(e).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> changeDriverStatus({
+    required bool online,
+    required String driverId,
+    StreamSubscription<LatLng>? coordinatesSubscription,
+  }) async {
+    try {
+      if (await _networkInfo.isConnected) {
+
+        await _remoteDataSource.changeDriverStatus(
+          online: online,
+          driverId: driverId,
+          coordinatesSubscription: coordinatesSubscription,
+        );
+        return const Right(null);
+      } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
       }
     } catch (e) {

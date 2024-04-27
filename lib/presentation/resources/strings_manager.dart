@@ -135,30 +135,28 @@ class AppStrings {
   static const bookTripSearchScreenSubTitleDateItem = "bookTripSearchScreenSubTitleDateItem";
   static const bookTripSearchScreenButtonItem = "bookTripSearchScreenButtonItem";
 
-
-  ///passengers screen
-  ///run mode screen
-  static const runModeScreenTitleContainer = "runModeScreenTitleContainer";
-  static const runModeScreenTurnInto = "runModeScreenTurnInto";
-  static const runModeScreenOnlineMode = "runModeScreenOnlineMode";
-  static const runModeScreenOfflineMode = "runModeScreenOfflineMode";
-  static const runModeScreenButtonClose = "runModeScreenButtonClose";
-  ///waiting searching for passengers
+  ///Driver Trip Screen
+  //Status Page
+  static const driverTripScreenStatusOfflineDialogTitle = "driverTripScreenStatusOfflineDialogTitle";
+  static const driverTripScreenStatusOnlineDialogTitle = "driverTripScreenStatusOnlineDialogTitle";
+  static const driverTripScreenStatusTurnInto = "driverTripScreenStatusTurnInto";
+  static const driverTripScreenStatusOnline = "driverTripScreenStatusOnline";
+  static const driverTripScreenStatusOffline = "driverTripScreenStatusOffline";
+  static const driverTripScreenStatusDialogButton = "driverTripScreenStatusDialogButton";
+  //waiting searching for passengers
   static const waitingSearchingForPassengersScreenTitle = "waitingSearchingForPassengersScreenTitle";
   static const waitingSearchingForPassengersScreenPleaseWait = "waitingSearchingForPassengersScreenPleaseWait";
   static const waitingSearchingForPassengersScreenButton = "waitingSearchingForPassengersScreenButton";
-  ///accepting passengers
+  //accepting passengers
   static const acceptingPassengersScreenTitle = "acceptingPassengersScreenTitle";
   static const acceptingPassengersScreenButtonAccept = "acceptingPassengersScreenButtonAccept";
   static const acceptingPassengersScreenButtonCancel = "acceptingPassengersScreenButtonCancel";
-  ///running trip
+  //running trip
   static const runningTripScreenTitle = "runningTripScreenTitle";
   static const runningTripScreenButton = "runningTripScreenButton";
-
-  ///end trip
+  //end trip
   static const endTripScreenTitle = "endTripScreenTitle";
   static const endTripScreenButton = "endTripScreenButton";
-
 
   /// buses screen
   static const busesTitle = "busesTitle";

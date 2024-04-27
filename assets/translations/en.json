@@ -161,11 +161,12 @@
   "bookTripSearchScreenSubTitleDateItem": "Choose departure date",
   "bookTripSearchScreenButtonItem": "Search",
 
-  "runModeScreenTitleContainer" : "You are at Offline mode",
-  "runModeScreenTurnInto" : "Turn into ",
-  "runModeScreenOnlineMode" : "Online",
-  "runModeScreenOfflineMode" : "Offline",
-  "runModeScreenButtonClose" : "Close",
+  "driverTripScreenStatusOfflineDialogTitle" : "You are at Offline mode",
+  "driverTripScreenStatusOnlineDialogTitle" : "You are at Online mode",
+  "driverTripScreenStatusTurnInto" : "Turn into ",
+  "driverTripScreenStatusOnline" : "Online",
+  "driverTripScreenStatusOffline" : "Offline",
+  "driverTripScreenStatusDialogButton" : "Close",
 
   "waitingSearchingForPassengersScreenTitle" : "Searching for passengers",
   "waitingSearchingForPassengersScreenPleaseWait" : "Please wait",

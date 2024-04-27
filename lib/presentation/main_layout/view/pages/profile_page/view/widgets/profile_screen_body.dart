@@ -99,7 +99,7 @@ class ProfileScreenBody extends StatelessWidget {
                   ),
                    ProfileItems(
                     onTap: () {
-                      Navigator.pushNamed(context, Routes.saftyRoute);
+                      Navigator.pushNamed(context, Routes.safetyRoute);
                     },
                     text: 'Safety',
                     image: SVGAssets.safety,

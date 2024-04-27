@@ -83,4 +83,10 @@ abstract class Repository {
   Future<Either<Failure, void>> logout();
 
   Future<Either<Failure, void>> rate(String userId, int rate);
+
+  Future<Either<Failure, void>> changeDriverStatus({
+    required bool online,
+    required String driverId,
+    StreamSubscription<LatLng>? coordinatesSubscription,
+  });
 }

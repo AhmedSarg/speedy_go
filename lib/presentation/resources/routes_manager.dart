@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:speedy_go/presentation/main_layout/view/pages/profile_page/pages/request_history/view/request_history_screen.dart';
 import 'package:speedy_go/presentation/main_layout/view/pages/profile_page/pages/safty/safety.dart';
 import 'package:speedy_go/presentation/main_layout/view/pages/profile_page/pages/support/view/support_screen.dart';
+import 'package:speedy_go/presentation/permissions_screen/view/permissions_view.dart';
 
 import '../../app/sl.dart';
 import '../buses_screen/pages/add_trip_screen/view/add_trip.dart';
@@ -44,9 +45,10 @@ class Routes {
   static const String profileEditRoute = "/profileEdit";
   static const String myTripsRoute = "/myTrips";
   static const String driverTripRoute = "/driverTrip";
-  static const String saftyRoute = "/safty";
+  static const String safetyRoute = "/safety";
   static const String supportRoute = "/support";
   static const String requestHistoryRoute = "/requestHistory";
+  static const String permissionsRoute = "/permissions";
 }
 
 class RouteGenerator {
@@ -108,13 +110,16 @@ class RouteGenerator {
       case Routes.myTripsRoute:
         return MaterialPageRoute(builder: (_) => const MyTripsScreen());
       case Routes.driverTripRoute:
+        initChangeDriverStatusUseCase();
         return MaterialPageRoute(builder: (_) => const DriverTripScreen());
-      case Routes.saftyRoute:
+      case Routes.safetyRoute:
         return MaterialPageRoute(builder: (_) => const SafetyScreen());
       case Routes.supportRoute:
         return MaterialPageRoute(builder: (_) => const SupportScreen());
       case Routes.requestHistoryRoute:
         return MaterialPageRoute(builder: (_) => const RequestHistoryScreen());
+      case Routes.permissionsRoute:
+        return MaterialPageRoute(builder: (_) => const PermissionsScreen());
 
       default:
         return unDefinedRoute();
