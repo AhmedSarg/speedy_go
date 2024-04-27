@@ -8,8 +8,8 @@ import '../../../resources/text_styles.dart';
 import '../../../resources/values_manager.dart';
 import '../../viewmodel/driver_trip_viewmodel.dart';
 
-class ToggleStatusDialog extends StatelessWidget {
-  const ToggleStatusDialog({super.key, required this.viewModel});
+class StatusDialog extends StatelessWidget {
+  const StatusDialog({super.key, required this.viewModel});
 
   final DriverTripViewModel viewModel;
 

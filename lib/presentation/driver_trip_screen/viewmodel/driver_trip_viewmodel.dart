@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -16,14 +17,6 @@ import '../view/pages/running_trip.dart';
 import '../view/pages/trip_edit_cost.dart';
 import '../view/pages/trip_finished_page.dart';
 import '../view/pages/waiting_page.dart';
-import '../../base/base_cubit.dart';
-import '../view/pages/accept_ride_page.dart';
-import '../view/pages/run_mode_page.dart';
-import '../view/pages/running_trip.dart';
-import '../view/pages/trip_edit_cost.dart';
-import '../view/pages/trip_finished_page.dart';
-import '../view/pages/waiting_page.dart';
-import '../view/states/driver_trip_states.dart';
 
 class DriverTripViewModel extends BaseCubit
     implements DriverTripViewModelInput, DriverTripViewModelOutput {
@@ -36,9 +29,13 @@ class DriverTripViewModel extends BaseCubit
 
   bool _driverStatus = false, _isAccepted = false;
 
+  String? _mapStyle;
+
   Stream<LatLng>? _positionStream;
 
   StreamSubscription<LatLng>? _positionSubscription;
+
+  LatLng? _userLocation;
 
   int _indexPassenger = 0;
 
@@ -50,18 +47,16 @@ class DriverTripViewModel extends BaseCubit
 
   updatePage() {
     if (_indexPage == 0) {
-      _contentPage = RunMode();
-    } else if (_indexPage == 1) {
       _contentPage = WaitingSearchingForPassengers();
-    } else if (_indexPage == 2) {
+    } else if (_indexPage == 1) {
       _contentPage = AcceptRide();
-    } else if (_indexPage == 3) {
+    } else if (_indexPage == 2) {
       _contentPage = EditCost();
-    } else if (_indexPage == 4) {
+    } else if (_indexPage == 3) {
       _contentPage = RunningTrip();
-    } else if (_indexPage == 5) {
+    } else if (_indexPage == 4) {
       _contentPage = TripEnd();
-    } else if (_indexPage == 6) {
+    } else if (_indexPage == 5) {
       emit(RatePassengerState());
     } else {
       _driverStatus = false;
@@ -70,7 +65,7 @@ class DriverTripViewModel extends BaseCubit
   }
 
   nextPage() {
-    if (_indexPage <= 6) {
+    if (_indexPage < 6) {
       _indexPage++;
       updatePage();
     }
@@ -87,7 +82,7 @@ class DriverTripViewModel extends BaseCubit
     emit(ChangeDriverStatusState());
   }
 
-  reset(){
+  reset() {
     _indexPage = 0;
     updatePage();
   }
@@ -120,19 +115,39 @@ class DriverTripViewModel extends BaseCubit
               ),
             );
           },
-          (r) {
+          (r) async {
             _driverStatus = !_driverStatus;
             if (!_driverStatus) {
               _positionStream = null;
               _positionSubscription = null;
-              _indexPage = 0;
-              updatePage();
+              reset();
+            }
+            else {
+              await _fetchMapStyle();
+              await _fetchUserLocation();
             }
           },
         );
       },
     );
     emit(DriverStatusChangedState());
+  }
+
+  Future<void> _fetchMapStyle() async {
+    if (_mapStyle == null) {
+      emit(LoadingState());
+      _mapStyle = await rootBundle.loadString('assets/maps/dark_map.json');
+      emit(ContentState());
+    }
+  }
+
+  Future<void> _fetchUserLocation() async {
+    if (_userLocation == null) {
+      emit(LoadingState());
+      Position position = await Geolocator.getCurrentPosition();
+      _userLocation = LatLng(position.latitude, position.longitude);
+      emit(ContentState());
+    }
   }
 
   _getLocationStream() {
@@ -177,6 +192,12 @@ class DriverTripViewModel extends BaseCubit
   Widget? get getPage => _contentPage;
 
   @override
+  String get getMapStyle => _mapStyle!;
+
+  @override
+  LatLng get getUserLocation => _userLocation!;
+
+  @override
   set setIsAccepted(bool isAccepted) {
     _isAccepted = isAccepted;
     updatePage();
@@ -199,4 +220,8 @@ abstract class DriverTripViewModelOutput {
   TextEditingController get getNewCostController;
 
   Widget? get getPage;
+
+  String get getMapStyle;
+
+  LatLng get getUserLocation;
 }

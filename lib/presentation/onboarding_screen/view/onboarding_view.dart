@@ -56,7 +56,7 @@ class OnBoardingScreen extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pushReplacementNamed(
-                          context, Routes.driverTripRoute);
+                          context, Routes.loginRoute);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: ColorManager.black,

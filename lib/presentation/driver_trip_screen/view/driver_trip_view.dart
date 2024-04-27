@@ -9,7 +9,7 @@ import '../../resources/routes_manager.dart';
 import '../states/driver_trip_states.dart';
 import '../viewmodel/driver_trip_viewmodel.dart';
 import 'driver_trip_body.dart';
-import 'widgets/change_status_dialog.dart';
+import 'widgets/status_dialog.dart';
 
 class DriverTripScreen extends StatelessWidget {
   const DriverTripScreen({super.key});
@@ -26,7 +26,7 @@ class DriverTripScreen extends StatelessWidget {
             } else if (state is ChangeDriverStatusState) {
               showDialog(
                 context: context,
-                builder: (_) => ToggleStatusDialog(
+                builder: (_) => StatusDialog(
                   viewModel: DriverTripViewModel.get(context),
                 ),
               );
