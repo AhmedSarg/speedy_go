@@ -6,6 +6,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../../domain/usecase/add_bus_usecase.dart';
 import '../../base/base_cubit.dart';
+import '../../base/base_states.dart';
 
 class BusesViewModel extends BaseCubit
     implements PassengerTripViewModelInput, PassengerTripViewModelOutput {
@@ -22,7 +23,7 @@ class BusesViewModel extends BaseCubit
   late final File _drivingLicense;
   late final File _busImage;
   late final TextEditingController _seatsNumberController;
-  late String driverId;//TODO: get from auth
+  late String driverId; //TODO: get from auth
 
   final Uuid _uuidGenerator = const Uuid();
 
@@ -36,19 +37,27 @@ class BusesViewModel extends BaseCubit
   }
 
   Future<void> addBus() async {
-    await _addBusUseCase(
-      AddBusUseCaseInput(
-          driverId,//get driver id
-          _uuidGenerator.v1(),
-          getFirstNameController,
-          getLastNameController,
-          getBusLicense,
-          getDrivingLicense,
-          getNationalIDController,
-          getPhoneNumberController,
-          getBusImage,
-          getSeatsNumberController as int)
-    );
+    await _addBusUseCase(AddBusUseCaseInput(
+            driverId, //get driver id
+            _uuidGenerator.v1(),
+            getFirstNameController,
+            getLastNameController,
+            getBusLicense,
+            getDrivingLicense,
+            getNationalIDController,
+            getPhoneNumberController,
+            getBusImage,
+            getSeatsNumberController as int))
+        .then((value) => {
+              value.fold(
+                  (l) => emit(
+                        ErrorState(
+                          failure: l,
+                          displayType: DisplayType.popUpDialog,
+                        ),
+                      ),
+                  (r) {}),
+            });
   }
 
   @override
