@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
@@ -16,9 +18,9 @@ class BusesViewModel extends BaseCubit
   late final TextEditingController _lastNameController;
   late final TextEditingController _phoneNumberController;
   late final TextEditingController _nationalIDController;
-  late final TextEditingController _busLicenseController;
-  late final TextEditingController _drivingLicenseController;
-  late final TextEditingController _busImageController;
+  late final File _busLicense;
+  late final File _drivingLicense;
+  late final File _busImage;
   late final TextEditingController _seatsNumberController;
   late String driverId;//TODO: get from auth
 
@@ -30,9 +32,6 @@ class BusesViewModel extends BaseCubit
     _lastNameController = TextEditingController();
     _phoneNumberController = TextEditingController();
     _nationalIDController = TextEditingController();
-    _busLicenseController = TextEditingController();
-    _drivingLicenseController = TextEditingController();
-    _busImageController = TextEditingController();
     _seatsNumberController = TextEditingController();
   }
 
@@ -43,23 +42,23 @@ class BusesViewModel extends BaseCubit
           _uuidGenerator.v1(),
           getFirstNameController,
           getLastNameController,
-          getBusLicenseController,
-          getDrivingLicenseController,
+          getBusLicense,
+          getDrivingLicense,
           getNationalIDController,
           getPhoneNumberController,
-          getBusImageController,
+          getBusImage,
           getSeatsNumberController as int)
     );
   }
 
   @override
-  String get getBusImageController => _busImageController.text;
+  File get getBusImage => _busImage;
 
   @override
-  String get getBusLicenseController => _busLicenseController.text;
+  File get getBusLicense => _busLicense;
 
   @override
-  String get getDrivingLicenseController => _drivingLicenseController.text;
+  File get getDrivingLicense => _drivingLicense;
 
   @override
   String get getFirstNameController => _firstNameController.text;
@@ -84,8 +83,8 @@ abstract class PassengerTripViewModelOutput {
   String get getLastNameController;
   String get getPhoneNumberController;
   String get getNationalIDController;
-  String get getBusLicenseController;
-  String get getDrivingLicenseController;
-  String get getBusImageController;
+  File get getBusLicense;
+  File get getDrivingLicense;
+  File get getBusImage;
   String get getSeatsNumberController;
 }

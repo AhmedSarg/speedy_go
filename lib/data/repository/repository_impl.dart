@@ -462,11 +462,11 @@ class RepositoryImpl implements Repository {
     required String busId,
     required String firstName,
     required String lastName,
-    required String busLicense,
-    required String drivingLicense,
+    required File busLicense,
+    required File drivingLicense,
     required String nationalID,
     required String phoneNumber,
-    required String busImage,
+    required File busImage,
     required int seatsNumber,
   }) async {
     try {

@@ -1,3 +1,6 @@
+
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 
 import '../../data/network/failure.dart';
@@ -31,11 +34,11 @@ class AddBusUseCaseInput {
   final String busId;
   final String firstName;
   final String lastName;
-  final String busLicense;
-  final String drivingLicense;
+  final File busLicense;
+  final File drivingLicense;
   final String nationalID;
   final String phoneNumber;
-  final String busImage;
+  final File busImage;
   final int seatsNumber;
 
   AddBusUseCaseInput(
