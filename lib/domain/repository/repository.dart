@@ -10,6 +10,20 @@ import '../models/domain.dart';
 import '../models/enums.dart';
 
 abstract class Repository {
+  Future<Either<Failure, void>> addBus({
+    required String driverId,
+    required String busId,
+    required String firstName,
+    required String lastName,
+    required String busLicense,
+    required String drivingLicense,
+    required String nationalID,
+    required String phoneNumber,
+    required String busImage,
+    required int seatsNumber,
+  });
+
+
   Future<Either<Failure, void>> doesUserExists({
     required String email,
     required String phoneNumber,

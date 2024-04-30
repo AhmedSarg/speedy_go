@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:speedy_go/domain/usecase/add_bus_usecase.dart';
 
 import '../data/data_source/cache_data_source.dart';
 import '../data/data_source/local_data_source.dart';
@@ -151,6 +152,12 @@ void initAcceptDriverUseCase() {
 void initEndTripUseCase() {
   if (GetIt.instance.isRegistered<EndTripUseCase>() == false) {
     sl.registerFactory<EndTripUseCase>(() => EndTripUseCase(sl()));
+  }
+}
+
+void initAddBusUseCase() {
+  if (GetIt.instance.isRegistered<EndTripUseCase>() == false) {
+    sl.registerFactory<AddBusUseCase>(() => AddBusUseCase(sl()));
   }
 }
 

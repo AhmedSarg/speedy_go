@@ -104,6 +104,19 @@ abstract class RemoteDataSource {
   });
 
   Stream<Map<String, dynamic>> findTrips();
+
+  Future<void> addBus({
+    required String driverId,
+    required String busId,
+    required String firstName,
+    required String lastName,
+    required String busLicense,
+    required String drivingLicense,
+    required String nationalID,
+    required String phoneNumber,
+    required String busImage,
+    required int seatsNumber,
+  });
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -578,5 +591,35 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       },
     );
     return tripsStreamController.stream.distinct();
+  }
+
+  @override
+  Future<void> addBus(
+      {required String driverId,
+      required String busId,
+      required String firstName,
+      required String lastName,
+      required String busLicense,
+      required String drivingLicense,
+      required String nationalID,
+      required String phoneNumber,
+      required String busImage,
+      required int seatsNumber}) async {
+    ///مش متاكد منها
+    FirebaseFirestore.instance.collection('bus_drivers').doc(driverId).update({
+      "buses_id": FieldValue.arrayUnion(busId as List),
+    });
+    await _firestore.collection('buses').add({
+      'driver_id': driverId,
+      'bus_id': busId,
+      'first_name': firstName,
+      'last_name': lastName,
+      'bus_license': busLicense,
+      'driving_license': drivingLicense,
+      'national_id': nationalID,
+      'phone_number': phoneNumber,
+      'bus_image': busImage,
+      'seats_number': seatsNumber,
+    });
   }
 }

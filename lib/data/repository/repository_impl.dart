@@ -442,11 +442,46 @@ class RepositoryImpl implements Repository {
   }) async {
     try {
       if (await _networkInfo.isConnected) {
-
         await _remoteDataSource.changeDriverStatus(
           online: online,
           driverId: driverId,
           coordinatesSubscription: coordinatesSubscription,
+        );
+        return const Right(null);
+      } else {
+        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+      }
+    } catch (e) {
+      return Left(ErrorHandler.handle(e).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> addBus({
+    required String driverId,
+    required String busId,
+    required String firstName,
+    required String lastName,
+    required String busLicense,
+    required String drivingLicense,
+    required String nationalID,
+    required String phoneNumber,
+    required String busImage,
+    required int seatsNumber,
+  }) async {
+    try {
+      if (await _networkInfo.isConnected) {
+        await _remoteDataSource.addBus(
+          driverId: driverId,
+          busId: busId,
+          firstName: firstName,
+          lastName: lastName,
+          busLicense: busLicense,
+          drivingLicense: drivingLicense,
+          nationalID: nationalID,
+          phoneNumber: phoneNumber,
+          busImage: busImage,
+          seatsNumber: seatsNumber,
         );
         return const Right(null);
       } else {
