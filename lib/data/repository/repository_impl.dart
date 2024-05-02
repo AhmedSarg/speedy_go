@@ -22,11 +22,6 @@ class RepositoryImpl implements Repository {
   final CacheDataSource _cacheDataSource;
   final NetworkInfo _networkInfo;
   final UserManager _userManager;
-
-  // final LocalDataSource _localDataSource;
-  // final GSheetFactory _gSheetFactory;
-  // final DateNTP _dateNTP;
-  // final UserManager _userManager;
   final Uuid _uuidGenerator = const Uuid();
 
   RepositoryImpl(
@@ -34,10 +29,6 @@ class RepositoryImpl implements Repository {
     this._networkInfo,
     this._cacheDataSource,
     this._userManager,
-    // this._localDataSource,
-    // this._userManager,
-    // this._gSheetFactory,
-    // this._dateNTP,
   );
 
   @override
@@ -448,6 +439,27 @@ class RepositoryImpl implements Repository {
           coordinatesSubscription: coordinatesSubscription,
         );
         return const Right(null);
+      } else {
+        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+      }
+    } catch (e) {
+      return Left(ErrorHandler.handle(e).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, Stream<List<TripPassengerModel>>>> findTrips() async {
+    try {
+      if (await _networkInfo.isConnected) {
+        Stream<List<TripPassengerModel>> tripsStream =
+            _remoteDataSource.findTrips().map(
+          (trips) {
+            return trips
+                .map((trip) => TripPassengerModel.fromMap(trip))
+                .toList();
+          },
+        );
+        return Right(tripsStream);
       } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
       }

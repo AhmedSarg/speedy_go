@@ -34,124 +34,129 @@ class CardPassenger extends StatelessWidget {
     viewModel = DriverTripViewModel.get(context);
     return Container(
       width: context.width(),
+      margin: const EdgeInsets.symmetric(horizontal: AppSize.s40),
+      padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
       decoration: BoxDecoration(
         color: ColorManager.grey,
-        border: const Border(),
         borderRadius: BorderRadius.circular(AppSize.s25),
       ),
-      child: Column(
-        children: [
-          const SizedBox(height: AppSize.s5),
-          Stack(
-            children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: AppPadding.p10),
-                child: CircleAvatar(
-                  radius: AppSize.s40,
-                  backgroundColor: ColorManager.transparent,
-                  backgroundImage:
-                      NetworkImage('https://via.placeholder.com/150'),
-                ),
-              ),
-              Positioned(
-                top: context.height() / 11,
-                left: context.width() / 17,
-                child: Container(
-                  height: context.height() / 42,
-                  width: context.width() / 10,
-                  decoration: BoxDecoration(
-                    border: const Border(),
-                    borderRadius: BorderRadius.circular(AppSize.s25),
-                    color: ColorManager.lightBlack,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(
-                        "$passengerRate",
-                        style: AppTextStyles
-                            .acceptingPassengersScreenPassengerRateTextStyle(
-                                context),
-                      ),
-                      SvgPicture.asset(SVGAssets.star)
-                    ],
+      child: FittedBox(
+        child: Column(
+          children: [
+            const SizedBox(height: AppSize.s5),
+            Stack(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: AppPadding.p10),
+                  child: CircleAvatar(
+                    radius: AppSize.s40,
+                    backgroundColor: ColorManager.transparent,
+                    backgroundImage:
+                        NetworkImage('https://via.placeholder.com/150'),
                   ),
                 ),
-              )
-            ],
-          ),
-          const SizedBox(height: AppSize.s5),
-          Text(
-            passengerName,
-            style:
-                AppTextStyles.acceptingPassengersScreenNameTextStyle(context),
-          ),
-          const SizedBox(height: AppSize.s5),
-          Text(
-            "Pickup is $time min away",
-            style: AppTextStyles.acceptingPassengersScreenStartTimeTextStyle(
-                context),
-          ),
-          const SizedBox(height: AppSize.s5),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: AppPadding.p10),
-                child: SvgPicture.asset(SVGAssets.cash),
-              ),
-              GestureDetector(
-                onTap: () {
-                  viewModel.nextPage();
-                },
-                child: Text(
-                  "EGP $tripCost",
-                  style: AppTextStyles.acceptingPassengersScreenCostTextStyle(
-                      context),
+                Positioned(
+                  top: context.height() / 11,
+                  left: context.width() / 17,
+                  child: Container(
+                    height: context.height() / 42,
+                    width: context.width() / 10,
+                    decoration: BoxDecoration(
+                      border: const Border(),
+                      borderRadius: BorderRadius.circular(AppSize.s25),
+                      color: ColorManager.lightBlack,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          "$passengerRate",
+                          style: AppTextStyles
+                              .acceptingPassengersScreenPassengerRateTextStyle(
+                                  context),
+                        ),
+                        SvgPicture.asset(SVGAssets.star)
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(height: AppSize.s5),
+            Text(
+              passengerName,
+              style:
+                  AppTextStyles.acceptingPassengersScreenNameTextStyle(context),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: AppSize.s5),
+            Text(
+              "Pickup is $time min away",
+              style: AppTextStyles.acceptingPassengersScreenStartTimeTextStyle(
+                  context),
+            ),
+            const SizedBox(height: AppSize.s5),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: AppPadding.p10),
+                  child: SvgPicture.asset(SVGAssets.cash),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: AppSize.s5),
-          Divider(color: ColorManager.black.withOpacity(.2)),
-          const SizedBox(height: AppSize.s5),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: AppPadding.p10),
-                    child: SvgPicture.asset(SVGAssets.time),
+                GestureDetector(
+                  onTap: () {
+                    viewModel.nextPage();
+                  },
+                  child: Text(
+                    "EGP $tripCost",
+                    style: AppTextStyles.acceptingPassengersScreenCostTextStyle(
+                        context),
                   ),
-                  Text(
-                    "$tripTime min",
-                    style: AppTextStyles
-                        .acceptingPassengersScreenTripTimeTextStyle(context),
-                  ),
-                ],
-              ),
-              VerticalDivider(
-                color: ColorManager.black.withOpacity(.2),
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: AppPadding.p10),
-                    child: SvgPicture.asset(SVGAssets.routeSquare),
-                  ),
-                  Text(
-                    "$tripDistance km",
-                    style: AppTextStyles
-                        .acceptingPassengersScreenTripDistanceTextStyle(
-                            context),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          const SizedBox(height: AppSize.s10),
-        ],
+                ),
+              ],
+            ),
+            const SizedBox(height: AppSize.s5),
+            Divider(color: ColorManager.black.withOpacity(.2)),
+            const SizedBox(height: AppSize.s5),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: AppPadding.p10),
+                      child: SvgPicture.asset(SVGAssets.time),
+                    ),
+                    Text(
+                      "$tripTime min",
+                      style: AppTextStyles
+                          .acceptingPassengersScreenTripTimeTextStyle(context),
+                    ),
+                  ],
+                ),
+                VerticalDivider(
+                  color: ColorManager.black.withOpacity(.2),
+                ),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: AppPadding.p10),
+                      child: SvgPicture.asset(SVGAssets.routeSquare),
+                    ),
+                    Text(
+                      "$tripDistance km",
+                      style: AppTextStyles
+                          .acceptingPassengersScreenTripDistanceTextStyle(
+                              context),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: AppSize.s10),
+          ],
+        ),
       ),
     );
   }

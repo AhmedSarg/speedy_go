@@ -103,7 +103,7 @@ abstract class RemoteDataSource {
     StreamSubscription<LatLng>? coordinatesSubscription,
   });
 
-  Stream<Map<String, dynamic>> findTrips();
+  Stream<List<Map<String, dynamic>>> findTrips();
 
   Future<void> addBus({
     required String driverId,
@@ -562,17 +562,14 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         );
       });
     } else {
-      print('n');
       coordinatesSubscription!.cancel();
       await _firestore.collection('online_drivers').doc(driverId).delete();
     }
   }
 
   @override
-  Stream<Map<String, dynamic>> findTrips() {
-    StreamController<Map<String, dynamic>> tripsStreamController =
-        StreamController<Map<String, dynamic>>();
-    _firestore.collection('available_trips').snapshots().map(
+  Stream<List<Map<String, dynamic>>> findTrips() {
+    return _firestore.collection('available_trips').snapshots().map(
       (snapshot) {
         return snapshot.docs.map(
           (e) {
@@ -583,43 +580,38 @@ class RemoteDataSourceImpl implements RemoteDataSource {
           },
         ).toList();
       },
-    ).listen(
-      (trips) {
-        for (Map<String, dynamic> trip in trips) {
-          tripsStreamController.add(trip);
-        }
-      },
     );
-    return tripsStreamController.stream.distinct();
   }
 
   @override
-  Future<void> addBus(
-      {required String driverId,
-      required String busId,
-      required String firstName,
-      required String lastName,
-      required File busLicense,
-      required File drivingLicense,
-      required String nationalID,
-      required String phoneNumber,
-      required File busImage,
-      required int seatsNumber}) async {
-    ///مش متاكد منها
-    FirebaseFirestore.instance.collection('bus_drivers').doc(driverId).update({
+  Future<void> addBus({
+    required String driverId,
+    required String busId,
+    required String firstName,
+    required String lastName,
+    required File busLicense,
+    required File drivingLicense,
+    required String nationalID,
+    required String phoneNumber,
+    required File busImage,
+    required int seatsNumber,
+  }) async {
+    _firestore.collection('bus_drivers').doc(driverId).update({
       "buses_id": FieldValue.arrayUnion(busId as List),
     });
-    await _firestore.collection('buses').add({
-      'driver_id': driverId,
-      'bus_id': busId,
-      'first_name': firstName,
-      'last_name': lastName,
-      'bus_license': busLicense,
-      'driving_license': drivingLicense,
-      'national_id': nationalID,
-      'phone_number': phoneNumber,
-      'bus_image': busImage,
-      'seats_number': seatsNumber,
-    });
+    await _firestore.collection('buses').add(
+      {
+        'driver_id': driverId,
+        'bus_id': busId,
+        'first_name': firstName,
+        'last_name': lastName,
+        'bus_license': busLicense,
+        'driving_license': drivingLicense,
+        'national_id': nationalID,
+        'phone_number': phoneNumber,
+        'bus_image': busImage,
+        'seats_number': seatsNumber,
+      },
+    );
   }
 }

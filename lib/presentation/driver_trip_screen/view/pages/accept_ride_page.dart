@@ -1,7 +1,12 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/widgets.dart';
 import 'package:lottie/lottie.dart';
 import 'package:speedy_go/app/extensions.dart';
+import 'package:speedy_go/presentation/driver_trip_screen/view/pages/loading_page.dart';
 
 import '../../../resources/assets_manager.dart';
 import '../../../resources/color_manager.dart';
@@ -35,38 +40,84 @@ class AcceptRide extends StatelessWidget {
             ],
           ),
           const SizedBox(height: AppSize.s10),
-          FittedBox(
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    viewModel.updateIndexPassenger(false);
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              SizedBox(
+                width: context.width(),
+                child: StreamBuilder(
+                  stream: viewModel.getTripsStream,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      viewModel.setTripsList = snapshot.data!;
+                      return CarouselSlider(
+                        carouselController: viewModel.getCarouselController,
+                        items: snapshot.data!.map(
+                          (tripModel) {
+                            return CardPassenger(
+                              passengerName: tripModel.passengerId,
+                              passengerRate: 3.5,
+                              time: 6,
+                              tripCost: tripModel.price,
+                              tripDistance: tripModel.distance,
+                              tripTime: tripModel.expectedTime,
+                            );
+                          },
+                        ).toList(),
+                        options: CarouselOptions(
+                          initialPage: viewModel.getTripIndex,
+                          scrollPhysics: viewModel.getIsAccepted
+                              ? const NeverScrollableScrollPhysics()
+                              : null,
+                          viewportFraction: 1,
+                          enlargeCenterPage: true,
+                          enableInfiniteScroll: false,
+                          scrollDirection: Axis.horizontal,
+                          onPageChanged: viewModel.handleSelectedTrip,
+                        ),
+                      );
+                    } else {
+                      return const DriverTripLoadingPage();
+                    }
                   },
-                  child: const Icon(
-                    Icons.arrow_back_ios,
-                    color: ColorManager.white,
-                  ),
                 ),
-                CardPassenger(
-                  passengerRate: 3.5,
-                  passengerName: "ahmed",
-                  time: 6,
-                  tripCost: 30,
-                  tripTime: 12,
-                  tripDistance: 3,
-                  id: viewModel.getIndexPassenger,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    viewModel.updateIndexPassenger(true);
-                  },
-                  child: const Icon(
-                    Icons.arrow_forward_ios,
-                    color: ColorManager.white,
-                  ),
-                ),
-              ],
-            ),
+              ),
+              viewModel.getTripIndex != 0 && !viewModel.getIsAccepted
+                  ? Padding(
+                      padding: const EdgeInsets.only(left: AppSize.s5),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: SizedBox.square(
+                          dimension: AppSize.s30,
+                          child: IconButton(
+                            onPressed: viewModel.prevTrip,
+                            icon: const Icon(Icons.arrow_back_ios),
+                            iconSize: AppSize.s20,
+                            padding: const EdgeInsets.only(left: AppSize.s8),
+                          ),
+                        ),
+                      ),
+                    )
+                  : const SizedBox(),
+              viewModel.getTripIndex != viewModel.getTripsList.length - 1 &&
+                      !viewModel.getIsAccepted
+                  ? Padding(
+                      padding: const EdgeInsets.only(right: AppSize.s5),
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: SizedBox.square(
+                          dimension: AppSize.s30,
+                          child: IconButton(
+                            onPressed: viewModel.nextTrip,
+                            icon: const Icon(Icons.arrow_forward_ios),
+                            iconSize: AppSize.s20,
+                            padding: const EdgeInsets.only(left: AppSize.s4),
+                          ),
+                        ),
+                      ),
+                    )
+                  : const SizedBox(),
+            ],
           ),
           const SizedBox(height: AppSize.s20),
           SizedBox(
@@ -79,8 +130,7 @@ class AcceptRide extends StatelessWidget {
                   : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: ColorManager.lightBlue,
-                disabledBackgroundColor:
-                    ColorManager.lightBlue.withOpacity(.5),
+                disabledBackgroundColor: ColorManager.lightBlue.withOpacity(.5),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(AppSize.s10),
                 ),

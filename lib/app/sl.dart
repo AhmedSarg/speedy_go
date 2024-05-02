@@ -24,6 +24,7 @@ import '../data/repository/repository_impl.dart';
 import '../domain/models/user_manager.dart';
 import '../domain/repository/repository.dart';
 import '../domain/usecase/change_driver_status_usecase.dart';
+import '../domain/usecase/find_trips_usecase.dart';
 import '../domain/usecase/logout_usecase.dart';
 import '../domain/usecase/accept_driver_usecase.dart';
 import '../domain/usecase/authenticate_usecase.dart';
@@ -176,5 +177,11 @@ void initGetSignedUserUseCase() {
 void initChangeDriverStatusUseCase() {
   if (GetIt.instance.isRegistered<ChangeDriverStatusUseCase>() == false) {
     sl.registerFactory<ChangeDriverStatusUseCase>(() => ChangeDriverStatusUseCase(sl()));
+  }
+}
+
+void initFindTripsUseCase() {
+  if (GetIt.instance.isRegistered<FindTripsUseCase>() == false) {
+    sl.registerFactory<FindTripsUseCase>(() => FindTripsUseCase(sl()));
   }
 }

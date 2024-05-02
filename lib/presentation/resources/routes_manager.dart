@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:speedy_go/presentation/main_layout/view/pages/profile_page/pages/request_history/view/request_history_screen.dart';
-import 'package:speedy_go/presentation/main_layout/view/pages/profile_page/pages/safty/safety.dart';
-import 'package:speedy_go/presentation/main_layout/view/pages/profile_page/pages/support/view/support_screen.dart';
-import 'package:speedy_go/presentation/permissions_screen/view/permissions_view.dart';
 
 import '../../app/sl.dart';
 import '../buses_screen/pages/add_trip_screen/view/add_trip.dart';
@@ -15,9 +11,13 @@ import '../login_screen/view/login_view.dart';
 import '../main_layout/view/main_layout_view.dart';
 import '../main_layout/view/pages/profile_page/pages/edit_profile/view/edit_profile_screen.dart';
 import '../main_layout/view/pages/profile_page/pages/my_trips/view/my_trips_screen.dart';
+import '../main_layout/view/pages/profile_page/pages/request_history/view/request_history_screen.dart';
+import '../main_layout/view/pages/profile_page/pages/safty/safety.dart';
+import '../main_layout/view/pages/profile_page/pages/support/view/support_screen.dart';
 import '../onboarding_screen/view/onboarding_view.dart';
 import '../passenger_map_screen/view/passenger_map_view.dart';
 import '../passenger_trip_screen/view/passenger_trip_view.dart';
+import '../permissions_screen/view/permissions_view.dart';
 import '../rating_screen/view/rate_view.dart';
 import '../register_screen/view/register_view.dart';
 import '../selection_screen/view/selection_view.dart';
@@ -111,6 +111,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const MyTripsScreen());
       case Routes.driverTripRoute:
         initChangeDriverStatusUseCase();
+        initFindTripsUseCase();
         return MaterialPageRoute(builder: (_) => const DriverTripScreen());
       case Routes.safetyRoute:
         return MaterialPageRoute(builder: (_) => const SafetyScreen());

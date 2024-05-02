@@ -7,16 +7,19 @@ import 'presentation/resources/language_manager.dart';
 late final WidgetsBinding engine;
 
 void main() async {
+
   // WidgetsFlutterBinding.ensureInitialized();
   // await SystemChrome.setPreferredOrientations([
   //   DeviceOrientation.portraitUp,
   // ]);
+
   engine = WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
 
   // Bloc.observer = MyBlocObserver();
 
   // await (await SharedPreferences.getInstance()).clear();
+
   await initAppModule();
 
   runApp(

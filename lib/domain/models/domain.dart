@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:speedy_go/domain/models/enums.dart';
 
 ///User Model
@@ -19,8 +21,7 @@ class UserModel {
     required this.type,
   });
 
-  factory UserModel.fake() =>
-      UserModel(
+  factory UserModel.fake() => UserModel(
         uuid: '',
         firstName: '',
         lastName: '',
@@ -43,8 +44,7 @@ class PassengerModel extends UserModel {
     super.type = UserType.passenger,
   });
 
-  factory PassengerModel.fake() =>
-      PassengerModel(
+  factory PassengerModel.fake() => PassengerModel(
         uuid: '',
         firstName: '',
         lastName: '',
@@ -92,8 +92,7 @@ class DriverModel extends UserModel {
     super.type = UserType.driver,
   });
 
-  factory DriverModel.fake() =>
-      DriverModel(
+  factory DriverModel.fake() => DriverModel(
         uuid: '',
         firstName: '',
         lastName: '',
@@ -173,8 +172,7 @@ class TripDriverModel {
     required this.time,
   });
 
-  factory TripDriverModel.fake() =>
-      TripDriverModel(
+  factory TripDriverModel.fake() => TripDriverModel(
         id: '',
         name: '',
         location: '',
@@ -201,6 +199,54 @@ class TripDriverModel {
       rate: map['rate'].toDouble(),
       numberOfRates: map['number_of_rates'].toInt(),
       time: map['time'],
+    );
+  }
+}
+
+class TripPassengerModel {
+  final String id;
+  final String passengerId;
+  final LatLng pickupLocation;
+  final LatLng destinationLocation;
+  final int distance;
+  final int expectedTime;
+  final int price;
+
+  TripPassengerModel({
+    required this.id,
+    required this.passengerId,
+    required this.pickupLocation,
+    required this.destinationLocation,
+    required this.distance,
+    required this.expectedTime,
+    required this.price,
+  });
+
+  factory TripPassengerModel.fake() => TripPassengerModel(
+        id: '',
+        passengerId: '',
+        pickupLocation: const LatLng(0, 0),
+        destinationLocation: const LatLng(0, 0),
+        distance: -1,
+        expectedTime: -1,
+        price: -1,
+      );
+
+  factory TripPassengerModel.fromMap(Map<String, dynamic> map) {
+    return TripPassengerModel(
+      id: map['id'],
+      passengerId: map['passenger_id'],
+      pickupLocation: LatLng(
+        (map['pickup_location'] as GeoPoint).latitude,
+        (map['pickup_location'] as GeoPoint).longitude,
+      ),
+      destinationLocation: LatLng(
+        (map['destination_location'] as GeoPoint).latitude,
+        (map['destination_location'] as GeoPoint).longitude,
+      ),
+      distance: map['distance'].toInt(),
+      expectedTime: map['expected_time'].toInt(),
+      price: map['price'].toInt(),
     );
   }
 }

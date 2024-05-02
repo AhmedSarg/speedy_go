@@ -23,7 +23,7 @@ class BackOrExit extends StatelessWidget {
         padding: const EdgeInsets.only(left: AppPadding.p4),
       ),
       child: SvgPicture.asset(
-        (viewModel.getIndexPage == 3) ? SVGAssets.arrowBack : SVGAssets.close,
+        (viewModel.getPageIndex == 3) ? SVGAssets.arrowBack : SVGAssets.close,
       ),
     );
   }

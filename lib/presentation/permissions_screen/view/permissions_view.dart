@@ -14,7 +14,6 @@ class PermissionsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(2);
     return Scaffold(
       body: BlocProvider(
         create: (context) => PermissionsViewModel()..start(),
@@ -22,7 +21,6 @@ class PermissionsScreen extends StatelessWidget {
           listener: (context, state) {
             if (state is AllPermissionsGrantedState) {
               Navigator.pop(context);
-              print(3);
             }
             baseListener(context, state);
           },

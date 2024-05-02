@@ -53,7 +53,12 @@ class DriverTripBody extends StatelessWidget {
                       children: [
                         Container(
                           width: AppSize.infinity,
-                          padding: const EdgeInsets.all(AppPadding.p16),
+                          padding: EdgeInsets.symmetric(
+                            vertical: AppPadding.p20,
+                            horizontal: viewModel.getPageIndex == 1
+                                ? AppSize.s0
+                                : AppSize.s20,
+                          ),
                           decoration: const BoxDecoration(
                             color: ColorManager.lightBlack,
                             borderRadius: BorderRadius.only(
@@ -67,24 +72,24 @@ class DriverTripBody extends StatelessWidget {
                     )
                   : const SizedBox(),
               StatusButton(),
-              (viewModel.getIndexPage != 5 &&
-                  viewModel.getIndexPage != 0 &&
-                  viewModel.getIndexPage != 1)
+              (viewModel.getPageIndex != 5 &&
+                      viewModel.getPageIndex != 0 &&
+                      viewModel.getPageIndex != 1)
                   ? SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.all(AppPadding.p10),
-                  child: BackOrExit(
-                    viewModel: viewModel,
-                    onTap: () {
-                      if (viewModel.getIndexPage == 4) {
-                        viewModel.prevPage();
-                      } else {
-                        viewModel.reset();
-                      }
-                    },
-                  ),
-                ),
-              )
+                      child: Padding(
+                        padding: const EdgeInsets.all(AppPadding.p10),
+                        child: BackOrExit(
+                          viewModel: viewModel,
+                          onTap: () {
+                            if (viewModel.getPageIndex == 4) {
+                              viewModel.prevPage();
+                            } else {
+                              viewModel.reset();
+                            }
+                          },
+                        ),
+                      ),
+                    )
                   : const SizedBox(),
             ],
           ),

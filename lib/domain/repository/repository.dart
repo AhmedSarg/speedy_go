@@ -103,4 +103,6 @@ abstract class Repository {
     required String driverId,
     StreamSubscription<LatLng>? coordinatesSubscription,
   });
+
+  Future<Either<Failure, Stream<List<TripPassengerModel>>>> findTrips();
 }
