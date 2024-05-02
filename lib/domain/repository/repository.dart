@@ -22,7 +22,14 @@ abstract class Repository {
     required File busImage,
     required int seatsNumber,
   });
-
+  Future<Either<Failure, void>> addBusTrip({
+    required String driverId,
+    required int numberOfBus,
+    required double price,
+    required String pickupLocation,
+    required String destinationLocation,
+    required DateTime calendar,
+  });
 
   Future<Either<Failure, void>> doesUserExists({
     required String email,

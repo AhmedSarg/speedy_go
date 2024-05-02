@@ -503,4 +503,31 @@ class RepositoryImpl implements Repository {
       return Left(ErrorHandler.handle(e).failure);
     }
   }
+
+  @override
+  Future<Either<Failure, void>> addBusTrip(
+      {required String driverId,
+      required int numberOfBus,
+      required double price,
+      required String pickupLocation,
+      required String destinationLocation,
+      required DateTime calendar}) async {
+    try {
+      if (await _networkInfo.isConnected) {
+        await _remoteDataSource.addBusTrip(
+          driverId: driverId,
+          numberOfBus: numberOfBus,
+          price: price,
+          pickupLocation: pickupLocation,
+          destinationLocation: destinationLocation,
+          calendar: calendar,
+        );
+        return const Right(null);
+      } else {
+        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+      }
+    } catch (e) {
+      return Left(ErrorHandler.handle(e).failure);
+    }
+  }
 }

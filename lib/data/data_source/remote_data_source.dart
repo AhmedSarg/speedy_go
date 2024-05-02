@@ -117,6 +117,15 @@ abstract class RemoteDataSource {
     required File busImage,
     required int seatsNumber,
   });
+
+  Future<void> addBusTrip({
+    required String driverId,
+    required int numberOfBus,
+    required double price,
+    required String pickupLocation,
+    required String destinationLocation,
+    required DateTime calendar,
+  });
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -562,6 +571,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         );
       });
     } else {
+      print('n');
       coordinatesSubscription!.cancel();
       await _firestore.collection('online_drivers').doc(driverId).delete();
     }
@@ -596,7 +606,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required File busImage,
     required int seatsNumber,
   }) async {
-    _firestore.collection('bus_drivers').doc(driverId).update({
+    await _firestore.collection('bus_drivers').doc(driverId).update({
       "buses_id": FieldValue.arrayUnion(busId as List),
     });
     await _firestore.collection('buses').add(
@@ -613,5 +623,25 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         'seats_number': seatsNumber,
       },
     );
+  }
+
+  @override
+  Future<void> addBusTrip({
+    required String driverId,
+    required int numberOfBus,
+    required double price,
+    required String pickupLocation,
+    required String destinationLocation,
+    required DateTime calendar,
+  }) async {
+    await _firestore.collection('available_bus_trips').add({
+      'driver_id': driverId,
+      'number_bus': numberOfBus,
+      'price': price,
+      'pickup_location': pickupLocation,
+      'destination_location': destinationLocation,
+      'calendar': calendar,
+    });
+    throw UnimplementedError();
   }
 }
