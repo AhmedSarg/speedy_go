@@ -117,6 +117,15 @@ abstract class RemoteDataSource {
     required File busImage,
     required int seatsNumber,
   });
+
+  Future<void> addBusTrip({
+    required String driverId,
+    required int numberOfBus,
+    required double price,
+    required String pickupLocation,
+    required String destinationLocation,
+    required DateTime calendar,
+  });
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -605,8 +614,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       required String phoneNumber,
       required File busImage,
       required int seatsNumber}) async {
-    ///مش متاكد منها
-    FirebaseFirestore.instance.collection('bus_drivers').doc(driverId).update({
+    await _firestore.collection('bus_drivers').doc(driverId).update({
       "buses_id": FieldValue.arrayUnion(busId as List),
     });
     await _firestore.collection('buses').add({
@@ -621,5 +629,25 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       'bus_image': busImage,
       'seats_number': seatsNumber,
     });
+  }
+
+  @override
+  Future<void> addBusTrip(
+      {required String driverId,
+      required int numberOfBus,
+      required double price,
+      required String pickupLocation,
+      required String destinationLocation,
+      required DateTime calendar}) async {
+    await _firestore.collection('available_bus_trips').add({
+      'driver_id': driverId,
+      'number_bus': numberOfBus,
+      'price': price,
+      'pickup_location': pickupLocation,
+      'destination_location': destinationLocation,
+      'calendar': calendar,
+    });
+
+    throw UnimplementedError();
   }
 }
