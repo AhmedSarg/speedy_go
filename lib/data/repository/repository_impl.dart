@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:speedy_go/domain/models/user_manager.dart';
+import 'package:speedy_go/presentation/resources/assets_manager.dart';
 
 import 'package:uuid/uuid.dart';
 
@@ -258,7 +260,7 @@ class RepositoryImpl implements Repository {
                   return offers.map(
                     (offer) async {
                       return await _remoteDataSource
-                          .getDriverById(offer['id'])
+                          .getUserById(offer['id'])
                           .then(
                         (driver) async {
                           driver['id'] = offer['id'];
@@ -448,18 +450,76 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, Stream<List<TripPassengerModel>>>> findTrips() async {
+  Future<Either<Failure, Stream<List<Future<TripPassengerModel>>>>> findTrips(
+      LatLng driverLocation) async {
     try {
       if (await _networkInfo.isConnected) {
-        Stream<List<TripPassengerModel>> tripsStream =
+        Stream<List<Future<TripPassengerModel>>> tripsStream =
             _remoteDataSource.findTrips().map(
           (trips) {
-            return trips
-                .map((trip) => TripPassengerModel.fromMap(trip))
-                .toList();
+            return trips.map(
+              (trip) async {
+                var user =
+                    await _remoteDataSource.getUserById(trip['passenger_id']);
+                GeoPoint pickupLocation = trip['pickup_location'];
+                int awayMins = (await _remoteDataSource.calculateTwoPoints(
+                  LatLng(
+                    pickupLocation.latitude,
+                    pickupLocation.longitude,
+                  ),
+                  driverLocation,
+                ))['time'];
+                return TripPassengerModel.fromMap(trip)
+                  ..setName = '${user['first_name']} ${user['last_name']}'
+                  ..setAwayMins = awayMins
+                  ..setPassengerRate = user['rate']
+                  ..setImagePath = user['image_path'] ?? ImageAssets.unknownUserImage;
+              },
+            ).toList();
           },
         );
         return Right(tripsStream);
+      } else {
+        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+      }
+    } catch (e) {
+      return Left(ErrorHandler.handle(e).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, Future<bool>>> acceptTrip({
+    required String driverId,
+    required String tripId,
+    required int price,
+    required String location,
+    required LatLng coordinates,
+  }) async {
+    try {
+      if (await _networkInfo.isConnected) {
+        Future<bool> result = _remoteDataSource.acceptTrip(
+          tripId: tripId,
+          driverId: driverId,
+          price: price,
+          location: location,
+          coordinates: coordinates,
+        );
+        return Right(result);
+      } else {
+        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+      }
+    } catch (e) {
+      return Left(ErrorHandler.handle(e).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> cancelAcceptTrip(
+      String driverId, String tripId) async {
+    try {
+      if (await _networkInfo.isConnected) {
+        await _remoteDataSource.cancelAcceptTrip(driverId, tripId);
+        return const Right(null);
       } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
       }

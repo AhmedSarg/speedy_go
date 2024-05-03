@@ -78,7 +78,7 @@ abstract class RemoteDataSource {
     required int distance,
   });
 
-  Future<Map<String, dynamic>> getDriverById(String driverId);
+  Future<Map<String, dynamic>> getUserById(String driverId);
 
   Future<Map<String, dynamic>> calculateTwoPoints(
       LatLng pickup, LatLng destination);
@@ -104,6 +104,16 @@ abstract class RemoteDataSource {
   });
 
   Stream<List<Map<String, dynamic>>> findTrips();
+
+  Future<bool> acceptTrip({
+    required String tripId,
+    required String driverId,
+    required int price,
+    required String location,
+    required LatLng coordinates,
+  });
+
+  Future<void> cancelAcceptTrip(String driverId, String tripId);
 
   Future<void> addBus({
     required String driverId,
@@ -260,15 +270,15 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required String gender,
     required DateTime createdAt,
   }) async {
-    await _firestore.collection('passengers').doc(uuid).set({
-      'uuid': uuid,
-      'first_name': firstName,
-      'last_name': lastName,
-      'phone_number': phoneNumber,
-      'email': email,
-      'gender': gender,
-      'created_at': createdAt,
-    });
+    // await _firestore.collection('passengers').doc(uuid).set({
+    //   'uuid': uuid,
+    //   'first_name': firstName,
+    //   'last_name': lastName,
+    //   'phone_number': phoneNumber,
+    //   'email': email,
+    //   'gender': gender,
+    //   'created_at': createdAt,
+    // });
     await _firestore.collection('users').doc(uuid).set({
       'uuid': uuid,
       'first_name': firstName,
@@ -276,6 +286,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       'phone_number': phoneNumber,
       'email': email,
       'gender': gender,
+      'rate': 3.5,
+      'number_of_rates': 0,
       'created_at': createdAt,
       'type': 'passenger',
     });
@@ -297,23 +309,23 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     String drivingLicenseName = '${uuid}_driving_license.jpg';
     String carLicenseName = '${uuid}_car_license.jpg';
     String carImageName = '${uuid}_car_image.jpg';
-    await _firestore.collection('car_drivers').doc(uuid).set({
-      'uuid': uuid,
-      'first_name': firstName,
-      'last_name': lastName,
-      'phone_number': phoneNumber,
-      'email': email,
-      'national_id': nationalId,
-      'driving_license': drivingLicenseName,
-      'car_license': carLicenseName,
-      'car_image': carImageName,
-      'car_model': 'Nissan Sunny',
-      'vehicle_color': 'red',
-      'vehicle_license': 'ا ب ت - 1 2 3',
-      'rate': 3.5,
-      'number_of_rates': 0,
-      'created_at': createdAt,
-    });
+    // await _firestore.collection('car_drivers').doc(uuid).set({
+    //   'uuid': uuid,
+    //   'first_name': firstName,
+    //   'last_name': lastName,
+    //   'phone_number': phoneNumber,
+    //   'email': email,
+    //   'national_id': nationalId,
+    //   'driving_license': drivingLicenseName,
+    //   'car_license': carLicenseName,
+    //   'car_image': carImageName,
+    //   'car_model': 'Nissan Sunny',
+    //   'vehicle_color': 'red',
+    //   'vehicle_license': 'ا ب ت - 1 2 3',
+    //   'rate': 3.5,
+    //   'number_of_rates': 0,
+    //   'created_at': createdAt,
+    // });
     await _firestore.collection('users').doc(uuid).set({
       'uuid': uuid,
       'first_name': firstName,
@@ -361,20 +373,20 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required DateTime createdAt,
   }) async {
     String tukTukImageName = '${uuid}_tuktuk_image.jpg';
-    await _firestore.collection('tuktuk_drivers').doc(uuid).set({
-      'uuid': uuid,
-      'first_name': firstName,
-      'last_name': lastName,
-      'phone_number': phoneNumber,
-      'email': email,
-      'national_id': nationalId,
-      'tuktuk_image': tukTukImageName,
-      'vehicle_color': 'red',
-      'vehicle_license': 'ا ب ت - 1 2 3',
-      'rate': 3.5,
-      'number_of_rates': 0,
-      'created_at': createdAt,
-    });
+    // await _firestore.collection('tuktuk_drivers').doc(uuid).set({
+    //   'uuid': uuid,
+    //   'first_name': firstName,
+    //   'last_name': lastName,
+    //   'phone_number': phoneNumber,
+    //   'email': email,
+    //   'national_id': nationalId,
+    //   'tuktuk_image': tukTukImageName,
+    //   'vehicle_color': 'red',
+    //   'vehicle_license': 'ا ب ت - 1 2 3',
+    //   'rate': 3.5,
+    //   'number_of_rates': 0,
+    //   'created_at': createdAt,
+    // });
     await _firestore.collection('users').doc(uuid).set({
       'uuid': uuid,
       'first_name': firstName,
@@ -440,10 +452,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<Map<String, dynamic>> getDriverById(String driverId) async {
+  Future<Map<String, dynamic>> getUserById(String userId) async {
     return await _firestore
         .collection('users')
-        .doc(driverId)
+        .doc(userId)
         .get()
         .then((value) => value.data()!);
   }
@@ -594,6 +606,60 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
+  Future<bool> acceptTrip({
+    required String tripId,
+    required String driverId,
+    required int price,
+    required String location,
+    required LatLng coordinates,
+  }) async {
+    Completer<bool> completer = Completer<bool>();
+    Map<String, dynamic> driverData = {
+      'driver_id': driverId,
+      'price': price,
+      'location': location,
+      'coordinates': GeoPoint(
+        coordinates.latitude,
+        coordinates.longitude,
+      ),
+    };
+    await _firestore.collection('available_trips').doc(tripId).update(
+      {
+        'drivers': FieldValue.arrayUnion([driverData]),
+      },
+    );
+    _firestore.collection('available_trips').doc(tripId).snapshots().listen(
+      (snapshot) {
+        if (snapshot.data()!['driver_id'] != null) {
+          if (snapshot.data()!['driver_id'] == driverId) {
+            completer.complete(true);
+          } else {
+            completer.complete(false);
+          }
+        }
+      },
+    );
+    return completer.future;
+  }
+
+  @override
+  Future<void> cancelAcceptTrip(String driverId, String tripId) async {
+    await _firestore.collection('available_trips').doc(tripId).get().then(
+      (value) async {
+        List<dynamic> drivers = value.data()!['drivers'];
+        for (Map<String, dynamic> driver in drivers) {
+          if (driver['driver_id'] == driverId) {
+            await _firestore.collection('available_trips').doc(tripId).update({
+              'drivers': FieldValue.arrayRemove([driver]),
+            });
+            break;
+          }
+        }
+      },
+    );
+  }
+
+  @override
   Future<void> addBus({
     required String driverId,
     required String busId,
@@ -607,7 +673,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required int seatsNumber,
   }) async {
     await _firestore.collection('bus_drivers').doc(driverId).update({
-      "buses_id": FieldValue.arrayUnion(busId as List),
+      "buses_id": FieldValue.arrayUnion([busId]),
     });
     await _firestore.collection('buses').add(
       {

@@ -1,17 +1,19 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:speedy_go/app/extensions.dart';
-import 'package:speedy_go/presentation/driver_trip_screen/viewmodel/driver_trip_viewmodel.dart';
 
 import '../../../resources/assets_manager.dart';
 import '../../../resources/color_manager.dart';
 import '../../../resources/text_styles.dart';
 import '../../../resources/values_manager.dart';
+import '../../viewmodel/driver_trip_viewmodel.dart';
 
 class CardPassenger extends StatelessWidget {
   const CardPassenger({
     super.key,
     required this.passengerName,
+    required this.passengerImage,
     required this.tripTime,
     required this.tripDistance,
     required this.tripCost,
@@ -21,7 +23,7 @@ class CardPassenger extends StatelessWidget {
     this.widget,
   });
 
-  final String passengerName;
+  final String passengerName, passengerImage;
   final int tripTime, tripDistance, tripCost, time;
   final int? id;
   final double passengerRate;
@@ -46,13 +48,40 @@ class CardPassenger extends StatelessWidget {
             const SizedBox(height: AppSize.s5),
             Stack(
               children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: AppPadding.p10),
-                  child: CircleAvatar(
-                    radius: AppSize.s40,
-                    backgroundColor: ColorManager.transparent,
-                    backgroundImage:
-                        NetworkImage('https://via.placeholder.com/150'),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: AppPadding.p10),
+                  child: Container(
+                    width: AppSize.s80,
+                    height: AppSize.s80,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: ColorManager.white,
+                        width: AppSize.s0_5,
+                      ),
+                    ),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    child: passengerImage.contains('https')
+                        ? CachedNetworkImage(
+                            imageUrl: passengerImage,
+                            fit: BoxFit.cover,
+                            progressIndicatorBuilder: (_, __, progress) {
+                              return const Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(AppSize.s25),
+                                  child: CircularProgressIndicator(
+                                    color: ColorManager.secondary,
+                                    strokeWidth: AppSize.s1,
+                                    strokeCap: StrokeCap.round,
+                                  ),
+                                ),
+                              );
+                            },
+                          )
+                        : Image.asset(
+                            passengerImage,
+                            fit: BoxFit.cover,
+                          ),
                   ),
                 ),
                 Positioned(
@@ -97,26 +126,27 @@ class CardPassenger extends StatelessWidget {
                   context),
             ),
             const SizedBox(height: AppSize.s5),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: AppPadding.p10),
-                  child: SvgPicture.asset(SVGAssets.cash),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    viewModel.nextPage();
-                  },
-                  child: Text(
+            TextButton(
+              onPressed:
+                  viewModel.getIsAccepted ? null : viewModel.goToEditCost,
+              style: TextButton.styleFrom(
+                foregroundColor: ColorManager.white,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: AppPadding.p10),
+                    child: SvgPicture.asset(SVGAssets.cash),
+                  ),
+                  Text(
                     "EGP $tripCost",
                     style: AppTextStyles.acceptingPassengersScreenCostTextStyle(
                         context),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-            const SizedBox(height: AppSize.s5),
             Divider(color: ColorManager.black.withOpacity(.2)),
             const SizedBox(height: AppSize.s5),
             Row(

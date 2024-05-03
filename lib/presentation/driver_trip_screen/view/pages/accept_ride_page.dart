@@ -1,13 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/widgets.dart';
 import 'package:lottie/lottie.dart';
 import 'package:speedy_go/app/extensions.dart';
-import 'package:speedy_go/presentation/driver_trip_screen/view/pages/loading_page.dart';
 
+import '../../../../domain/models/domain.dart';
 import '../../../resources/assets_manager.dart';
 import '../../../resources/color_manager.dart';
 import '../../../resources/strings_manager.dart';
@@ -15,6 +12,7 @@ import '../../../resources/text_styles.dart';
 import '../../../resources/values_manager.dart';
 import '../../viewmodel/driver_trip_viewmodel.dart';
 import '../widgets/card_passenger.dart';
+import 'loading_page.dart';
 
 class AcceptRide extends StatelessWidget {
   const AcceptRide({super.key});
@@ -53,14 +51,27 @@ class AcceptRide extends StatelessWidget {
                       return CarouselSlider(
                         carouselController: viewModel.getCarouselController,
                         items: snapshot.data!.map(
-                          (tripModel) {
-                            return CardPassenger(
-                              passengerName: tripModel.passengerId,
-                              passengerRate: 3.5,
-                              time: 6,
-                              tripCost: tripModel.price,
-                              tripDistance: tripModel.distance,
-                              tripTime: tripModel.expectedTime,
+                          (futureTrip) {
+                            return FutureBuilder<TripPassengerModel>(
+                              future: futureTrip,
+                              builder: (context, future) {
+                                if (future.hasData) {
+                                  TripPassengerModel tripModel = future.data!;
+                                  return CardPassenger(
+                                    passengerName: tripModel.passengerName,
+                                    passengerImage: tripModel.imagePath,
+                                    passengerRate: tripModel.passengerRate,
+                                    time: tripModel.awayMins,
+                                    tripCost: tripModel.price,
+                                    tripDistance: tripModel.distance,
+                                    tripTime: tripModel.expectedTime,
+                                  );
+                                } else {
+                                  return Center(
+                                    child: Lottie.asset(LottieAssets.loading),
+                                  );
+                                }
+                              },
                             );
                           },
                         ).toList(),
@@ -123,11 +134,7 @@ class AcceptRide extends StatelessWidget {
           SizedBox(
             width: context.width() / 2,
             child: ElevatedButton(
-              onPressed: !viewModel.getIsAccepted
-                  ? () {
-                      viewModel.setIsAccepted = true;
-                    }
-                  : null,
+              onPressed: !viewModel.getIsAccepted ? viewModel.acceptTrip : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: ColorManager.lightBlue,
                 disabledBackgroundColor: ColorManager.lightBlue.withOpacity(.5),
@@ -149,9 +156,7 @@ class AcceptRide extends StatelessWidget {
               ? SizedBox(
                   width: context.width() / 2,
                   child: ElevatedButton(
-                    onPressed: () {
-                      viewModel.setIsAccepted = false;
-                    },
+                    onPressed: viewModel.cancelAcceptTrip,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: ColorManager.error,
                       shape: RoundedRectangleBorder(

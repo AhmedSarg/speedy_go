@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:speedy_go/domain/models/enums.dart';
+import 'package:speedy_go/presentation/resources/assets_manager.dart';
 
 ///User Model
 
@@ -206,10 +207,14 @@ class TripDriverModel {
 class TripPassengerModel {
   final String id;
   final String passengerId;
+  late final String passengerName;
   final LatLng pickupLocation;
   final LatLng destinationLocation;
   final int distance;
   final int expectedTime;
+  late final int awayMins;
+  late final String imagePath;
+  late final double passengerRate;
   final int price;
 
   TripPassengerModel({
@@ -222,6 +227,22 @@ class TripPassengerModel {
     required this.price,
   });
 
+  set setName(String name) {
+    passengerName = name;
+  }
+
+  set setAwayMins(int awayMins) {
+    this.awayMins = awayMins;
+  }
+
+  set setImagePath(String imagePath) {
+    this.imagePath = imagePath;
+  }
+
+  set setPassengerRate(double passengerRate) {
+    this.passengerRate = passengerRate;
+  }
+
   factory TripPassengerModel.fake() => TripPassengerModel(
         id: '',
         passengerId: '',
@@ -230,7 +251,11 @@ class TripPassengerModel {
         distance: -1,
         expectedTime: -1,
         price: -1,
-      );
+      )
+        ..setName = ''
+        ..setAwayMins = -1
+        ..setPassengerRate = -1
+        ..setImagePath = ImageAssets.unknownUserImage;
 
   factory TripPassengerModel.fromMap(Map<String, dynamic> map) {
     return TripPassengerModel(

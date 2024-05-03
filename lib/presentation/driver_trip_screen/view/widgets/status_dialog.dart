@@ -42,7 +42,8 @@ class StatusDialog extends StatelessWidget {
             children: [
               Text(
                 titleText.tr(),
-                style: AppTextStyles.runModeScreenTitleContainerTextStyle(context),
+                style:
+                AppTextStyles.runModeScreenTitleContainerTextStyle(context),
               ),
               const SizedBox(height: AppSize.s20),
               Row(
@@ -50,29 +51,29 @@ class StatusDialog extends StatelessWidget {
                 children: [
                   Text(
                     AppStrings.driverTripScreenStatusTurnInto.tr(),
-                    style: AppTextStyles.runModeScreenTurnIntoTextStyle(context),
+                    style:
+                    AppTextStyles.runModeScreenTurnIntoTextStyle(context),
                   ),
-                  Container(
+                  const SizedBox(width: AppSize.s5),
+                  SizedBox(
                     height: AppSize.s30,
-                    decoration: BoxDecoration(
-                      color: toggleStatusColor,
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(AppSize.s15)),
-                    ),
-                    child: Center(
-                      child: GestureDetector(
-                        onTap: () {
-                          viewModel.toggleDriverStatusUi();
-                          Navigator.pop(context);
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(AppPadding.p5),
-                          child: Text(
-                            "${toggleStateText.tr()} Mode",
-                            style:
-                                AppTextStyles.runModeScreenModeTextStyle(context),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        viewModel.toggleDriverStatusUi();
+                        Navigator.pop(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: toggleStatusColor,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(AppSize.s15),
                           ),
                         ),
+                      ),
+                      child: Text(
+                        "${toggleStateText.tr()} Mode",
+                        style:
+                        AppTextStyles.runModeScreenModeTextStyle(context),
                       ),
                     ),
                   )
@@ -93,9 +94,10 @@ class StatusDialog extends StatelessWidget {
                       borderRadius: BorderRadius.circular(AppSize.s12),
                     ),
                   ),
-                  child: Text(AppStrings.driverTripScreenStatusDialogButton.tr(),
-                      style:
-                          AppTextStyles.runModeScreenButtonCloseTextStyle(context)),
+                  child: Text(
+                      AppStrings.driverTripScreenStatusDialogButton.tr(),
+                      style: AppTextStyles.runModeScreenButtonCloseTextStyle(
+                          context)),
                 ),
               ),
             ],

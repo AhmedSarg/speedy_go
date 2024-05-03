@@ -22,6 +22,7 @@ abstract class Repository {
     required File busImage,
     required int seatsNumber,
   });
+
   Future<Either<Failure, void>> addBusTrip({
     required String driverId,
     required int numberOfBus,
@@ -111,5 +112,16 @@ abstract class Repository {
     StreamSubscription<LatLng>? coordinatesSubscription,
   });
 
-  Future<Either<Failure, Stream<List<TripPassengerModel>>>> findTrips();
+  Future<Either<Failure, Stream<List<Future<TripPassengerModel>>>>> findTrips(LatLng driverLocation);
+
+  Future<Either<Failure, Future<bool>>> acceptTrip({
+    required String driverId,
+    required String tripId,
+    required int price,
+    required String location,
+    required LatLng coordinates,
+  });
+
+  Future<Either<Failure, void>> cancelAcceptTrip(
+      String driverId, String tripId);
 }

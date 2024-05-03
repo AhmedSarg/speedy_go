@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:speedy_go/app/extensions.dart';
 
 import '../../../resources/assets_manager.dart';
 import '../../../resources/color_manager.dart';
@@ -25,7 +26,7 @@ class EditCost extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                "EGP ${viewModel.getNewCostController.text}",
+                "EGP ${viewModel.getTripPrice}",
                 style: AppTextStyles.tripScreenPricePageTitleTextStyle(context),
               ),
               Divider(
@@ -82,13 +83,12 @@ class EditCost extends StatelessWidget {
             ),
             SizedBox(
               height: AppSize.s50,
+              width: context.width() - AppSize.s40,
               child: Row(
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {
-                        viewModel.prevPage();
-                      },
+                      onPressed: viewModel.updatePage,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: ColorManager.error,
                         shape: RoundedRectangleBorder(
@@ -106,7 +106,9 @@ class EditCost extends StatelessWidget {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        viewModel.nextPage();
+                        viewModel.acceptTrip(
+                          int.parse(viewModel.getNewCostController.text),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: ColorManager.green,

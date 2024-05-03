@@ -3,6 +3,8 @@ class ImageAssets {
 
   static const String _imagePath = "assets/images/";
 
+  static const String unknownUserImage =
+      "${_imagePath}unknown_user.jpg";
   static const String driverSelectionTileImage =
       "${_imagePath}driver_selection_tile_image.jpg";
   static const String passengerSelectionTileImage =

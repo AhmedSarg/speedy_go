@@ -22,8 +22,10 @@ import '../data/network/network_info.dart';
 import '../data/repository/repository_impl.dart';
 import '../domain/models/user_manager.dart';
 import '../domain/repository/repository.dart';
+import '../domain/usecase/accept_trip_usecase.dart';
 import '../domain/usecase/add_bus_usecase.dart';
 import '../domain/usecase/add_trip_bus.dart';
+import '../domain/usecase/cancel_accept_trip_usecase.dart';
 import '../domain/usecase/change_driver_status_usecase.dart';
 import '../domain/usecase/find_trips_usecase.dart';
 import '../domain/usecase/logout_usecase.dart';
@@ -190,5 +192,17 @@ void initChangeDriverStatusUseCase() {
 void initFindTripsUseCase() {
   if (GetIt.instance.isRegistered<FindTripsUseCase>() == false) {
     sl.registerFactory<FindTripsUseCase>(() => FindTripsUseCase(sl()));
+  }
+}
+
+void initAcceptTripUseCase() {
+  if (GetIt.instance.isRegistered<AcceptTripUseCase>() == false) {
+    sl.registerFactory<AcceptTripUseCase>(() => AcceptTripUseCase(sl()));
+  }
+}
+
+void initCancelAcceptTripUseCase() {
+  if (GetIt.instance.isRegistered<CancelAcceptTripUseCase>() == false) {
+    sl.registerFactory<CancelAcceptTripUseCase>(() => CancelAcceptTripUseCase(sl()));
   }
 }

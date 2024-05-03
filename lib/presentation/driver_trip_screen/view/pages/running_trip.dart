@@ -38,6 +38,7 @@ class RunningTrip extends StatelessWidget {
           ),
           CardPassenger(
             passengerName: "ahmed",
+            passengerImage: 'https://dummyimage.com/300',
             tripTime: 6,
             tripDistance: 3,
             tripCost: 30,

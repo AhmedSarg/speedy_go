@@ -18,7 +18,7 @@ class DriverTripScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-        create: (context) => DriverTripViewModel(sl(), sl(), sl())..start(),
+        create: (context) => DriverTripViewModel(sl(), sl(), sl(), sl(), sl())..start(),
         child: BlocConsumer<DriverTripViewModel, BaseStates>(
           listener: (context, state) {
             if (state is RatePassengerState) {
