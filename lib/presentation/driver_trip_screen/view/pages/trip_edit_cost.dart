@@ -88,7 +88,7 @@ class EditCost extends StatelessWidget {
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: viewModel.updatePage,
+                      onPressed: viewModel.findTrips,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: ColorManager.error,
                         shape: RoundedRectangleBorder(

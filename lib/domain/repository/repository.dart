@@ -124,4 +124,5 @@ abstract class Repository {
 
   Future<Either<Failure, void>> cancelAcceptTrip(
       String driverId, String tripId);
+
 }

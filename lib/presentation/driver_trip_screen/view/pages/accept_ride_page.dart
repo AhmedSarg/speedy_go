@@ -12,7 +12,7 @@ import '../../../resources/text_styles.dart';
 import '../../../resources/values_manager.dart';
 import '../../viewmodel/driver_trip_viewmodel.dart';
 import '../widgets/card_passenger.dart';
-import 'loading_page.dart';
+import 'waiting_page.dart';
 
 class AcceptRide extends StatelessWidget {
   const AcceptRide({super.key});
@@ -22,36 +22,37 @@ class AcceptRide extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     viewModel = DriverTripViewModel.get(context);
-    return SizedBox(
-      child: Column(
-        children: [
-          Column(
-            children: [
-              Text(
-                AppStrings.acceptingPassengersScreenTitle.tr(),
-                style: AppTextStyles
-                    .acceptingPassengersScreenPassengerTitleTextStyle(context),
-              ),
-              Divider(
-                color: ColorManager.grey.withOpacity(.5),
-              ),
-            ],
-          ),
-          const SizedBox(height: AppSize.s10),
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              SizedBox(
-                width: context.width(),
-                child: StreamBuilder(
-                  stream: viewModel.getTripsStream,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      viewModel.setTripsList = snapshot.data!;
-                      return CarouselSlider(
+    return StreamBuilder(
+      stream: viewModel.getTripsStream,
+      builder: (context, snapshot) {
+        print(snapshot.data);
+        if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+          print('stream');
+          return SizedBox(
+            child: Column(
+              children: [
+                Column(
+                  children: [
+                    Text(
+                      AppStrings.acceptingPassengersScreenTitle.tr(),
+                      style: AppTextStyles
+                          .acceptingPassengersScreenPassengerTitleTextStyle(context),
+                    ),
+                    Divider(
+                      color: ColorManager.grey.withOpacity(.5),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: AppSize.s10),
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    SizedBox(
+                      width: context.width(),
+                      child: CarouselSlider(
                         carouselController: viewModel.getCarouselController,
                         items: snapshot.data!.map(
-                          (futureTrip) {
+                              (futureTrip) {
                             return FutureBuilder<TripPassengerModel>(
                               future: futureTrip,
                               builder: (context, future) {
@@ -86,15 +87,10 @@ class AcceptRide extends StatelessWidget {
                           scrollDirection: Axis.horizontal,
                           onPageChanged: viewModel.handleSelectedTrip,
                         ),
-                      );
-                    } else {
-                      return const DriverTripLoadingPage();
-                    }
-                  },
-                ),
-              ),
-              viewModel.getTripIndex != 0 && !viewModel.getIsAccepted
-                  ? Padding(
+                      ),
+                    ),
+                    viewModel.getTripIndex != 0 && !viewModel.getIsAccepted
+                        ? Padding(
                       padding: const EdgeInsets.only(left: AppSize.s5),
                       child: Align(
                         alignment: Alignment.centerLeft,
@@ -109,10 +105,10 @@ class AcceptRide extends StatelessWidget {
                         ),
                       ),
                     )
-                  : const SizedBox(),
-              viewModel.getTripIndex != viewModel.getTripsList.length - 1 &&
-                      !viewModel.getIsAccepted
-                  ? Padding(
+                        : const SizedBox(),
+                    viewModel.getTripIndex != viewModel.getTripsList.length - 1 &&
+                        !viewModel.getIsAccepted
+                        ? Padding(
                       padding: const EdgeInsets.only(right: AppSize.s5),
                       child: Align(
                         alignment: Alignment.centerRight,
@@ -127,33 +123,33 @@ class AcceptRide extends StatelessWidget {
                         ),
                       ),
                     )
-                  : const SizedBox(),
-            ],
-          ),
-          const SizedBox(height: AppSize.s20),
-          SizedBox(
-            width: context.width() / 2,
-            child: ElevatedButton(
-              onPressed: !viewModel.getIsAccepted ? viewModel.acceptTrip : null,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: ColorManager.lightBlue,
-                disabledBackgroundColor: ColorManager.lightBlue.withOpacity(.5),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppSize.s10),
+                        : const SizedBox(),
+                  ],
                 ),
-              ),
-              child: viewModel.getIsAccepted
-                  ? Lottie.asset(LottieAssets.loadingDotsWhite)
-                  : Text(
+                const SizedBox(height: AppSize.s20),
+                SizedBox(
+                  width: context.width() / 2,
+                  child: ElevatedButton(
+                    onPressed: !viewModel.getIsAccepted ? viewModel.acceptTrip : null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: ColorManager.lightBlue,
+                      disabledBackgroundColor: ColorManager.lightBlue.withOpacity(.5),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(AppSize.s10),
+                      ),
+                    ),
+                    child: viewModel.getIsAccepted
+                        ? Lottie.asset(LottieAssets.loadingDotsWhite)
+                        : Text(
                       AppStrings.acceptingPassengersScreenButtonAccept.tr(),
                       style: AppTextStyles
                           .acceptingPassengersScreenButtonTextStyle(context),
                     ),
-            ),
-          ),
-          const SizedBox(height: AppSize.s10),
-          viewModel.getIsAccepted
-              ? SizedBox(
+                  ),
+                ),
+                const SizedBox(height: AppSize.s10),
+                viewModel.getIsAccepted
+                    ? SizedBox(
                   width: context.width() / 2,
                   child: ElevatedButton(
                     onPressed: viewModel.cancelAcceptTrip,
@@ -170,9 +166,14 @@ class AcceptRide extends StatelessWidget {
                     ),
                   ),
                 )
-              : const SizedBox(),
-        ],
-      ),
+                    : const SizedBox(),
+              ],
+            ),
+          );
+        } else {
+          return WaitingSearchingForPassengers();
+        }
+      },
     );
   }
 }

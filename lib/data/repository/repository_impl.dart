@@ -462,18 +462,34 @@ class RepositoryImpl implements Repository {
                 var user =
                     await _remoteDataSource.getUserById(trip['passenger_id']);
                 GeoPoint pickupLocation = trip['pickup_location'];
-                int awayMins = (await _remoteDataSource.calculateTwoPoints(
+                GeoPoint destinationLocation = trip['destination_location'];
+                Map<String, dynamic> timeCalculations =
+                    await _remoteDataSource.calculateTwoPoints(
                   LatLng(
                     pickupLocation.latitude,
                     pickupLocation.longitude,
                   ),
                   driverLocation,
-                ))['time'];
+                );
+                Map<String, dynamic> routeCalculations =
+                    await _remoteDataSource.calculateTwoPoints(
+                  LatLng(
+                    pickupLocation.latitude,
+                    pickupLocation.longitude,
+                  ),
+                  LatLng(
+                    destinationLocation.latitude,
+                    destinationLocation.longitude,
+                  ),
+                );
                 return TripPassengerModel.fromMap(trip)
                   ..setName = '${user['first_name']} ${user['last_name']}'
-                  ..setAwayMins = awayMins
+                  ..setAwayMins = timeCalculations['time']
                   ..setPassengerRate = user['rate']
-                  ..setImagePath = user['image_path'] ?? ImageAssets.unknownUserImage;
+                  ..setImagePath =
+                      user['image_path'] ?? ImageAssets.unknownUserImage
+                  ..setPassengerPhoneNumber = user['phone_number']
+                  ..setRouteCode = routeCalculations['polylineCode'];
               },
             ).toList();
           },

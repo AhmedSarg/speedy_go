@@ -215,6 +215,8 @@ class TripPassengerModel {
   late final int awayMins;
   late final String imagePath;
   late final double passengerRate;
+  late final String passengerPhoneNumber;
+  String? routeCode;
   final int price;
 
   TripPassengerModel({
@@ -241,6 +243,14 @@ class TripPassengerModel {
 
   set setPassengerRate(double passengerRate) {
     this.passengerRate = passengerRate;
+  }
+
+  set setPassengerPhoneNumber(String phoneNumber) {
+    passengerPhoneNumber = phoneNumber;
+  }
+
+  set setRouteCode(String routeCode) {
+    this.routeCode = routeCode;
   }
 
   factory TripPassengerModel.fake() => TripPassengerModel(
@@ -270,7 +280,7 @@ class TripPassengerModel {
         (map['destination_location'] as GeoPoint).longitude,
       ),
       distance: map['distance'].toInt(),
-      expectedTime: map['expected_time'].toInt(),
+      expectedTime: map['expectedTime'].toInt(),
       price: map['price'].toInt(),
     );
   }

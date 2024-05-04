@@ -215,8 +215,6 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         errorStreamController.add(null);
       },
       verificationFailed: (e) {
-        print('THE ERRORRR');
-        print(e);
         errorStreamController.add(e);
       },
       codeSent: (String verificationId, int? resendToken) {
@@ -464,7 +462,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   Future<Map<String, dynamic>> calculateTwoPoints(
       LatLng pointA, LatLng pointB) async {
     const String baseUrl = "https://router.hereapi.com/v8/";
-    const String apiKey = "DW2EtICUSqlxaWY1Zy2ir8ABPQrq_F6LGh1PDa_qxsc";
+    const String apiKey = "oik-B012ulwjNXZalfVaMoLYZNl_RJXMgiNk9LWLtnQ";
     const String endpoint = "routes";
     const String url = baseUrl + endpoint;
     final dio = Dio();
@@ -583,7 +581,6 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         );
       });
     } else {
-      print('n');
       coordinatesSubscription!.cancel();
       await _firestore.collection('online_drivers').doc(driverId).delete();
     }
@@ -615,7 +612,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }) async {
     Completer<bool> completer = Completer<bool>();
     Map<String, dynamic> driverData = {
-      'driver_id': driverId,
+      'id': driverId,
       'price': price,
       'location': location,
       'coordinates': GeoPoint(
@@ -629,13 +626,16 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       },
     );
     _firestore.collection('available_trips').doc(tripId).snapshots().listen(
-      (snapshot) {
-        if (snapshot.data()!['driver_id'] != null) {
-          if (snapshot.data()!['driver_id'] == driverId) {
-            completer.complete(true);
-          } else {
-            completer.complete(false);
-          }
+      (oldDoc) async {
+        if (!oldDoc.exists) {
+          await _firestore.collection('running_trips').doc(tripId).get().then(
+            (value) {
+              if (value.exists && value.data()!['driver_id'] == driverId) {
+                completer.complete(true);
+              }
+            },
+          );
+          completer.complete(false);
         }
       },
     );
@@ -648,7 +648,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       (value) async {
         List<dynamic> drivers = value.data()!['drivers'];
         for (Map<String, dynamic> driver in drivers) {
-          if (driver['driver_id'] == driverId) {
+          if (driver['id'] == driverId) {
             await _firestore.collection('available_trips').doc(tripId).update({
               'drivers': FieldValue.arrayRemove([driver]),
             });
