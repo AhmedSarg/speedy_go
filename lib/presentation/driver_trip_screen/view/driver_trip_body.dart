@@ -53,25 +53,6 @@ class DriverTripBody extends StatelessWidget {
                       viewModel.getPageIndex <= 0
                           ? StatusButton()
                           : const SizedBox(),
-                      (viewModel.getPageIndex != 5 &&
-                              viewModel.getPageIndex != 0 &&
-                              viewModel.getPageIndex != 1)
-                          ? SafeArea(
-                              child: Padding(
-                                padding: const EdgeInsets.all(AppPadding.p10),
-                                child: BackOrExit(
-                                  viewModel: viewModel,
-                                  onTap: () {
-                                    if (viewModel.getPageIndex == 4) {
-                                      viewModel.prevPage();
-                                    } else {
-                                      viewModel.reset();
-                                    }
-                                  },
-                                ),
-                              ),
-                            )
-                          : const SizedBox(),
                     ],
                   ),
                 ),

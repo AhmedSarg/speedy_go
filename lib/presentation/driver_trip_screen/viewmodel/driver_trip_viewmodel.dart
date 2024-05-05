@@ -15,6 +15,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:speedy_go/domain/usecase/end_trip_usecase.dart';
+import 'package:speedy_go/presentation/common/data_intent/data_intent.dart';
 
 import '../../../domain/models/domain.dart';
 import '../../../domain/models/user_manager.dart';
@@ -126,6 +127,16 @@ class DriverTripViewModel extends BaseCubit
   }
 
   reset() async {
+    _selectedTrip = null;
+    _tripIndex = 0;
+    _errorIndexes.clear();
+    _markers.clear();
+    _polyline.clear();
+    _tripsList.clear();
+    _currentError = false;
+    _isAccepted = false;
+    _selectedFuture = null;
+    _tripsStream = null;
     _pageIndex = 0;
     updatePage();
   }
@@ -170,7 +181,6 @@ class DriverTripViewModel extends BaseCubit
   }
 
   Future<void> toggleDriverStatus() async {
-    print(_userLocation);
     emit(LoadingState(displayType: DisplayType.popUpDialog));
     _positionSubscription = _positionStream?.listen(null);
     await _changeDriverStatusUseCase(
@@ -193,8 +203,7 @@ class DriverTripViewModel extends BaseCubit
           (r) async {
             _driverStatus = !_driverStatus;
             if (!_driverStatus) {
-              _markers = {};
-              _polyline = {};
+              reset();
               _mapController.animateCamera(
                 CameraUpdate.newCameraPosition(
                   CameraPosition(
@@ -203,7 +212,6 @@ class DriverTripViewModel extends BaseCubit
                   ),
                 ),
               );
-              reset();
             } else {
               await findTrips();
             }
@@ -231,8 +239,6 @@ class DriverTripViewModel extends BaseCubit
             updatePage();
             _tripsStream!.listen(
               (v) async {
-                // print(1);
-                print(v);
                 if (!_isAccepted) {
                   if (v.isNotEmpty &&
                       _tripsList.isEmpty &&
@@ -296,8 +302,7 @@ class DriverTripViewModel extends BaseCubit
     _tripIndex = tripIndex;
     if (_currentError) {
       _errorIndexes.add(_tripIndex);
-    }
-    else {
+    } else {
       _errorIndexes.remove(_tripIndex);
     }
     _selectedFuture = _tripsList[tripIndex];
@@ -494,7 +499,39 @@ class DriverTripViewModel extends BaseCubit
     }
   }
 
-  // Future<void> endTrip()
+  Future<void> endTrip() async {
+    await _endTripUseCase(EndTripUseCaseInput(
+      tripId: _selectedTrip!.id,
+    )).then(
+      (value) {
+        value.fold(
+          (l) {
+            emit(
+              ErrorState(
+                failure: l,
+                displayType: DisplayType.popUpDialog,
+              ),
+            );
+          },
+          (r) {
+            nextPage();
+          },
+        );
+      },
+    );
+  }
+
+  ratePassenger() {
+    DataIntent.pushRatedUserId(_selectedTrip!.passengerId);
+    emit(RatePassengerState());
+  }
+
+  afterTrip() async {
+    emit(LoadingState());
+    reset();
+    emit(LoadingState());
+    await findTrips();
+  }
 
   @override
   void start() {

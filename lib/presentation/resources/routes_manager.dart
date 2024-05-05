@@ -114,6 +114,7 @@ class RouteGenerator {
         initFindTripsUseCase();
         initAcceptTripUseCase();
         initCancelAcceptTripUseCase();
+        initEndTripUseCase();
         return MaterialPageRoute(builder: (_) => const DriverTripScreen());
       case Routes.safetyRoute:
         return MaterialPageRoute(builder: (_) => const SafetyScreen());

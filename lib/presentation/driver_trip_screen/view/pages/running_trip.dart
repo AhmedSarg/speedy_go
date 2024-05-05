@@ -58,9 +58,7 @@ class RunningTrip extends StatelessWidget {
         SizedBox(
           width: context.width() / 2,
           child: ElevatedButton(
-            onPressed: () {
-              viewModel.prevPage();
-            },
+            onPressed: viewModel.endTrip,
             style: ElevatedButton.styleFrom(
               backgroundColor: ColorManager.lightBlue,
               shape: RoundedRectangleBorder(

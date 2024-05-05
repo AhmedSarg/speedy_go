@@ -20,8 +20,11 @@ class DriverTripScreen extends StatelessWidget {
           create: (context) => DriverTripViewModel(sl(), sl(), sl(), sl(), sl(), sl())..start(),
           child: BlocConsumer<DriverTripViewModel, BaseStates>(
             listener: (context, state) {
+              DriverTripViewModel viewModel = DriverTripViewModel.get(context);
               if (state is RatePassengerState) {
-                Navigator.pushNamed(context, Routes.rateRoute);
+                Navigator.pushNamed(context, Routes.rateRoute).whenComplete(() {
+                  viewModel.afterTrip();
+                });
               } else if (state is ChangeDriverStatusState) {
                 showDialog(
                   context: context,

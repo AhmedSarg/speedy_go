@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../domain/models/user_manager.dart';
 import '../../../domain/usecase/rate_usecase.dart';
 import '../../base/base_cubit.dart';
 import '../../base/base_states.dart';

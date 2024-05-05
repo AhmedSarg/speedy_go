@@ -45,7 +45,7 @@ class RateBody extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: AppMargin.m64),
             child: ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, Routes.mainLayoutRoute);
+                Navigator.pop(context);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: ColorManager.error,
