@@ -35,28 +35,21 @@ class DriverTripBody extends StatelessWidget {
                 Expanded(
                   child: Stack(
                     children: [
-                      viewModel.getDriverStatus
-                          ? GoogleMap(
-                            initialCameraPosition: CameraPosition(
-                              target: viewModel.getUserLocation,
-                              zoom: AppSize.s18,
-                            ),
-                            myLocationEnabled: true,
-                            myLocationButtonEnabled: false,
-                            zoomControlsEnabled: false,
-                            polylines: viewModel.getPolyline,
-                            markers: viewModel.getMarkers,
-                            style: viewModel.getMapStyle,
-                            onMapCreated: (controller) {
-                              viewModel.setMapController = controller;
-                            },
-                          )
-                          : Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(AppPadding.p50),
-                                child: Lottie.asset(LottieAssets.areYouSure),
-                              ),
-                            ),
+                      GoogleMap(
+                        initialCameraPosition: CameraPosition(
+                          target: viewModel.getUserLocation,
+                          zoom: AppSize.s18,
+                        ),
+                        myLocationEnabled: true,
+                        myLocationButtonEnabled: false,
+                        zoomControlsEnabled: false,
+                        polylines: viewModel.getPolyline,
+                        markers: viewModel.getMarkers,
+                        style: viewModel.getMapStyle,
+                        onMapCreated: (controller) {
+                          viewModel.setMapController = controller;
+                        },
+                      ),
                       viewModel.getPageIndex <= 0
                           ? StatusButton()
                           : const SizedBox(),
@@ -84,20 +77,20 @@ class DriverTripBody extends StatelessWidget {
                 ),
                 viewModel.getDriverStatus
                     ? Container(
-                      width: AppSize.infinity,
-                      padding: const EdgeInsets.symmetric(
-                        vertical: AppPadding.p20,
-                        horizontal: AppSize.s0,
-                      ),
-                      decoration: const BoxDecoration(
-                        color: ColorManager.lightBlack,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(AppSize.s20),
-                          topRight: Radius.circular(AppSize.s20),
+                        width: AppSize.infinity,
+                        padding: const EdgeInsets.symmetric(
+                          vertical: AppPadding.p20,
+                          horizontal: AppSize.s0,
                         ),
-                      ),
-                      child: viewModel.getPage,
-                    )
+                        decoration: const BoxDecoration(
+                          color: ColorManager.lightBlack,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(AppSize.s20),
+                            topRight: Radius.circular(AppSize.s20),
+                          ),
+                        ),
+                        child: viewModel.getPage,
+                      )
                     : const SizedBox(),
               ],
             ),

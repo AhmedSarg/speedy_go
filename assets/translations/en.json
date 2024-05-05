@@ -168,18 +168,18 @@
   "driverTripScreenStatusOffline" : "Offline",
   "driverTripScreenStatusDialogButton" : "Close",
 
-  "waitingSearchingForPassengersScreenTitle" : "Searching for passengers",
-  "waitingSearchingForPassengersScreenPleaseWait" : "Please wait",
+  "waitingSearchingForPassengersScreenTitle" : "Searching for Passengers",
+  "waitingSearchingForPassengersScreenPleaseWait" : "Please Wait",
   "waitingSearchingForPassengersScreenButton" : "Go Offline",
 
-  "acceptingPassengersScreenTitle" : "Searching for passengers",
+  "acceptingPassengersScreenTitle" : "Searching for Passengers",
   "acceptingPassengersScreenButtonAccept" : "Accept Ride",
   "acceptingPassengersScreenButtonCancel" : "Cancel",
 
-  "runningTripScreenTitle" : "Trip is running ... ",
-  "runningTripScreenButton" : "Cancel",
+  "runningTripScreenTitle" : "Trip is Running...",
+  "runningTripScreenButton" : "End Trip",
 
-  "endTripScreenTitle" : "Trip finished ",
+  "endTripScreenTitle" : "Trip Finished",
   "endTripScreenButton" : "End Trip"
 
 

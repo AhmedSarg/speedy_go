@@ -59,7 +59,7 @@ class StatusDialog extends StatelessWidget {
                     height: AppSize.s30,
                     child: ElevatedButton(
                       onPressed: () {
-                        viewModel.toggleDriverStatusUi();
+                        viewModel.toggleDriverStatus();
                         Navigator.pop(context);
                       },
                       style: ElevatedButton.styleFrom(

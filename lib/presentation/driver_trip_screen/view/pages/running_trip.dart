@@ -62,7 +62,7 @@ class RunningTrip extends StatelessWidget {
               viewModel.prevPage();
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: ColorManager.error,
+              backgroundColor: ColorManager.lightBlue,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppSize.s10),
               ),

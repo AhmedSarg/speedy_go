@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -25,9 +26,7 @@ class AcceptRide extends StatelessWidget {
     return StreamBuilder(
       stream: viewModel.getTripsStream,
       builder: (context, snapshot) {
-        print(snapshot.data);
         if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-          print('stream');
           return SizedBox(
             child: Column(
               children: [
@@ -36,7 +35,8 @@ class AcceptRide extends StatelessWidget {
                     Text(
                       AppStrings.acceptingPassengersScreenTitle.tr(),
                       style: AppTextStyles
-                          .acceptingPassengersScreenPassengerTitleTextStyle(context),
+                          .acceptingPassengersScreenPassengerTitleTextStyle(
+                              context),
                     ),
                     Divider(
                       color: ColorManager.grey.withOpacity(.5),
@@ -52,11 +52,12 @@ class AcceptRide extends StatelessWidget {
                       child: CarouselSlider(
                         carouselController: viewModel.getCarouselController,
                         items: snapshot.data!.map(
-                              (futureTrip) {
+                          (futureTrip) {
                             return FutureBuilder<TripPassengerModel>(
                               future: futureTrip,
                               builder: (context, future) {
                                 if (future.hasData) {
+                                  viewModel.setCurrentError = false;
                                   TripPassengerModel tripModel = future.data!;
                                   return CardPassenger(
                                     passengerName: tripModel.passengerName,
@@ -66,6 +67,33 @@ class AcceptRide extends StatelessWidget {
                                     tripCost: tripModel.price,
                                     tripDistance: tripModel.distance,
                                     tripTime: tripModel.expectedTime,
+                                  );
+                                } else if (future.hasError) {
+                                  viewModel.setCurrentError = true;
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: AppPadding.p40),
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Lottie.asset(LottieAssets.error,
+                                              repeat: false),
+                                          const SizedBox(height: AppSize.s20),
+                                          Text(
+                                            (future.error as DioException)
+                                                .response!
+                                                .data['error_description']
+                                                .toString(),
+                                            style: AppTextStyles
+                                                .acceptingPassengersScreenPassengerTitleTextStyle(
+                                                    context),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   );
                                 } else {
                                   return Center(
@@ -89,40 +117,46 @@ class AcceptRide extends StatelessWidget {
                         ),
                       ),
                     ),
-                    viewModel.getTripIndex != 0 && !viewModel.getIsAccepted
+                    viewModel.getTripIndex != 0 &&
+                            !viewModel.getIsAccepted &&
+                            viewModel.getTripsList.length != 1
                         ? Padding(
-                      padding: const EdgeInsets.only(left: AppSize.s5),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: SizedBox.square(
-                          dimension: AppSize.s30,
-                          child: IconButton(
-                            onPressed: viewModel.prevTrip,
-                            icon: const Icon(Icons.arrow_back_ios),
-                            iconSize: AppSize.s20,
-                            padding: const EdgeInsets.only(left: AppSize.s8),
-                          ),
-                        ),
-                      ),
-                    )
+                            padding: const EdgeInsets.only(left: AppSize.s5),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: SizedBox.square(
+                                dimension: AppSize.s30,
+                                child: IconButton(
+                                  onPressed: viewModel.prevTrip,
+                                  icon: const Icon(Icons.arrow_back_ios),
+                                  iconSize: AppSize.s20,
+                                  padding:
+                                      const EdgeInsets.only(left: AppSize.s8),
+                                ),
+                              ),
+                            ),
+                          )
                         : const SizedBox(),
-                    viewModel.getTripIndex != viewModel.getTripsList.length - 1 &&
-                        !viewModel.getIsAccepted
+                    viewModel.getTripIndex !=
+                                viewModel.getTripsList.length - 1 &&
+                            !viewModel.getIsAccepted &&
+                            viewModel.getTripsList.length != 1
                         ? Padding(
-                      padding: const EdgeInsets.only(right: AppSize.s5),
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: SizedBox.square(
-                          dimension: AppSize.s30,
-                          child: IconButton(
-                            onPressed: viewModel.nextTrip,
-                            icon: const Icon(Icons.arrow_forward_ios),
-                            iconSize: AppSize.s20,
-                            padding: const EdgeInsets.only(left: AppSize.s4),
-                          ),
-                        ),
-                      ),
-                    )
+                            padding: const EdgeInsets.only(right: AppSize.s5),
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: SizedBox.square(
+                                dimension: AppSize.s30,
+                                child: IconButton(
+                                  onPressed: viewModel.nextTrip,
+                                  icon: const Icon(Icons.arrow_forward_ios),
+                                  iconSize: AppSize.s20,
+                                  padding:
+                                      const EdgeInsets.only(left: AppSize.s4),
+                                ),
+                              ),
+                            ),
+                          )
                         : const SizedBox(),
                   ],
                 ),
@@ -130,10 +164,15 @@ class AcceptRide extends StatelessWidget {
                 SizedBox(
                   width: context.width() / 2,
                   child: ElevatedButton(
-                    onPressed: !viewModel.getIsAccepted ? viewModel.acceptTrip : null,
+                    onPressed: !viewModel.getIsAccepted &&
+                            !viewModel.getErrorIndexes
+                                .contains(viewModel.getTripIndex)
+                        ? viewModel.acceptTrip
+                        : null,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: ColorManager.lightBlue,
-                      disabledBackgroundColor: ColorManager.lightBlue.withOpacity(.5),
+                      disabledBackgroundColor:
+                          ColorManager.lightBlue.withOpacity(.5),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(AppSize.s10),
                       ),
@@ -141,31 +180,35 @@ class AcceptRide extends StatelessWidget {
                     child: viewModel.getIsAccepted
                         ? Lottie.asset(LottieAssets.loadingDotsWhite)
                         : Text(
-                      AppStrings.acceptingPassengersScreenButtonAccept.tr(),
-                      style: AppTextStyles
-                          .acceptingPassengersScreenButtonTextStyle(context),
-                    ),
+                            AppStrings.acceptingPassengersScreenButtonAccept
+                                .tr(),
+                            style: AppTextStyles
+                                .acceptingPassengersScreenButtonTextStyle(
+                                    context),
+                          ),
                   ),
                 ),
                 const SizedBox(height: AppSize.s10),
                 viewModel.getIsAccepted
                     ? SizedBox(
-                  width: context.width() / 2,
-                  child: ElevatedButton(
-                    onPressed: viewModel.cancelAcceptTrip,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: ColorManager.error,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppSize.s10),
-                      ),
-                    ),
-                    child: Text(
-                      AppStrings.acceptingPassengersScreenButtonCancel.tr(),
-                      style: AppTextStyles
-                          .acceptingPassengersScreenButtonTextStyle(context),
-                    ),
-                  ),
-                )
+                        width: context.width() / 2,
+                        child: ElevatedButton(
+                          onPressed: viewModel.cancelAcceptTrip,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: ColorManager.error,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(AppSize.s10),
+                            ),
+                          ),
+                          child: Text(
+                            AppStrings.acceptingPassengersScreenButtonCancel
+                                .tr(),
+                            style: AppTextStyles
+                                .acceptingPassengersScreenButtonTextStyle(
+                                    context),
+                          ),
+                        ),
+                      )
                     : const SizedBox(),
               ],
             ),

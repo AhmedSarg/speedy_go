@@ -48,7 +48,7 @@ class WaitingSearchingForPassengers extends StatelessWidget {
             width: context.width() / 1.5,
             height: context.width() / 10,
             child: ElevatedButton(
-              onPressed: viewModel.toggleDriverStatusUi,
+              onPressed: viewModel.toggleDriverStatus,
               style: ElevatedButton.styleFrom(
                 backgroundColor: ColorManager.error,
                 shape: RoundedRectangleBorder(

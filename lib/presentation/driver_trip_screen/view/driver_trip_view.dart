@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:speedy_go/presentation/resources/values_manager.dart';
 
 import '../../../app/sl.dart';
 import '../../base/base_states.dart';
@@ -18,7 +17,7 @@ class DriverTripScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-          create: (context) => DriverTripViewModel(sl(), sl(), sl(), sl(), sl())..start(),
+          create: (context) => DriverTripViewModel(sl(), sl(), sl(), sl(), sl(), sl())..start(),
           child: BlocConsumer<DriverTripViewModel, BaseStates>(
             listener: (context, state) {
               if (state is RatePassengerState) {
@@ -37,7 +36,7 @@ class DriverTripScreen extends StatelessWidget {
                     .whenComplete(
                   () async {
                     await DriverTripViewModel.get(context)
-                        .toggleDriverStatusRemote();
+                        .onLocationPermissionsSuccess();
                   },
                 );
               }
@@ -45,6 +44,9 @@ class DriverTripScreen extends StatelessWidget {
             },
             builder: (context, state) {
               print(state);
+              if (state is CheckPermissionsState) {
+                state = LoadingState();
+              }
               return baseBuilder(
                 context,
                 state,

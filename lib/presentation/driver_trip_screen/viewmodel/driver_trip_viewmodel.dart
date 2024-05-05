@@ -14,6 +14,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:speedy_go/domain/usecase/end_trip_usecase.dart';
 
 import '../../../domain/models/domain.dart';
 import '../../../domain/models/user_manager.dart';
@@ -42,6 +43,7 @@ class DriverTripViewModel extends BaseCubit
   final FindTripsUseCase _findTripsUseCase;
   final AcceptTripUseCase _acceptTripUseCase;
   final CancelAcceptTripUseCase _cancelAcceptTripUseCase;
+  final EndTripUseCase _endTripUseCase;
 
   DriverTripViewModel(
     this._userManager,
@@ -49,6 +51,7 @@ class DriverTripViewModel extends BaseCubit
     this._findTripsUseCase,
     this._acceptTripUseCase,
     this._cancelAcceptTripUseCase,
+    this._endTripUseCase,
   );
 
   bool _driverStatus = false, _isAccepted = false;
@@ -84,6 +87,10 @@ class DriverTripViewModel extends BaseCubit
   Set<Polyline> _polyline = {};
 
   Set<Marker> _markers = {};
+
+  Set<int> _errorIndexes = {};
+
+  bool _currentError = false;
 
   updatePage() {
     print(_pageIndex);
@@ -134,15 +141,6 @@ class DriverTripViewModel extends BaseCubit
     emit(ChangeDriverStatusState());
   }
 
-  Future<void> toggleDriverStatusUi() async {
-    if (!_driverStatus) {
-      _getLocationStream();
-      _positionSubscription = _positionStream?.listen(null);
-    } else {
-      toggleDriverStatusRemote();
-    }
-  }
-
   _getLocationStream() {
     emit(CheckPermissionsState());
     _positionStream = Geolocator.getPositionStream().map(
@@ -153,8 +151,28 @@ class DriverTripViewModel extends BaseCubit
     );
   }
 
-  Future<void> toggleDriverStatusRemote() async {
+  onLocationPermissionsSuccess() async {
+    await _fetchUserLocation();
+    await _fetchMapStyle();
+  }
+
+  Future<void> _fetchMapStyle() async {
+    _mapStyle ??= await rootBundle.loadString('assets/maps/dark_map.json');
+  }
+
+  Future<void> _fetchUserLocation() async {
+    emit(LoadingState());
+    if (_userLocation == null) {
+      Position position = await Geolocator.getCurrentPosition();
+      _userLocation = LatLng(position.latitude, position.longitude);
+    }
+    emit(ContentState());
+  }
+
+  Future<void> toggleDriverStatus() async {
+    print(_userLocation);
     emit(LoadingState(displayType: DisplayType.popUpDialog));
+    _positionSubscription = _positionStream?.listen(null);
     await _changeDriverStatusUseCase(
       ChangeDriverStatusUseCaseInput(
         online: !_driverStatus,
@@ -175,12 +193,18 @@ class DriverTripViewModel extends BaseCubit
           (r) async {
             _driverStatus = !_driverStatus;
             if (!_driverStatus) {
-              _positionStream = null;
-              _positionSubscription = null;
+              _markers = {};
+              _polyline = {};
+              _mapController.animateCamera(
+                CameraUpdate.newCameraPosition(
+                  CameraPosition(
+                    target: _userLocation!,
+                    zoom: AppSize.s18,
+                  ),
+                ),
+              );
               reset();
             } else {
-              await _fetchMapStyle();
-              await _fetchUserLocation();
               await findTrips();
             }
             emit(DriverStatusChangedState());
@@ -188,17 +212,6 @@ class DriverTripViewModel extends BaseCubit
         );
       },
     );
-  }
-
-  Future<void> _fetchMapStyle() async {
-    _mapStyle ??= await rootBundle.loadString('assets/maps/dark_map.json');
-  }
-
-  Future<void> _fetchUserLocation() async {
-    if (_userLocation == null) {
-      Position position = await Geolocator.getCurrentPosition();
-      _userLocation = LatLng(position.latitude, position.longitude);
-    }
   }
 
   Future<void> findTrips() async {
@@ -214,12 +227,12 @@ class DriverTripViewModel extends BaseCubit
             );
           },
           (r) {
-            print('in r');
             _tripsStream = r;
             updatePage();
             _tripsStream!.listen(
               (v) async {
                 // print(1);
+                print(v);
                 if (!_isAccepted) {
                   if (v.isNotEmpty &&
                       _tripsList.isEmpty &&
@@ -281,6 +294,12 @@ class DriverTripViewModel extends BaseCubit
 
   handleSelectedTrip(int tripIndex, _) async {
     _tripIndex = tripIndex;
+    if (_currentError) {
+      _errorIndexes.add(_tripIndex);
+    }
+    else {
+      _errorIndexes.remove(_tripIndex);
+    }
     _selectedFuture = _tripsList[tripIndex];
     _selectedTrip = await _tripsList[tripIndex];
     // print(500);
@@ -475,9 +494,15 @@ class DriverTripViewModel extends BaseCubit
     }
   }
 
+  // Future<void> endTrip()
+
   @override
   void start() {
-    updatePage();
+    emit(LoadingState());
+    Future.delayed(
+      const Duration(milliseconds: 100),
+      _getLocationStream,
+    );
   }
 
   @override
@@ -526,6 +551,9 @@ class DriverTripViewModel extends BaseCubit
   Set<Marker> get getMarkers => _markers;
 
   @override
+  Set<int> get getErrorIndexes => _errorIndexes;
+
+  @override
   set setTripsList(List<Future<TripPassengerModel>> trips) {
     _tripsList = trips;
   }
@@ -537,6 +565,11 @@ class DriverTripViewModel extends BaseCubit
   set setMapController(GoogleMapController controller) {
     _mapController = controller;
   }
+
+  @override
+  set setCurrentError(bool error) {
+    _currentError = error;
+  }
 }
 
 abstract class DriverTripViewModelInput {
@@ -545,6 +578,8 @@ abstract class DriverTripViewModelInput {
   set setTripPrice(int newPrice);
 
   set setMapController(GoogleMapController controller);
+
+  set setCurrentError(bool error);
 }
 
 abstract class DriverTripViewModelOutput {
@@ -577,4 +612,6 @@ abstract class DriverTripViewModelOutput {
   Set<Polyline> get getPolyline;
 
   Set<Marker> get getMarkers;
+
+  Set<int> get getErrorIndexes;
 }

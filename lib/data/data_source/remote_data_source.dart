@@ -462,7 +462,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   Future<Map<String, dynamic>> calculateTwoPoints(
       LatLng pointA, LatLng pointB) async {
     const String baseUrl = "https://router.hereapi.com/v8/";
-    const String apiKey = "oik-B012ulwjNXZalfVaMoLYZNl_RJXMgiNk9LWLtnQ";
+    const String apiKey = "YpBD_euJ3Ljd9GOpU9x-HDJGcFwipnxgwiSB38ceDPk";
     const String endpoint = "routes";
     const String url = baseUrl + endpoint;
     final dio = Dio();
