@@ -274,6 +274,7 @@ class RepositoryImpl implements Repository {
                             ),
                             pickupLocation,
                           ))['time'];
+                          driver['image_path'] ??= ImageAssets.unknownUserImage;
                           return TripDriverModel.fromMap(driver);
                         },
                       );

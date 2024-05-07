@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
@@ -25,9 +27,11 @@ class TripDriver extends StatelessWidget {
       stream: viewModel.getDrivers,
       builder: (context, drivers) {
         if (drivers.hasData && drivers.data!.isNotEmpty) {
-          if (viewModel.getSelectedDriver.id.isNotEmpty && !viewModel.getDriversIds
-              .sublist(viewModel.getDriversIds.length - drivers.data!.length)
-              .contains(viewModel.getSelectedDriver.id)) {
+          if (viewModel.getSelectedDriver.id.isNotEmpty &&
+              !viewModel.getDriversIds
+                  .sublist(
+                      viewModel.getDriversIds.length - drivers.data!.length)
+                  .contains(viewModel.getSelectedDriver.id)) {
             viewModel.setSelectedDriver = null;
           }
           return Column(
@@ -156,7 +160,41 @@ class Card extends StatelessWidget {
           children: [
             Row(
               children: [
-                const CircleAvatar(radius: AppSize.s30),
+                Container(
+                  width: AppSize.s60,
+                  height: AppSize.s60,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: driverSelected
+                          ? ColorManager.secondary
+                          : ColorManager.primary,
+                      strokeAlign: BorderSide.strokeAlignOutside,
+                    ),
+                  ),
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  child: driver.imagePath.contains('https')
+                      ? CachedNetworkImage(
+                          imageUrl: driver.imagePath,
+                          fit: BoxFit.cover,
+                          progressIndicatorBuilder: (_, __, progress) {
+                            return const Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(AppSize.s25),
+                                child: CircularProgressIndicator(
+                                  color: ColorManager.secondary,
+                                  strokeWidth: AppSize.s1,
+                                  strokeCap: StrokeCap.round,
+                                ),
+                              ),
+                            );
+                          },
+                        )
+                      : Image.asset(
+                          driver.imagePath,
+                          fit: BoxFit.cover,
+                        ),
+                ),
                 const SizedBox(width: AppSize.s10),
                 SizedBox(
                   width: (context.width() - AppSize.s130) * .7,

@@ -158,6 +158,7 @@ class TripDriverModel {
   final double rate;
   final int numberOfRates;
   final int time;
+  final String imagePath;
 
   TripDriverModel({
     required this.id,
@@ -171,6 +172,7 @@ class TripDriverModel {
     required this.rate,
     required this.numberOfRates,
     required this.time,
+    required this.imagePath,
   });
 
   factory TripDriverModel.fake() => TripDriverModel(
@@ -185,6 +187,7 @@ class TripDriverModel {
         rate: -1,
         numberOfRates: -1,
         time: -1,
+        imagePath: ImageAssets.unknownUserImage,
       );
 
   factory TripDriverModel.fromMap(Map<String, dynamic> map) {
@@ -200,6 +203,7 @@ class TripDriverModel {
       rate: map['rate'].toDouble(),
       numberOfRates: map['number_of_rates'].toInt(),
       time: map['time'],
+      imagePath: map['image_path']
     );
   }
 }
