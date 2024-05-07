@@ -91,6 +91,7 @@ abstract class RemoteDataSource {
   Future<void> acceptDriver({
     required String tripId,
     required String driverId,
+    required int price,
   });
 
   Future<void> endTrip(String tripId);
@@ -461,8 +462,9 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<Map<String, dynamic>> calculateTwoPoints(
       LatLng pointA, LatLng pointB) async {
+    print('----------------CALCULATED----------------');
     const String baseUrl = "https://router.hereapi.com/v8/";
-    const String apiKey = "YpBD_euJ3Ljd9GOpU9x-HDJGcFwipnxgwiSB38ceDPk";
+    const String apiKey = "Vc6Uhd34IMqaeQskoAJOIGbVv2RzpWgrO07T9WYuM9s";
     const String endpoint = "routes";
     const String url = baseUrl + endpoint;
     final dio = Dio();
@@ -523,10 +525,13 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   Future<void> acceptDriver({
     required String tripId,
     required String driverId,
+    required int price,
   }) async {
+    Completer<void> completer = Completer<void>();
     await _firestore.collection('available_trips').doc(tripId).update({
       'drivers': FieldValue.delete(),
       'driver_id': driverId,
+      'price': price,
     });
     DocumentReference<Map<String, dynamic>> doc =
         _firestore.collection('available_trips').doc(tripId);
@@ -534,6 +539,14 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       _firestore.collection('running_trips').doc(trip.id).set(trip.data()!);
     });
     await doc.delete();
+    _firestore.collection('running_trips').doc(tripId).snapshots().listen(
+      (oldDoc) async {
+        if (!oldDoc.exists) {
+          completer.complete();
+        }
+      },
+    );
+    return completer.future;
   }
 
   @override
@@ -573,13 +586,19 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       await _firestore.collection('online_drivers').doc(driverId).set({
         'coordinates': null,
       });
-      coordinatesSubscription!.onData((location) async {
-        await _firestore.collection('online_drivers').doc(driverId).update(
-          {
-            'coordinates': GeoPoint(location.latitude, location.longitude),
-          },
-        );
-      });
+      coordinatesSubscription!.onData(
+        (location) async {
+          DocumentReference docRef = _firestore.collection('online_drivers').doc(driverId);
+          DocumentSnapshot doc = await docRef.get();
+          if (doc.exists) {
+            await docRef.update(
+              {
+                'coordinates': GeoPoint(location.latitude, location.longitude),
+              },
+            );
+          }
+        },
+      );
     } else {
       coordinatesSubscription!.cancel();
       await _firestore.collection('online_drivers').doc(driverId).delete();
@@ -588,10 +607,14 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Stream<List<Map<String, dynamic>>> findTrips() {
+    // print(-4);
     return _firestore.collection('available_trips').snapshots().map(
       (snapshot) {
+        // print(-3);
         return snapshot.docs.map(
           (e) {
+            // print(-2);
+            // print(e.data());
             Map<String, dynamic> res;
             res = e.data();
             res['id'] = e.id;

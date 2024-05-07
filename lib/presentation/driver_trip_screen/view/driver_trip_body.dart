@@ -21,9 +21,6 @@ class DriverTripBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked: (_) {
-        viewModel.prevPage();
-      },
       child: Scaffold(
         body: SafeArea(
           child: SizedBox(

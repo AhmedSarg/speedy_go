@@ -216,7 +216,7 @@ class TripPassengerModel {
   late final String imagePath;
   late final double passengerRate;
   late final String passengerPhoneNumber;
-  String? routeCode;
+  late final String routeCode;
   final int price;
 
   TripPassengerModel({

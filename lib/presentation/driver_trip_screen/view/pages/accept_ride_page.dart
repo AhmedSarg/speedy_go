@@ -26,7 +26,9 @@ class AcceptRide extends StatelessWidget {
     return StreamBuilder(
       stream: viewModel.getTripsStream,
       builder: (context, snapshot) {
-        if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+        print('STREAM');
+        print(snapshot.data);
+        if (snapshot.hasData) {
           return SizedBox(
             child: Column(
               children: [
@@ -54,8 +56,10 @@ class AcceptRide extends StatelessWidget {
                         items: snapshot.data!.map(
                           (futureTrip) {
                             return FutureBuilder<TripPassengerModel>(
-                              future: futureTrip,
+                              future: futureTrip.$2,
                               builder: (context, future) {
+                                print('FUTURE');
+                                print(future.data);
                                 if (future.hasData) {
                                   viewModel.setCurrentError = false;
                                   TripPassengerModel tripModel = future.data!;
@@ -64,7 +68,8 @@ class AcceptRide extends StatelessWidget {
                                     passengerImage: tripModel.imagePath,
                                     passengerRate: tripModel.passengerRate,
                                     time: tripModel.awayMins,
-                                    tripCost: tripModel.price,
+                                    tripCost:
+                                        viewModel.getNewCost ?? tripModel.price,
                                     tripDistance: tripModel.distance,
                                     tripTime: tripModel.expectedTime,
                                   );
@@ -193,7 +198,11 @@ class AcceptRide extends StatelessWidget {
                     ? SizedBox(
                         width: context.width() / 2,
                         child: ElevatedButton(
-                          onPressed: viewModel.cancelAcceptTrip,
+                          onPressed: () {
+                            viewModel.setNewCost = null;
+                            viewModel.getNewCostController.clear();
+                            viewModel.cancelAcceptTrip();
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: ColorManager.error,
                             shape: RoundedRectangleBorder(

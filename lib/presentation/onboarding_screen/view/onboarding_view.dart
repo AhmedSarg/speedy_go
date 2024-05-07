@@ -20,6 +20,7 @@ class OnBoardingScreen extends StatelessWidget {
           Image.asset(
             ImageAssets.loginBackgroundImage,
             height: AppSize.infinity,
+            width: AppSize.infinity,
             fit: BoxFit.cover,
           ).animate().fade(
                 duration: const Duration(milliseconds: 500),

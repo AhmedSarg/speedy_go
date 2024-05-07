@@ -101,7 +101,7 @@ class CardPassenger extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Text(
-                            "$passengerRate",
+                            "${passengerRate.round()}",
                             style: AppTextStyles
                                 .acceptingPassengersScreenPassengerRateTextStyle(
                                     context),

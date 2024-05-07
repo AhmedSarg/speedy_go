@@ -142,17 +142,15 @@ class TripDetails extends StatelessWidget {
           height: AppSize.s50,
           width: AppSize.infinity,
           child: ElevatedButton(
-            onPressed: () {
-              viewModel.endTrip();
-            },
+            onPressed: viewModel.shareTrip,
             style: ElevatedButton.styleFrom(
-              backgroundColor: ColorManager.lightBlue,
+              backgroundColor: ColorManager.secondary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppSize.s15),
               ),
             ),
             child: Text(
-              AppStrings.tripScreenDetailsPageEndTrip.tr(),
+              AppStrings.tripScreenDetailsPageShareTrip.tr(),
               style: AppTextStyles.tripScreenDetailsPageButtonTextStyle(context),
             ),
           ),

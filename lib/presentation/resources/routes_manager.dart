@@ -29,7 +29,7 @@ class Routes {
   Routes._();
 
   //todo make splash initial route
-  static const String splashRoute = "/";
+  static const String splashRoute = "/splash";
   static const String onBoardingRoute = "/onBoarding";
   static const String loginRoute = "/login";
   static const String selectionRoute = "/selection";

@@ -122,9 +122,9 @@
   "tripScreenDriverSelectionPageArrival1": "Will arrive in ",
   "tripScreenDriverSelectionPageArrival2": " mins.",
   "tripScreenDriverSelectionPageConfirm": "Confirm",
-  "tripScreenDetailsPageTitle": "Select Driver",
+  "tripScreenDetailsPageTitle": "Trip is Running...",
   "tripScreenDetailsPageColor": "Color",
-  "tripScreenDetailsPageEndTrip": "End Trip",
+  "tripScreenDetailsPageShareTrip": "Share Trip",
 
   "rateScreenTitle": "How Was Your Last Trip?",
   "rateScreenDescription": "Help us by leaving a feedback",

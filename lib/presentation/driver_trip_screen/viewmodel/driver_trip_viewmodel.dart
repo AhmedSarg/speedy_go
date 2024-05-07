@@ -69,19 +69,19 @@ class DriverTripViewModel extends BaseCubit
 
   final TextEditingController _costController = TextEditingController();
 
+  int? _newCost;
+
   int _pageIndex = 0;
 
   Widget? _contentPage;
 
-  Stream<List<Future<TripPassengerModel>>>? _tripsStream;
+  Stream<List<(String, Future<TripPassengerModel>)>>? _tripsStream;
 
   final CarouselController _carouselController = CarouselController();
 
-  List<Future<TripPassengerModel>> _tripsList = [];
+  final List<(String, Future<TripPassengerModel>)> _tripsList = [];
 
   TripPassengerModel? _selectedTrip;
-
-  Future<TripPassengerModel>? _selectedFuture;
 
   int _tripIndex = 0;
 
@@ -89,13 +89,13 @@ class DriverTripViewModel extends BaseCubit
 
   Set<Marker> _markers = {};
 
-  Set<int> _errorIndexes = {};
+  final Set<int> _errorIndexes = {};
+
+  final List<String> _tripsIds = [];
 
   bool _currentError = false;
 
   updatePage() {
-    print(_pageIndex);
-    print(_tripsList.length);
     if (_pageIndex == -2) {
       _contentPage = const EditCost();
     } else if (_pageIndex == -1) {
@@ -119,33 +119,21 @@ class DriverTripViewModel extends BaseCubit
     }
   }
 
-  prevPage() {
-    // if (_pageIndex > 0 && _pageIndex != 2) {
-    //   _pageIndex--;
-    //   updatePage();
-    // }
-  }
-
-  reset() async {
+  reset() {
+    // print('RESET');
+    _positionSubscription!.cancel();
     _selectedTrip = null;
     _tripIndex = 0;
     _errorIndexes.clear();
     _markers.clear();
     _polyline.clear();
     _tripsList.clear();
+    _tripsIds.clear();
     _currentError = false;
     _isAccepted = false;
-    _selectedFuture = null;
     _tripsStream = null;
     _pageIndex = 0;
     updatePage();
-  }
-
-  _loadContent() {
-    int lastIndex = _pageIndex;
-    _pageIndex = -1;
-    updatePage();
-    _pageIndex = lastIndex;
   }
 
   toggleChangeStatusDialog() {
@@ -223,7 +211,11 @@ class DriverTripViewModel extends BaseCubit
   }
 
   Future<void> findTrips() async {
-    await _findTripsUseCase(FindTripsUseCaseInput(_userLocation!)).then(
+    await _findTripsUseCase(
+      FindTripsUseCaseInput(
+        driverLocation: _userLocation!,
+      ),
+    ).then(
       (value) {
         value.fold(
           (l) {
@@ -235,42 +227,89 @@ class DriverTripViewModel extends BaseCubit
             );
           },
           (r) {
-            _tripsStream = r;
-            updatePage();
-            _tripsStream!.listen(
-              (v) async {
-                if (!_isAccepted) {
-                  if (v.isNotEmpty &&
-                      _tripsList.isEmpty &&
-                      _selectedTrip == null) {
-                    // print(2);
-                    _tripsList = v;
-                    _selectedFuture = _tripsList[_tripIndex];
-                    _selectedTrip = await _tripsList[_tripIndex];
-                  } else if (v.isNotEmpty) {
-                    // print(3);
-                    _tripsList = v;
-                    if (_tripIndex > _tripsList.length - 1) {
-                      // print(3.1);
-                      _tripIndex = 0;
-                    }
-                    _selectedFuture = _tripsList[_tripIndex];
-                    _selectedTrip = await _tripsList[_tripIndex];
-                  } else {
-                    // print(4);
-                    _tripIndex = 0;
-                    _selectedFuture = null;
-                    _selectedTrip = null;
-                  }
-                  // print(5);
-                  // print(_tripIndex);
-                  // print(_selectedTrip!.awayMins);
-                  // print((await _selectedFuture)!.awayMins);
-                  await fetchPolylines();
-                  emit(ContentState());
+            _tripsStream = r.map((newTripsListTuples) {
+              List<String> newTripsIds = [];
+              // print('object0');
+              // print(newTripsListTuples);
+              for ((String, Future<TripPassengerModel>) tuple
+                  in newTripsListTuples) {
+                // print('object1');
+                // print(_tripsIds);
+                if (!_tripsIds.contains(tuple.$1)) {
+                  // print('object2');
+                  _tripsList.add(tuple);
+                  _tripsIds.add(tuple.$1);
                 }
-              },
-            );
+                // print(_tripsIds);
+                // print('object3');
+                // print('object4');
+                newTripsIds.add(tuple.$1);
+                // updatePage();
+              }
+              // print('object5');
+              List<String> removedTrips = [];
+              for ((String, Future<TripPassengerModel>) oldListTuple
+                  in _tripsList) {
+                // print('object6');
+                if (!newTripsIds.contains(oldListTuple.$1)) {
+                  removedTrips.add(oldListTuple.$1);
+                  if (oldListTuple.$1 == _selectedTrip?.id) {
+                    _tripIndex = 0;
+                  }
+                }
+              }
+              _tripsList.removeWhere((element) => removedTrips.contains(element.$1));
+              // print('object8');
+              // print(_tripsList);
+              // updatePage();
+              // print(6);
+              return _tripsList;
+            });
+            // _tripsStream!.listen(
+            //   (v) async {
+            //     if (!_isAccepted) {
+            //       if (v.isNotEmpty &&
+            //           _tripsList.isEmpty &&
+            //           _selectedTrip == null) {
+            //         print(2);
+            //         _tripsList = v;
+            //         _selectedTrip = await _tripsList[_tripIndex].$2;
+            //         updatePage();
+            //       } else if (v.isNotEmpty) {
+            //         print(3);
+            //         _tripsList = v;
+            //         print(v);
+            //         print(_tripsStream);
+            //         // updatePage();
+            //         if (_tripIndex > _tripsList.length - 1) {
+            //           print(3.1);
+            //           _tripIndex = 0;
+            //           // updatePage();
+            //         }
+            //         print(3.2);
+            //         _selectedTrip = await _tripsList[_tripIndex].$2.whenComplete(() {
+            //           print('GOOOOOOOOOOOOT');
+            //           updatePage();
+            //         });
+            //         updatePage();
+            //       } else {
+            //         print(4);
+            //         _tripIndex = 0;
+            //         _selectedTrip = null;
+            //         // updatePage();
+            //       }
+            //       print(5);
+            //       // print(_tripIndex);
+            //       // print(_selectedTrip!.awayMins);
+            //       // print((await _selectedFuture)!.awayMins);
+            //       updatePage();
+            //       await fetchPolylines();
+            //       emit(ContentState());
+            //     }
+            //     updatePage();
+            //   },
+            // );
+            updatePage();
           },
         );
       },
@@ -305,12 +344,7 @@ class DriverTripViewModel extends BaseCubit
     } else {
       _errorIndexes.remove(_tripIndex);
     }
-    _selectedFuture = _tripsList[tripIndex];
-    _selectedTrip = await _tripsList[tripIndex];
-    // print(500);
-    // print(_tripIndex);
-    // print(_selectedTrip!.awayMins);
-    // print((await _selectedFuture)!.awayMins);
+    _selectedTrip = await _tripsList[tripIndex].$2;
     await fetchPolylines();
     updatePage();
   }
@@ -567,7 +601,8 @@ class DriverTripViewModel extends BaseCubit
   LatLng get getUserLocation => _userLocation!;
 
   @override
-  Stream<List<Future<TripPassengerModel>>> get getTripsStream => _tripsStream!;
+  Stream<List<(String, Future<TripPassengerModel>)>>
+      get getTripsStream => _tripsStream!;
 
   @override
   CarouselController get getCarouselController => _carouselController;
@@ -576,7 +611,7 @@ class DriverTripViewModel extends BaseCubit
   int get getTripIndex => _tripIndex;
 
   @override
-  List<Future<TripPassengerModel>> get getTripsList => _tripsList;
+  List<(String, Future<TripPassengerModel>)> get getTripsList => _tripsList;
 
   @override
   TripPassengerModel get getSelectedTrip => _selectedTrip!;
@@ -591,9 +626,7 @@ class DriverTripViewModel extends BaseCubit
   Set<int> get getErrorIndexes => _errorIndexes;
 
   @override
-  set setTripsList(List<Future<TripPassengerModel>> trips) {
-    _tripsList = trips;
-  }
+  int? get getNewCost => _newCost;
 
   @override
   set setTripPrice(int newPrice) {}
@@ -607,16 +640,21 @@ class DriverTripViewModel extends BaseCubit
   set setCurrentError(bool error) {
     _currentError = error;
   }
+
+  @override
+  set setNewCost(int? newCost) {
+    _newCost = newCost;
+  }
 }
 
 abstract class DriverTripViewModelInput {
-  set setTripsList(List<Future<TripPassengerModel>> trips);
-
   set setTripPrice(int newPrice);
 
   set setMapController(GoogleMapController controller);
 
   set setCurrentError(bool error);
+
+  set setNewCost(int? newCost);
 }
 
 abstract class DriverTripViewModelOutput {
@@ -636,13 +674,13 @@ abstract class DriverTripViewModelOutput {
 
   LatLng get getUserLocation;
 
-  Stream<List<Future<TripPassengerModel>>> get getTripsStream;
+  Stream<List<(String, Future<TripPassengerModel>)>> get getTripsStream;
 
   CarouselController get getCarouselController;
 
   int get getTripIndex;
 
-  List<Future<TripPassengerModel>> get getTripsList;
+  List<(String, Future<TripPassengerModel>)> get getTripsList;
 
   TripPassengerModel get getSelectedTrip;
 
@@ -651,4 +689,6 @@ abstract class DriverTripViewModelOutput {
   Set<Marker> get getMarkers;
 
   Set<int> get getErrorIndexes;
+
+  int? get getNewCost;
 }
