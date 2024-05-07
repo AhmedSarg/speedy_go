@@ -117,6 +117,7 @@ class _SplashScreenState extends State<SplashScreen>
                 (state is UserNotSignedState)
                     ? Image.asset(
                         ImageAssets.loginBackgroundImage,
+                        width: AppSize.infinity,
                         height: AppSize.infinity,
                         fit: BoxFit.cover,
                       ).animate().fade(

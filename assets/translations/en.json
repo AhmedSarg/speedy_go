@@ -122,9 +122,9 @@
   "tripScreenDriverSelectionPageArrival1": "Will arrive in ",
   "tripScreenDriverSelectionPageArrival2": " mins.",
   "tripScreenDriverSelectionPageConfirm": "Confirm",
-  "tripScreenDetailsPageTitle": "Select Driver",
+  "tripScreenDetailsPageTitle": "Trip is Running...",
   "tripScreenDetailsPageColor": "Color",
-  "tripScreenDetailsPageEndTrip": "End Trip",
+  "tripScreenDetailsPageShareTrip": "Share Trip",
 
   "rateScreenTitle": "How Was Your Last Trip?",
   "rateScreenDescription": "Help us by leaving a feedback",
@@ -168,19 +168,19 @@
   "driverTripScreenStatusOffline" : "Offline",
   "driverTripScreenStatusDialogButton" : "Close",
 
-  "waitingSearchingForPassengersScreenTitle" : "Searching for passengers",
-  "waitingSearchingForPassengersScreenPleaseWait" : "Please wait",
-  "waitingSearchingForPassengersScreenButton" : "Cancel",
+  "waitingSearchingForPassengersScreenTitle" : "Searching for Passengers",
+  "waitingSearchingForPassengersScreenPleaseWait" : "Please Wait",
+  "waitingSearchingForPassengersScreenButton" : "Go Offline",
 
-  "acceptingPassengersScreenTitle" : "Searching for passengers",
+  "acceptingPassengersScreenTitle" : "Searching for Passengers",
   "acceptingPassengersScreenButtonAccept" : "Accept Ride",
   "acceptingPassengersScreenButtonCancel" : "Cancel",
 
-  "runningTripScreenTitle" : "Trip is running ... ",
-  "runningTripScreenButton" : "Cancel",
+  "runningTripScreenTitle" : "Trip is Running...",
+  "runningTripScreenButton" : "End Trip",
 
-  "endTripScreenTitle" : "Trip finished ",
-  "endTripScreenButton" : "End Trip"
+  "endTripScreenTitle" : "Trip Finished",
+  "endTripScreenButton" : "Next"
 
 
 

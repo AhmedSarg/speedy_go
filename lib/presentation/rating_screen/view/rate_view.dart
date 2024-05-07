@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:speedy_go/presentation/rating_screen/states/rate_states.dart';
-import 'package:speedy_go/presentation/resources/routes_manager.dart';
+import 'package:speedy_go/domain/models/enums.dart';
 
 import '../../../app/sl.dart';
 import '../../base/base_states.dart';
 import '../../base/cubit_builder.dart';
 import '../../base/cubit_listener.dart';
+import '../../resources/routes_manager.dart';
 import '../../resources/values_manager.dart';
+import '../states/rate_states.dart';
 import '../viewmodel/rate_viewmodel.dart';
 import 'widgets/rate_body.dart';
 
@@ -28,10 +29,7 @@ class RateScreen extends StatelessWidget {
             child: BlocConsumer<RateViewModel, BaseStates>(
               listener: (context, state) {
                 if (state is RateSuccessState) {
-                  Navigator.pushReplacementNamed(
-                    context,
-                    Routes.mainLayoutRoute,
-                  );
+                  Navigator.pop(context);
                 }
                 baseListener(context, state);
               },

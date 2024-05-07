@@ -274,6 +274,7 @@ class RepositoryImpl implements Repository {
                             ),
                             pickupLocation,
                           ))['time'];
+                          driver['image_path'] ??= ImageAssets.unknownUserImage;
                           return TripDriverModel.fromMap(driver);
                         },
                       );
@@ -358,17 +359,19 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, void>> acceptDriver({
+  Future<Either<Failure, Future<void>>> acceptDriver({
     required String tripId,
     required String driverId,
+    required int price,
   }) async {
     try {
       if (await _networkInfo.isConnected) {
-        await _remoteDataSource.acceptDriver(
+        Future<void> result = _remoteDataSource.acceptDriver(
           tripId: tripId,
           driverId: driverId,
+          price: price,
         );
-        return const Right(null);
+        return Right(result);
       } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
       }
@@ -450,32 +453,64 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, Stream<List<Future<TripPassengerModel>>>>> findTrips(
-      LatLng driverLocation) async {
+  Future<Either<Failure, Stream<List<(String, Future<TripPassengerModel>)>>>>
+      findTrips({
+    required LatLng driverLocation,
+    required TripType tripType,
+  }) async {
     try {
       if (await _networkInfo.isConnected) {
-        Stream<List<Future<TripPassengerModel>>> tripsStream =
-            _remoteDataSource.findTrips().map(
+        List<String> tripsIds = [];
+        Stream<List<(String, Future<TripPassengerModel>)>> tripsStream =
+            _remoteDataSource.findTrips(tripType: tripType).map(
           (trips) {
-            return trips.map(
+            List<String> newTripIds = [];
+            List<Future<TripPassengerModel>> futureTrips = trips.map(
               (trip) async {
-                var user =
-                    await _remoteDataSource.getUserById(trip['passenger_id']);
+                newTripIds.add(trip['id']);
                 GeoPoint pickupLocation = trip['pickup_location'];
-                int awayMins = (await _remoteDataSource.calculateTwoPoints(
-                  LatLng(
-                    pickupLocation.latitude,
-                    pickupLocation.longitude,
-                  ),
-                  driverLocation,
-                ))['time'];
-                return TripPassengerModel.fromMap(trip)
-                  ..setName = '${user['first_name']} ${user['last_name']}'
-                  ..setAwayMins = awayMins
-                  ..setPassengerRate = user['rate']
-                  ..setImagePath = user['image_path'] ?? ImageAssets.unknownUserImage;
+                GeoPoint destinationLocation = trip['destination_location'];
+                TripPassengerModel returnedTrip =
+                    TripPassengerModel.fromMap(trip);
+                if (!tripsIds.contains(trip['id'])) {
+                  var user =
+                      await _remoteDataSource.getUserById(trip['passenger_id']);
+                  Map<String, dynamic> timeCalculations =
+                      await _remoteDataSource.calculateTwoPoints(
+                    LatLng(
+                      pickupLocation.latitude,
+                      pickupLocation.longitude,
+                    ),
+                    driverLocation,
+                  );
+                  Map<String, dynamic> routeCalculations =
+                      await _remoteDataSource.calculateTwoPoints(
+                    LatLng(
+                      pickupLocation.latitude,
+                      pickupLocation.longitude,
+                    ),
+                    LatLng(
+                      destinationLocation.latitude,
+                      destinationLocation.longitude,
+                    ),
+                  );
+                  returnedTrip
+                    ..setAwayMins = timeCalculations['time']
+                    ..setRouteCode = routeCalculations['polylineCode']
+                    ..setName = '${user['first_name']} ${user['last_name']}'
+                    ..setPassengerRate = user['rate']
+                    ..setImagePath =
+                        user['image_path'] ?? ImageAssets.unknownUserImage
+                    ..setPassengerPhoneNumber = user['phone_number'];
+                }
+                return returnedTrip;
               },
             ).toList();
+            tripsIds.addAll(newTripIds);
+            int i = 0;
+            return futureTrips.map((futureTrip) {
+              return (newTripIds[i++], futureTrip);
+            }).toList();
           },
         );
         return Right(tripsStream);

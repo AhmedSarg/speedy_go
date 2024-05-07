@@ -158,6 +158,7 @@ class TripDriverModel {
   final double rate;
   final int numberOfRates;
   final int time;
+  final String imagePath;
 
   TripDriverModel({
     required this.id,
@@ -171,6 +172,7 @@ class TripDriverModel {
     required this.rate,
     required this.numberOfRates,
     required this.time,
+    required this.imagePath,
   });
 
   factory TripDriverModel.fake() => TripDriverModel(
@@ -185,6 +187,7 @@ class TripDriverModel {
         rate: -1,
         numberOfRates: -1,
         time: -1,
+        imagePath: ImageAssets.unknownUserImage,
       );
 
   factory TripDriverModel.fromMap(Map<String, dynamic> map) {
@@ -200,6 +203,7 @@ class TripDriverModel {
       rate: map['rate'].toDouble(),
       numberOfRates: map['number_of_rates'].toInt(),
       time: map['time'],
+      imagePath: map['image_path']
     );
   }
 }
@@ -215,6 +219,8 @@ class TripPassengerModel {
   late final int awayMins;
   late final String imagePath;
   late final double passengerRate;
+  late final String passengerPhoneNumber;
+  late final String routeCode;
   final int price;
 
   TripPassengerModel({
@@ -241,6 +247,14 @@ class TripPassengerModel {
 
   set setPassengerRate(double passengerRate) {
     this.passengerRate = passengerRate;
+  }
+
+  set setPassengerPhoneNumber(String phoneNumber) {
+    passengerPhoneNumber = phoneNumber;
+  }
+
+  set setRouteCode(String routeCode) {
+    this.routeCode = routeCode;
   }
 
   factory TripPassengerModel.fake() => TripPassengerModel(
@@ -270,7 +284,7 @@ class TripPassengerModel {
         (map['destination_location'] as GeoPoint).longitude,
       ),
       distance: map['distance'].toInt(),
-      expectedTime: map['expected_time'].toInt(),
+      expectedTime: map['expectedTime'].toInt(),
       price: map['price'].toInt(),
     );
   }

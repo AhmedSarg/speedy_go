@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../../../../domain/models/domain.dart';
 import '../../../../../../domain/models/enums.dart';
@@ -36,7 +38,6 @@ class PassengerTripViewModel extends BaseCubit
   final CalculateTwoPointsUseCase _calculateTwoPointsUseCase;
   final CancelTripUseCase _cancelTripUseCase;
   final AcceptDriverUseCase _acceptDriversUseCase;
-  final EndTripUseCase _endTripUseCase;
 
   PassengerTripViewModel(
     this._userManager,
@@ -44,7 +45,6 @@ class PassengerTripViewModel extends BaseCubit
     this._calculateTwoPointsUseCase,
     this._cancelTripUseCase,
     this._acceptDriversUseCase,
-    this._endTripUseCase,
   );
 
   final AppLifecycleObserver _appLifecycleObserver = AppLifecycleObserver();
@@ -145,6 +145,11 @@ class PassengerTripViewModel extends BaseCubit
     _selectedDriver = selectedDriver;
     _setPageContent();
     emit(SelectDriverState());
+  }
+
+  @override
+  set setCanPop(bool canPop) {
+    _canPop = canPop;
   }
 
   Future<void> _fetchMapStyle() async {
@@ -297,6 +302,7 @@ class PassengerTripViewModel extends BaseCubit
       AcceptDriverUseCaseInput(
         tripId: _tripId!,
         driverId: _selectedDriver!.id,
+        price: _selectedDriver!.price,
       ),
     ).then(
       (value) {
@@ -309,34 +315,35 @@ class PassengerTripViewModel extends BaseCubit
               ),
             );
           },
-          (r) {
+          (r) async {
             nextPage();
+            r.whenComplete(
+              () {
+                DataIntent.pushRatedUserId(_selectedDriver!.id);
+                emit(RateDriverState());
+              },
+            );
           },
         );
       },
     );
   }
 
-  Future<void> endTrip() async {
-    _loadingContent();
-    await _endTripUseCase(EndTripUseCaseInput(
-      tripId: _tripId!,
-    )).then(
-      (value) {
-        value.fold(
-          (l) {
-            emit(ErrorState(
-              failure: l,
-              displayType: DisplayType.popUpDialog,
-            ),);
-          },
-          (r) {
-            DataIntent.pushRatedUserId(_selectedDriver!.id);
-            emit(RateDriverState());
-          },
-        );
-      },
-    );
+  Future<void> shareTrip() async {
+    Position userLocation = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best);
+    Share.share('''
+      Follow my trip details:\n
+      Driver Name: ${_selectedDriver!.name}\n
+      Driver Phone Number: ${_selectedDriver!.phoneNumber}\n
+      Driver Car Model: ${_selectedDriver!.car}\n
+      Driver Car Color: ${_selectedDriver!.color}\n
+      Driver Car Licence: ${_selectedDriver!.license}\n
+      Trip Type: ${_tripType!.name}\n
+      Pickup Location: ${_pickupLocation.latitude}, ${_pickupLocation.longitude}\n
+      Current Location: ${userLocation.latitude}, ${userLocation.longitude}\n
+      Destination Location ${_destinationLocation.latitude}, ${_destinationLocation.longitude}\n
+      ''');
   }
 }
 
@@ -346,6 +353,8 @@ abstract class PassengerTripViewModelInput {
   set setSelectedDriver(TripDriverModel? selectedDriver);
 
   set setPrice(String? price);
+
+  set setCanPop(bool canPop);
 }
 
 abstract class PassengerTripViewModelOutput {

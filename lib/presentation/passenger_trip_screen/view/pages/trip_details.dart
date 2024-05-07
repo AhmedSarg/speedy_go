@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -47,7 +48,39 @@ class TripDetails extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  const CircleAvatar(radius: AppSize.s30),
+                  Container(
+                    width: AppSize.s60,
+                    height: AppSize.s60,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: ColorManager.secondary,
+                        strokeAlign: BorderSide.strokeAlignOutside,
+                      ),
+                    ),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    child: viewModel.getSelectedDriver.imagePath.contains('https')
+                        ? CachedNetworkImage(
+                      imageUrl: viewModel.getSelectedDriver.imagePath,
+                      fit: BoxFit.cover,
+                      progressIndicatorBuilder: (_, __, progress) {
+                        return const Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(AppSize.s25),
+                            child: CircularProgressIndicator(
+                              color: ColorManager.secondary,
+                              strokeWidth: AppSize.s1,
+                              strokeCap: StrokeCap.round,
+                            ),
+                          ),
+                        );
+                      },
+                    )
+                        : Image.asset(
+                      viewModel.getSelectedDriver.imagePath,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                   const SizedBox(width: AppSize.s10),
                   SizedBox(
                     width: (context.width() - AppSize.s130) * .7,
@@ -142,17 +175,15 @@ class TripDetails extends StatelessWidget {
           height: AppSize.s50,
           width: AppSize.infinity,
           child: ElevatedButton(
-            onPressed: () {
-              viewModel.endTrip();
-            },
+            onPressed: viewModel.shareTrip,
             style: ElevatedButton.styleFrom(
-              backgroundColor: ColorManager.lightBlue,
+              backgroundColor: ColorManager.secondary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppSize.s15),
               ),
             ),
             child: Text(
-              AppStrings.tripScreenDetailsPageEndTrip.tr(),
+              AppStrings.tripScreenDetailsPageShareTrip.tr(),
               style: AppTextStyles.tripScreenDetailsPageButtonTextStyle(context),
             ),
           ),

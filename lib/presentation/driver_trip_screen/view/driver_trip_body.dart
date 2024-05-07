@@ -21,77 +21,57 @@ class DriverTripBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked: (_) {
-        viewModel.prevPage();
-      },
-      child: SafeArea(
-        child: SizedBox(
-          width: AppSize.infinity,
-          height: AppSize.infinity,
-          child: Stack(
-            children: [
-              viewModel.getDriverStatus
-                  ? GoogleMap(
-                      initialCameraPosition: CameraPosition(
-                        target: viewModel.getUserLocation,
-                        zoom: AppSize.s18,
-                      ),
-                      myLocationEnabled: true,
-                      myLocationButtonEnabled: false,
-                      zoomControlsEnabled: false,
-                      style: viewModel.getMapStyle,
-                    )
-                  : Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(AppPadding.p50),
-                        child: Lottie.asset(LottieAssets.areYouSure),
-                      ),
-                    ),
-              viewModel.getDriverStatus
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Container(
-                          width: AppSize.infinity,
-                          padding: EdgeInsets.symmetric(
-                            vertical: AppPadding.p20,
-                            horizontal: viewModel.getPageIndex == 1
-                                ? AppSize.s0
-                                : AppSize.s20,
-                          ),
-                          decoration: const BoxDecoration(
-                            color: ColorManager.lightBlack,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(AppSize.s20),
-                              topRight: Radius.circular(AppSize.s20),
-                            ),
-                          ),
-                          child: viewModel.getPage,
+      child: Scaffold(
+        body: SafeArea(
+          child: SizedBox(
+            height: AppSize.infinity,
+            width: AppSize.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: Stack(
+                    children: [
+                      GoogleMap(
+                        initialCameraPosition: CameraPosition(
+                          target: viewModel.getUserLocation,
+                          zoom: AppSize.s18,
                         ),
-                      ],
-                    )
-                  : const SizedBox(),
-              StatusButton(),
-              (viewModel.getPageIndex != 5 &&
-                      viewModel.getPageIndex != 0 &&
-                      viewModel.getPageIndex != 1)
-                  ? SafeArea(
-                      child: Padding(
-                        padding: const EdgeInsets.all(AppPadding.p10),
-                        child: BackOrExit(
-                          viewModel: viewModel,
-                          onTap: () {
-                            if (viewModel.getPageIndex == 4) {
-                              viewModel.prevPage();
-                            } else {
-                              viewModel.reset();
-                            }
-                          },
-                        ),
+                        myLocationEnabled: true,
+                        myLocationButtonEnabled: false,
+                        zoomControlsEnabled: false,
+                        polylines: viewModel.getPolyline,
+                        markers: viewModel.getMarkers,
+                        style: viewModel.getMapStyle,
+                        onMapCreated: (controller) {
+                          viewModel.setMapController = controller;
+                        },
                       ),
-                    )
-                  : const SizedBox(),
-            ],
+                      viewModel.getPageIndex <= 0
+                          ? StatusButton()
+                          : const SizedBox(),
+                    ],
+                  ),
+                ),
+                viewModel.getDriverStatus
+                    ? Container(
+                        width: AppSize.infinity,
+                        padding: const EdgeInsets.symmetric(
+                          vertical: AppPadding.p20,
+                          horizontal: AppSize.s0,
+                        ),
+                        decoration: const BoxDecoration(
+                          color: ColorManager.lightBlack,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(AppSize.s20),
+                            topRight: Radius.circular(AppSize.s20),
+                          ),
+                        ),
+                        child: viewModel.getPage,
+                      )
+                    : const SizedBox(),
+              ],
+            ),
           ),
         ),
       ),

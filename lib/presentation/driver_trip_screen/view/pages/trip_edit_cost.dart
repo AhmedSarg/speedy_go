@@ -88,7 +88,11 @@ class EditCost extends StatelessWidget {
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: viewModel.updatePage,
+                      onPressed: () {
+                        viewModel.findTrips();
+                        viewModel.getNewCostController.clear();
+                        viewModel.setNewCost = null;
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: ColorManager.error,
                         shape: RoundedRectangleBorder(
@@ -106,6 +110,7 @@ class EditCost extends StatelessWidget {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
+                        viewModel.setNewCost = int.parse(viewModel.getNewCostController.text);
                         viewModel.acceptTrip(
                           int.parse(viewModel.getNewCostController.text),
                         );

@@ -93,9 +93,10 @@ abstract class Repository {
 
   Either<Failure, void> getCurrentUser();
 
-  Future<Either<Failure, void>> acceptDriver({
+  Future<Either<Failure, Future<void>>> acceptDriver({
     required String tripId,
     required String driverId,
+    required int price,
   });
 
   Future<Either<Failure, void>> endTrip(String tripId);
@@ -112,7 +113,11 @@ abstract class Repository {
     StreamSubscription<LatLng>? coordinatesSubscription,
   });
 
-  Future<Either<Failure, Stream<List<Future<TripPassengerModel>>>>> findTrips(LatLng driverLocation);
+  Future<Either<Failure, Stream<List<(String, Future<TripPassengerModel>)>>>>
+      findTrips({
+    required LatLng driverLocation,
+    required TripType tripType,
+  });
 
   Future<Either<Failure, Future<bool>>> acceptTrip({
     required String driverId,

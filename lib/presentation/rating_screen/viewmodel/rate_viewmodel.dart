@@ -33,6 +33,7 @@ class RateViewModel extends BaseCubit
   }
 
   Future<void> rateDriver() async {
+    emit(LoadingState(displayType: DisplayType.popUpDialog));
     await _rateUseCase(
       RateUseCaseInput(
         userId: _userId,

@@ -20,62 +20,58 @@ class RunningTrip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     viewModel = DriverTripViewModel.get(context);
-    return SizedBox(
-      height: context.height() / 2.2,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Column(
-            children: [
-              Text(AppStrings.runningTripScreenTitle.tr(),
-                style: AppTextStyles
-                    .runningTripScreenTitleTextStyle(
-                    context),),
-              Divider(
-                color: ColorManager.grey.withOpacity(.5),
-              ),
-            ],
+    return Column(
+      children: [
+        Column(
+          children: [
+            Text(
+              AppStrings.runningTripScreenTitle.tr(),
+              style: AppTextStyles.runningTripScreenTitleTextStyle(context),
+            ),
+            Divider(
+              color: ColorManager.grey.withOpacity(.5),
+            ),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppPadding.p20,
+            vertical: AppSize.s10,
           ),
-          CardPassenger(
-            passengerName: "ahmed",
-            passengerImage: 'https://dummyimage.com/300',
-            tripTime: 6,
-            tripDistance: 3,
-            tripCost: 30,
-            time: 12,
-            passengerRate: 3.3,
+          child: CardPassenger(
+            passengerName: viewModel.getSelectedTrip.passengerName,
+            passengerImage: viewModel.getSelectedTrip.imagePath,
+            tripTime: viewModel.getSelectedTrip.expectedTime,
+            tripDistance: viewModel.getSelectedTrip.distance,
+            tripCost: viewModel.getSelectedTrip.price,
+            time: viewModel.getSelectedTrip.awayMins,
+            passengerRate: viewModel.getSelectedTrip.passengerRate,
             widget: IconButton(
               icon: SvgPicture.asset(SVGAssets.fillPhone),
               onPressed: () {
-                // launchUrlString('tel://${viewModel.getSelectedDriver.phoneNumber}');
-                launchUrlString('tel://011');
+                launchUrlString('tel://${viewModel.getSelectedTrip.passengerPhoneNumber}');
+                // launchUrlString('tel://011');
               },
             ),
           ),
-          SizedBox(
-            width: context.width() / 2,
-            height: context.width() / 10,
-            child: ElevatedButton(
-              onPressed: () {
-                ///cancel Ride
-                viewModel.prevPage();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: ColorManager.error,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppSize.s10),
-                ),
-              ),
-              child: Text(
-                AppStrings.runningTripScreenButton.tr(),
-                style: AppTextStyles
-                    .runningTripScreenButtonTextStyle(
-                    context),
+        ),
+        SizedBox(
+          width: context.width() / 2,
+          child: ElevatedButton(
+            onPressed: viewModel.endTrip,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: ColorManager.lightBlue,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppSize.s10),
               ),
             ),
-          )
-        ],
-      ),
+            child: Text(
+              AppStrings.runningTripScreenButton.tr(),
+              style: AppTextStyles.runningTripScreenButtonTextStyle(context),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
