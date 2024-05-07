@@ -456,21 +456,18 @@ class RepositoryImpl implements Repository {
   Future<Either<Failure, Stream<List<(String, Future<TripPassengerModel>)>>>>
       findTrips({
     required LatLng driverLocation,
+    required TripType tripType,
   }) async {
     try {
       if (await _networkInfo.isConnected) {
-        // print(-5);
         List<String> tripsIds = [];
         Stream<List<(String, Future<TripPassengerModel>)>> tripsStream =
-            _remoteDataSource.findTrips().map(
+            _remoteDataSource.findTrips(tripType: tripType).map(
           (trips) {
             List<String> newTripIds = [];
             List<Future<TripPassengerModel>> futureTrips = trips.map(
               (trip) async {
-                // print(-1);
                 newTripIds.add(trip['id']);
-                // print(tripsIds);
-                // print(newTripIds);
                 GeoPoint pickupLocation = trip['pickup_location'];
                 GeoPoint destinationLocation = trip['destination_location'];
                 TripPassengerModel returnedTrip =
@@ -512,10 +509,6 @@ class RepositoryImpl implements Repository {
             tripsIds.addAll(newTripIds);
             int i = 0;
             return futureTrips.map((futureTrip) {
-              // print(i);
-              // print(futureTrip);
-              // print(newTripIds[i]);
-              // print(futureTrip.hashCode);
               return (newTripIds[i++], futureTrip);
             }).toList();
           },

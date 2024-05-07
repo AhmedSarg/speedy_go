@@ -116,6 +116,7 @@ abstract class Repository {
   Future<Either<Failure, Stream<List<(String, Future<TripPassengerModel>)>>>>
       findTrips({
     required LatLng driverLocation,
+    required TripType tripType,
   });
 
   Future<Either<Failure, Future<bool>>> acceptTrip({

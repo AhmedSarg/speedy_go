@@ -14,6 +14,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:speedy_go/domain/models/enums.dart';
 import 'package:speedy_go/domain/usecase/end_trip_usecase.dart';
 import 'package:speedy_go/presentation/common/data_intent/data_intent.dart';
 
@@ -211,9 +212,25 @@ class DriverTripViewModel extends BaseCubit
   }
 
   Future<void> findTrips() async {
+    TripType tripType;
+    switch (_userManager.getCurrentDriver!.vehicleType) {
+      case VehicleType.car:
+        tripType = TripType.car;
+        break;
+      case VehicleType.tuktuk:
+        tripType = TripType.tuktuk;
+        break;
+      case VehicleType.bus:
+        tripType = TripType.car;
+        break;
+      default:
+        tripType = TripType.car;
+        break;
+    }
     await _findTripsUseCase(
       FindTripsUseCaseInput(
         driverLocation: _userLocation!,
+        tripType: tripType,
       ),
     ).then(
       (value) {
@@ -226,31 +243,20 @@ class DriverTripViewModel extends BaseCubit
               ),
             );
           },
-          (r) {
+          (r) async {
             _tripsStream = r.map((newTripsListTuples) {
               List<String> newTripsIds = [];
-              // print('object0');
-              // print(newTripsListTuples);
               for ((String, Future<TripPassengerModel>) tuple
                   in newTripsListTuples) {
-                // print('object1');
-                // print(_tripsIds);
                 if (!_tripsIds.contains(tuple.$1)) {
-                  // print('object2');
                   _tripsList.add(tuple);
                   _tripsIds.add(tuple.$1);
                 }
-                // print(_tripsIds);
-                // print('object3');
-                // print('object4');
                 newTripsIds.add(tuple.$1);
-                // updatePage();
               }
-              // print('object5');
               List<String> removedTrips = [];
               for ((String, Future<TripPassengerModel>) oldListTuple
                   in _tripsList) {
-                // print('object6');
                 if (!newTripsIds.contains(oldListTuple.$1)) {
                   removedTrips.add(oldListTuple.$1);
                   if (oldListTuple.$1 == _selectedTrip?.id) {
@@ -259,57 +265,17 @@ class DriverTripViewModel extends BaseCubit
                 }
               }
               _tripsList.removeWhere((element) => removedTrips.contains(element.$1));
-              // print('object8');
-              // print(_tripsList);
-              // updatePage();
-              // print(6);
+              _tripsList[0].$2.then((v) async {
+                _selectedTrip = v;
+                await fetchPolylines();
+                updatePage();
+                emit(ContentState());
+              });
               return _tripsList;
             });
-            // _tripsStream!.listen(
-            //   (v) async {
-            //     if (!_isAccepted) {
-            //       if (v.isNotEmpty &&
-            //           _tripsList.isEmpty &&
-            //           _selectedTrip == null) {
-            //         print(2);
-            //         _tripsList = v;
-            //         _selectedTrip = await _tripsList[_tripIndex].$2;
-            //         updatePage();
-            //       } else if (v.isNotEmpty) {
-            //         print(3);
-            //         _tripsList = v;
-            //         print(v);
-            //         print(_tripsStream);
-            //         // updatePage();
-            //         if (_tripIndex > _tripsList.length - 1) {
-            //           print(3.1);
-            //           _tripIndex = 0;
-            //           // updatePage();
-            //         }
-            //         print(3.2);
-            //         _selectedTrip = await _tripsList[_tripIndex].$2.whenComplete(() {
-            //           print('GOOOOOOOOOOOOT');
-            //           updatePage();
-            //         });
-            //         updatePage();
-            //       } else {
-            //         print(4);
-            //         _tripIndex = 0;
-            //         _selectedTrip = null;
-            //         // updatePage();
-            //       }
-            //       print(5);
-            //       // print(_tripIndex);
-            //       // print(_selectedTrip!.awayMins);
-            //       // print((await _selectedFuture)!.awayMins);
-            //       updatePage();
-            //       await fetchPolylines();
-            //       emit(ContentState());
-            //     }
-            //     updatePage();
-            //   },
-            // );
+            await fetchPolylines();
             updatePage();
+            emit(ContentState());
           },
         );
       },

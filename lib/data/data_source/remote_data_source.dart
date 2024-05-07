@@ -104,7 +104,9 @@ abstract class RemoteDataSource {
     StreamSubscription<LatLng>? coordinatesSubscription,
   });
 
-  Stream<List<Map<String, dynamic>>> findTrips();
+  Stream<List<Map<String, dynamic>>> findTrips({
+    required TripType tripType,
+  });
 
   Future<bool> acceptTrip({
     required String tripId,
@@ -462,7 +464,6 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<Map<String, dynamic>> calculateTwoPoints(
       LatLng pointA, LatLng pointB) async {
-    print('----------------CALCULATED----------------');
     const String baseUrl = "https://router.hereapi.com/v8/";
     const String apiKey = "Vc6Uhd34IMqaeQskoAJOIGbVv2RzpWgrO07T9WYuM9s";
     const String endpoint = "routes";
@@ -588,7 +589,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       });
       coordinatesSubscription!.onData(
         (location) async {
-          DocumentReference docRef = _firestore.collection('online_drivers').doc(driverId);
+          DocumentReference docRef =
+              _firestore.collection('online_drivers').doc(driverId);
           DocumentSnapshot doc = await docRef.get();
           if (doc.exists) {
             await docRef.update(
@@ -606,9 +608,11 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Stream<List<Map<String, dynamic>>> findTrips() {
+  Stream<List<Map<String, dynamic>>> findTrips({
+    required TripType tripType,
+  }) {
     // print(-4);
-    return _firestore.collection('available_trips').snapshots().map(
+    return _firestore.collection('available_trips').where('trip_type', isEqualTo: tripType.name).snapshots().map(
       (snapshot) {
         // print(-3);
         return snapshot.docs.map(
