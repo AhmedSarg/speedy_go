@@ -1,17 +1,22 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:intl/intl.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:speedy_go/domain/models/user_manager.dart';
+import 'package:speedy_go/presentation/base/base_states.dart';
+import 'package:speedy_go/presentation/buses_screen/pages/add_trip_screen/states/add_trip_states.dart';
 
 import '../../../../../app/sl.dart';
+import '../../../../../domain/models/user_manager.dart';
+import '../../../../../domain/usecase/add_trip_bus.dart';
 import '../../../../base/base_cubit.dart';
 
 class AddTripViewModel extends BaseCubit
     implements AddTripViewModelInput, AddTripViewModelOutput {
   static AddTripViewModel get(context) => BlocProvider.of(context);
+  final AddBusTripUseCase _addBusTripUseCase;
 
+  AddTripViewModel(this._addBusTripUseCase);
   final UserManager _userManager = sl<UserManager>();
-
   final TextEditingController _numController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _fromController = TextEditingController();
@@ -50,6 +55,48 @@ class AddTripViewModel extends BaseCubit
   set setNum(String number) {
     _num = number;
     _numController.text = _num;
+  }
+
+  Future<void> addTrip() async {
+    emit(LoadingState(displayType: DisplayType.popUpDialog));
+
+    DateTime selectedDate = DateFormat('MMM d, yyyy').parse(_dateController.text);
+
+    double? price = double.tryParse(_priceController.text);
+
+    await _addBusTripUseCase(
+      AddBusTripUseCaseInput(
+        driverId:'324827498264862',
+        numberOfBus: int.parse(_num),
+        price: price ?? 0.0,
+        pickupLocation: _toController.text.trim().toLowerCase(),
+        destinationLocation: _fromController.text.trim().toLowerCase(),
+        calendar: selectedDate,
+      ),
+    ).then(
+          (value) {
+        value.fold(
+              (l) {
+            emit(ErrorState(failure: l, displayType: DisplayType.popUpDialog));
+          },
+              (r) {
+            emit(SuccessState(' Trip added Successfully'));
+          },
+        );
+      },
+    );
+
+
+  }
+  Future<void> clear() async {
+    _numController.clear();
+    _priceController.clear();
+    _fromController.clear();
+    _toController.clear();
+    _toSearchController.clear();
+    _dateController.clear();
+    _num = '1';
+    _selectedDate = '';
   }
 
   @override

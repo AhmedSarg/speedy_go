@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:speedy_go/presentation/common/validators/validators.dart';
 import 'package:speedy_go/presentation/common/widget/main_button.dart';
 import 'dart:math';
 
@@ -9,8 +10,8 @@ import 'package:speedy_go/presentation/resources/values_manager.dart';
 
 import '../../viewmodel/add_trip_viewmodel.dart';
 
-class SearchFuncationalityState extends StatefulWidget {
-  const SearchFuncationalityState({
+class SearchFuncationalityStateFrom extends StatefulWidget {
+  const SearchFuncationalityStateFrom({
     super.key,
     required this.viewModel,
   });
@@ -18,11 +19,11 @@ class SearchFuncationalityState extends StatefulWidget {
   final AddTripViewModel viewModel;
 
   @override
-  State<SearchFuncationalityState> createState() =>
+  State<SearchFuncationalityStateFrom> createState() =>
       _SearchFuncationalityStateState();
 }
 
-class _SearchFuncationalityStateState extends State<SearchFuncationalityState> {
+class _SearchFuncationalityStateState extends State<SearchFuncationalityStateFrom> {
   final List<String> egyptGovernorates = [
     "الإسكندرية",
     "الاسكندرية",
@@ -72,9 +73,9 @@ class _SearchFuncationalityStateState extends State<SearchFuncationalityState> {
     final normalizedQuery = query.toLowerCase();
     final List<String> searchResults = egyptGovernorates
         .where((governorate) =>
-            governorate.toLowerCase().contains(normalizedQuery) ||
-            normalizedQuery.contains(governorate.toLowerCase()) ||
-            _fuzzyMatch(normalizedQuery, governorate.toLowerCase()))
+    governorate.toLowerCase().contains(normalizedQuery) ||
+        normalizedQuery.contains(governorate.toLowerCase()) ||
+        _fuzzyMatch(normalizedQuery, governorate.toLowerCase()))
         .toList();
 
     setState(() {
@@ -152,7 +153,7 @@ class _SearchFuncationalityStateState extends State<SearchFuncationalityState> {
                   setState(() {
                     isSearching = true;
                     widget.viewModel.getToSearchController.text =
-                        filteredList[index];
+                    filteredList[index];
                   });
                 },
                 child: ListTile(
@@ -174,9 +175,8 @@ class _SearchFuncationalityStateState extends State<SearchFuncationalityState> {
                 bgColor: ColorManager.lightBlue,
                 text: 'Confirm',
                 onPressed: () {
-                  widget.viewModel.getToController.text = widget.viewModel.getToSearchController.text;
+                  widget.viewModel.getFromController.text = widget.viewModel.getToSearchController.text;
                   widget.viewModel.getToSearchController.clear();
-
                   Navigator.pop(context);
                 },
               ),
