@@ -30,12 +30,12 @@ class AddBusTripUseCaseInput {
   final String destinationLocation;
   final DateTime calendar;
 
-  AddBusTripUseCaseInput(
-    this.driverId,
-    this.numberOfBus,
-    this.price,
-    this.pickupLocation,
-    this.destinationLocation,
-    this.calendar,
-  );
+  AddBusTripUseCaseInput({
+    required this.driverId,
+    required this.numberOfBus,
+    required this.price,
+    required this.pickupLocation,
+    required this.destinationLocation,
+    required this.calendar,
+  });
 }

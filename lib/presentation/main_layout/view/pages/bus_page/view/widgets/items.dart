@@ -28,20 +28,17 @@ class DateItem extends StatelessWidget {
       },
 builder: (errorContext) {
 return Container(
-  width: MediaQuery.of(context).size.width * .9,
-  height: AppSize.s90,
-  padding: const EdgeInsets.only(left: AppPadding.p20),
-  margin: const EdgeInsets.symmetric(
-      horizontal: AppPadding.p20, vertical: AppPadding.p12),
+  margin: const EdgeInsets.symmetric(horizontal:  AppMargin.m16,vertical: AppMargin.m5),
+  padding: const EdgeInsets.all(AppPadding.p5),
+
   decoration: BoxDecoration(
-    borderRadius: BorderRadius.circular(AppSize.s20),
-    color: ColorManager.lightBlack,
-    border: Border.all(
-        width: 1,
-        color: errorContext.hasError
-            ? ColorManager.error
-            : ColorManager.black),
-  ),
+      border: Border.all(
+          width: 1,
+          color: errorContext.hasError
+              ? ColorManager.error
+              : ColorManager.black),
+      color: ColorManager.lightBlack,
+      borderRadius: BorderRadius.circular(AppSize.s18)),
   child: Row(
     children: [
       Expanded(

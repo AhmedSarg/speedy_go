@@ -99,7 +99,6 @@ class _MainTextFieldState extends State<BusesTextField> {
         hintStyle: widget.hintTextStyle ??
             AppTextStyles.bookTripSearchScreenSubTitleItemTextStyle(context),
         border: InputBorder.none,
-
         errorStyle: const TextStyle(
           fontSize: AppSize.s0,
           color: ColorManager.transparent,

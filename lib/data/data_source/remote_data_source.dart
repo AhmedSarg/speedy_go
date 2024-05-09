@@ -735,6 +735,5 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       'destination_location': destinationLocation,
       'calendar': calendar,
     });
-    throw UnimplementedError();
   }
 }
