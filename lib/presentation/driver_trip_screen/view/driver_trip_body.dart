@@ -21,6 +21,9 @@ class DriverTripBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
+      onPopInvoked: (_) {
+        print(88);
+      },
       child: Scaffold(
         body: SafeArea(
           child: SizedBox(

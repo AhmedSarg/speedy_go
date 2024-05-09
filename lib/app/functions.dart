@@ -22,6 +22,7 @@ Future<String> getImagesFromGallery() async {
     throw Exception(e);
   }
 }
+
 Future<void> getImagesFromCamera(BuildContext context) async {
   final picker = ImagePicker();
   List<XFile>? pickedFiles = [];
