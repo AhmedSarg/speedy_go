@@ -5,7 +5,6 @@ import 'package:speedy_go/app/extensions.dart';
 
 import '../../../resources/assets_manager.dart';
 import '../../../resources/color_manager.dart';
-import '../../../resources/routes_manager.dart';
 import '../../../resources/strings_manager.dart';
 import '../../../resources/text_styles.dart';
 import '../../../resources/values_manager.dart';
@@ -18,74 +17,77 @@ class RateBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Column(
-        children: [
-          const Spacer(),
-          SizedBox.square(
-            dimension: context.width() * .4,
-            child: SvgPicture.asset(SVGAssets.logo),
-          ),
-          const Spacer(),
-          Text(
-            AppStrings.rateScreenTitle.tr(),
-            style: AppTextStyles.rateScreenTitleTextStyle(context),
-          ),
-          const SizedBox(height: AppSize.s10),
-          RatingBar(viewModel: viewModel),
-          const SizedBox(height: AppSize.s10),
-          Text(
-            AppStrings.rateScreenDescription.tr(),
-            style: AppTextStyles.rateScreenDescriptionTextStyle(context),
-          ),
-          const Spacer(flex: 3),
-          Container(
-            width: AppSize.infinity,
-            height: AppSize.s50,
-            margin: const EdgeInsets.symmetric(horizontal: AppMargin.m64),
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: ColorManager.error,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppSize.s10),
+    return PopScope(
+      canPop: false,
+      child: SafeArea(
+        child: Column(
+          children: [
+            const Spacer(),
+            SizedBox.square(
+              dimension: context.width() * .4,
+              child: SvgPicture.asset(SVGAssets.logo),
+            ),
+            const Spacer(),
+            Text(
+              AppStrings.rateScreenTitle.tr(),
+              style: AppTextStyles.rateScreenTitleTextStyle(context),
+            ),
+            const SizedBox(height: AppSize.s10),
+            RatingBar(viewModel: viewModel),
+            const SizedBox(height: AppSize.s10),
+            Text(
+              AppStrings.rateScreenDescription.tr(),
+              style: AppTextStyles.rateScreenDescriptionTextStyle(context),
+            ),
+            const Spacer(flex: 3),
+            Container(
+              width: AppSize.infinity,
+              height: AppSize.s50,
+              margin: const EdgeInsets.symmetric(horizontal: AppMargin.m64),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: ColorManager.error,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AppSize.s10),
+                  ),
+                ),
+                child: Text(
+                  AppStrings.rateScreenCancel.tr(),
+                  style: AppTextStyles.rateScreenButtonTextStyle(context),
                 ),
               ),
-              child: Text(
-                AppStrings.rateScreenCancel.tr(),
-                style: AppTextStyles.rateScreenButtonTextStyle(context),
-              ),
             ),
-          ),
-          const SizedBox(height: AppSize.s20),
-          Container(
-            width: AppSize.infinity,
-            height: AppSize.s50,
-            margin: const EdgeInsets.symmetric(horizontal: AppMargin.m32),
-            child: ElevatedButton(
-              onPressed: (viewModel.indexRate != 0)
-                  ? () {
-                      viewModel.rateDriver();
-                    }
-                  : null,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: ColorManager.darkGreen,
-                disabledBackgroundColor:
-                    ColorManager.darkGreen.withOpacity(0.3),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppSize.s15),
+            const SizedBox(height: AppSize.s20),
+            Container(
+              width: AppSize.infinity,
+              height: AppSize.s50,
+              margin: const EdgeInsets.symmetric(horizontal: AppMargin.m32),
+              child: ElevatedButton(
+                onPressed: (viewModel.indexRate != 0)
+                    ? () {
+                        viewModel.rateDriver();
+                      }
+                    : null,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: ColorManager.darkGreen,
+                  disabledBackgroundColor:
+                      ColorManager.darkGreen.withOpacity(0.3),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AppSize.s15),
+                  ),
+                ),
+                child: Text(
+                  AppStrings.rateScreenConfirm.tr(),
+                  style: AppTextStyles.rateScreenButtonTextStyle(context),
                 ),
               ),
-              child: Text(
-                AppStrings.rateScreenConfirm.tr(),
-                style: AppTextStyles.rateScreenButtonTextStyle(context),
-              ),
             ),
-          ),
-          const Spacer(),
-        ],
+            const Spacer(),
+          ],
+        ),
       ),
     );
   }

@@ -56,7 +56,7 @@ class DriverTripViewModel extends BaseCubit
     this._endTripUseCase,
   );
 
-  bool _driverStatus = false, _isAccepted = false;
+  bool _driverStatus = false, _isAccepted = false, _started = false;
 
   String? _mapStyle;
 
@@ -212,6 +212,7 @@ class DriverTripViewModel extends BaseCubit
   }
 
   Future<void> findTrips() async {
+    _started = false;
     TripType tripType;
     switch (_userManager.getCurrentDriver!.vehicleType) {
       case VehicleType.car:
@@ -264,13 +265,16 @@ class DriverTripViewModel extends BaseCubit
                   }
                 }
               }
-              _tripsList.removeWhere((element) => removedTrips.contains(element.$1));
-              _tripsList[0].$2.then((v) async {
-                _selectedTrip = v;
-                await fetchPolylines();
-                updatePage();
-                emit(ContentState());
-              });
+              _tripsList
+                  .removeWhere((element) => removedTrips.contains(element.$1));
+              if (!_started) {
+                _tripsList[0].$2.then((v) async {
+                  _selectedTrip = v;
+                  await fetchPolylines();
+                  updatePage();
+                  emit(ContentState());
+                });
+              }
               return _tripsList;
             });
             await fetchPolylines();
@@ -317,6 +321,7 @@ class DriverTripViewModel extends BaseCubit
 
   Future<void> acceptTrip([int? newPrice]) async {
     _isAccepted = true;
+    _started = true;
     updatePage();
     await _acceptTripUseCase(
       AcceptTripUseCaseInput(
@@ -330,6 +335,7 @@ class DriverTripViewModel extends BaseCubit
       (value) {
         value.fold(
           (l) {
+            _started = false;
             emit(
               ErrorState(
                 failure: l,
@@ -340,8 +346,10 @@ class DriverTripViewModel extends BaseCubit
           (r) async {
             if (await r) {
               nextPage();
+              _started = true;
             } else {
               _isAccepted = false;
+              _started = false;
               updatePage();
             }
           },
@@ -376,6 +384,7 @@ class DriverTripViewModel extends BaseCubit
   }
 
   Future<void> cancelAcceptTrip() async {
+    _started = false;
     _isAccepted = false;
     updatePage();
     await _cancelAcceptTripUseCase(
@@ -394,7 +403,9 @@ class DriverTripViewModel extends BaseCubit
               ),
             );
           },
-          (r) {},
+          (r) async {
+            await findTrips();
+          },
         );
       },
     );
@@ -567,8 +578,8 @@ class DriverTripViewModel extends BaseCubit
   LatLng get getUserLocation => _userLocation!;
 
   @override
-  Stream<List<(String, Future<TripPassengerModel>)>>
-      get getTripsStream => _tripsStream!;
+  Stream<List<(String, Future<TripPassengerModel>)>> get getTripsStream =>
+      _tripsStream!;
 
   @override
   CarouselController get getCarouselController => _carouselController;

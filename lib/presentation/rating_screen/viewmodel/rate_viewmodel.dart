@@ -61,4 +61,5 @@ class RateViewModel extends BaseCubit
 
 abstract class RateViewModelInput {}
 
-abstract class RateViewModelOutput {}
+abstract class RateViewModelOutput {
+}
