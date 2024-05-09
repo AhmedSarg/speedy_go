@@ -1,9 +1,9 @@
-- country code in register and handle zero in phone number
-- image from camera
+- # country code in register and handle zero in phone number #
+- # image from camera #
 - handle no image picked
-- PhoneNumberUtil
+- # PhoneNumberUtil #
 - login screen to be flexible and handle validation error overflow
-- login country code validation
+- # login country code validation #
 - add the new register fields
 - work bus driver register logic
 - build rest of bus screens ui

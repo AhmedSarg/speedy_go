@@ -1,31 +1,30 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:speedy_go/app/extensions.dart';
-import 'package:speedy_go/presentation/buses_screen/view/widgets/buses_logo_widget.dart';
-import 'package:speedy_go/presentation/buses_screen/view/widgets/drawer_widget.dart';
-import 'package:speedy_go/presentation/buses_screen/viewmodel/buses_viewmodel.dart';
-import 'package:speedy_go/presentation/resources/color_manager.dart';
-import 'package:speedy_go/presentation/resources/values_manager.dart';
+import 'package:speedy_go/presentation/buses_screen/pages/add_bus_screen/viewmodel/add_bus_viewmodel.dart';
 
-import '../../../common/validators/validators.dart';
-import '../../../common/widget/main_button.dart';
-import '../../../register_screen/view/widgets/upload_field.dart';
-import '../../../resources/assets_manager.dart';
-import '../../../resources/strings_manager.dart';
-import '../../../resources/text_styles.dart';
-import '../../view/widgets/buses_item.dart';
+import '../../../../common/validators/validators.dart';
+import '../../../../register_screen/view/widgets/upload_field.dart';
+import '../../../../resources/assets_manager.dart';
+import '../../../../resources/color_manager.dart';
+import '../../../../resources/strings_manager.dart';
+import '../../../../resources/text_styles.dart';
+import '../../../../resources/values_manager.dart';
+import '../../../view/widgets/buses_logo_widget.dart';
+import 'widgets/buses_item.dart';
 
-class AddBusScreen extends StatelessWidget {
-  const AddBusScreen({super.key});
+class AddBusBody extends StatelessWidget {
+  const AddBusBody({super.key});
 
   @override
   Widget build(BuildContext context) {
-    BusesViewModel viewModel = BusesViewModel.get(context);
-    return Scaffold(
-      backgroundColor: ColorManager.bgColor,
-      body: Column(
+    AddBusViewModel viewModel = AddBusViewModel.get(context);
+    return SingleChildScrollView(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
@@ -42,68 +41,62 @@ class AddBusScreen extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-          AddNewBus(viewModel: viewModel,)
+          AddNewBus(
+            viewModel: viewModel,
+          )
         ],
       ),
-      drawer: const BusesDrawer(),
     );
   }
 }
 
 class AddNewBus extends StatelessWidget {
-  AddNewBus({super.key, required this.viewModel});
+  const AddNewBus({super.key, required this.viewModel});
 
-  final BusesViewModel viewModel;
+  final AddBusViewModel viewModel;
+
+  static final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.all(context.width() * .1),
+      padding: const EdgeInsets.all(AppPadding.p10),
       decoration: BoxDecoration(
         color: ColorManager.lightBlack,
-        borderRadius: BorderRadius.circular(AppSize.s5),
+        borderRadius: BorderRadius.circular(AppSize.s20),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text("Cancel")),
-              Divider(),
-              BoxAddBus(viewModel: viewModel),
-            ],
+          SizedBox(
+            height: AppSize.s30,
+            child: TextButton(
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.zero,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text("Cancel"),
+            ),
           ),
+          const Divider(),
+          const SizedBox(height: AppSize.s20),
+          ...addBusWidgets(context, formKey),
         ],
       ),
     );
   }
 }
 
-class BoxAddBus extends StatelessWidget {
-  BoxAddBus({super.key, required this.viewModel});
-
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final BusesViewModel viewModel;
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: addBusWidgets(context, viewModel, formKey),
-    );
-  }
-}
-
-
-List<Widget> addBusWidgets(BuildContext context,
-    BusesViewModel viewModel, GlobalKey<FormState> formKey) {
+List<Widget> addBusWidgets(BuildContext context, GlobalKey<FormState> formKey) {
   FocusNode firstNameFocusNode = FocusNode();
   FocusNode lastNameFocusNode = FocusNode();
   FocusNode phoneNumberFocusNode = FocusNode();
   FocusNode nationalIDFocusNode = FocusNode();
   FocusNode seatsNumberFocusNode = FocusNode();
+  AddBusViewModel viewModel = AddBusViewModel.get(context);
   return [
     Row(
       children: [
@@ -136,10 +129,11 @@ List<Widget> addBusWidgets(BuildContext context,
     AddBusTextFormField(
       controller: viewModel.getPhoneNumberController,
       keyboard: TextInputType.number,
-      hintText: AppStrings.registerScreenPhoneNumberHint.tr(),///TODO: Strings
+      hintText: AppStrings.registerScreenPhoneNumberHint.tr(),
       iconPath: SVGAssets.phone,
       validator: AppValidators.validatePhoneNumber,
-      focusNode: nationalIDFocusNode,
+      focusNode: phoneNumberFocusNode,
+      nextFocusNode: nationalIDFocusNode,
     ),
     const SizedBox(height: AppSize.s20),
     AddBusTextFormField(
@@ -148,77 +142,80 @@ List<Widget> addBusWidgets(BuildContext context,
       hintText: AppStrings.registerScreenNationalIdHint.tr(),
       iconPath: SVGAssets.id,
       validator: AppValidators.validateNationalID,
-      focusNode: phoneNumberFocusNode,
+      focusNode: nationalIDFocusNode,
     ),
     const SizedBox(height: AppSize.s20),
     Row(
       children: [
         Expanded(
           child: UploadField(
-            hint: AppStrings.registerScreenCarLicenseHint.tr(),
-            value: viewModel.getBusLicense.path,
+            hint: 'Bus License',
+            value: viewModel.getBusLicense?.path,
             iconPath: SVGAssets.id,
-            onPressed: (){},
+            onPressed: () {},
           ),
         ),
         const SizedBox(width: AppSize.s20),
         Expanded(
           child: UploadField(
             hint: AppStrings.registerScreenDrivingLicenseHint.tr(),
-            value: viewModel.getDrivingLicense.path,
-            iconPath: SVGAssets.image,
-            onPressed: (){},
+            value: viewModel.getDrivingLicense?.path,
+            iconPath: SVGAssets.id,
+            onPressed: () {},
             // onPressed: viewModel.chooseCarImage,
           ),
         ),
       ],
     ),
+    const SizedBox(height: AppSize.s20),
     Row(
       children: [
         Expanded(
           child: UploadField(
-            hint: AppStrings.registerScreenCarImageHint.tr(),
-            value: viewModel.getBusImage.path,
+            hint: 'Bus Image',
+            value: viewModel.getBusLicense?.path,
             iconPath: SVGAssets.image,
-            onPressed: (){},
-            // onPressed: viewModel.chooseCarImage,
+            onPressed: () {},
           ),
         ),
         const SizedBox(width: AppSize.s20),
-
-        AddBusTextFormField(
-          controller: viewModel.getSeatsNumberController,
-          keyboard: TextInputType.number,
-          hintText: AppStrings.registerScreenPhoneNumberHint.tr(),///TODO: Strings
-          iconPath: SVGAssets.busTrip,
-          validator: AppValidators.validateNotEmpty,
-          focusNode: seatsNumberFocusNode,
+        Expanded(
+          child: AddBusTextFormField(
+            controller: viewModel.getSeatsNumberController,
+            keyboard: TextInputType.number,
+            hintText: 'Seats Number',
+            iconPath: SVGAssets.id,
+            validator: AppValidators.validateName,
+            focusNode: nationalIDFocusNode,
+          )
         ),
       ],
     ),
+    const SizedBox(height: AppSize.s20),
     SizedBox(
       height: AppSize.s40,
       child: ElevatedButton(
-        style: ElevatedButton.styleFrom(backgroundColor: ColorManager.lightBlue),
-        onPressed: (){},
-        child: Text('Add'),
-      )
+        style:
+            ElevatedButton.styleFrom(backgroundColor: ColorManager.lightBlue),
+        onPressed: () {},
+        child: const Text('Add'),
+      ),
     ),
   ];
 }
 
 class AddBusTextFormField extends StatefulWidget {
-  const AddBusTextFormField(
-      {super.key,
-        required this.controller,
-        required this.keyboard,
-        required this.hintText,
-        required this.iconPath,
-        required this.focusNode,
-        required this.validator,
-        this.nextFocusNode,
-        this.canObscure = false,
-      });
+  const AddBusTextFormField({
+    super.key,
+    required this.controller,
+    required this.keyboard,
+    required this.hintText,
+    required this.iconPath,
+    required this.focusNode,
+    required this.validator,
+    this.nextFocusNode,
+    this.canObscure = false,
+  });
 
   final TextEditingController controller;
   final TextInputType keyboard;
@@ -228,6 +225,7 @@ class AddBusTextFormField extends StatefulWidget {
   final FocusNode focusNode;
   final FocusNode? nextFocusNode;
   final String? Function(String? value) validator;
+
   @override
   State<AddBusTextFormField> createState() => _AddBusTextFormFieldState();
 }
@@ -246,7 +244,6 @@ class _AddBusTextFormFieldState extends State<AddBusTextFormField> {
           child: TextFormField(
             controller: widget.controller,
             cursorColor: ColorManager.secondary,
-            // cursorErrorColor: ColorManager.secondary,
             cursorRadius: const Radius.circular(AppSize.s1),
             focusNode: widget.focusNode,
             textInputAction: widget.nextFocusNode != null

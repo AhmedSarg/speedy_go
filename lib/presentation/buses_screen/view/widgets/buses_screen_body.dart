@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:speedy_go/presentation/buses_screen/view/widgets/buses_item.dart';
+import 'package:speedy_go/presentation/buses_screen/pages/add_bus_screen/view/widgets/buses_item.dart';
 import 'package:speedy_go/presentation/buses_screen/view/widgets/buses_logo_widget.dart';
 import 'package:speedy_go/presentation/resources/color_manager.dart';
 import 'package:speedy_go/presentation/resources/routes_manager.dart';

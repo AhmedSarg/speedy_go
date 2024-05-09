@@ -14,7 +14,7 @@ import '../../../../../resources/assets_manager.dart';
 import '../../../../../resources/color_manager.dart';
 import '../../../../../resources/strings_manager.dart';
 import '../../../../../resources/text_styles.dart';
-import '../../../../view/widgets/buses_item.dart';
+import '../../../add_bus_screen/view/widgets/buses_item.dart';
 import '../../../../view/widgets/text_field.dart';
 import '../../viewmodel/add_trip_viewmodel.dart';
 

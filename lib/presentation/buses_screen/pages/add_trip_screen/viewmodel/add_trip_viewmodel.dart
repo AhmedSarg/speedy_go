@@ -1,14 +1,16 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:speedy_go/presentation/base/base_states.dart';
-import 'package:speedy_go/presentation/buses_screen/pages/add_trip_screen/states/add_trip_states.dart';
+import 'package:speedy_go/domain/models/user_manager.dart';
 
+import '../../../../../app/sl.dart';
 import '../../../../base/base_cubit.dart';
 
 class AddTripViewModel extends BaseCubit
     implements AddTripViewModelInput, AddTripViewModelOutput {
   static AddTripViewModel get(context) => BlocProvider.of(context);
+
+  final UserManager _userManager = sl<UserManager>();
 
   final TextEditingController _numController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();

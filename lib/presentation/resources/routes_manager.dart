@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import '../../app/sl.dart';
-import '../buses_screen/pages/add_bus_screen/add_bus_screen.dart';
+import '../buses_screen/pages/add_bus_screen/view/add_bus_screen.dart';
 import '../buses_screen/pages/add_trip_screen/view/add_trip.dart';
 import '../buses_screen/pages/schedule_screen/schedule_screen.dart';
 import '../buses_screen/view/buses_screen.dart';
@@ -30,7 +30,7 @@ class Routes {
   Routes._();
 
   //todo make splash initial route
-  static const String splashRoute = "/";
+  static const String splashRoute = "/splash";
   static const String onBoardingRoute = "/onBoarding";
   static const String loginRoute = "/login";
   static const String selectionRoute = "/selection";
@@ -102,6 +102,8 @@ class RouteGenerator {
         initRateUseCase();
         return MaterialPageRoute(builder: (_) => const RateScreen());
       case Routes.busesRoute:
+        initAddBusUseCase();
+        initAddBusTripUseCase();
         return MaterialPageRoute(builder: (_) => const BusesScreen());
       case Routes.scheduleRoute:
         return MaterialPageRoute(builder: (_) => const ScheduleScreen());

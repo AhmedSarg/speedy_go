@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:speedy_go/presentation/resources/text_styles.dart';
 
-import '../../../resources/assets_manager.dart';
-import '../../../resources/color_manager.dart';
-import '../../../resources/values_manager.dart';
+import '../../../../../resources/values_manager.dart';
 
 class BusesItem extends StatelessWidget {
   const BusesItem({super.key, required this.imageIcon, required this.title, this.onTap, required this.backgroundColor, required this.imageIconColor, this.textStyle});

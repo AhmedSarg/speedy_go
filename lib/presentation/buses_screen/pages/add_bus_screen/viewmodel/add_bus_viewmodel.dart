@@ -2,20 +2,18 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:speedy_go/domain/usecase/add_bus_usecase.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../domain/usecase/add_bus_usecase.dart';
-import '../../../domain/usecase/add_trip_bus.dart';
-import '../../base/base_cubit.dart';
-import '../../base/base_states.dart';
+import '../../../../base/base_cubit.dart';
+import '../../../../base/base_states.dart';
 
-class BusesViewModel extends BaseCubit
+class AddBusViewModel extends BaseCubit
     implements PassengerTripViewModelInput, PassengerTripViewModelOutput {
-  static BusesViewModel get(context) => BlocProvider.of(context);
+  static AddBusViewModel get(context) => BlocProvider.of(context);
 
   final AddBusUseCase _addBusUseCase;
-  final AddBusTripUseCase _addBusTripUseCase;
-  BusesViewModel(this._addBusUseCase, this._addBusTripUseCase);
+  AddBusViewModel(this._addBusUseCase);
 
   late final TextEditingController _firstNameController;
   late final TextEditingController _lastNameController;
@@ -26,12 +24,12 @@ class BusesViewModel extends BaseCubit
   late final TextEditingController _priceController;
   late final TextEditingController _pickupLocationController;
   late final TextEditingController _destinationLocationController;
-  late final DateTime _calendar;
-  late final File _busLicense;
-  late final File _drivingLicense;
-  late final File _busImage;
+  DateTime? _calendar;
+  File? _busLicense;
+  File? _drivingLicense;
+  File? _busImage;
 
-  late String driverId; //TODO: get from auth
+  late String driverId;
 
   final Uuid _uuidGenerator = const Uuid();
 
@@ -48,43 +46,43 @@ class BusesViewModel extends BaseCubit
     _destinationLocationController = TextEditingController();
   }
 
-  Future<void> addBusTrip() async {
-    await _addBusTripUseCase(
-      AddBusTripUseCaseInput(
-        driverId,
-        getNumberOfBusController.text as int,
-        getPriceController.text as double,
-        getPickupLocationController.text,
-        getDestinationLocationController.text,
-        getCalendar,
-      ),
-    ).then(
-      (value) => {
-        value.fold(
-          (l) => emit(
-            ErrorState(
-              failure: l,
-              displayType: DisplayType.popUpDialog,
-            ),
-          ),
-          (r) {},
-        ),
-      },
-    );
-  }
+  // Future<void> addBusTrip() async {
+  //   await _addBusTripUseCase(
+  //     AddBusTripUseCaseInput(
+  //       driverId,
+  //       getNumberOfBusController.text as int,
+  //       getPriceController.text as double,
+  //       getPickupLocationController.text,
+  //       getDestinationLocationController.text,
+  //       getCalendar,
+  //     ),
+  //   ).then(
+  //     (value) => {
+  //       value.fold(
+  //         (l) => emit(
+  //           ErrorState(
+  //             failure: l,
+  //             displayType: DisplayType.popUpDialog,
+  //           ),
+  //         ),
+  //         (r) {},
+  //       ),
+  //     },
+  //   );
+  // }
 
   Future<void> addBus() async {
     await _addBusUseCase(
       AddBusUseCaseInput(
-        driverId, //get driver id
+        driverId,
         _uuidGenerator.v1(),
         getFirstNameController.text,
         getLastNameController.text,
-        getBusLicense,
-        getDrivingLicense,
+        getBusLicense!,
+        getDrivingLicense!,
         getNationalIDController.text,
         getPhoneNumberController.text,
-        getBusImage,
+        getBusImage!,
         getSeatsNumberController.text as int,
       ),
     ).then(
@@ -103,13 +101,13 @@ class BusesViewModel extends BaseCubit
   }
 
   @override
-  File get getBusImage => _busImage;
+  File? get getBusImage => _busImage;
 
   @override
-  File get getBusLicense => _busLicense;
+  File? get getBusLicense => _busLicense;
 
   @override
-  File get getDrivingLicense => _drivingLicense;
+  File? get getDrivingLicense => _drivingLicense;
 
   @override
   TextEditingController get getFirstNameController => _firstNameController;
@@ -127,7 +125,7 @@ class BusesViewModel extends BaseCubit
   TextEditingController get getSeatsNumberController => _seatsNumberController;
 
   @override
-  DateTime get getCalendar => _calendar;
+  DateTime? get getCalendar => _calendar;
 
   @override
   TextEditingController get getDestinationLocationController =>
@@ -155,8 +153,8 @@ abstract class PassengerTripViewModelOutput {
   TextEditingController get getPriceController;
   TextEditingController get getPickupLocationController;
   TextEditingController get getDestinationLocationController;
-  DateTime get getCalendar;
-  File get getBusLicense;
-  File get getDrivingLicense;
-  File get getBusImage;
+  DateTime? get getCalendar;
+  File? get getBusLicense;
+  File? get getDrivingLicense;
+  File? get getBusImage;
 }
