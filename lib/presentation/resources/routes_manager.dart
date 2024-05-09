@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import '../../app/sl.dart';
+import '../buses_screen/pages/add_bus_screen/add_bus_screen.dart';
 import '../buses_screen/pages/add_trip_screen/view/add_trip.dart';
 import '../buses_screen/pages/schedule_screen/schedule_screen.dart';
 import '../buses_screen/view/buses_screen.dart';
@@ -41,7 +42,8 @@ class Routes {
   static const String rateRoute = "/rate";
   static const String busesRoute = "/buses";
   static const String scheduleRoute = "/schedule";
-  static const String addTripRoute = "/addTrip";
+  static const String addBusTripRoute = "/addTrip";
+  static const String addBusRoute = "/addBus";
   static const String profileEditRoute = "/profileEdit";
   static const String myTripsRoute = "/myTrips";
   static const String driverTripRoute = "/driverTrip";
@@ -103,8 +105,10 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const BusesScreen());
       case Routes.scheduleRoute:
         return MaterialPageRoute(builder: (_) => const ScheduleScreen());
-      case Routes.addTripRoute:
-        return MaterialPageRoute(builder: (_) => const AddTripScreen());
+      case Routes.addBusTripRoute:
+        return MaterialPageRoute(builder: (_) => const AddBusTripScreen());
+      case Routes.addBusRoute:
+        return MaterialPageRoute(builder: (_) => const AddBusScreen());
       case Routes.profileEditRoute:
         return MaterialPageRoute(builder: (_) => const ProfileEditPage());
       case Routes.myTripsRoute:

@@ -46,7 +46,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     firstDate: DateTime.now(),
                     initialDate: DateTime.now(),
                     currentDate: DateTime.now(),
-                    lastDate: DateTime.now().add(Duration(days: 365)),
+                    lastDate: DateTime.now().add(const Duration(days: 365)),
                     builder: (context, child) {
                       return Theme(
                         data: ThemeData.light().copyWith(
@@ -72,14 +72,14 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     }
                   });
                 },
-
                 child: CircleAvatar(
                     backgroundColor: ColorManager.lightBlue,
                     radius: AppSize.s20,
                     child: SvgPicture.asset(SVGAssets.calender)),
               ),
-              const SizedBox(width: AppSize.s10,),
-
+              const SizedBox(
+                width: AppSize.s10,
+              ),
             ],
           )
         ],

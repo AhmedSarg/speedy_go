@@ -52,10 +52,10 @@ class BusesViewModel extends BaseCubit
     await _addBusTripUseCase(
       AddBusTripUseCaseInput(
         driverId,
-        getNumberOfBusController,
-        getPriceController,
-        getPickupLocationController,
-        getDestinationLocationController,
+        getNumberOfBusController.text as int,
+        getPriceController.text as double,
+        getPickupLocationController.text,
+        getDestinationLocationController.text,
         getCalendar,
       ),
     ).then(
@@ -78,14 +78,14 @@ class BusesViewModel extends BaseCubit
       AddBusUseCaseInput(
         driverId, //get driver id
         _uuidGenerator.v1(),
-        getFirstNameController,
-        getLastNameController,
+        getFirstNameController.text,
+        getLastNameController.text,
         getBusLicense,
         getDrivingLicense,
-        getNationalIDController,
-        getPhoneNumberController,
+        getNationalIDController.text,
+        getPhoneNumberController.text,
         getBusImage,
-        getSeatsNumberController as int,
+        getSeatsNumberController.text as int,
       ),
     ).then(
       (value) => {
@@ -112,49 +112,49 @@ class BusesViewModel extends BaseCubit
   File get getDrivingLicense => _drivingLicense;
 
   @override
-  String get getFirstNameController => _firstNameController.text;
+  TextEditingController get getFirstNameController => _firstNameController;
 
   @override
-  String get getLastNameController => _lastNameController.text;
+  TextEditingController get getLastNameController => _lastNameController;
 
   @override
-  String get getNationalIDController => _nationalIDController.text;
+  TextEditingController get getNationalIDController => _nationalIDController;
 
   @override
-  String get getPhoneNumberController => _phoneNumberController.text;
+  TextEditingController get getPhoneNumberController => _phoneNumberController;
 
   @override
-  String get getSeatsNumberController => _seatsNumberController.text;
+  TextEditingController get getSeatsNumberController => _seatsNumberController;
 
   @override
   DateTime get getCalendar => _calendar;
 
   @override
-  String get getDestinationLocationController =>
-      _destinationLocationController.text;
+  TextEditingController get getDestinationLocationController =>
+      _destinationLocationController;
 
   @override
-  String get getPickupLocationController => _pickupLocationController.text;
+  TextEditingController get getPickupLocationController => _pickupLocationController;
 
   @override
-  int get getNumberOfBusController => _numberOfBusController.text as int;
+  TextEditingController get getNumberOfBusController => _numberOfBusController;
 
   @override
-  double get getPriceController => _priceController.text as double;
+  TextEditingController get getPriceController => _priceController;
 }
 
 abstract class PassengerTripViewModelInput {}
 
 abstract class PassengerTripViewModelOutput {
-  String get getFirstNameController;
-  String get getLastNameController;
-  String get getPhoneNumberController;
-  String get getNationalIDController;
-  String get getSeatsNumberController;
-  int get getNumberOfBusController;
-  double get getPriceController;
-  String get getPickupLocationController;
-  String get getDestinationLocationController;
+  TextEditingController get getFirstNameController;
+  TextEditingController get getLastNameController;
+  TextEditingController get getPhoneNumberController;
+  TextEditingController get getNationalIDController;
+  TextEditingController get getSeatsNumberController;
+  TextEditingController get getNumberOfBusController;
+  TextEditingController get getPriceController;
+  TextEditingController get getPickupLocationController;
+  TextEditingController get getDestinationLocationController;
   DateTime get getCalendar;
   File get getBusLicense;
   File get getDrivingLicense;

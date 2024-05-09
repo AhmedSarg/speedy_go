@@ -8,8 +8,8 @@ import '../../../../base/base_states.dart';
 import '../../../../base/cubit_builder.dart';
 import '../../../../base/cubit_listener.dart';
 
-class AddTripScreen extends StatelessWidget {
-  const AddTripScreen({Key? key}) : super(key: key);
+class AddBusTripScreen extends StatelessWidget {
+  const AddBusTripScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

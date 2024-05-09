@@ -42,6 +42,9 @@ class BusesScreenBody extends StatelessWidget {
             imageIcon: SVGAssets.addBus_1,
             title: AppStrings.busesAddBus.tr(),
             backgroundColor: ColorManager.veryLightGrey,
+            onTap: (){
+              Navigator.pushNamed(context, Routes.addBusRoute);
+            },
           ),
           BusesItem(
             textStyle: AppTextStyles.busesItemTextStyle(context),
@@ -57,7 +60,7 @@ class BusesScreenBody extends StatelessWidget {
             title: AppStrings.busesAddTrip.tr(),
             backgroundColor: ColorManager.veryLightGrey,
             onTap: () {
-              Navigator.pushNamed(context, Routes.addTripRoute);
+              Navigator.pushNamed(context, Routes.addBusTripRoute);
             },
           ),
         ],
