@@ -63,6 +63,15 @@ abstract class RemoteDataSource {
     required DateTime createdAt,
   });
 
+  Future<void> registerBusDriverToDataBase({
+    required String uuid,
+    required String firstName,
+    required String lastName,
+    required String phoneNumber,
+    required String nationalId,
+    required DateTime createdAt,
+  });
+
   Future<void> loginWithEmailPassword({
     required String email,
     required String password,
@@ -410,6 +419,28 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
+  Future<void> registerBusDriverToDataBase({
+    required String uuid,
+    required String firstName,
+    required String lastName,
+    required String phoneNumber,
+    required String nationalId,
+    required DateTime createdAt,
+  }) async {
+    await _firestore.collection('users').doc(uuid).set({
+      'uuid': uuid,
+      'first_name': firstName,
+      'last_name': lastName,
+      'phone_number': phoneNumber,
+      'national_id': nationalId,
+      'rate': 3.5,
+      'number_of_rates': 0,
+      'created_at': createdAt,
+      'type': 'bus_driver',
+    });
+  }
+
+  @override
   Future<void> loginWithEmailPassword({
     required String email,
     required String password,
@@ -699,22 +730,37 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required File busImage,
     required int seatsNumber,
   }) async {
-    await _firestore.collection('bus_drivers').doc(driverId).update({
-      "buses_id": FieldValue.arrayUnion([busId]),
+    String busLicenceName = '${busId}_bus_license.jpg';
+    String drivingLicenseName = '${busId}_driving_license.jpg';
+    String busImageName = '${busId}_bus_image.jpg';
+    await _firestore.collection('users').doc(driverId).update({
+      "buses_ids": FieldValue.arrayUnion([busId]),
     });
     await _firestore.collection('buses').add(
       {
-        'driver_id': driverId,
         'bus_id': busId,
         'first_name': firstName,
         'last_name': lastName,
-        'bus_license': busLicense,
-        'driving_license': drivingLicense,
-        'national_id': nationalID,
         'phone_number': phoneNumber,
-        'bus_image': busImage,
+        'national_id': nationalID,
+        'bus_license': busLicenceName,
+        'driving_license': drivingLicenseName,
+        'bus_image': busImageName,
         'seats_number': seatsNumber,
+        'driver_id': driverId,
       },
+    );
+    await _firebaseStorage.ref('bus_licenses').child(busLicenceName).putFile(
+      busLicense,
+      SettableMetadata(contentType: 'image/jpeg'),
+    );
+    await _firebaseStorage.ref('driving_licenses').child(drivingLicenseName).putFile(
+      drivingLicense,
+      SettableMetadata(contentType: 'image/jpeg'),
+    );
+    await _firebaseStorage.ref('bus_images').child(busImageName).putFile(
+      busImage,
+      SettableMetadata(contentType: 'image/jpeg'),
     );
   }
 
@@ -735,6 +781,5 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       'destination_location': destinationLocation,
       'calendar': calendar,
     });
-    throw UnimplementedError();
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import '../../app/sl.dart';
-import '../buses_screen/pages/add_bus_screen/view/add_bus_screen.dart';
+import '../buses_screen/pages/add_bus_screen/view/add_bus_view.dart';
 import '../buses_screen/pages/add_trip_screen/view/add_trip.dart';
 import '../buses_screen/pages/schedule_screen/schedule_screen.dart';
 import '../buses_screen/view/buses_screen.dart';

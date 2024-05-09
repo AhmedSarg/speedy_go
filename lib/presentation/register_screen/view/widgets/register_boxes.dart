@@ -458,11 +458,7 @@ List<Widget> busRegisterWidgets(BuildContext context,
         text: AppStrings.registerScreenSignUp.tr(),
         onPressed: () {
           if (formKey.currentState!.validate()) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('validated'),
-              ),
-            );
+           viewModel.authenticate();
           }
         },
       ),

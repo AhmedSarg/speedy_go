@@ -180,6 +180,15 @@ class RepositoryImpl implements Repository {
             tukTukImage: tukTukImage!,
             createdAt: DateTime.now(),
           );
+        } else if (registerType == RegisterType.bus) {
+          await _remoteDataSource.registerBusDriverToDataBase(
+            uuid: uuid,
+            firstName: firstName,
+            lastName: lastName,
+            phoneNumber: phoneNumber,
+            nationalId: nationalId!,
+            createdAt: DateTime.now(),
+          );
         } else {
           await _remoteDataSource.registerPassengerToDataBase(
             uuid: uuid,

@@ -1,11 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:speedy_go/app/extensions.dart';
-import 'package:speedy_go/presentation/buses_screen/pages/add_bus_screen/viewmodel/add_bus_viewmodel.dart';
 
 import '../../../../common/validators/validators.dart';
 import '../../../../register_screen/view/widgets/upload_field.dart';
@@ -15,6 +12,7 @@ import '../../../../resources/strings_manager.dart';
 import '../../../../resources/text_styles.dart';
 import '../../../../resources/values_manager.dart';
 import '../../../view/widgets/buses_logo_widget.dart';
+import '../viewmodel/add_bus_viewmodel.dart';
 import 'widgets/buses_item.dart';
 
 class AddBusBody extends StatelessWidget {
@@ -56,152 +54,159 @@ class AddNewBus extends StatelessWidget {
   final AddBusViewModel viewModel;
 
   static final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  static final FocusNode firstNameFocusNode = FocusNode();
+  static final FocusNode lastNameFocusNode = FocusNode();
+  static final FocusNode phoneNumberFocusNode = FocusNode();
+  static final FocusNode nationalIDFocusNode = FocusNode();
+  static final FocusNode seatsNumberFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(context.width() * .1),
-      padding: const EdgeInsets.all(AppPadding.p10),
-      decoration: BoxDecoration(
-        color: ColorManager.lightBlack,
-        borderRadius: BorderRadius.circular(AppSize.s20),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: AppSize.s30,
-            child: TextButton(
-              style: TextButton.styleFrom(
-                padding: EdgeInsets.zero,
+    return Form(
+      key: formKey,
+      child: Container(
+        margin: EdgeInsets.all(context.width() * .1),
+        padding: const EdgeInsets.all(AppPadding.p10),
+        decoration: BoxDecoration(
+          color: ColorManager.lightBlack,
+          borderRadius: BorderRadius.circular(AppSize.s20),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: SizedBox(
+                height: AppSize.s30,
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Cancel"),
+                ),
               ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text("Cancel"),
             ),
-          ),
-          const Divider(),
-          const SizedBox(height: AppSize.s20),
-          ...addBusWidgets(context, formKey),
-        ],
+            const Divider(),
+            const SizedBox(height: AppSize.s20),
+            Row(
+              children: [
+                Expanded(
+                  child: AddBusTextFormField(
+                    controller: viewModel.getFirstNameController,
+                    keyboard: TextInputType.text,
+                    hintText: AppStrings.registerScreenFirstNameHint.tr(),
+                    iconPath: SVGAssets.person,
+                    validator: AppValidators.validateName,
+                    focusNode: firstNameFocusNode,
+                    nextFocusNode: lastNameFocusNode,
+                  ),
+                ),
+                const SizedBox(width: AppSize.s20),
+                Expanded(
+                  child: AddBusTextFormField(
+                    controller: viewModel.getLastNameController,
+                    keyboard: TextInputType.text,
+                    hintText: AppStrings.registerScreenLastNameHint.tr(),
+                    iconPath: SVGAssets.person,
+                    validator: AppValidators.validateName,
+                    focusNode: lastNameFocusNode,
+                    nextFocusNode: phoneNumberFocusNode,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: AppSize.s20),
+            AddBusTextFormField(
+              controller: viewModel.getPhoneNumberController,
+              keyboard: TextInputType.number,
+              hintText: AppStrings.registerScreenPhoneNumberHint.tr(),
+              iconPath: SVGAssets.phone,
+              validator: AppValidators.validatePhoneNumber,
+              focusNode: phoneNumberFocusNode,
+              nextFocusNode: nationalIDFocusNode,
+            ),
+            const SizedBox(height: AppSize.s20),
+            AddBusTextFormField(
+              controller: viewModel.getNationalIDController,
+              keyboard: TextInputType.number,
+              hintText: AppStrings.registerScreenNationalIdHint.tr(),
+              iconPath: SVGAssets.id,
+              validator: AppValidators.validateNationalID,
+              focusNode: nationalIDFocusNode,
+            ),
+            const SizedBox(height: AppSize.s20),
+            Row(
+              children: [
+                Expanded(
+                  child: UploadField(
+                    hint: 'Bus License',
+                    value: viewModel.getBusLicense?.path,
+                    iconPath: SVGAssets.id,
+                    onPressed: viewModel.chooseBusLicenseFile,
+                  ),
+                ),
+                const SizedBox(width: AppSize.s20),
+                Expanded(
+                  child: UploadField(
+                    hint: AppStrings.registerScreenDrivingLicenseHint.tr(),
+                    value: viewModel.getDrivingLicense?.path,
+                    iconPath: SVGAssets.id,
+                    onPressed: viewModel.chooseDrivingLicenseFile,
+                    // onPressed: viewModel.chooseCarImage,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: AppSize.s20),
+            Row(
+              children: [
+                Expanded(
+                  child: UploadField(
+                    hint: 'Bus Image',
+                    value: viewModel.getBusImage?.path,
+                    iconPath: SVGAssets.image,
+                    onPressed: viewModel.chooseBusImageFile,
+                  ),
+                ),
+                const SizedBox(width: AppSize.s20),
+                Expanded(
+                  child: AddBusTextFormField(
+                    controller: viewModel.getSeatsNumberController,
+                    keyboard: TextInputType.number,
+                    hintText: 'Seats Number',
+                    iconPath: SVGAssets.seatsIcon,
+                    validator: AppValidators.validateName,
+                    focusNode: seatsNumberFocusNode,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: AppSize.s20),
+            SizedBox(
+              height: AppSize.s40,
+              width: context.width() * .5,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: ColorManager.lightBlue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppSize.s10),
+                    )),
+                onPressed: () {
+                  if (formKey.currentState!.validate()) {
+                    viewModel.addBus();
+                  }
+                },
+                child: const Text('Add'),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
-}
-
-List<Widget> addBusWidgets(BuildContext context, GlobalKey<FormState> formKey) {
-  FocusNode firstNameFocusNode = FocusNode();
-  FocusNode lastNameFocusNode = FocusNode();
-  FocusNode phoneNumberFocusNode = FocusNode();
-  FocusNode nationalIDFocusNode = FocusNode();
-  FocusNode seatsNumberFocusNode = FocusNode();
-  AddBusViewModel viewModel = AddBusViewModel.get(context);
-  return [
-    Row(
-      children: [
-        Expanded(
-          child: AddBusTextFormField(
-            controller: viewModel.getFirstNameController,
-            keyboard: TextInputType.text,
-            hintText: AppStrings.registerScreenFirstNameHint.tr(),
-            iconPath: SVGAssets.person,
-            validator: AppValidators.validateName,
-            focusNode: firstNameFocusNode,
-            nextFocusNode: lastNameFocusNode,
-          ),
-        ),
-        const SizedBox(width: AppSize.s20),
-        Expanded(
-          child: AddBusTextFormField(
-            controller: viewModel.getLastNameController,
-            keyboard: TextInputType.text,
-            hintText: AppStrings.registerScreenLastNameHint.tr(),
-            iconPath: SVGAssets.person,
-            validator: AppValidators.validateName,
-            focusNode: lastNameFocusNode,
-            nextFocusNode: phoneNumberFocusNode,
-          ),
-        ),
-      ],
-    ),
-    const SizedBox(height: AppSize.s20),
-    AddBusTextFormField(
-      controller: viewModel.getPhoneNumberController,
-      keyboard: TextInputType.number,
-      hintText: AppStrings.registerScreenPhoneNumberHint.tr(),
-      iconPath: SVGAssets.phone,
-      validator: AppValidators.validatePhoneNumber,
-      focusNode: phoneNumberFocusNode,
-      nextFocusNode: nationalIDFocusNode,
-    ),
-    const SizedBox(height: AppSize.s20),
-    AddBusTextFormField(
-      controller: viewModel.getNationalIDController,
-      keyboard: TextInputType.number,
-      hintText: AppStrings.registerScreenNationalIdHint.tr(),
-      iconPath: SVGAssets.id,
-      validator: AppValidators.validateNationalID,
-      focusNode: nationalIDFocusNode,
-    ),
-    const SizedBox(height: AppSize.s20),
-    Row(
-      children: [
-        Expanded(
-          child: UploadField(
-            hint: 'Bus License',
-            value: viewModel.getBusLicense?.path,
-            iconPath: SVGAssets.id,
-            onPressed: () {},
-          ),
-        ),
-        const SizedBox(width: AppSize.s20),
-        Expanded(
-          child: UploadField(
-            hint: AppStrings.registerScreenDrivingLicenseHint.tr(),
-            value: viewModel.getDrivingLicense?.path,
-            iconPath: SVGAssets.id,
-            onPressed: () {},
-            // onPressed: viewModel.chooseCarImage,
-          ),
-        ),
-      ],
-    ),
-    const SizedBox(height: AppSize.s20),
-    Row(
-      children: [
-        Expanded(
-          child: UploadField(
-            hint: 'Bus Image',
-            value: viewModel.getBusLicense?.path,
-            iconPath: SVGAssets.image,
-            onPressed: () {},
-          ),
-        ),
-        const SizedBox(width: AppSize.s20),
-        Expanded(
-          child: AddBusTextFormField(
-            controller: viewModel.getSeatsNumberController,
-            keyboard: TextInputType.number,
-            hintText: 'Seats Number',
-            iconPath: SVGAssets.id,
-            validator: AppValidators.validateName,
-            focusNode: nationalIDFocusNode,
-          )
-        ),
-      ],
-    ),
-    const SizedBox(height: AppSize.s20),
-    SizedBox(
-      height: AppSize.s40,
-      child: ElevatedButton(
-        style:
-            ElevatedButton.styleFrom(backgroundColor: ColorManager.lightBlue),
-        onPressed: () {},
-        child: const Text('Add'),
-      ),
-    ),
-  ];
 }
 
 class AddBusTextFormField extends StatefulWidget {

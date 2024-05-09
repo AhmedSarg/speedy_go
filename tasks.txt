@@ -5,7 +5,7 @@
 - login screen to be flexible and handle validation error overflow
 - # login country code validation #
 - add the new register fields
-- work bus driver register logic
+- bus driver to bus driver screen after register
 - build rest of bus screens ui
 - build all bus screens logic
 - scribble color

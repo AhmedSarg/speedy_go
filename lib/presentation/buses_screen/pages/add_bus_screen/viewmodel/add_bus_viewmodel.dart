@@ -5,8 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:speedy_go/domain/usecase/add_bus_usecase.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../../../../app/functions.dart';
+import '../../../../../data/network/failure.dart';
 import '../../../../base/base_cubit.dart';
 import '../../../../base/base_states.dart';
+import '../states/add_bus_states.dart';
 
 class AddBusViewModel extends BaseCubit
     implements PassengerTripViewModelInput, PassengerTripViewModelOutput {
@@ -29,21 +32,92 @@ class AddBusViewModel extends BaseCubit
   File? _drivingLicense;
   File? _busImage;
 
-  late String driverId;
+  late String _driverId;
 
   final Uuid _uuidGenerator = const Uuid();
 
-  @override
-  void start() {
-    _firstNameController = TextEditingController();
-    _lastNameController = TextEditingController();
-    _phoneNumberController = TextEditingController();
-    _nationalIDController = TextEditingController();
-    _seatsNumberController = TextEditingController();
-    _numberOfBusController = TextEditingController();
-    _priceController = TextEditingController();
-    _pickupLocationController = TextEditingController();
-    _destinationLocationController = TextEditingController();
+  Future<void> addBus() async {
+    emit(LoadingState(displayType: DisplayType.popUpDialog));
+    _driverId = "50eed110-8ed4-1fbd-8284-a5abda7919e1";
+    await _addBusUseCase(
+      AddBusUseCaseInput(
+        _driverId,
+        _uuidGenerator.v1(),
+        getFirstNameController.text,
+        getLastNameController.text,
+        getBusLicense!,
+        getDrivingLicense!,
+        getNationalIDController.text,
+        getPhoneNumberController.text,
+        getBusImage!,
+        int.parse(getSeatsNumberController.text),
+      ),
+    ).then(
+          (value) => {
+        value.fold(
+              (l) => emit(
+            ErrorState(
+              failure: l,
+              displayType: DisplayType.popUpDialog,
+            ),
+          ),
+              (r) {
+            emit(SuccessState('Bus Added Successfully'));
+          },
+        ),
+      },
+    );
+  }
+
+  void chooseBusLicenseFile() async {
+    try {
+      String path = await getImagesFromGallery();
+      _busLicense = File(path);
+      emit(AddBusImagePickedSuccessfully(image: _busLicense!));
+    } catch (e) {
+      emit(
+        ErrorState(
+          failure: Failure.fake(
+            (e as Exception).toString(),
+          ),
+          displayType: DisplayType.popUpDialog,
+        ),
+      );
+    }
+  }
+
+  void chooseDrivingLicenseFile() async {
+    try {
+      String path = await getImagesFromGallery();
+      _drivingLicense = File(path);
+      emit(AddBusImagePickedSuccessfully(image: _drivingLicense!));
+    } catch (e) {
+      emit(
+        ErrorState(
+          failure: Failure.fake(
+            (e as Exception).toString(),
+          ),
+          displayType: DisplayType.popUpDialog,
+        ),
+      );
+    }
+  }
+
+  void chooseBusImageFile() async {
+    try {
+      String path = await getImagesFromGallery();
+      _busImage = File(path);
+      emit(AddBusImagePickedSuccessfully(image: _busImage!));
+    } catch (e) {
+      emit(
+        ErrorState(
+          failure: Failure.fake(
+            (e as Exception).toString(),
+          ),
+          displayType: DisplayType.popUpDialog,
+        ),
+      );
+    }
   }
 
   // Future<void> addBusTrip() async {
@@ -71,33 +145,17 @@ class AddBusViewModel extends BaseCubit
   //   );
   // }
 
-  Future<void> addBus() async {
-    await _addBusUseCase(
-      AddBusUseCaseInput(
-        driverId,
-        _uuidGenerator.v1(),
-        getFirstNameController.text,
-        getLastNameController.text,
-        getBusLicense!,
-        getDrivingLicense!,
-        getNationalIDController.text,
-        getPhoneNumberController.text,
-        getBusImage!,
-        getSeatsNumberController.text as int,
-      ),
-    ).then(
-      (value) => {
-        value.fold(
-          (l) => emit(
-            ErrorState(
-              failure: l,
-              displayType: DisplayType.popUpDialog,
-            ),
-          ),
-          (r) {},
-        ),
-      },
-    );
+  @override
+  void start() {
+    _firstNameController = TextEditingController();
+    _lastNameController = TextEditingController();
+    _phoneNumberController = TextEditingController();
+    _nationalIDController = TextEditingController();
+    _seatsNumberController = TextEditingController();
+    _numberOfBusController = TextEditingController();
+    _priceController = TextEditingController();
+    _pickupLocationController = TextEditingController();
+    _destinationLocationController = TextEditingController();
   }
 
   @override

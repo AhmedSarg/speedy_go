@@ -9,6 +9,8 @@ import 'package:speedy_go/presentation/resources/color_manager.dart';
 
 import '../../../../../app/sl.dart';
 import '../../../../base/base_states.dart';
+import '../../../../resources/values_manager.dart';
+import '../states/add_bus_states.dart';
 
 class AddBusScreen extends StatelessWidget {
   const AddBusScreen({super.key});
@@ -21,6 +23,23 @@ class AddBusScreen extends StatelessWidget {
         create: (context) => AddBusViewModel(sl())..start(),
         child: BlocConsumer<AddBusViewModel, BaseStates>(
           listener: (context, state) {
+            if (state is SuccessState) {
+              Navigator.pop(context);
+            }
+            else if (state is AddBusImagePickedSuccessfully) {
+              showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  content: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(AppSize.s10),
+                    ),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    child: Image.file(state.image),
+                  ),
+                ),
+              );
+            }
             baseListener(context, state);
           },
           builder: (context, state) {
