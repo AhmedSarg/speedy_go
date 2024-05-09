@@ -25,7 +25,7 @@ class RateScreen extends StatelessWidget {
           child: BlocConsumer<RateViewModel, BaseStates>(
             listener: (context, state) {
               if (state is RateSuccessState) {
-                Navigator.pop(context, true);
+                Navigator.pop(context);
               }
               baseListener(context, state);
             },

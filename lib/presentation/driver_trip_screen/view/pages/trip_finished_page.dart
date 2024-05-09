@@ -43,7 +43,7 @@ class TripEnd extends StatelessWidget {
             passengerImage: viewModel.getSelectedTrip.imagePath,
             tripTime: viewModel.getSelectedTrip.expectedTime,
             tripDistance: viewModel.getSelectedTrip.distance,
-            tripCost: viewModel.getSelectedTrip.price,
+            tripCost: viewModel.getNewCost ?? viewModel.getSelectedTrip.price,
             time: viewModel.getSelectedTrip.awayMins,
             passengerRate: viewModel.getSelectedTrip.passengerRate,
             widget: IconButton(

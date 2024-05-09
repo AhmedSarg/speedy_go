@@ -345,8 +345,8 @@ class DriverTripViewModel extends BaseCubit
           },
           (r) async {
             if (await r) {
-              nextPage();
               _started = true;
+              nextPage();
             } else {
               _isAccepted = false;
               _started = false;
@@ -511,6 +511,8 @@ class DriverTripViewModel extends BaseCubit
   }
 
   Future<void> endTrip() async {
+    _newCost = null;
+    _started = false;
     await _endTripUseCase(EndTripUseCaseInput(
       tripId: _selectedTrip!.id,
     )).then(
