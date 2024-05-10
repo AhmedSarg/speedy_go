@@ -18,14 +18,17 @@ class MyPastTrip extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-SvgPicture.asset(SVGAssets.pastTrip),
-            const SizedBox(height: AppSize.s15,),
-            Text('No trips found',style: AppTextStyles.profileItemTextStyle(context),)
-
+            SvgPicture.asset(SVGAssets.pastTrip),
+            const SizedBox(
+              height: AppSize.s15,
+            ),
+            Text(
+              'No trips found',
+              style: AppTextStyles.profileItemTextStyle(context),
+            )
           ],
         ),
       ),
-    )
-    ;
+    );
   }
 }

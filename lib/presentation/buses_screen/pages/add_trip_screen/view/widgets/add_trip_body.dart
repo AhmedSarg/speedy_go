@@ -52,88 +52,58 @@ class AddTripBody extends StatelessWidget {
               title: AppStrings.busesAddTrip.tr(),
               backgroundColor: ColorManager.lightBlue,
             ),
-            Row(
-              children: [
-                Expanded(
-                    child: TripItem(
-                  iconFunction: Center(
-                    child: OptionMenu(
-                      selectedValue: '',
-                      color: ColorManager.lightBlue.withOpacity(.9),
-                      Bgcolor: ColorManager.traditional,
-                      items: numTrips
-                          .map(
-                            (e) => OptionMenuItem(
-                              text: e,
-                              onPressed: () {
-                                viewModel.setNum = e;
-                              },
-                            ),
-                          )
-                          .toList(),
-                      mainIcon: Icons.keyboard_arrow_down,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppPadding.p10),
+              child: Row(
+                children: [
+                  Expanded(
+                      child: TripItem(
+                    iconFunction: Center(
+                      child: OptionMenu(
+                        selectedValue: '',
+                        color: ColorManager.lightBlue.withOpacity(.9),
+                        Bgcolor: ColorManager.traditional,
+                        items: numTrips
+                            .map(
+                              (e) => OptionMenuItem(
+                                text: e,
+                                onPressed: () {
+                                  viewModel.setNum = e;
+                                },
+                              ),
+                            )
+                            .toList(),
+                        mainIcon: Icons.keyboard_arrow_down,
+                      ),
                     ),
-                  ),
-                  icon: Icons.add,
-                  title: AppStrings.busesAddTripNum.tr(),
-                  hintText: AppStrings.busesAddTripNumHint.tr(),
-                  read: true,
-                  validation: AppValidators.validateNotEmpty,
-                  textInputType: TextInputType.number,
-                  controller: viewModel.getNumController,
-                )),
-                Expanded(
-                    child: TripItem(
-                  title: AppStrings.busesAddTripPrice.tr(),
-                  hintText: AppStrings.busesAddTripPriceHint.tr(),
-                  inputFormatNumber: 6,
-                  read: false,
-                  validation: AppValidators.validateNotEmpty,
-                  textInputType: TextInputType.phone,
-                  controller: viewModel.getPriceController,
-                )),
-              ],
+                    icon: Icons.add,
+                    title: AppStrings.busesAddTripNum.tr(),
+                    hintText: AppStrings.busesAddTripNumHint.tr(),
+                    read: true,
+                    validation: AppValidators.validateNotEmpty,
+                    textInputType: TextInputType.number,
+                    controller: viewModel.getNumController,
+                  )),
+                  const SizedBox(width: AppSize.s10),
+                  Expanded(
+                      child: TripItem(
+                    title: AppStrings.busesAddTripPrice.tr(),
+                    hintText: AppStrings.busesAddTripPriceHint.tr(),
+                    inputFormatNumber: 6,
+                    read: false,
+                    validation: AppValidators.validateNotEmpty,
+                    textInputType: TextInputType.phone,
+                    controller: viewModel.getPriceController,
+                  )),
+                ],
+              ),
             ),
-            Row(
-              children: [
-                Expanded(
-                    child: TripItem(
-                  onTap: () {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (context) {
-                        return Padding(
-                          padding: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).viewInsets.bottom),
-                          child: Container(
-                            height: 1000,
-                            width: MediaQuery.of(context).size.width * .8,
-                            padding: const EdgeInsets.only(
-                              top: AppPadding.p8,
-                              right: AppPadding.p12,
-                            ),
-                            decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(AppSize.s18),
-                                    topLeft: Radius.circular(AppSize.s18)),
-                                color: ColorManager.darkGrey),
-                            child: SearchFuncationalityStateFrom(
-                              viewModel: viewModel,
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  controller: viewModel.getFromController,
-                  title: AppStrings.busesAddTripFrom.tr(),
-                  hintText: AppStrings.busesAddTripFromHint.tr(),
-                  read: true,
-                  validation: AppValidators.validateNotEmpty,
-                  textInputType: TextInputType.text,
-                )),
-                Expanded(
-                  child: TripItem(
+            Padding(
+              padding: const EdgeInsets.all(AppPadding.p10),
+              child: Row(
+                children: [
+                  Expanded(
+                      child: TripItem(
                     onTap: () {
                       showModalBottomSheet(
                         context: context,
@@ -143,6 +113,7 @@ class AddTripBody extends StatelessWidget {
                                 bottom:
                                     MediaQuery.of(context).viewInsets.bottom),
                             child: Container(
+                              height: 1000,
                               width: MediaQuery.of(context).size.width * .8,
                               padding: const EdgeInsets.only(
                                 top: AppPadding.p8,
@@ -153,7 +124,7 @@ class AddTripBody extends StatelessWidget {
                                       topRight: Radius.circular(AppSize.s18),
                                       topLeft: Radius.circular(AppSize.s18)),
                                   color: ColorManager.darkGrey),
-                              child: SearchFuncationalityState(
+                              child: SearchFuncationalityStateFrom(
                                 viewModel: viewModel,
                               ),
                             ),
@@ -161,15 +132,53 @@ class AddTripBody extends StatelessWidget {
                         },
                       );
                     },
-                    title: AppStrings.busesAddTripTo.tr(),
-                    hintText: AppStrings.busesAddTripToHint.tr(),
+                    controller: viewModel.getFromController,
+                    title: AppStrings.busesAddTripFrom.tr(),
+                    hintText: AppStrings.busesAddTripFromHint.tr(),
                     read: true,
-                    textInputType: TextInputType.text,
-                    controller: viewModel.getToController,
                     validation: AppValidators.validateNotEmpty,
+                    textInputType: TextInputType.text,
+                  )),
+                  const SizedBox(width: AppSize.s10),
+                  Expanded(
+                    child: TripItem(
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return Padding(
+                              padding: EdgeInsets.only(
+                                  bottom:
+                                      MediaQuery.of(context).viewInsets.bottom),
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * .8,
+                                padding: const EdgeInsets.only(
+                                  top: AppPadding.p8,
+                                  right: AppPadding.p12,
+                                ),
+                                decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(AppSize.s18),
+                                        topLeft: Radius.circular(AppSize.s18)),
+                                    color: ColorManager.darkGrey),
+                                child: SearchFuncationalityState(
+                                  viewModel: viewModel,
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      title: AppStrings.busesAddTripTo.tr(),
+                      hintText: AppStrings.busesAddTripToHint.tr(),
+                      read: true,
+                      textInputType: TextInputType.text,
+                      controller: viewModel.getToController,
+                      validation: AppValidators.validateNotEmpty,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             FormField(
               validator: (_) {
@@ -180,7 +189,7 @@ class AddTripBody extends StatelessWidget {
               },
               builder: (errorContext) {
                 return Container(
-                  margin: const EdgeInsets.all(AppMargin.m5),
+                  margin: const EdgeInsets.all(AppMargin.m10),
                   padding: const EdgeInsets.all(AppPadding.p5),
                   decoration: BoxDecoration(
                       border: Border.all(
@@ -228,8 +237,9 @@ class AddTripBody extends StatelessWidget {
                             context: context,
                             initialDate: DateTime.now(),
                             firstDate: DateTime.now(),
-                            lastDate:
-                                DateTime.now().add(const Duration(days: 365)),
+                            lastDate: DateTime.now().add(
+                              const Duration(days: 365),
+                            ),
                             builder: (context, child) {
                               return Theme(
                                 data: ThemeData.light().copyWith(
@@ -265,13 +275,7 @@ class AddTripBody extends StatelessWidget {
                                 selectedTime.hour,
                                 selectedTime.minute,
                               );
-                              final formattedDateTime = DateFormat.yMd()
-                                  .add_jm()
-                                  .format(combinedDateTime);
-                              DateTime parsedDateTime =
-                                  DateFormat('dd/MM/yyyy HH:mm')
-                                      .parse(formattedDateTime);
-                              viewModel.setDate = parsedDateTime;
+                              viewModel.setDate = combinedDateTime;
                             }
                           }
                         },
@@ -295,7 +299,6 @@ class AddTripBody extends StatelessWidget {
             const SizedBox(
               height: AppSize.s18,
             ),
-
             SizedBox(
               width: MediaQuery.of(context).size.width * .8,
               child: MainButton(
@@ -305,7 +308,6 @@ class AddTripBody extends StatelessWidget {
                   if (_formKey.currentState!.validate()) {
                     viewModel.addTrip();
                     viewModel.clear();
-
                   }
                 },
               ),
@@ -313,7 +315,6 @@ class AddTripBody extends StatelessWidget {
             const SizedBox(
               height: AppSize.s18,
             ),
-
             SizedBox(
               width: MediaQuery.of(context).size.width * .5,
               child: SecondButton(
@@ -321,6 +322,7 @@ class AddTripBody extends StatelessWidget {
                 text: 'Cancel',
                 onPressed: () {
                   viewModel.clear();
+                  Navigator.pop(context);
                 },
               ),
             )

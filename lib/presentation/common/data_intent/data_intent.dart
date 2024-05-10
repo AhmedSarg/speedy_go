@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:speedy_go/domain/models/domain.dart';
 
 import '../../../domain/models/enums.dart';
 
@@ -60,6 +61,7 @@ class DataIntent {
   static AuthType getAuthType() {
     return _authType;
   }
+
   static late Function() _onVerified;
 
   static void setOnVerified(Function() onVerified) => _onVerified = onVerified;
@@ -75,7 +77,8 @@ class DataIntent {
 
   static LatLng? _pickupLocation;
 
-  static void pushPickupLocation(LatLng pickupLocation) => _pickupLocation = pickupLocation;
+  static void pushPickupLocation(LatLng pickupLocation) =>
+      _pickupLocation = pickupLocation;
 
   static LatLng popPickupLocation() {
     LatLng value = _pickupLocation!;
@@ -85,7 +88,8 @@ class DataIntent {
 
   static LatLng? _destinationLocation;
 
-  static void pushDestinationLocation(LatLng destinationLocation) => _destinationLocation = destinationLocation;
+  static void pushDestinationLocation(LatLng destinationLocation) =>
+      _destinationLocation = destinationLocation;
 
   static LatLng popDestinationLocation() {
     LatLng value = _destinationLocation!;
@@ -103,6 +107,48 @@ class DataIntent {
     return value;
   }
 
+//-----------------------------------
+
+//------------------------------------
+  //Buses Screen
+
+  static Stream<List<TripBusModel>>? _tripsStream;
+
+  static void pushTripsStream(Stream<List<TripBusModel>> tripsStream) =>
+      _tripsStream = tripsStream;
+
+  static Stream<List<TripBusModel>> popTripsStream() {
+    Stream<List<TripBusModel>> value = _tripsStream!;
+    _tripsStream = null;
+    return value;
+  }
+
+  static String? _busPickup;
+
+  static void setBusPickup(String busPickup) =>
+      _busPickup = busPickup;
+
+  static String getBusPickup() {
+    return _busPickup!;
+  }
+
+  static String? _busDestination;
+
+  static void setBusDestination(String busDestination) =>
+      _busDestination = busDestination;
+
+  static String getBusDestination() {
+    return _busDestination!;
+  }
+
+  static DateTime? _busDepartureDate;
+
+  static void setBusDepartureDate(DateTime busDepartureDate) =>
+      _busDepartureDate = busDepartureDate;
+
+  static DateTime getBusDepartureDate() {
+    return _busDepartureDate!;
+  }
 
 //-----------------------------------
 }

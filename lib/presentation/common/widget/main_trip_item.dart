@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:speedy_go/app/extensions.dart';
 
-import '../../../../../../../../resources/assets_manager.dart';
-import '../../../../../../../../resources/color_manager.dart';
-import '../../../../../../../../resources/font_manager.dart';
-import '../../../../../../../../resources/text_styles.dart';
-import '../../../../../../../../resources/values_manager.dart';
+import '../../resources/assets_manager.dart';
+import '../../resources/color_manager.dart';
+import '../../resources/font_manager.dart';
+import '../../resources/text_styles.dart';
+import '../../resources/values_manager.dart';
 
-class CurrentTripItem extends StatelessWidget {
-  const CurrentTripItem({Key? key}) : super(key: key);
+class MainTripItem extends StatelessWidget {
+  const MainTripItem({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +95,9 @@ class CurrentTripItem extends StatelessWidget {
                               ),
                             ],
                           ),
-                          const SizedBox(height: AppSize.s5,),
+                          const SizedBox(
+                            height: AppSize.s5,
+                          ),
                           Row(
                             children: [
                               SizedBox(
@@ -197,7 +199,10 @@ class CurrentTripItem extends StatelessWidget {
                           children: [
                             GestureDetector(
                               onTap: () {},
-                              child: const Icon(Icons.add,size: AppSize.s15,),
+                              child: const Icon(
+                                Icons.add,
+                                size: AppSize.s15,
+                              ),
                             ),
                             Text(
                               "1",
@@ -208,7 +213,10 @@ class CurrentTripItem extends StatelessWidget {
                             ),
                             GestureDetector(
                               onTap: () {},
-                              child: const Icon(Icons.remove,size: AppSize.s15,),
+                              child: const Icon(
+                                Icons.remove,
+                                size: AppSize.s15,
+                              ),
                             )
                           ],
                         ),

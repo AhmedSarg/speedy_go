@@ -27,6 +27,7 @@ import '../domain/usecase/add_bus_usecase.dart';
 import '../domain/usecase/add_trip_bus.dart';
 import '../domain/usecase/cancel_accept_trip_usecase.dart';
 import '../domain/usecase/change_driver_status_usecase.dart';
+import '../domain/usecase/find_bus_trips_usecase.dart';
 import '../domain/usecase/find_trips_usecase.dart';
 import '../domain/usecase/logout_usecase.dart';
 import '../domain/usecase/accept_driver_usecase.dart';
@@ -159,18 +160,6 @@ void initEndTripUseCase() {
   }
 }
 
-void initAddBusUseCase() {
-  if (GetIt.instance.isRegistered<EndTripUseCase>() == false) {
-    sl.registerFactory<AddBusUseCase>(() => AddBusUseCase(sl()));
-  }
-}
-
-void initAddBusTripUseCase() {
-  if (GetIt.instance.isRegistered<EndTripUseCase>() == false) {
-    sl.registerFactory<AddBusTripUseCase>(() => AddBusTripUseCase(sl()));
-  }
-}
-
 void initRateUseCase() {
   if (GetIt.instance.isRegistered<RateUseCase>() == false) {
     sl.registerFactory<RateUseCase>(() => RateUseCase(sl()));
@@ -204,5 +193,23 @@ void initAcceptTripUseCase() {
 void initCancelAcceptTripUseCase() {
   if (GetIt.instance.isRegistered<CancelAcceptTripUseCase>() == false) {
     sl.registerFactory<CancelAcceptTripUseCase>(() => CancelAcceptTripUseCase(sl()));
+  }
+}
+
+void initAddBusUseCase() {
+  if (GetIt.instance.isRegistered<EndTripUseCase>() == false) {
+    sl.registerFactory<AddBusUseCase>(() => AddBusUseCase(sl()));
+  }
+}
+
+void initAddBusTripUseCase() {
+  if (GetIt.instance.isRegistered<EndTripUseCase>() == false) {
+    sl.registerFactory<AddBusTripUseCase>(() => AddBusTripUseCase(sl()));
+  }
+}
+
+void initFindBusTripsUseCase() {
+  if (GetIt.instance.isRegistered<FindBusTripsUseCase>() == false) {
+    sl.registerFactory<FindBusTripsUseCase>(() => FindBusTripsUseCase(sl()));
   }
 }

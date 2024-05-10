@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:speedy_go/presentation/main_layout/view/pages/bus_page/pages/bus_trips_page/view/bus_trips_view.dart';
 
 import '../../app/sl.dart';
 import '../buses_screen/pages/add_bus_screen/view/add_bus_view.dart';
@@ -51,6 +52,7 @@ class Routes {
   static const String supportRoute = "/support";
   static const String requestHistoryRoute = "/requestHistory";
   static const String permissionsRoute = "/permissions";
+  static const String viewBusTripsRoute = "/viewBusTrips";
 }
 
 class RouteGenerator {
@@ -88,6 +90,7 @@ class RouteGenerator {
         );
       case Routes.mainLayoutRoute:
         initCurrentUserUseCase();
+        initFindBusTripsUseCase();
         return MaterialPageRoute(builder: (_) => const MainLayoutScreen());
       case Routes.passengerMapRoute:
         return MaterialPageRoute(builder: (_) => const PassengerMapScreen());
@@ -130,6 +133,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const RequestHistoryScreen());
       case Routes.permissionsRoute:
         return MaterialPageRoute(builder: (_) => const PermissionsScreen());
+      case Routes.viewBusTripsRoute:
+        return MaterialPageRoute(builder: (_) => const BusTripsPage());
 
       default:
         return unDefinedRoute();

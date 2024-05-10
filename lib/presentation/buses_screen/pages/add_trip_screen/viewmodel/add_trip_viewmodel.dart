@@ -24,7 +24,7 @@ class AddTripViewModel extends BaseCubit
   final TextEditingController _toSearchController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   String _num = '1';
-  String _selectedDate = '';
+  DateTime? _selectedDate;
 
   @override
   void start() {}
@@ -49,7 +49,7 @@ class AddTripViewModel extends BaseCubit
 
   String get getNum => _num;
 
-  String get getDate => _selectedDate;
+  DateTime get getDate => _selectedDate!;
 
   @override
   set setNum(String number) {
@@ -95,15 +95,15 @@ class AddTripViewModel extends BaseCubit
     _toSearchController.clear();
     _dateController.clear();
     _num = '1';
-    _selectedDate = '';
+    _selectedDate = null;
   }
 
   @override
   set setDate(DateTime date) {
-    DateFormat formatter = DateFormat('MMM d, yyyy');
-    _selectedDate = formatter.format(date);
+    // DateFormat formatter = DateFormat('MMM d, yyyy');
+    // _selectedDate = formatter.format(date);
 
-    _dateController.text = _selectedDate;
+    _dateController.text = DateFormat('EEE, MMM d yyyy hh:mm a').format(date);
   }
 }
 
