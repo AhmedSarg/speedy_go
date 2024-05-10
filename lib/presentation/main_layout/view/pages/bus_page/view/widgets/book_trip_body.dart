@@ -29,81 +29,56 @@ class BookTripsBody extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return dialogData(
-                          tittle: 'To',
-                          onTap_1: () {
-                            viewModel.getFromController.text = 'Cairo';
-                            Navigator.pop(context);
-                          },
-                          onTap_2: () {
-                            viewModel.getFromController.text = 'Ismailia';
-                            Navigator.pop(context);
-                          },
-                          onTap_3: () {
-                            viewModel.getFromController.text =
-                            'Sinai University';
-                            Navigator.pop(context);
-                          },
-                          onTap_4: () {
-                            viewModel.getFromController.text = 'Port Said';
-                            Navigator.pop(context);
-                          });
+                      return DialogData(
+                        title: 'To',
+                        controller: viewModel.getToController,
+                      );
                     },
                   );
                 },
-                title: 'From',
+                title: 'To',
                 hintText: 'choose trip start location',
                 read: true,
                 validation: AppValidators.validateNotEmpty,
                 textInputType: TextInputType.text,
-                controller: viewModel.getFromController),
+                controller: viewModel.getToController),
             TripItem(
                 onTap: () {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return dialogData(
-                          tittle: 'To',
-                          onTap_1: () {
-                            viewModel.getToController.text = 'Cairo';
-                            Navigator.pop(context);
-                          },
-                          onTap_2: () {
-                            viewModel.getToController.text = 'Ismailia';
-                            Navigator.pop(context);
-                          },
-                          onTap_3: () {
-                            viewModel.getToController.text = 'Sinai University';
-                            Navigator.pop(context);
-                          },
-                          onTap_4: () {
-                            viewModel.getToController.text = 'Port Said';
-                            Navigator.pop(context);
-                          });
-                      ;
+                      return DialogData(
+                        title: 'From',
+                        controller: viewModel.getFromController,
+                      );
                     },
                   );
                 },
-                title: 'To',
+                title: 'From',
                 hintText: 'choose trip destination ',
                 read: true,
                 validation: AppValidators.validateNotEmpty,
-
                 textInputType: TextInputType.text,
-                controller: viewModel.getToController),
+                controller: viewModel.getFromController),
             DateItem(
               viewModel: viewModel,
             ),
-        const SizedBox(height: AppSize.s16,),
+            const SizedBox(
+              height: AppSize.s16,
+            ),
             SizedBox(
-              width: MediaQuery.of(context).size.width*.7,
-              child: MainButton(text: 'Search', onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  viewModel.searchTrip();
-                }
+              width: MediaQuery.of(context).size.width * .7,
+              child: MainButton(
+                text: 'Search',
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    viewModel.searchTrip();
+                  }
+                },
+              ),
+            ),
 
-              },),
-            )
+
           ],
         ),
       ),

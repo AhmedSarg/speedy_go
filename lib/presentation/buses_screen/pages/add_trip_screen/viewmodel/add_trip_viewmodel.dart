@@ -61,7 +61,6 @@ class AddTripViewModel extends BaseCubit
     emit(LoadingState(displayType: DisplayType.popUpDialog));
 
     DateTime selectedDate = DateFormat('MMM d, yyyy').parse(_dateController.text);
-
     double? price = double.tryParse(_priceController.text);
 
     await _addBusTripUseCase(
@@ -102,11 +101,12 @@ class AddTripViewModel extends BaseCubit
   @override
   set setDate(DateTime date) {
     DateFormat formatter = DateFormat('MMM d, yyyy');
-
     _selectedDate = formatter.format(date);
+
     _dateController.text = _selectedDate;
   }
 }
+
 
 abstract class AddTripViewModelInput {
   set setNum(String number);

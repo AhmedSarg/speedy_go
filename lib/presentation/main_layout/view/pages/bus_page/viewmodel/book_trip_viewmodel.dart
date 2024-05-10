@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -65,7 +66,9 @@ class BookTripViewModel extends BaseCubit
     emit(LoadingState(displayType: DisplayType.popUpDialog));
 
 
+
   }
+
 
 
 

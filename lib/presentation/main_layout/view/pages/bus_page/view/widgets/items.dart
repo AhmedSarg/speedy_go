@@ -123,23 +123,46 @@ return Container(
   }
 }
 
-class dialogData extends StatelessWidget {
-  const dialogData(
-      {super.key,
-      required this.tittle,
-      this.onTap_1,
-      this.onTap_2,
-      this.onTap_3,
-      this.onTap_4});
-  final String tittle;
-  final void Function()? onTap_1;
-  final void Function()? onTap_2;
-  final void Function()? onTap_3;
-  final void Function()? onTap_4;
+final List<String> egyptGovernorates = [
+  "الإسكندرية",
+  "البحيرة",
+  "الدقهلية",
+  "دمياط",
+  "الشرقية",
+  "الغربية",
+  "القليوبية",
+  "المنوفية",
+  "كفر الشيخ",
+  "الأقصر",
+  "أسوان",
+  "الأسيوط",
+  "البحر الأحمر",
+  "المنيا",
+  "سوهاج",
+  "قنا",
+  "جامعه سيناء",
+  "شمال سيناء",
+  "جنوب سيناء",
+  "الوادي الجديد",
+  "بورسعيد",
+  "السويس",
+  "القاهرة",
+  "الجيزة",
+];
+
+class DialogData extends StatelessWidget {
+  const DialogData({
+    Key? key,
+    required this.title, required this.controller,
+  }) : super(key: key);
+
+  final String title;
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+
       backgroundColor: ColorManager.lightBlack,
       title: Row(
         children: [
@@ -153,136 +176,51 @@ class dialogData extends StatelessWidget {
                     Icons.close,
                     color: ColorManager.grey,
                   )),
-              SizedBox(
+              const SizedBox(
                 width: AppSize.s5,
               ),
               Text(
-                tittle,
+                title,
                 style: AppTextStyles.profileGeneralTextStyle(
                     context, FontSize.f20, ColorManager.lightBlue),
               ),
             ],
           ),
         ],
+      ),      content: SizedBox(
+        width: double.maxFinite,
+        child: ListView.builder(
+
+          shrinkWrap: true,
+          itemCount: egyptGovernorates.length,
+          itemBuilder: (BuildContext context, int index) {
+            final governorate = egyptGovernorates[index];
+
+            return Container(
+              margin: const EdgeInsets.symmetric(vertical: AppMargin.m5),
+              width: MediaQuery.of(context).size.width * .85,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppSize.s10),
+                  color: ColorManager.darkBlack),
+              child: ListTile(
+                title: Text(
+                  egyptGovernorates[index],
+                  style: AppTextStyles.profileGeneralTextStyle(
+                      context, FontSize.f16, ColorManager.offwhite),              ),
+                trailing: const Icon(
+                  Icons.keyboard_arrow_down,
+                  size: AppSize.s24,
+                  color: ColorManager.offwhite,
+                ),
+                onTap: () {
+                  controller.text = governorate;
+                  Navigator.pop(context);
+                },
+              ),
+            );
+          },
+        ),
       ),
-      actionsOverflowButtonSpacing: AppSize.s20,
-      actions: [
-        InkWell(
-          onTap: onTap_1,
-          child: Container(
-            width: MediaQuery.of(context).size.width * .85,
-            height: AppSize.s40,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppSize.s10),
-                color: ColorManager.darkBlack),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSize.s16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Cairo',
-                    style: AppTextStyles.profileGeneralTextStyle(
-                        context, FontSize.f16, ColorManager.offwhite),
-                  ),
-                  const Icon(
-                    Icons.keyboard_arrow_down,
-                    size: AppSize.s24,
-                    color: ColorManager.offwhite,
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
-        InkWell(
-          onTap: onTap_2,
-          child: Container(
-            width: MediaQuery.of(context).size.width * .85,
-            height: AppSize.s40,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppSize.s10),
-                color: ColorManager.darkBlack),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSize.s16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Ismailia',
-                    style: AppTextStyles.profileGeneralTextStyle(
-                        context, FontSize.f16, ColorManager.offwhite),
-                  ),
-                  const Icon(
-                    Icons.keyboard_arrow_down,
-                    size: AppSize.s24,
-                    color: ColorManager.offwhite,
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
-        InkWell(
-          onTap: onTap_3,
-          child: Container(
-            width: MediaQuery.of(context).size.width * .85,
-            height: AppSize.s40,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppSize.s10),
-                color: ColorManager.darkBlack),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSize.s16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Sinai University',
-                    style: AppTextStyles.profileGeneralTextStyle(
-                        context, FontSize.f16, ColorManager.offwhite),
-                  ),
-                  const Icon(
-                    Icons.keyboard_arrow_down,
-                    size: AppSize.s24,
-                    color: ColorManager.offwhite,
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
-        InkWell(
-          onTap: onTap_4,
-          child: Container(
-            width: MediaQuery.of(context).size.width * .85,
-            height: AppSize.s40,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppSize.s10),
-                color: ColorManager.darkBlack),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSize.s16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Port Said',
-                    style: AppTextStyles.profileGeneralTextStyle(
-                        context, FontSize.f16, ColorManager.offwhite),
-                  ),
-                  const Icon(
-                    Icons.keyboard_arrow_down,
-                    size: AppSize.s24,
-                    color: ColorManager.offwhite,
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(
-          height: AppSize.s100,
-        )
-      ],
     );
   }
 }
