@@ -106,10 +106,12 @@ class VerificationViewModel extends BaseCubit
           },
           (r) async {
             emit(await _onVerified());
-            if (_userManager.getCurrentUserType == UserType.driver) {
+            if (_userManager.getCurrentUserType == UserType.driver &&
+                _userManager.getCurrentDriver!.vehicleType == VehicleType.bus) {
+              emit(UserIsBusDriverState());
+            } else if (_userManager.getCurrentUserType == UserType.driver) {
               emit(UserIsDriverState());
-            }
-            else {
+            } else {
               emit(UserIsPassengerState());
             }
           },

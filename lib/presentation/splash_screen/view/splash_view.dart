@@ -100,13 +100,20 @@ class _SplashScreenState extends State<SplashScreen>
                       context, Routes.onBoardingRoute);
                 },
               );
-            } else if (state is PassengerSignedState) {
+            }
+            else if (state is PassengerSignedState) {
               Future.delayed(const Duration(seconds: 1), () {
                 Navigator.pushReplacementNamed(context, Routes.mainLayoutRoute);
               });
-            } else if (state is DriverSignedState) {
+            }
+            else if (state is DriverSignedState) {
               Future.delayed(const Duration(seconds: 1), () {
                 Navigator.pushReplacementNamed(context, Routes.driverTripRoute);
+              });
+            }
+            else if (state is BusDriverSignedState) {
+              Future.delayed(const Duration(seconds: 1), () {
+                Navigator.pushReplacementNamed(context, Routes.busesRoute);
               });
             }
             baseListener(context, state);

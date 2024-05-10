@@ -192,19 +192,18 @@ class TripDriverModel {
 
   factory TripDriverModel.fromMap(Map<String, dynamic> map) {
     return TripDriverModel(
-      id: map['id'],
-      name: '${map['first_name']} ${map['last_name']}',
-      location: map['location'],
-      price: map['price'].toInt(),
-      phoneNumber: map['phone_number'],
-      car: map['car_model'] ?? 'Tuk Tuk',
-      color: map['vehicle_color'],
-      license: map['vehicle_license'],
-      rate: map['rate'].toDouble(),
-      numberOfRates: map['number_of_rates'].toInt(),
-      time: map['time'],
-      imagePath: map['image_path']
-    );
+        id: map['id'],
+        name: '${map['first_name']} ${map['last_name']}',
+        location: map['location'],
+        price: map['price'].toInt(),
+        phoneNumber: map['phone_number'],
+        car: map['car_model'] ?? 'Tuk Tuk',
+        color: map['vehicle_color'],
+        license: map['vehicle_license'],
+        rate: map['rate'].toDouble(),
+        numberOfRates: map['number_of_rates'].toInt(),
+        time: map['time'],
+        imagePath: map['image_path']);
   }
 }
 
@@ -288,4 +287,43 @@ class TripPassengerModel {
       price: map['price'].toInt(),
     );
   }
+}
+
+class TripBusModel {
+  final String id;
+  final String driverId;
+  final String pickup;
+  final String destination;
+  final DateTime date;
+  final int price;
+  int? seats;
+
+  TripBusModel({
+    required this.id,
+    required this.driverId,
+    required this.pickup,
+    required this.destination,
+    required this.date,
+    required this.price,
+    this.seats,
+  });
+
+  factory TripBusModel.fake() => TripBusModel(
+        id: '',
+        driverId: '',
+        pickup: '',
+        destination: '',
+        date: DateTime(2024),
+        price: -1,
+        seats: -1,
+      );
+
+  factory TripBusModel.fromMap(Map<String, dynamic> map) => TripBusModel(
+        id: map['id'],
+        driverId: map['driver_id'],
+        pickup: map['pickup_location'],
+        destination: map['destination_location'],
+        date: map['calendar'],
+        price: map['price'],
+      );
 }

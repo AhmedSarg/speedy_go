@@ -186,6 +186,7 @@ class RepositoryImpl implements Repository {
             firstName: firstName,
             lastName: lastName,
             phoneNumber: phoneNumber,
+            email: email,
             nationalId: nationalId!,
             createdAt: DateTime.now(),
           );
@@ -627,6 +628,32 @@ class RepositoryImpl implements Repository {
           calendar: calendar,
         );
         return const Right(null);
+      } else {
+        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+      }
+    } catch (e) {
+      return Left(ErrorHandler.handle(e).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, Stream<List<TripBusModel>>>> findBusTrips({
+    required String pickup,
+    required String destination,
+    required DateTime date,
+  }) async {
+    try {
+      if (await _networkInfo.isConnected) {
+        Stream<List<TripBusModel>> listOfTrips = _remoteDataSource
+            .findBusTrips(pickup: pickup, destination: destination, date: date)
+            .map(
+              (trips) => trips
+                  .map(
+                    (trip) => TripBusModel.fromMap(trip),
+                  )
+                  .toList(),
+            );
+        return Right(listOfTrips);
       } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
       }

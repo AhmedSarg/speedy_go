@@ -47,6 +47,12 @@ class VerificationScreen extends StatelessWidget {
                     Routes.driverTripRoute,
                     ModalRoute.withName('/'),
                   );
+                } else if (state is UserIsBusDriverState) {
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    Routes.busesRoute,
+                    ModalRoute.withName('/'),
+                  );
                 }
                 baseListener(context, state);
               },

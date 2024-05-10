@@ -18,7 +18,6 @@ class SplashViewModel extends BaseCubit
 
   @override
   void start() async {
-    // await Future.delayed(const Duration(seconds: 5));
     await _signedUserUseCase(null).then(
       (value) {
         value.fold(
@@ -29,7 +28,12 @@ class SplashViewModel extends BaseCubit
             if (r == null) {
               emit(UserNotSignedState());
             } else {
-              if (_userManager.getCurrentUserType == UserType.driver) {
+              if (_userManager.getCurrentUserType == UserType.driver &&
+                  _userManager.getCurrentDriver!.vehicleType ==
+                      VehicleType.bus) {
+                emit(BusDriverSignedState());
+              }
+              else if (_userManager.getCurrentUserType == UserType.driver) {
                 emit(DriverSignedState());
               }
               else {

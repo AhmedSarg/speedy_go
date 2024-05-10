@@ -61,7 +61,12 @@ class LoginViewModel extends BaseCubit
         },
         (r) {
           emit(SuccessState(AppStrings.verificationScreenLoginSuccessMessage));
-          if (_userManager.getCurrentUserType == UserType.driver) {
+          if (_userManager.getCurrentUserType == UserType.driver &&
+              _userManager.getCurrentDriver!.vehicleType ==
+                  VehicleType.bus) {
+            emit(UserIsBusDriverState());
+          }
+          else if (_userManager.getCurrentUserType == UserType.driver) {
             emit(UserIsDriverState());
           }
           else {

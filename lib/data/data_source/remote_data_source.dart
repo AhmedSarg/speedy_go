@@ -68,6 +68,7 @@ abstract class RemoteDataSource {
     required String firstName,
     required String lastName,
     required String phoneNumber,
+    required String email,
     required String nationalId,
     required DateTime createdAt,
   });
@@ -147,6 +148,12 @@ abstract class RemoteDataSource {
     required String pickupLocation,
     required String destinationLocation,
     required DateTime calendar,
+  });
+
+  Stream<List<Map<String, dynamic>>> findBusTrips({
+    required String pickup,
+    required String destination,
+    required DateTime date,
   });
 }
 
@@ -424,6 +431,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required String firstName,
     required String lastName,
     required String phoneNumber,
+    required String email,
     required String nationalId,
     required DateTime createdAt,
   }) async {
@@ -432,6 +440,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       'first_name': firstName,
       'last_name': lastName,
       'phone_number': phoneNumber,
+      'email': email,
       'national_id': nationalId,
       'rate': 3.5,
       'number_of_rates': 0,
@@ -643,7 +652,11 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required TripType tripType,
   }) {
     // print(-4);
-    return _firestore.collection('available_trips').where('trip_type', isEqualTo: tripType.name).snapshots().map(
+    return _firestore
+        .collection('available_trips')
+        .where('trip_type', isEqualTo: tripType.name)
+        .snapshots()
+        .map(
       (snapshot) {
         // print(-3);
         return snapshot.docs.map(
@@ -751,17 +764,20 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       },
     );
     await _firebaseStorage.ref('bus_licenses').child(busLicenceName).putFile(
-      busLicense,
-      SettableMetadata(contentType: 'image/jpeg'),
-    );
-    await _firebaseStorage.ref('driving_licenses').child(drivingLicenseName).putFile(
-      drivingLicense,
-      SettableMetadata(contentType: 'image/jpeg'),
-    );
+          busLicense,
+          SettableMetadata(contentType: 'image/jpeg'),
+        );
+    await _firebaseStorage
+        .ref('driving_licenses')
+        .child(drivingLicenseName)
+        .putFile(
+          drivingLicense,
+          SettableMetadata(contentType: 'image/jpeg'),
+        );
     await _firebaseStorage.ref('bus_images').child(busImageName).putFile(
-      busImage,
-      SettableMetadata(contentType: 'image/jpeg'),
-    );
+          busImage,
+          SettableMetadata(contentType: 'image/jpeg'),
+        );
   }
 
   @override
@@ -781,5 +797,28 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       'destination_location': destinationLocation,
       'calendar': calendar,
     });
+  }
+
+  @override
+  Stream<List<Map<String, dynamic>>> findBusTrips({
+    required String pickup,
+    required String destination,
+    required DateTime date,
+  }) {
+    return _firestore
+        .collection('available_bus_trips')
+        .where('pickup_location', isEqualTo: pickup)
+        .where('destination_location', isEqualTo: destination)
+        .where('calendar', isEqualTo: date)
+        .snapshots()
+        .map(
+      (busTrip) {
+        return busTrip.docs.map(
+          (e) {
+            return e.data();
+          },
+        ).toList();
+      },
+    );
   }
 }

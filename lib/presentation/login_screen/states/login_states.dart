@@ -5,3 +5,5 @@ class LoginVerifyPhoneNumberState extends BaseStates {}
 class UserIsPassengerState extends BaseStates {}
 
 class UserIsDriverState extends BaseStates {}
+
+class UserIsBusDriverState extends BaseStates {}
