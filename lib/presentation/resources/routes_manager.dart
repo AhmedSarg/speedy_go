@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:speedy_go/presentation/buses_screen/pages/my_buses_screen/view/my_buses_screen.dart';
 import 'package:speedy_go/presentation/main_layout/view/pages/bus_page/pages/bus_trips_page/view/bus_trips_view.dart';
 
 import '../../app/sl.dart';
 import '../buses_screen/pages/add_bus_screen/view/add_bus_view.dart';
 import '../buses_screen/pages/add_trip_screen/view/add_trip.dart';
-import '../buses_screen/pages/schedule_screen/schedule_screen.dart';
+import '../buses_screen/pages/schedule_screen/view/schedule_screen.dart';
 import '../buses_screen/view/buses_screen.dart';
 import '../common/transitions/transitions.dart';
 import '../driver_trip_screen/view/driver_trip_view.dart';
@@ -44,6 +45,7 @@ class Routes {
   static const String busesRoute = "/buses";
   static const String scheduleRoute = "/schedule";
   static const String addBusTripRoute = "/addTrip";
+  static const String myBusesRoute = "/myBuses";
   static const String addBusRoute = "/addBus";
   static const String profileEditRoute = "/profileEdit";
   static const String myTripsRoute = "/myTrips";
@@ -106,11 +108,15 @@ class RouteGenerator {
         initRateUseCase();
         return MaterialPageRoute(builder: (_) => const RateScreen());
       case Routes.busesRoute:
+        initDisplayBusesUseCase();
+
         initAddBusUseCase();
         initAddBusTripUseCase();
         return MaterialPageRoute(builder: (_) => const BusesScreen());
       case Routes.scheduleRoute:
         return MaterialPageRoute(builder: (_) => const ScheduleScreen());
+      case Routes.myBusesRoute:
+        return MaterialPageRoute(builder: (_) => const MyBusesScreen());
       case Routes.addBusTripRoute:
         return MaterialPageRoute(builder: (_) => const AddBusTripScreen());
       case Routes.addBusRoute:
@@ -118,6 +124,7 @@ class RouteGenerator {
       case Routes.profileEditRoute:
         return MaterialPageRoute(builder: (_) => const ProfileEditPage());
       case Routes.myTripsRoute:
+
         return MaterialPageRoute(builder: (_) => const MyTripsScreen());
       case Routes.driverTripRoute:
         initChangeDriverStatusUseCase();

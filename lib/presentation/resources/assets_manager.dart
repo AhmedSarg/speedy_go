@@ -26,6 +26,7 @@ class SVGAssets {
   static const String _basePath = "assets/svg/";
 
   static const String logo = "${_basePath}logo.svg";
+  static const String blueBus = "${_basePath}blueBus.svg";
   static const String car = "${_basePath}car.svg";
   static const String tuktuk = "${_basePath}tuktuk.svg";
   static const String bus = "${_basePath}bus.svg";
@@ -75,7 +76,7 @@ class SVGAssets {
   static const String busTrip = "${_basePath}book_trip.svg";
   static const String profile = "${_basePath}profile.svg";
   static const String pastTrip = "${_basePath}heroicons_ticket-solid.svg";
-  static const String redBus = "${_basePath}Vector (1).svg";
+  static const String redBus = "${_basePath}blueBus.svg";
 
   static const String date = "${_basePath}date.svg";
   static const String seat = "${_basePath}emojione-monotone_seat.svg";

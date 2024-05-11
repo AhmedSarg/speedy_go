@@ -72,16 +72,19 @@ class _MainLayoutBodyState extends State<MainLayoutBody> {
           ),
           backgroundColor: ColorManager.bgColor,
           extendBody: selectedTabIndex != 1,
+
           bottomNavigationBar: (tabs.length <= maxCount)
               ? AnimatedNotchBottomBar(
-                  notchBottomBarController: _controller,
-                  color: ColorManager.bgColor,
+           elevation: AppSize.s10,
+                   notchBottomBarController: _controller,
+                  shadowElevation: AppSize.s10,
+                  color: ColorManager.primary,
                   showLabel: false,
-                  notchColor: ColorManager.bgColor,
-                  removeMargins: false,
+                  notchColor: ColorManager.primary,
+                   removeMargins: false,
                   showTopRadius: true,
-                  bottomBarWidth: context.width() * 0.8,
-                  durationInMilliSeconds: 3,
+                  // bottomBarWidth: context.width() * 0.8,
+                  durationInMilliSeconds: 2,
                   bottomBarItems: [
                     BottomBarItem(
                       inActiveItem: SvgPicture.asset(

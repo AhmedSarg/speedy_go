@@ -155,6 +155,15 @@ class AppTextStyles {
         fontSize: FontSize.f12,
       );
 
+
+  //bus screen
+  static TextStyle busItemTextStyle(BuildContext context) =>
+      getRegularStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: ColorManager.blue,
+        fontSize: FontSize.f18,
+      );
+
   ///Register Screen
 
   static TextStyle registerScreenTitleTextStyle(BuildContext context) =>
@@ -307,6 +316,12 @@ class AppTextStyles {
         fontFamily: AppLanguages.getPrimaryFont(context),
         color: ColorManager.white,
         fontSize: FontSize.f24,
+      );
+  static TextStyle busesGeneralTextStyle(BuildContext context,Color color, double fontSize) =>
+      getSemiBoldStyle(
+        fontFamily: AppLanguages.getPrimaryFont(context),
+        color: color,
+        fontSize: fontSize,
       );
 
   static TextStyle busesItemTextStyle(BuildContext context) => getMediumStyle(
