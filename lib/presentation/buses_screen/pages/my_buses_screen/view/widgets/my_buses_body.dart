@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:speedy_go/domain/models/domain.dart';
+import 'package:speedy_go/presentation/common/widget/main_button.dart';
 import 'package:speedy_go/presentation/resources/font_manager.dart';
 import 'package:speedy_go/presentation/resources/values_manager.dart';
 
@@ -36,12 +37,11 @@ class MyBusesBody extends StatelessWidget {
               backgroundColor: ColorManager.lightBlue,
             ),
           ),
-          Container(
+          SizedBox(
             height: AppSize.s300,
             child: StreamBuilder<List<BusModel>>(
               stream: viewModel.getBusesStream,
               builder: (context, snapshot) {
-                print(snapshot.data);
 
                 if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                   print(snapshot.data);
@@ -91,7 +91,7 @@ class MyBusesBody extends StatelessWidget {
                                   ),
                                   RichText(
                                       text: TextSpan(
-                                          text: "Seats number : finshin",
+                                          text: "Seats number : ",
                                           style: AppTextStyles
                                               .busItemTextStyle(
                                                   context,
@@ -124,11 +124,27 @@ class MyBusesBody extends StatelessWidget {
                 } else if (snapshot.hasError) {
                   return Lottie.asset(LottieAssets.error);
                 } else {
-                  return Lottie.asset(LottieAssets.loading);
+                  return Padding(
+
+                    padding: const EdgeInsets.all(AppPadding.p50),
+                    child: Lottie.asset(LottieAssets.loading),
+                  );
                 }
               },
             ),
           ),
+const SizedBox(height: AppSize.s30,),
+          SizedBox(width: MediaQuery.of(context).size.width*.5,
+          child: SecondButton(
+            bgcolor: ColorManager.offwhite,
+            onPressed: () {
+            Navigator.pop(context);
+          },
+          text: 'Back',
+            textStyle: AppTextStyles.busesItemTextStyle(context),
+
+          ),
+          )
         ],
       ),
     );
