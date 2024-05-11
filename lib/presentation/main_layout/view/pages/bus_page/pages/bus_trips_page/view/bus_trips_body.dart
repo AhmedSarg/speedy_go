@@ -136,7 +136,11 @@ class BusTripsBody extends StatelessWidget {
                             return Lottie.asset(LottieAssets.error,
                                 repeat: false);
                           } else {
-                            return Lottie.asset(LottieAssets.loading);
+                            return Lottie.asset(
+                              LottieAssets.loading,
+                              width: context.width() * .2,
+                              height: context.width() * .2
+                            );
                           }
                         },
                       );
@@ -150,9 +154,9 @@ class BusTripsBody extends StatelessWidget {
                 } else if (tripsSnapshot.hasError) {
                   return Lottie.asset(LottieAssets.error, repeat: false);
                 } else {
-                  return Lottie.asset(
-                    LottieAssets.loading,
-                    width: context.width() * .2,
+                  return Padding(
+                    padding: const EdgeInsets.all(AppPadding.p50),
+                    child: Lottie.asset(LottieAssets.loading),
                   );
                 }
               },

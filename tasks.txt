@@ -11,3 +11,4 @@
 - scribble color
 - handling driver close app
 - remove useless back buttons in passenger trip
+- handle book bus tickets again

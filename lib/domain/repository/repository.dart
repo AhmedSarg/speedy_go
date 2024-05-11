@@ -135,4 +135,10 @@ abstract class Repository {
     required String destination,
     required DateTime date,
   });
+
+  Future<Either<Failure, void>> bookBusTicket({
+    required String userId,
+    required String busTripId,
+    required int seats,
+  });
 }

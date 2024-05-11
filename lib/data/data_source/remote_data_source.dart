@@ -157,6 +157,12 @@ abstract class RemoteDataSource {
   });
 
   Future<int> findBusSeats(String busId);
+
+  Future<void> bookBusTicket({
+    required String userId,
+    required String busTripId,
+    required int seats,
+  });
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -811,7 +817,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         .collection('available_bus_trips')
         .where('pickup_location', isEqualTo: pickup)
         .where('destination_location', isEqualTo: destination)
-        .where('calendar', isEqualTo: date)
+        .where('calendar', isGreaterThanOrEqualTo: Timestamp.fromDate(date))
         .snapshots()
         .map(
       (busTrip) {
@@ -829,8 +835,30 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<int> findBusSeats(String driverId) async {
-    return await _firestore.collection('buses').where('driver_id', isEqualTo: driverId).get().then((value) {
+    return await _firestore
+        .collection('buses')
+        .where('driver_id', isEqualTo: driverId)
+        .get()
+        .then((value) {
       return value.docs[0].data()['seats_number'];
     });
+  }
+
+  @override
+  Future<void> bookBusTicket({
+    required String userId,
+    required String busTripId,
+    required int seats,
+  }) async {
+    _firestore.collection('available_bus_trips').doc(busTripId).update(
+      {
+        'passengers': FieldValue.arrayUnion(
+          List.generate(
+            seats,
+            (index) => '${userId}_${index+1}',
+          ),
+        ),
+      },
+    );
   }
 }

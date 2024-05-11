@@ -91,6 +91,7 @@ class RouteGenerator {
       case Routes.mainLayoutRoute:
         initCurrentUserUseCase();
         initFindBusTripsUseCase();
+        initBookBusTripUseCase();
         return MaterialPageRoute(builder: (_) => const MainLayoutScreen());
       case Routes.passengerMapRoute:
         return MaterialPageRoute(builder: (_) => const PassengerMapScreen());

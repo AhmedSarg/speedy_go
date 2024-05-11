@@ -1,7 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:speedy_go/app/extensions.dart';
@@ -13,6 +11,7 @@ import 'package:speedy_go/presentation/main_layout/view/pages/bus_page/pages/bus
 import 'package:speedy_go/presentation/resources/styles_manager.dart';
 import 'package:speedy_go/presentation/resources/values_manager.dart';
 
+import '../../../../../../../../app/sl.dart';
 import '../../../../../../../base/base_states.dart';
 import '../../../../../../../resources/assets_manager.dart';
 import '../../../../../../../resources/color_manager.dart';
@@ -42,10 +41,11 @@ class BusTripsPage extends StatelessWidget {
           padding: const EdgeInsets.only(left: AppPadding.p8),
           icon: const Icon(Icons.arrow_back_ios),
         ),
-        shape: const RoundedRectangleBorder(
-          side: BorderSide(
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(AppSize.s0_5),
+          child: Container(
             color: ColorManager.white,
-            width: AppSize.s0_5,
+            height: AppSize.s0_5,
           ),
         ),
       ),
@@ -53,7 +53,7 @@ class BusTripsPage extends StatelessWidget {
         width: AppSize.infinity,
         height: AppSize.infinity,
         child: BlocProvider(
-          create: (context) => BusTripsViewModel()..start(),
+          create: (context) => BusTripsViewModel(sl())..start(),
           child: BlocConsumer<BusTripsViewModel, BaseStates>(
             listener: (context, state) {
               BusTripsViewModel viewModel = BusTripsViewModel.get(context);
@@ -292,7 +292,7 @@ class BusTripsPage extends StatelessWidget {
                           child: SizedBox(
                             width: context.width() * .5,
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: viewModel.bookBusTrip,
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: ColorManager.green,
                                   shape: RoundedRectangleBorder(
@@ -313,6 +313,9 @@ class BusTripsPage extends StatelessWidget {
                     );
                   },
                 );
+              }
+              else if (state is SuccessState) {
+                Navigator.pop(context);
               }
               baseListener(context, state);
             },

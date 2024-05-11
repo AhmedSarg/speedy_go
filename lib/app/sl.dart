@@ -25,6 +25,7 @@ import '../domain/repository/repository.dart';
 import '../domain/usecase/accept_trip_usecase.dart';
 import '../domain/usecase/add_bus_usecase.dart';
 import '../domain/usecase/add_trip_bus.dart';
+import '../domain/usecase/book_bus_trip_usecase.dart';
 import '../domain/usecase/cancel_accept_trip_usecase.dart';
 import '../domain/usecase/change_driver_status_usecase.dart';
 import '../domain/usecase/find_bus_trips_usecase.dart';
@@ -211,5 +212,11 @@ void initAddBusTripUseCase() {
 void initFindBusTripsUseCase() {
   if (GetIt.instance.isRegistered<FindBusTripsUseCase>() == false) {
     sl.registerFactory<FindBusTripsUseCase>(() => FindBusTripsUseCase(sl()));
+  }
+}
+
+void initBookBusTripUseCase() {
+  if (GetIt.instance.isRegistered<BookBusTripUseCase>() == false) {
+    sl.registerFactory<BookBusTripUseCase>(() => BookBusTripUseCase(sl()));
   }
 }
