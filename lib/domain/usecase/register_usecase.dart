@@ -25,7 +25,9 @@ class RegisterUseCase extends BaseUseCase<RegisterUseCaseInput, void> {
       carLicense: input.carLicense,
       tukTukImage: input.tukTukImage,
       carImage: input.carImage,
-      password: input.password,
+      vehicleModel: input.vehicleModel,
+      vehicleColor: input.vehicleColor,
+      vehiclePlate: input.vehiclePlate,
       registerType: input.registerType
     );
   }
@@ -42,7 +44,9 @@ class RegisterUseCaseInput {
   final File? carLicense;
   final File? carImage;
   final File? tukTukImage;
-  final String password;
+  final String? vehicleModel;
+  final String? vehicleColor;
+  final String? vehiclePlate;
   final RegisterType registerType;
 
   RegisterUseCaseInput({
@@ -56,7 +60,9 @@ class RegisterUseCaseInput {
     required this.carLicense,
     required this.carImage,
     required this.tukTukImage,
-    required this.password,
+    required this.vehicleModel,
+    required this.vehicleColor,
+    required this.vehiclePlate,
     required this.registerType,
   });
 }

@@ -30,6 +30,7 @@ class AddBusViewModel extends BaseCubit
   late final TextEditingController _priceController;
   late final TextEditingController _pickupLocationController;
   late final TextEditingController _destinationLocationController;
+  late final TextEditingController _busPlateController;
   DateTime? _calendar;
   File? _busLicense;
   File? _drivingLicense;
@@ -44,16 +45,17 @@ class AddBusViewModel extends BaseCubit
     _driverId = _userManager.getCurrentDriver!.uuid;
     await _addBusUseCase(
       AddBusUseCaseInput(
-        _driverId,
-        _uuidGenerator.v1(),
-        getFirstNameController.text,
-        getLastNameController.text,
-        getBusLicense!,
-        getDrivingLicense!,
-        getNationalIDController.text,
-        getPhoneNumberController.text,
-        getBusImage!,
-        int.parse(getSeatsNumberController.text),
+        driverId: _driverId,
+        busId: _uuidGenerator.v1(),
+        firstName: _firstNameController.text.trim(),
+        lastName: _lastNameController.text.trim(),
+        phoneNumber: _phoneNumberController.text.trim(),
+        nationalID: _nationalIDController.text.trim(),
+        busLicense: _busLicense!,
+        drivingLicense: _drivingLicense!,
+        busImage: _busImage!,
+        seatsNumber: int.parse(_seatsNumberController.text),
+        busPlate: _busPlateController.text.trim(),
       ),
     ).then(
           (value) => {
@@ -123,31 +125,6 @@ class AddBusViewModel extends BaseCubit
     }
   }
 
-  // Future<void> addBusTrip() async {
-  //   await _addBusTripUseCase(
-  //     AddBusTripUseCaseInput(
-  //       driverId,
-  //       getNumberOfBusController.text as int,
-  //       getPriceController.text as double,
-  //       getPickupLocationController.text,
-  //       getDestinationLocationController.text,
-  //       getCalendar,
-  //     ),
-  //   ).then(
-  //     (value) => {
-  //       value.fold(
-  //         (l) => emit(
-  //           ErrorState(
-  //             failure: l,
-  //             displayType: DisplayType.popUpDialog,
-  //           ),
-  //         ),
-  //         (r) {},
-  //       ),
-  //     },
-  //   );
-  // }
-
   @override
   void start() {
     _firstNameController = TextEditingController();
@@ -159,6 +136,7 @@ class AddBusViewModel extends BaseCubit
     _priceController = TextEditingController();
     _pickupLocationController = TextEditingController();
     _destinationLocationController = TextEditingController();
+    _busPlateController = TextEditingController();
   }
 
   @override
@@ -193,6 +171,9 @@ class AddBusViewModel extends BaseCubit
       _destinationLocationController;
 
   @override
+  TextEditingController get getBusPlateController => _busPlateController;
+
+  @override
   TextEditingController get getPickupLocationController => _pickupLocationController;
 
   @override
@@ -214,6 +195,7 @@ abstract class PassengerTripViewModelOutput {
   TextEditingController get getPriceController;
   TextEditingController get getPickupLocationController;
   TextEditingController get getDestinationLocationController;
+  TextEditingController get getBusPlateController;
   DateTime? get getCalendar;
   File? get getBusLicense;
   File? get getDrivingLicense;

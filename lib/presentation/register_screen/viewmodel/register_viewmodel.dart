@@ -67,8 +67,9 @@ class RegisterViewModel extends BaseCubit
       TextEditingController();
   final TextEditingController _nationalIdController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _otpController =
-      TextEditingController(text: '      ');
+  final TextEditingController _vehicleModelController = TextEditingController();
+  final TextEditingController _vehicleColorController = TextEditingController();
+  final TextEditingController _vehiclePlateController = TextEditingController();
 
   File? _drivingLicense;
   File? _carLicense;
@@ -128,7 +129,13 @@ class RegisterViewModel extends BaseCubit
   TextEditingController get getEmailController => _emailController;
 
   @override
-  TextEditingController get getOtpController => _otpController;
+  TextEditingController get getVehicleModelController => _vehicleModelController;
+
+  @override
+  TextEditingController get getVehicleColorController => _vehicleColorController;
+
+  @override
+  TextEditingController get getVehiclePlateController => _vehiclePlateController;
 
   @override
   File? get getDrivingLicense => _drivingLicense;
@@ -317,11 +324,19 @@ class RegisterViewModel extends BaseCubit
         nationalId: _nationalIdController.text.trim() == ''
             ? null
             : _nationalIdController.text.trim(),
+        vehicleModel: _vehicleModelController.text.trim() == ''
+            ? null
+            : _vehicleModelController.text.trim(),
+        vehicleColor: _vehicleColorController.text.trim() == ''
+            ? null
+            : _vehicleColorController.text.trim(),
+        vehiclePlate: _vehiclePlateController.text.trim() == ''
+            ? null
+            : _vehiclePlateController.text.trim(),
         drivingLicense: _drivingLicense,
         carLicense: _carLicense,
         carImage: _carImage,
         tukTukImage: _tukTukImage,
-        password: _passwordController.text.trim(),
         registerType: _registerBoxType,
       ),
     ).then(
@@ -401,7 +416,11 @@ abstract class RegisterViewModelOutput {
 
   TextEditingController get getEmailController;
 
-  TextEditingController get getOtpController;
+  TextEditingController get getVehicleModelController;
+
+  TextEditingController get getVehicleColorController;
+
+  TextEditingController get getVehiclePlateController;
 
   File? get getDrivingLicense;
 

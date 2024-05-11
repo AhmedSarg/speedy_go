@@ -86,6 +86,7 @@ class SVGAssets {
 
 
   static const String seatsIcon = "${_basePath}seats.svg";
+  static const String carLeadingIcon = "${_basePath}car_leading.svg";
 }
 
 class LottieAssets {

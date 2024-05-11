@@ -49,6 +49,9 @@ abstract class RemoteDataSource {
     required File drivingLicense,
     required File carLicense,
     required File carImage,
+    required String carModel,
+    required String carColor,
+    required String carPlate,
     required DateTime createdAt,
   });
 
@@ -60,6 +63,8 @@ abstract class RemoteDataSource {
     required String email,
     required String nationalId,
     required File tukTukImage,
+    required String tuktukColor,
+    required String tuktukPlate,
     required DateTime createdAt,
   });
 
@@ -139,6 +144,7 @@ abstract class RemoteDataSource {
     required String phoneNumber,
     required File busImage,
     required int seatsNumber,
+    required String busPlate,
   });
 
   Future<void> addBusTrip({
@@ -334,6 +340,9 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required File drivingLicense,
     required File carLicense,
     required File carImage,
+    required String carModel,
+    required String carColor,
+    required String carPlate,
     required DateTime createdAt,
   }) async {
     String drivingLicenseName = '${uuid}_driving_license.jpg';
@@ -366,9 +375,9 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       'driving_license': drivingLicenseName,
       'car_license': carLicenseName,
       'car_image': carImageName,
-      'car_model': 'Nissan Sunny',
-      'vehicle_color': 'red',
-      'vehicle_license': 'ا ب ت - 1 2 3',
+      'car_model': carModel,
+      'vehicle_color': carColor,
+      'vehicle_license': carPlate,
       'rate': 3.5,
       'number_of_rates': 0,
       'created_at': createdAt,
@@ -400,6 +409,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required String email,
     required String nationalId,
     required File tukTukImage,
+    required String tuktukColor,
+    required String tuktukPlate,
     required DateTime createdAt,
   }) async {
     String tukTukImageName = '${uuid}_tuktuk_image.jpg';
@@ -425,8 +436,9 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       'email': email,
       'national_id': nationalId,
       'tuktuk_image': tukTukImageName,
-      'vehicle_color': 'red',
-      'vehicle_license': 'ا ب ت - 1 2 3',
+      'vehicle_model': 'Tuk-Tuk',
+      'vehicle_color': tuktukColor,
+      'vehicle_license': tuktukPlate,
       'rate': 3.5,
       'number_of_rates': 0,
       'created_at': createdAt,
@@ -755,6 +767,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required String phoneNumber,
     required File busImage,
     required int seatsNumber,
+    required String busPlate,
   }) async {
     String busLicenceName = '${busId}_bus_license.jpg';
     String drivingLicenseName = '${busId}_driving_license.jpg';
@@ -774,6 +787,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         'bus_image': busImageName,
         'seats_number': seatsNumber,
         'driver_id': driverId,
+        'bus_plate': busPlate,
       },
     );
     await _firebaseStorage.ref('bus_licenses').child(busLicenceName).putFile(

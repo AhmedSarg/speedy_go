@@ -21,6 +21,7 @@ abstract class Repository {
     required String phoneNumber,
     required File busImage,
     required int seatsNumber,
+    required String busPlate,
   });
 
   Future<Either<Failure, void>> addBusTrip({
@@ -64,7 +65,9 @@ abstract class Repository {
     required File? carLicense,
     required File? carImage,
     required File? tukTukImage,
-    required String password,
+    required String? vehicleModel,
+    required String? vehicleColor,
+    required String? vehiclePlate,
     required RegisterType registerType,
   });
 

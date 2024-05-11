@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
@@ -25,6 +24,7 @@ class AddBusUseCase extends BaseUseCase<AddBusUseCaseInput, void> {
       phoneNumber: input.phoneNumber,
       busImage: input.busImage,
       seatsNumber: input.seatsNumber,
+      busPlate: input.busPlate,
     );
   }
 }
@@ -40,16 +40,19 @@ class AddBusUseCaseInput {
   final String phoneNumber;
   final File busImage;
   final int seatsNumber;
+  final String busPlate;
 
-  AddBusUseCaseInput(
-      this.driverId,
-      this.busId,
-      this.firstName,
-      this.lastName,
-      this.busLicense,
-      this.drivingLicense,
-      this.nationalID,
-      this.phoneNumber,
-      this.busImage,
-      this.seatsNumber);
+  AddBusUseCaseInput({
+    required this.driverId,
+    required this.busId,
+    required this.firstName,
+    required this.lastName,
+    required this.phoneNumber,
+    required this.nationalID,
+    required this.busLicense,
+    required this.drivingLicense,
+    required this.busImage,
+    required this.seatsNumber,
+    required this.busPlate,
+  });
 }

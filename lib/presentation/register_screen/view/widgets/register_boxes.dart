@@ -115,6 +115,9 @@ List<Widget> carRegisterWidgets(BuildContext context,
   FocusNode phoneNumberFocusNode = FocusNode();
   FocusNode emailFocusNode = FocusNode();
   FocusNode nationalIdFocusNode = FocusNode();
+  FocusNode carModelFocusNode = FocusNode();
+  FocusNode carColorFocusNode = FocusNode();
+  FocusNode carPlateFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
   FocusNode confirmPasswordFocusNode = FocusNode();
   return [
@@ -205,6 +208,36 @@ List<Widget> carRegisterWidgets(BuildContext context,
     ),
     const SizedBox(height: AppSize.s20),
     RegisterTextField(
+      controller: viewModel.getVehicleModelController,
+      keyboard: TextInputType.text,
+      hintText: AppStrings.registerScreenCarModelHint.tr(),
+      iconPath: SVGAssets.carLeadingIcon,
+      validator: AppValidators.validateName,
+      focusNode: carModelFocusNode,
+      nextFocusNode: carColorFocusNode,
+    ),
+    const SizedBox(height: AppSize.s20),
+    RegisterTextField(
+      controller: viewModel.getVehicleColorController,
+      keyboard: TextInputType.text,
+      hintText: AppStrings.registerScreenCarColorHint.tr(),
+      iconPath: SVGAssets.carLeadingIcon,
+      validator: AppValidators.validateName,
+      focusNode: carColorFocusNode,
+      nextFocusNode: carPlateFocusNode,
+    ),
+    const SizedBox(height: AppSize.s20),
+    RegisterTextField(
+      controller: viewModel.getVehiclePlateController,
+      keyboard: TextInputType.text,
+      hintText: AppStrings.registerScreenCarPlateHint.tr(),
+      iconPath: SVGAssets.id,
+      validator: AppValidators.validateName,
+      focusNode: carPlateFocusNode,
+      nextFocusNode: passwordFocusNode,
+    ),
+    const SizedBox(height: AppSize.s20),
+    RegisterTextField(
       controller: viewModel.getPasswordController,
       keyboard: TextInputType.text,
       hintText: AppStrings.registerScreenPasswordHint.tr(),
@@ -252,6 +285,8 @@ List<Widget> tukTukRegisterWidgets(BuildContext context,
   FocusNode emailFocusNode = FocusNode();
   FocusNode nationalIdFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
+  FocusNode tuktukColorFocusNode = FocusNode();
+  FocusNode tuktukPlateFocusNode = FocusNode();
   FocusNode confirmPasswordFocusNode = FocusNode();
   return [
     Row(
@@ -316,6 +351,26 @@ List<Widget> tukTukRegisterWidgets(BuildContext context,
       value: viewModel.getTukTukImage?.path,
       iconPath: SVGAssets.image,
       onPressed: viewModel.chooseTukTukImage,
+    ),
+    const SizedBox(height: AppSize.s20),
+    RegisterTextField(
+      controller: viewModel.getVehicleColorController,
+      keyboard: TextInputType.text,
+      hintText: AppStrings.registerScreenTukTukColorHint.tr(),
+      iconPath: SVGAssets.carLeadingIcon,
+      validator: AppValidators.validateName,
+      focusNode: tuktukColorFocusNode,
+      nextFocusNode: tuktukPlateFocusNode,
+    ),
+    const SizedBox(height: AppSize.s20),
+    RegisterTextField(
+      controller: viewModel.getVehiclePlateController,
+      keyboard: TextInputType.text,
+      hintText: AppStrings.registerScreenTukTukPlateHint.tr(),
+      iconPath: SVGAssets.id,
+      validator: AppValidators.validateName,
+      focusNode: tuktukPlateFocusNode,
+      nextFocusNode: passwordFocusNode,
     ),
     const SizedBox(height: AppSize.s20),
     RegisterTextField(

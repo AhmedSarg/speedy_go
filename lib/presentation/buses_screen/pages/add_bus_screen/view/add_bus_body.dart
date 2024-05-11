@@ -59,6 +59,7 @@ class AddNewBus extends StatelessWidget {
   static final FocusNode phoneNumberFocusNode = FocusNode();
   static final FocusNode nationalIDFocusNode = FocusNode();
   static final FocusNode seatsNumberFocusNode = FocusNode();
+  static final FocusNode busPlateFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -180,9 +181,19 @@ class AddNewBus extends StatelessWidget {
                     iconPath: SVGAssets.seatsIcon,
                     validator: AppValidators.validateName,
                     focusNode: seatsNumberFocusNode,
+                    nextFocusNode: busPlateFocusNode,
                   ),
                 ),
               ],
+            ),
+            const SizedBox(height: AppSize.s20),
+            AddBusTextFormField(
+              controller: viewModel.getBusPlateController,
+              keyboard: TextInputType.text,
+              hintText: 'Bus Plate',
+              iconPath: SVGAssets.id,
+              validator: AppValidators.validateName,
+              focusNode: busPlateFocusNode,
             ),
             const SizedBox(height: AppSize.s20),
             SizedBox(

@@ -150,7 +150,9 @@ class RepositoryImpl implements Repository {
     required File? carLicense,
     required File? carImage,
     required File? tukTukImage,
-    required String password,
+    required String? vehicleModel,
+    required String? vehicleColor,
+    required String? vehiclePlate,
     required RegisterType registerType,
   }) async {
     try {
@@ -167,9 +169,13 @@ class RepositoryImpl implements Repository {
             drivingLicense: drivingLicense!,
             carLicense: carLicense!,
             carImage: carImage!,
+            carModel: vehicleModel!,
+            carColor: vehicleColor!,
+            carPlate: vehiclePlate!,
             createdAt: DateTime.now(),
           );
-        } else if (registerType == RegisterType.tuktuk) {
+        }
+        else if (registerType == RegisterType.tuktuk) {
           await _remoteDataSource.registerTukTukDriverToDataBase(
             uuid: uuid,
             firstName: firstName,
@@ -178,9 +184,12 @@ class RepositoryImpl implements Repository {
             email: email,
             nationalId: nationalId!,
             tukTukImage: tukTukImage!,
+            tuktukColor: vehicleColor!,
+            tuktukPlate: vehiclePlate!,
             createdAt: DateTime.now(),
           );
-        } else if (registerType == RegisterType.bus) {
+        }
+        else if (registerType == RegisterType.bus) {
           await _remoteDataSource.registerBusDriverToDataBase(
             uuid: uuid,
             firstName: firstName,
@@ -190,7 +199,8 @@ class RepositoryImpl implements Repository {
             nationalId: nationalId!,
             createdAt: DateTime.now(),
           );
-        } else {
+        }
+        else {
           await _remoteDataSource.registerPassengerToDataBase(
             uuid: uuid,
             firstName: firstName,
@@ -585,6 +595,7 @@ class RepositoryImpl implements Repository {
     required String phoneNumber,
     required File busImage,
     required int seatsNumber,
+    required String busPlate,
   }) async {
     try {
       if (await _networkInfo.isConnected) {
@@ -599,6 +610,7 @@ class RepositoryImpl implements Repository {
           phoneNumber: phoneNumber,
           busImage: busImage,
           seatsNumber: seatsNumber,
+          busPlate: busPlate,
         );
         return const Right(null);
       } else {
@@ -674,7 +686,7 @@ class RepositoryImpl implements Repository {
   }) async {
     try {
       if (await _networkInfo.isConnected) {
-        Stream<List<BusModel>> listOfBusese = _remoteDataSource
+        Stream<List<BusModel>> listOfBuses = _remoteDataSource
             .displayBuses(driverId: driverId)
             .map(
               (buses) => buses
@@ -683,7 +695,7 @@ class RepositoryImpl implements Repository {
           )
               .toList(),
         );
-        return Right(listOfBusese);
+        return Right(listOfBuses);
       } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
       }

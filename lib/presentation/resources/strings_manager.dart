@@ -51,6 +51,11 @@ class AppStrings {
   static const registerScreenCarLicenseHint = "registerScreenCarLicenseHint";
   static const registerScreenCarImageHint = "registerScreenCarImageHint";
   static const registerScreenTukTukImageHint = "registerScreenTukTukImageHint";
+  static const registerScreenCarModelHint = "registerScreenCarModelHint";
+  static const registerScreenCarColorHint = "registerScreenCarColorHint";
+  static const registerScreenCarPlateHint = "registerScreenCarPlateHint";
+  static const registerScreenTukTukColorHint = "registerScreenTukTukColorHint";
+  static const registerScreenTukTukPlateHint = "registerScreenTukTukPlateHint";
   static const registerScreenSelectionTitle = "registerScreenSelectionTitle";
   static const registerScreenSelectionCar = "registerScreenSelectionCar";
   static const registerScreenSelectionTukTuk = "registerScreenSelectionTukTuk";
