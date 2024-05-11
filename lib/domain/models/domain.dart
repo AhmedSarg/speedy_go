@@ -296,7 +296,7 @@ class TripBusModel {
   final String destination;
   final DateTime date;
   final int price;
-  int? seats;
+  int? availableSeats;
 
   TripBusModel({
     required this.id,
@@ -305,8 +305,12 @@ class TripBusModel {
     required this.destination,
     required this.date,
     required this.price,
-    this.seats,
+    this.availableSeats,
   });
+
+  set setAvailableSeats(int seats) {
+    availableSeats = seats;
+  }
 
   factory TripBusModel.fake() => TripBusModel(
         id: '',
@@ -315,7 +319,7 @@ class TripBusModel {
         destination: '',
         date: DateTime(2024),
         price: -1,
-        seats: -1,
+        availableSeats: -1,
       );
 
   factory TripBusModel.fromMap(Map<String, dynamic> map) => TripBusModel(
@@ -325,5 +329,6 @@ class TripBusModel {
         destination: map['destination_location'],
         date: map['calendar'].toDate(),
         price: map['price'].toInt(),
+        availableSeats: map['available_seats'].toInt(),
       );
 }

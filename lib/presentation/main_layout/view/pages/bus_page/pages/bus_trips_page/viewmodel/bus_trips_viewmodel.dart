@@ -10,11 +10,12 @@ class BusTripsViewModel extends BaseCubit
     implements BusTripsViewModelInput, BusTripsViewModelOutput {
   static BusTripsViewModel get(context) => BlocProvider.of(context);
 
-  late final Stream<List<TripBusModel>> _tripsStream;
+  late final Stream<List<Future<TripBusModel>>> _tripsStream;
   late final String _pickup;
   late final String _destination;
   late final DateTime _dateTime;
   int _bookedSeats = 1;
+  TripBusModel? _lastClickedTrip;
 
   @override
   void start() {
@@ -31,19 +32,22 @@ class BusTripsViewModel extends BaseCubit
   }
 
   onTapTrip(TripBusModel trip) {
-    emit(TripTappedState(trip));
+    _lastClickedTrip = trip;
+    emit(TripTappedState(trip, false));
   }
 
   addSeat() {
     _bookedSeats += 1;
+    emit(TripTappedState(_lastClickedTrip!, true));
   }
 
   removeSeat() {
     _bookedSeats -= 1;
+    emit(TripTappedState(_lastClickedTrip!, true));
   }
 
   @override
-  Stream<List<TripBusModel>> get getTripsStream => _tripsStream;
+  Stream<List<Future<TripBusModel>>> get getTripsStream => _tripsStream;
 
   @override
   String get getPickup => _pickup;
@@ -61,7 +65,7 @@ class BusTripsViewModel extends BaseCubit
 abstract class BusTripsViewModelInput {}
 
 abstract class BusTripsViewModelOutput {
-  Stream<List<TripBusModel>> get getTripsStream;
+  Stream<List<Future<TripBusModel>>> get getTripsStream;
 
   String get getPickup;
 

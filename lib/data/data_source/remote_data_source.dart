@@ -155,6 +155,8 @@ abstract class RemoteDataSource {
     required String destination,
     required DateTime date,
   });
+
+  Future<int> findBusSeats(String busId);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -817,10 +819,18 @@ class RemoteDataSourceImpl implements RemoteDataSource {
           (e) {
             Map<String, dynamic> ret = e.data();
             ret['id'] = e.id;
+            ret['taken_seats'] = ret['passengers']?.length ?? 0;
             return ret;
           },
         ).toList();
       },
     );
+  }
+
+  @override
+  Future<int> findBusSeats(String driverId) async {
+    return await _firestore.collection('buses').where('driver_id', isEqualTo: driverId).get().then((value) {
+      return value.docs[0].data()['seats_number'];
+    });
   }
 }

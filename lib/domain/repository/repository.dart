@@ -130,7 +130,7 @@ abstract class Repository {
   Future<Either<Failure, void>> cancelAcceptTrip(
       String driverId, String tripId);
 
-  Future<Either<Failure, Stream<List<TripBusModel>>>> findBusTrips({
+  Future<Either<Failure, Stream<List<Future<TripBusModel>>>>> findBusTrips({
     required String pickup,
     required String destination,
     required DateTime date,

@@ -112,13 +112,13 @@ class DataIntent {
 //------------------------------------
   //Buses Screen
 
-  static Stream<List<TripBusModel>>? _tripsStream;
+  static Stream<List<Future<TripBusModel>>>? _tripsStream;
 
-  static void pushTripsStream(Stream<List<TripBusModel>> tripsStream) =>
+  static void pushTripsStream(Stream<List<Future<TripBusModel>>> tripsStream) =>
       _tripsStream = tripsStream;
 
-  static Stream<List<TripBusModel>> popTripsStream() {
-    Stream<List<TripBusModel>> value = _tripsStream!;
+  static Stream<List<Future<TripBusModel>>> popTripsStream() {
+    Stream<List<Future<TripBusModel>>> value = _tripsStream!;
     _tripsStream = null;
     return value;
   }

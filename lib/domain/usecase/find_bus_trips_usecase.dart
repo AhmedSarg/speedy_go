@@ -6,13 +6,13 @@ import '../repository/repository.dart';
 import 'base_usecase.dart';
 
 class FindBusTripsUseCase extends BaseUseCase<FindBusTripsUseCaseInput,
-    Stream<List<TripBusModel>>> {
+    Stream<List<Future<TripBusModel>>>> {
   final Repository _repository;
 
   FindBusTripsUseCase(this._repository);
 
   @override
-  Future<Either<Failure, Stream<List<TripBusModel>>>> call(
+  Future<Either<Failure, Stream<List<Future<TripBusModel>>>>> call(
       FindBusTripsUseCaseInput input) async {
     return _repository.findBusTrips(
       pickup: input.pickup,

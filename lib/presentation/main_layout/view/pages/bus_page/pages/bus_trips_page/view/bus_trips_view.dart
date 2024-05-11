@@ -28,295 +28,268 @@ class BusTripsPage extends StatelessWidget {
         width: AppSize.infinity,
         height: AppSize.infinity,
         child: BlocProvider(
-            create: (context) => BusTripsViewModel()..start(),
-            child: BlocConsumer<BusTripsViewModel, BaseStates>(
-              listener: (context, state) {
-                BusTripsViewModel viewModel = BusTripsViewModel.get(context);
-                if (state is TripTappedState) {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        backgroundColor: ColorManager.lightBlack,
-                        title: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Details',
-                                  style: AppTextStyles.profileGeneralTextStyle(
-                                    context,
-                                    FontSize.f20,
-                                    ColorManager.lightBlue,
-                                  ),
-                                ),
-                                IconButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  icon: const Icon(Icons.close),
-                                )
-                              ],
-                            ),
-                            const Divider(
-                              color: ColorManager.mutedBlue,
-                            )
-                          ],
-                        ),
-                        actionsOverflowButtonSpacing: 20,
-                        actions: [
-                          SizedBox(
-                            height: AppSize.s100,
-                            child: Stack(
-                              children: [
-                                Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        SizedBox(
-                                          width:
-                                              (context.width() - AppSize.s62) *
-                                                  .2,
-                                          child: const Center(
-                                            child: CircleAvatar(
-                                              backgroundColor:
-                                                  ColorManager.lightGreen,
-                                              radius: AppSize.s8,
-                                            ),
-                                          ),
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              state.trip.pickup,
-                                              style: AppTextStyles
-                                                  .profileGeneralTextStyle(
-                                                      context,
-                                                      FontSize.f16,
-                                                      ColorManager.lightBlue
-                                                          .withOpacity(.8)),
-                                            ),
-                                            const SizedBox(
-                                              width: AppSize.s10,
-                                            ),
-                                            Text(
-                                              DateFormat('hh:mm a')
-                                                  .format(state.trip.date),
-                                              style: AppTextStyles
-                                                  .profileGeneralTextStyle(
-                                                      context,
-                                                      FontSize.f12,
-                                                      ColorManager.lightBlue
-                                                          .withOpacity(.6)),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: AppSize.s5,
-                                    ),
-                                    Row(
-                                      children: [
-                                        SizedBox(
-                                          width:
-                                              (context.width() - AppSize.s62) *
-                                                  .2,
-                                          child: const Center(
-                                            child: Icon(
-                                              Icons.arrow_drop_down,
-                                              size: AppSize.s40,
-                                            ),
-                                          ),
-                                        ),
-                                        Text(
-                                          state.trip.destination,
-                                          style: AppTextStyles
-                                              .profileGeneralTextStyle(
-                                            context,
-                                            FontSize.f16,
-                                            ColorManager.lightBlue
-                                                .withOpacity(.8),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                Positioned(
-                                  top: AppSize.s8 + AppSize.s5,
-                                  bottom: AppSize.s25 + AppSize.s4,
-                                  left: AppSize.s0,
-                                  child: SizedBox(
-                                    width: (context.width() - AppSize.s62) * .2,
-                                    child: Center(
-                                      child: Container(
-                                        color: ColorManager.black,
-                                        width: AppSize.s1,
-                                        height: AppSize.s26,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                DateFormat('EEEE').format(state.trip.date),
-                                style: AppTextStyles.profileGeneralTextStyle(
-                                    context,
-                                    FontSize.f18,
-                                    ColorManager.lightBlue),
-                              ),
-                              const SizedBox(
-                                width: AppSize.s16,
-                              ),
-                              Text(
-                                DateFormat('MMM d, yyy')
-                                    .format(state.trip.date),
-                                style: AppTextStyles.profileSmallTextStyle(
-                                  context,
-                                  ColorManager.lightBlue.withOpacity(.5),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                'SpeedyGo Travel',
-                                style: AppTextStyles.profileGeneralTextStyle(
-                                    context,
-                                    FontSize.f18,
-                                    ColorManager.lightBlue),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                'Arrive at ',
-                                style: AppTextStyles.profileGeneralTextStyle(
-                                    context,
-                                    FontSize.f18,
-                                    ColorManager.lightBlue),
-                              ),
-                              Text(
-                                '05:00 pm',
-                                style: AppTextStyles.profileSmallTextStyle(
-                                  context,
-                                  ColorManager.lightBlue.withOpacity(.5),
-                                ),
-                              ),
-                            ],
-                          ),
+          create: (context) => BusTripsViewModel()..start(),
+          child: BlocConsumer<BusTripsViewModel, BaseStates>(
+            listener: (context, state) {
+              BusTripsViewModel viewModel = BusTripsViewModel.get(context);
+              if (state is TripTappedState) {
+                if (state.priceChange) {
+                  Navigator.pop(context);
+                }
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      backgroundColor: ColorManager.lightBlack,
+                      title: Column(
+                        children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              SizedBox(
-                                width: context.width() * .4,
-                                height: AppSize.s50,
-                                child: FittedBox(
-                                  child: Row(
+                              Text(
+                                'Details',
+                                style: AppTextStyles.profileGeneralTextStyle(
+                                  context,
+                                  FontSize.f20,
+                                  ColorManager.lightBlue,
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                icon: const Icon(Icons.close),
+                              )
+                            ],
+                          ),
+                          const Divider(
+                            color: ColorManager.mutedBlue,
+                          )
+                        ],
+                      ),
+                      actionsOverflowButtonSpacing: 20,
+                      actions: [
+                        SizedBox(
+                          height: AppSize.s100,
+                          child: Stack(
+                            children: [
+                              Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Row(
                                     children: [
+                                      SizedBox(
+                                        width: (context.width() - AppSize.s62) *
+                                            .2,
+                                        child: const Center(
+                                          child: CircleAvatar(
+                                            backgroundColor:
+                                                ColorManager.lightGreen,
+                                            radius: AppSize.s8,
+                                          ),
+                                        ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            state.trip.pickup,
+                                            style: AppTextStyles
+                                                .profileGeneralTextStyle(
+                                                    context,
+                                                    FontSize.f16,
+                                                    ColorManager.lightBlue
+                                                        .withOpacity(.8)),
+                                          ),
+                                          const SizedBox(
+                                            width: AppSize.s10,
+                                          ),
+                                          Text(
+                                            DateFormat('hh:mm a')
+                                                .format(state.trip.date),
+                                            style: AppTextStyles
+                                                .profileGeneralTextStyle(
+                                                    context,
+                                                    FontSize.f12,
+                                                    ColorManager.lightBlue
+                                                        .withOpacity(.6)),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: AppSize.s5,
+                                  ),
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        width: (context.width() - AppSize.s62) *
+                                            .2,
+                                        child: const Center(
+                                          child: Icon(
+                                            Icons.arrow_drop_down,
+                                            size: AppSize.s40,
+                                          ),
+                                        ),
+                                      ),
                                       Text(
-                                        'Price ${state.trip.price}.0 EGP',
+                                        state.trip.destination,
                                         style: AppTextStyles
                                             .profileGeneralTextStyle(
                                           context,
-                                          FontSize.f18,
-                                          ColorManager.lightBlue,
+                                          FontSize.f16,
+                                          ColorManager.lightBlue
+                                              .withOpacity(.8),
                                         ),
                                       ),
-                                      SvgPicture.asset(SVGAssets.seat),
                                     ],
                                   ),
-                                ),
+                                ],
                               ),
-                              SizedBox(
-                                width: context.width() * .2,
-                                child: FittedBox(
-                                  child: Row(
-                                    children: [
-                                      Column(
-                                        children: [
-                                          IconButton(
-                                            onPressed: viewModel.addSeat,
-                                            constraints: BoxConstraints(
-                                              maxWidth: AppSize.s10,
-                                              maxHeight: AppSize.s10,
-                                            ),
-                                            icon: const Icon(
-                                              Icons.add,
-                                              size: AppSize.s10,
-                                            ),
-                                          ),
-                                          Text(
-                                            viewModel.getBookedSeats.toString(),
-                                            style: AppTextStyles
-                                                .profileSmallTextStyle(
-                                              context,
-                                              ColorManager.lightBlue
-                                                  .withOpacity(.5),
-                                            ),
-                                          ),
-                                          GestureDetector(
-                                            onTap: viewModel.removeSeat,
-                                            child: const Icon(
-                                              Icons.remove,
-                                              size: AppSize.s15,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      Text(
-                                        'seats',
-                                        style:
-                                            AppTextStyles.profileSmallTextStyle(
-                                          context,
-                                          ColorManager.lightBlue
-                                              .withOpacity(.5),
-                                        ),
-                                      ),
-                                    ],
+                              Positioned(
+                                top: AppSize.s8 + AppSize.s5,
+                                bottom: AppSize.s25 + AppSize.s4,
+                                left: AppSize.s0,
+                                child: SizedBox(
+                                  width: (context.width() - AppSize.s62) * .2,
+                                  child: Center(
+                                    child: Container(
+                                      color: ColorManager.black,
+                                      width: AppSize.s1,
+                                      height: AppSize.s26,
+                                    ),
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                          const SizedBox(height: AppSize.s20),
-                          Align(
-                            alignment: Alignment.center,
-                            child: SizedBox(
-                              width: context.width() * .5,
-                              child: ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: ColorManager.green,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(AppSize.s15),
-                                    )),
-                                child: const Text('Book now'),
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              DateFormat('EEEE').format(state.trip.date),
+                              style: AppTextStyles.profileGeneralTextStyle(
+                                  context,
+                                  FontSize.f18,
+                                  ColorManager.lightBlue),
+                            ),
+                            const SizedBox(
+                              width: AppSize.s16,
+                            ),
+                            Text(
+                              DateFormat('MMM d, yyy').format(state.trip.date),
+                              style: AppTextStyles.profileSmallTextStyle(
+                                context,
+                                ColorManager.lightBlue.withOpacity(.5),
                               ),
                             ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              'SpeedyGo Travel',
+                              style: AppTextStyles.profileGeneralTextStyle(
+                                  context,
+                                  FontSize.f18,
+                                  ColorManager.lightBlue),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              'Arrive at ',
+                              style: AppTextStyles.profileGeneralTextStyle(
+                                  context,
+                                  FontSize.f18,
+                                  ColorManager.lightBlue),
+                            ),
+                            Text(
+                              '05:00 pm',
+                              style: AppTextStyles.profileSmallTextStyle(
+                                context,
+                                ColorManager.lightBlue.withOpacity(.5),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            SvgPicture.asset(SVGAssets.seat),
+                            const SizedBox(height: AppSize.s10),
+                            IconButton(
+                              onPressed: viewModel.getBookedSeats > 1
+                                  ? viewModel.removeSeat
+                                  : null,
+                              icon: const Icon(Icons.remove),
+                            ),
+                            const SizedBox(height: AppSize.s5),
+                            Text(
+                              viewModel.getBookedSeats.toString(),
+                              style: AppTextStyles.profileSmallTextStyle(
+                                context,
+                                ColorManager.lightBlue.withOpacity(.5),
+                              ),
+                            ),
+                            const SizedBox(height: AppSize.s5),
+                            IconButton(
+                              onPressed: state.trip.availableSeats! >
+                                      viewModel.getBookedSeats
+                                  ? viewModel.addSeat
+                                  : null,
+                              icon: const Icon(Icons.add),
+                            ),
+                            Text(
+                              'Seats',
+                              style: AppTextStyles.profileSmallTextStyle(
+                                context,
+                                ColorManager.lightBlue.withOpacity(.5),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Price ${state.trip.price * viewModel.getBookedSeats}.0 EGP',
+                            style: AppTextStyles.profileGeneralTextStyle(
+                              context,
+                              FontSize.f18,
+                              ColorManager.lightBlue,
+                            ),
                           ),
-                        ],
-                      );
-                    },
-                  );
-                }
-                baseListener(context, state);
-              },
-              builder: (context, state) {
-                return baseBuilder(context, state, BusTripsBody());
-              },
-            )),
+                        ),
+                        Align(
+                          alignment: Alignment.center,
+                          child: SizedBox(
+                            width: context.width() * .5,
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: ColorManager.green,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(AppSize.s15),
+                                  )),
+                              child: const Text('Book now'),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
+              baseListener(context, state);
+            },
+            builder: (context, state) {
+              return baseBuilder(context, state, BusTripsBody());
+            },
+          ),
+        ),
       ),
     );
   }

@@ -36,7 +36,7 @@ class MainTripItem extends StatelessWidget {
               context, FontSize.f16, ColorManager.lightBlue),
         ),
         subtitle: Text(
-          '${tripModel!.seats} seats available',
+          '${tripModel!.availableSeats} seats available',
           style: AppTextStyles.profileHintTextStyle(context),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,

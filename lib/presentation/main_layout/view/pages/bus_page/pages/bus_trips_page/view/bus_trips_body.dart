@@ -110,7 +110,7 @@ class BusTripsBody extends StatelessWidget {
               ),
             ),
             const SizedBox(height: AppSize.s20),
-            StreamBuilder<List<TripBusModel>>(
+            StreamBuilder<List<Future<TripBusModel>>>(
               stream: viewModel.getTripsStream,
               builder: (context, tripsSnapshot) {
                 if (tripsSnapshot.hasData && tripsSnapshot.data!.isNotEmpty) {
@@ -119,14 +119,27 @@ class BusTripsBody extends StatelessWidget {
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: tripsSnapshot.data!.length,
                     itemBuilder: (context, index) {
-                      TripBusModel trip = tripsSnapshot.data![index];
-                      return GestureDetector(
-                        onTap: () {
-                          viewModel.onTapTrip(trip);
+                      return FutureBuilder(
+                        future: tripsSnapshot.data![index],
+                        builder: (context, tripFuture) {
+                          if (tripFuture.hasData) {
+                            TripBusModel trip = tripFuture.data!;
+                            return GestureDetector(
+                              onTap: () {
+                                viewModel.onTapTrip(trip);
+                              },
+                              child: MainTripItem(
+                                tripModel: trip,
+                              ),
+                            );
+                          }
+                          else if (tripFuture.hasError) {
+                            return Lottie.asset(LottieAssets.error, repeat: false);
+                          }
+                          else {
+                            return Lottie.asset(LottieAssets.loading);
+                          }
                         },
-                        child: MainTripItem(
-                          tripModel: trip,
-                        ),
                       );
                     },
                     separatorBuilder: (context, index) {
@@ -136,7 +149,7 @@ class BusTripsBody extends StatelessWidget {
                 } else if (tripsSnapshot.hasData) {
                   return Lottie.asset(LottieAssets.empty);
                 } else if (tripsSnapshot.hasError) {
-                  return Lottie.asset(LottieAssets.error);
+                  return Lottie.asset(LottieAssets.error, repeat: false);
                 } else {
                   return Lottie.asset(LottieAssets.loading);
                 }

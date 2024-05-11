@@ -637,21 +637,24 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, Stream<List<TripBusModel>>>> findBusTrips({
+  Future<Either<Failure, Stream<List<Future<TripBusModel>>>>> findBusTrips({
     required String pickup,
     required String destination,
     required DateTime date,
   }) async {
     try {
       if (await _networkInfo.isConnected) {
-        Stream<List<TripBusModel>> listOfTrips = _remoteDataSource
+        Stream<List<Future<TripBusModel>>> listOfTrips = _remoteDataSource
             .findBusTrips(pickup: pickup, destination: destination, date: date)
             .map(
-              (trips) => trips
-                  .map(
-                    (trip) => TripBusModel.fromMap(trip),
-                  )
-                  .toList(),
+              (trips) => trips.map(
+                (trip) async {
+                  trip['available_seats'] =
+                      await _remoteDataSource.findBusSeats(trip['driver_id']) -
+                          trip['taken_seats'];
+                  return TripBusModel.fromMap(trip);
+                },
+              ).toList(),
             );
         return Right(listOfTrips);
       } else {
