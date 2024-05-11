@@ -6,9 +6,19 @@
 - # login country code validation #
 - add the new register fields
 - bus driver to bus driver screen after register
-- build rest of bus screens ui
-- build all bus screens logic
 - scribble color
 - handling driver close app
 - remove useless back buttons in passenger trip
+
+
+
+
+// driver home screen navbar
+
+// profile in both driver and passenger
+
+// buse screen drawer and scheduling
+
+// add some attributes like plate to register "ل س ب 1 4 5"
+
 - handle book bus tickets again
