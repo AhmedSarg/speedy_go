@@ -32,27 +32,6 @@ class BookTripsBody extends StatelessWidget {
                       context: context,
                       builder: (BuildContext context) {
                         return DialogData(
-                          title: 'To',
-                          controller: viewModel.getToController,
-                        );
-                      },
-                    );
-                  },
-                  title: 'To',
-                  hintText: 'choose trip start location',
-                  read: true,
-                  validation: AppValidators.validateNotEmpty,
-                  textInputType: TextInputType.text,
-                  controller: viewModel.getToController),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
-              child: TripItem(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return DialogData(
                           title: 'From',
                           controller: viewModel.getFromController,
                         );
@@ -65,6 +44,27 @@ class BookTripsBody extends StatelessWidget {
                   validation: AppValidators.validateNotEmpty,
                   textInputType: TextInputType.text,
                   controller: viewModel.getFromController),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
+              child: TripItem(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return DialogData(
+                          title: 'To',
+                          controller: viewModel.getToController,
+                        );
+                      },
+                    );
+                  },
+                  title: 'To',
+                  hintText: 'choose trip start location',
+                  read: true,
+                  validation: AppValidators.validateNotEmpty,
+                  textInputType: TextInputType.text,
+                  controller: viewModel.getToController),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),

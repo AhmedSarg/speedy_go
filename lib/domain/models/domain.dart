@@ -323,7 +323,7 @@ class TripBusModel {
         driverId: map['driver_id'],
         pickup: map['pickup_location'],
         destination: map['destination_location'],
-        date: map['calendar'],
-        price: map['price'],
+        date: map['calendar'].toDate(),
+        price: map['price'].toInt(),
       );
 }

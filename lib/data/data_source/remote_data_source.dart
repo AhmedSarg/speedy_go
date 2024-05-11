@@ -815,7 +815,9 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       (busTrip) {
         return busTrip.docs.map(
           (e) {
-            return e.data();
+            Map<String, dynamic> ret = e.data();
+            ret['id'] = e.id;
+            return ret;
           },
         ).toList();
       },
