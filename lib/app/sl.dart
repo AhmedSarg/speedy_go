@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:speedy_go/domain/usecase/show_buses_usecase.dart';
 
 import '../data/data_source/cache_data_source.dart';
 import '../data/data_source/local_data_source.dart';
@@ -212,6 +213,15 @@ void initAddBusTripUseCase() {
 void initFindBusTripsUseCase() {
   if (GetIt.instance.isRegistered<FindBusTripsUseCase>() == false) {
     sl.registerFactory<FindBusTripsUseCase>(() => FindBusTripsUseCase(sl()));
+  }
+
+
+}
+
+
+void initDisplayBusesUseCase() {
+  if (GetIt.instance.isRegistered<DisplayBusesUseCase>() == false) {
+    sl.registerFactory<DisplayBusesUseCase>(() => DisplayBusesUseCase(sl()));
   }
 }
 

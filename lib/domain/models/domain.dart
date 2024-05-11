@@ -332,3 +332,31 @@ class TripBusModel {
         availableSeats: map['available_seats'].toInt(),
       );
 }
+
+
+class BusModel {
+  final String driverId;
+  final String licensePlate;
+  num? seats;
+
+  BusModel( {
+    required this.driverId,
+    required this.licensePlate,
+    this.seats,
+  });
+
+  factory BusModel.fake() => BusModel(
+    driverId: '',
+    seats: -1, licensePlate: '',
+  );
+
+   factory BusModel.fromMap(Map<String, dynamic> map) => BusModel(
+     driverId: map['driver_id'],
+     licensePlate: map['bus_plate']??"ا ب ح 2 3 4",
+     seats: map['seats_number'],
+
+
+
+
+   );
+}

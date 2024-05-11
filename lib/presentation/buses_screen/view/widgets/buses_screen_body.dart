@@ -52,6 +52,9 @@ class BusesScreenBody extends StatelessWidget {
             imageIcon: SVGAssets.myBuses,
             title: AppStrings.busesMyBuses.tr(),
             backgroundColor: ColorManager.veryLightGrey,
+            onTap: () {
+              Navigator.pushNamed(context, Routes.myBusesRoute);
+            },
           ),
           BusesItem(
             textStyle: AppTextStyles.busesItemTextStyle(context),

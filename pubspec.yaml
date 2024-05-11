@@ -32,7 +32,7 @@ dependencies:
   firebase_auth:
   cloud_firestore:
   firebase_storage:
-  google_maps_flutter: ^2.6.0
+  google_maps_flutter:
   path:
   uuid:
   animations:
@@ -49,12 +49,13 @@ dependencies:
   cached_network_image:
   flexible_polyline_dart:
   share_plus:
+  easy_date_timeline:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^2.0.0
+  flutter_lints:
 
 flutter:
   uses-material-design: true
