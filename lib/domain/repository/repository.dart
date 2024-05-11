@@ -135,4 +135,10 @@ abstract class Repository {
     required String destination,
     required DateTime date,
   });
+
+
+  Future<Either<Failure, Stream<List<BusModel>>>> displayBuses({
+    required String driverId,
+
+  });
 }

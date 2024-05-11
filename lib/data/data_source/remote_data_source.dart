@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:speedy_go/domain/models/user_manager.dart';
 
 import '../../domain/models/enums.dart';
 
@@ -157,6 +158,13 @@ abstract class RemoteDataSource {
   });
 
   Future<int> findBusSeats(String busId);
+
+  Stream<List<Map<String, dynamic>>> displayBuses({
+    required String driverId,
+
+  });
+
+
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -832,5 +840,29 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     return await _firestore.collection('buses').where('driver_id', isEqualTo: driverId).get().then((value) {
       return value.docs[0].data()['seats_number'];
     });
+  }
+
+
+  @override
+  Stream<List<Map<String, dynamic>>> displayBuses({
+    required String driverId,
+  }) {
+    print(driverId);
+
+    return _firestore
+        .collection('buses')
+        .where('driver_id', isEqualTo: driverId)
+        .snapshots()
+        .map(
+          (busTrip) {
+            print(busTrip);
+
+        return busTrip.docs.map(
+              (e) {
+            return  e.data();
+          },
+        ).toList();
+      },
+    );
   }
 }

@@ -664,4 +664,31 @@ class RepositoryImpl implements Repository {
       return Left(ErrorHandler.handle(e).failure);
     }
   }
+
+
+
+  @override
+  Future<Either<Failure, Stream<List<BusModel>>>> displayBuses({
+    required String driverId,
+
+  }) async {
+    try {
+      if (await _networkInfo.isConnected) {
+        Stream<List<BusModel>> listOfBusese = _remoteDataSource
+            .displayBuses(driverId: driverId)
+            .map(
+              (buses) => buses
+              .map(
+                (bus) => BusModel.fromMap(bus),
+          )
+              .toList(),
+        );
+        return Right(listOfBusese);
+      } else {
+        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+      }
+    } catch (e) {
+      return Left(ErrorHandler.handle(e).failure);
+    }
+  }
 }
