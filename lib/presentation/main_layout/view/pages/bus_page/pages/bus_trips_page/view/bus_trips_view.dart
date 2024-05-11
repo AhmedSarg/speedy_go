@@ -10,6 +10,7 @@ import 'package:speedy_go/presentation/base/cubit_listener.dart';
 import 'package:speedy_go/presentation/main_layout/view/pages/bus_page/pages/bus_trips_page/states/bus_trips_states.dart';
 import 'package:speedy_go/presentation/main_layout/view/pages/bus_page/pages/bus_trips_page/view/bus_trips_body.dart';
 import 'package:speedy_go/presentation/main_layout/view/pages/bus_page/pages/bus_trips_page/viewmodel/bus_trips_viewmodel.dart';
+import 'package:speedy_go/presentation/resources/styles_manager.dart';
 import 'package:speedy_go/presentation/resources/values_manager.dart';
 
 import '../../../../../../../base/base_states.dart';
@@ -24,6 +25,30 @@ class BusTripsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: ColorManager.transparent,
+        elevation: AppSize.s0,
+        title: Text(
+          'Available Buses',
+          style: getSemiBoldStyle(
+            color: ColorManager.white,
+            fontSize: FontSize.f20,
+          ),
+        ),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          padding: const EdgeInsets.only(left: AppPadding.p8),
+          icon: const Icon(Icons.arrow_back_ios),
+        ),
+        shape: const RoundedRectangleBorder(
+          side: BorderSide(
+            color: ColorManager.white,
+            width: AppSize.s0_5,
+          ),
+        ),
+      ),
       body: SizedBox(
         width: AppSize.infinity,
         height: AppSize.infinity,
@@ -274,7 +299,13 @@ class BusTripsPage extends StatelessWidget {
                                     borderRadius:
                                         BorderRadius.circular(AppSize.s15),
                                   )),
-                              child: const Text('Book now'),
+                              child: Text(
+                                'Book now',
+                                style: getRegularStyle(
+                                  color: ColorManager.white,
+                                  fontSize: FontSize.f14,
+                                ),
+                              ),
                             ),
                           ),
                         ),

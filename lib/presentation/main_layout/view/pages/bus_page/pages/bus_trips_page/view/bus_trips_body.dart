@@ -132,11 +132,10 @@ class BusTripsBody extends StatelessWidget {
                                 tripModel: trip,
                               ),
                             );
-                          }
-                          else if (tripFuture.hasError) {
-                            return Lottie.asset(LottieAssets.error, repeat: false);
-                          }
-                          else {
+                          } else if (tripFuture.hasError) {
+                            return Lottie.asset(LottieAssets.error,
+                                repeat: false);
+                          } else {
                             return Lottie.asset(LottieAssets.loading);
                           }
                         },
@@ -151,7 +150,10 @@ class BusTripsBody extends StatelessWidget {
                 } else if (tripsSnapshot.hasError) {
                   return Lottie.asset(LottieAssets.error, repeat: false);
                 } else {
-                  return Lottie.asset(LottieAssets.loading);
+                  return Lottie.asset(
+                    LottieAssets.loading,
+                    width: context.width() * .2,
+                  );
                 }
               },
             ),

@@ -2,10 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:speedy_go/domain/models/user_manager.dart';
 import 'package:speedy_go/domain/usecase/add_bus_usecase.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../../app/functions.dart';
+import '../../../../../app/sl.dart';
 import '../../../../../data/network/failure.dart';
 import '../../../../base/base_cubit.dart';
 import '../../../../base/base_states.dart';
@@ -16,6 +18,7 @@ class AddBusViewModel extends BaseCubit
   static AddBusViewModel get(context) => BlocProvider.of(context);
 
   final AddBusUseCase _addBusUseCase;
+  final UserManager _userManager  = sl<UserManager>();
   AddBusViewModel(this._addBusUseCase);
 
   late final TextEditingController _firstNameController;
@@ -38,7 +41,7 @@ class AddBusViewModel extends BaseCubit
 
   Future<void> addBus() async {
     emit(LoadingState(displayType: DisplayType.popUpDialog));
-    _driverId = "50eed110-8ed4-1fbd-8284-a5abda7919e1";
+    _driverId = _userManager.getCurrentDriver!.uuid;
     await _addBusUseCase(
       AddBusUseCaseInput(
         _driverId,
