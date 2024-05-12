@@ -1,5 +1,4 @@
 import 'package:intl/intl.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:speedy_go/presentation/base/base_states.dart';
@@ -60,7 +59,7 @@ class AddTripViewModel extends BaseCubit
   Future<void> addTrip() async {
     emit(LoadingState(displayType: DisplayType.popUpDialog));
 
-    DateTime selectedDate = DateFormat('MMM d, yyyy').parse(_dateController.text);
+    DateTime selectedDate = DateFormat('EEE, MMM d yyyy hh:mm a').parse(_dateController.text);
     double? price = double.tryParse(_priceController.text);
 
     await _addBusTripUseCase(
@@ -84,9 +83,8 @@ class AddTripViewModel extends BaseCubit
         );
       },
     );
-
-
   }
+
   Future<void> clear() async {
     _numController.clear();
     _priceController.clear();
@@ -100,13 +98,9 @@ class AddTripViewModel extends BaseCubit
 
   @override
   set setDate(DateTime date) {
-    // DateFormat formatter = DateFormat('MMM d, yyyy');
-    // _selectedDate = formatter.format(date);
-
     _dateController.text = DateFormat('EEE, MMM d yyyy hh:mm a').format(date);
   }
 }
-
 
 abstract class AddTripViewModelInput {
   set setNum(String number);
