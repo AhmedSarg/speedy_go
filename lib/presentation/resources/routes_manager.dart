@@ -109,7 +109,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const RateScreen());
       case Routes.busesRoute:
         initDisplayBusesUseCase();
-
+        initLogOutUseCase();
         initAddBusUseCase();
         initAddBusTripUseCase();
         return MaterialPageRoute(builder: (_) => const BusesScreen());

@@ -63,7 +63,9 @@ class EditProfileBody extends StatelessWidget {
                       ),
                     ),
                     const Spacer(),
-const SizedBox(width: AppSize.s60,),
+                    const SizedBox(
+                      width: AppSize.s60,
+                    ),
                   ],
                 ),
                 Padding(

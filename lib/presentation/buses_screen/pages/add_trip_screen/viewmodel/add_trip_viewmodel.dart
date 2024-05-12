@@ -67,8 +67,8 @@ class AddTripViewModel extends BaseCubit
         driverId:_userManager.getCurrentDriver!.uuid,
         numberOfBus: int.parse(_num),
         price: price ?? 0.0,
-        pickupLocation: _toController.text.trim().toLowerCase(),
-        destinationLocation: _fromController.text.trim().toLowerCase(),
+        pickupLocation: _fromController.text.trim().toLowerCase(),
+        destinationLocation: _toController.text.trim().toLowerCase(),
         calendar: selectedDate,
       ),
     ).then(

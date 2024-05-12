@@ -29,7 +29,7 @@ class MainTripItem extends StatelessWidget {
         color: ColorManager.veryLightGrey,
       ),
       child: ListTile(
-        leading: SvgPicture.asset(SVGAssets.redBus),
+        leading: SvgPicture.asset(SVGAssets.redBus,color:ColorManager.red,),
         title: Text(
           DateFormat('hh:mm a').format(tripModel!.date),
           style: AppTextStyles.profileGeneralTextStyle(

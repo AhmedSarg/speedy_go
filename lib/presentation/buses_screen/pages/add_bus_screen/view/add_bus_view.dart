@@ -4,7 +4,7 @@ import 'package:speedy_go/presentation/base/cubit_builder.dart';
 import 'package:speedy_go/presentation/base/cubit_listener.dart';
 import 'package:speedy_go/presentation/buses_screen/pages/add_bus_screen/view/add_bus_body.dart';
 import 'package:speedy_go/presentation/buses_screen/pages/add_bus_screen/viewmodel/add_bus_viewmodel.dart';
-import 'package:speedy_go/presentation/buses_screen/view/widgets/drawer_widget.dart';
+import 'package:speedy_go/presentation/buses_screen/pages/drawer/view/drawer.dart';
 import 'package:speedy_go/presentation/resources/color_manager.dart';
 
 import '../../../../../app/sl.dart';
@@ -43,11 +43,11 @@ class AddBusScreen extends StatelessWidget {
             baseListener(context, state);
           },
           builder: (context, state) {
-            return baseBuilder(context, state, AddBusBody());
+            return baseBuilder(context, state, const AddBusBody());
           },
         ),
       ),
-      drawer: const BusesDrawer(),
+      drawer: const DrawerBuse(),
     );
   }
 }

@@ -44,8 +44,8 @@ class BookTripViewModel extends BaseCubit
           },
           (r) {
             DataIntent.pushTripsStream(r);
-            DataIntent.setBusPickup(_toController.text);
-            DataIntent.setBusDestination(_fromController.text);
+            DataIntent.setBusPickup(_fromController.text);
+            DataIntent.setBusDestination(_toController.text);
             DataIntent.setBusDepartureDate(_selectedDate!);
             emit(BusDataSuccessState());
           },
