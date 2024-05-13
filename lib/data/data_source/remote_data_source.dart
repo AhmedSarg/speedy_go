@@ -904,4 +904,28 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       },
     );
   }
+
+
+  // @override
+  // Stream<List<Map<String, dynamic>>> displayBuses({
+  //   required String driverId,
+  // }) {
+  //   print(driverId);
+  //
+  //   return _firestore
+  //       .collection('buses')
+  //       .where('driver_id', isEqualTo: driverId)
+  //       .snapshots()
+  //       .map(
+  //         (busTrip) {
+  //       print(busTrip);
+  //
+  //       return busTrip.docs.map(
+  //             (e) {
+  //           return  e.data();
+  //         },
+  //       ).toList();
+  //     },
+  //   );
+  // }
 }

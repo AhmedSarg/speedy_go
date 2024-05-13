@@ -16,8 +16,8 @@ class DrawerBuse extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocProvider(
+    return
+      BlocProvider(
         create: (context) => DrawerViewModel(sl())..start(),
         child: BlocConsumer<DrawerViewModel, BaseStates>(
           listener: (context, state) {
@@ -39,7 +39,7 @@ class DrawerBuse extends StatelessWidget {
             );
           },
         ),
-      ),
+
     );
   }
 }
