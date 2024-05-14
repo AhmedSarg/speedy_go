@@ -174,6 +174,13 @@ abstract class RemoteDataSource {
     required String busTripId,
     required int seats,
   });
+
+
+  Stream<List<Map<String, dynamic>>> buseDriverTrips({
+    required String driverId,
+    required DateTime date,
+
+  });
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -906,26 +913,28 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
 
-  // @override
-  // Stream<List<Map<String, dynamic>>> displayBuses({
-  //   required String driverId,
-  // }) {
-  //   print(driverId);
-  //
-  //   return _firestore
-  //       .collection('buses')
-  //       .where('driver_id', isEqualTo: driverId)
-  //       .snapshots()
-  //       .map(
-  //         (busTrip) {
-  //       print(busTrip);
-  //
-  //       return busTrip.docs.map(
-  //             (e) {
-  //           return  e.data();
-  //         },
-  //       ).toList();
-  //     },
-  //   );
-  // }
+  @override
+  Stream<List<Map<String, dynamic>>> buseDriverTrips({
+    required String driverId,
+    required DateTime date,
+
+  }) {
+
+    return _firestore
+        .collection('available_bus_trips')
+        .where('driver_id', isEqualTo: driverId)
+        .where('calendar', isEqualTo: Timestamp.fromDate(date))
+        .snapshots()
+        .map(
+          (busTrip) {
+        print(busTrip);
+
+        return busTrip.docs.map(
+              (e) {
+            return  e.data();
+          },
+        ).toList();
+      },
+    );
+  }
 }

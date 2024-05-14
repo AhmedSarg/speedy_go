@@ -705,6 +705,32 @@ class RepositoryImpl implements Repository {
   }
 
   @override
+  Future<Either<Failure, Stream<List<BusModel>>>> busesDriverTrips({
+    required String driverId,
+    required DateTime date,
+
+  }) async {
+    try {
+      if (await _networkInfo.isConnected) {
+        Stream<List<BusModel>> listOfBuses = _remoteDataSource
+            .buseDriverTrips(driverId: driverId, date: date)
+            .map(
+              (buses) => buses
+              .map(
+                (bus) => BusModel.fromMap(bus),
+          )
+              .toList(),
+        );
+        return Right(listOfBuses);
+      } else {
+        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+      }
+    } catch (e) {
+      return Left(ErrorHandler.handle(e).failure);
+    }
+  }
+
+  @override
   Future<Either<Failure, void>> bookBusTicket({
     required String userId,
     required String busTripId,
@@ -725,4 +751,6 @@ class RepositoryImpl implements Repository {
       return Left(ErrorHandler.handle(e).failure);
     }
   }
+
+
 }
