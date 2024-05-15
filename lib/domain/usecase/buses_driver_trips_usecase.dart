@@ -15,9 +15,8 @@ class BusesDriverTripsUseCase
   Future<Either<Failure, Stream<List<BusModel>>>> call(
       BusesDriverTripsUseCaseInput input) async {
     return _repository.busesDriverTrips(
-        driverId: input.driverId,
+      driverId: input.driverId,
       date: input.date,
-
     );
   }
 }
@@ -26,9 +25,8 @@ class BusesDriverTripsUseCaseInput {
   final String driverId;
   final DateTime date;
 
-  BusesDriverTripsUseCaseInput( {
+  BusesDriverTripsUseCaseInput({
     required this.driverId,
     required this.date,
-
   });
 }

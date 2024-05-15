@@ -6,7 +6,7 @@ import '../../../../../base/base_states.dart';
 import '../../../../../base/cubit_builder.dart';
 import '../../../../../base/cubit_listener.dart';
 import '../viewmodel/my_buses_viewmodel.dart';
-import 'widgets/my_buses_body.dart';
+import 'my_buses_body.dart';
 
 class MyBusesScreen extends StatelessWidget {
   const MyBusesScreen({super.key});
@@ -22,8 +22,6 @@ class MyBusesScreen extends StatelessWidget {
               Navigator.pop(context);
             }
             baseListener(context, state);
-
-
           },
           builder: (context, state) {
             return baseBuilder(

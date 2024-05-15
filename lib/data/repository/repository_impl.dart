@@ -174,8 +174,7 @@ class RepositoryImpl implements Repository {
             carPlate: vehiclePlate!,
             createdAt: DateTime.now(),
           );
-        }
-        else if (registerType == RegisterType.tuktuk) {
+        } else if (registerType == RegisterType.tuktuk) {
           await _remoteDataSource.registerTukTukDriverToDataBase(
             uuid: uuid,
             firstName: firstName,
@@ -188,8 +187,7 @@ class RepositoryImpl implements Repository {
             tuktukPlate: vehiclePlate!,
             createdAt: DateTime.now(),
           );
-        }
-        else if (registerType == RegisterType.bus) {
+        } else if (registerType == RegisterType.bus) {
           await _remoteDataSource.registerBusDriverToDataBase(
             uuid: uuid,
             firstName: firstName,
@@ -199,8 +197,7 @@ class RepositoryImpl implements Repository {
             nationalId: nationalId!,
             createdAt: DateTime.now(),
           );
-        }
-        else {
+        } else {
           await _remoteDataSource.registerPassengerToDataBase(
             uuid: uuid,
             firstName: firstName,
@@ -677,24 +674,20 @@ class RepositoryImpl implements Repository {
     }
   }
 
-
-
   @override
   Future<Either<Failure, Stream<List<BusModel>>>> displayBuses({
     required String driverId,
-
   }) async {
     try {
       if (await _networkInfo.isConnected) {
-        Stream<List<BusModel>> listOfBuses = _remoteDataSource
-            .displayBuses(driverId: driverId)
-            .map(
-              (buses) => buses
-              .map(
-                (bus) => BusModel.fromMap(bus),
-          )
-              .toList(),
-        );
+        Stream<List<BusModel>> listOfBuses =
+            _remoteDataSource.displayBuses(driverId: driverId).map(
+                  (buses) => buses
+                      .map(
+                        (bus) => BusModel.fromMap(bus),
+                      )
+                      .toList(),
+                );
         return Right(listOfBuses);
       } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
@@ -708,7 +701,6 @@ class RepositoryImpl implements Repository {
   Future<Either<Failure, Stream<List<BusModel>>>> busesDriverTrips({
     required String driverId,
     required DateTime date,
-
   }) async {
     try {
       if (await _networkInfo.isConnected) {
@@ -716,11 +708,11 @@ class RepositoryImpl implements Repository {
             .buseDriverTrips(driverId: driverId, date: date)
             .map(
               (buses) => buses
-              .map(
-                (bus) => BusModel.fromMap(bus),
-          )
-              .toList(),
-        );
+                  .map(
+                    (bus) => BusModel.fromMap(bus),
+                  )
+                  .toList(),
+            );
         return Right(listOfBuses);
       } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
@@ -751,6 +743,4 @@ class RepositoryImpl implements Repository {
       return Left(ErrorHandler.handle(e).failure);
     }
   }
-
-
 }

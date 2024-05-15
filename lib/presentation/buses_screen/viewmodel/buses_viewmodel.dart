@@ -1,24 +1,24 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:speedy_go/domain/models/user_manager.dart';
-import 'package:speedy_go/presentation/base/base_states.dart';
-import '../../../../../../app/sl.dart';
-import '../../../../../../domain/usecase/logout_usecase.dart';
-import '../../../../../base/base_cubit.dart';
-import '../states/logout_states.dart';
+import 'package:speedy_go/presentation/base/base_cubit.dart';
+import 'package:speedy_go/presentation/buses_screen/states/buses_states.dart';
 
-class DrawerViewModel extends BaseCubit
-    implements DrawerViewModelInput, DrawerViewModelOutput {
-  static DrawerViewModel get(context) => BlocProvider.of(context);
+import '../../../app/sl.dart';
+import '../../../domain/models/user_manager.dart';
+import '../../../domain/usecase/logout_usecase.dart';
+import '../../base/base_states.dart';
+
+class BusesViewModel extends BaseCubit
+    implements BusesViewModelInput, BusesViewModelOutput {
+  static BusesViewModel get(context) => BlocProvider.of(context);
 
   final LogoutUseCase _logoutUseCase;
   final UserManager _userManager = sl<UserManager>();
 
-  DrawerViewModel(this._logoutUseCase);
+  BusesViewModel(this._logoutUseCase);
 
   late String _name;
   late String _imagePath;
 
-  @override
   Future<void> logout() async {
     emit(LoadingState(displayType: DisplayType.popUpDialog));
     await _logoutUseCase.call(null).then(
@@ -33,7 +33,7 @@ class DrawerViewModel extends BaseCubit
             );
           },
           (r) {
-            emit(LogoutSuccessState());
+            emit(LogoutState());
           },
         );
       },
@@ -53,11 +53,10 @@ class DrawerViewModel extends BaseCubit
   String get getImagePath => _imagePath;
 }
 
-abstract class DrawerViewModelInput {
-  void logout();
-}
+abstract class BusesViewModelInput {}
 
-abstract class DrawerViewModelOutput {
+abstract class BusesViewModelOutput {
   String get getName;
+
   String get getImagePath;
 }

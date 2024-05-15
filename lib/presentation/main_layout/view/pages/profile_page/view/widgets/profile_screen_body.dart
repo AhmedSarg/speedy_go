@@ -82,14 +82,14 @@ class ProfileScreenBody extends StatelessWidget {
                   const SizedBox(
                     height: AppSize.s18,
                   ),
-                  ProfileItems(
+                  DrawerItem(
                     onTap: () {
                       Navigator.pushNamed(context, Routes.myTripsRoute);
                     },
                     text: 'My Trips',
                     image: SVGAssets.myTrips,
                   ),
-                   ProfileItems(
+                   DrawerItem(
                     onTap: () {
                       Navigator.pushNamed(context, Routes.requestHistoryRoute);
 
@@ -97,14 +97,14 @@ class ProfileScreenBody extends StatelessWidget {
                     text: 'request history ',
                     image: SVGAssets.history,
                   ),
-                   ProfileItems(
+                   DrawerItem(
                     onTap: () {
                       Navigator.pushNamed(context, Routes.safetyRoute);
                     },
                     text: 'Safety',
                     image: SVGAssets.safety,
                   ),
-                   ProfileItems(
+                   DrawerItem(
                     onTap: () {
                       Navigator.pushNamed(context, Routes.supportRoute);
 

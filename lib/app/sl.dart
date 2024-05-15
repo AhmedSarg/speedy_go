@@ -200,13 +200,13 @@ void initCancelAcceptTripUseCase() {
 }
 
 void initAddBusUseCase() {
-  if (GetIt.instance.isRegistered<EndTripUseCase>() == false) {
+  if (GetIt.instance.isRegistered<AddBusUseCase>() == false) {
     sl.registerFactory<AddBusUseCase>(() => AddBusUseCase(sl()));
   }
 }
 
 void initAddBusTripUseCase() {
-  if (GetIt.instance.isRegistered<EndTripUseCase>() == false) {
+  if (GetIt.instance.isRegistered<AddBusTripUseCase>() == false) {
     sl.registerFactory<AddBusTripUseCase>(() => AddBusTripUseCase(sl()));
   }
 }
@@ -215,10 +215,7 @@ void initFindBusTripsUseCase() {
   if (GetIt.instance.isRegistered<FindBusTripsUseCase>() == false) {
     sl.registerFactory<FindBusTripsUseCase>(() => FindBusTripsUseCase(sl()));
   }
-
-
 }
-
 
 void initDisplayBusesUseCase() {
   if (GetIt.instance.isRegistered<DisplayBusesUseCase>() == false) {

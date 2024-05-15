@@ -22,8 +22,6 @@ class ScheduleScreen extends StatelessWidget {
               Navigator.pop(context);
             }
             baseListener(context, state);
-
-
           },
           builder: (context, state) {
             return baseBuilder(

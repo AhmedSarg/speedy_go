@@ -4,7 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import '../../app/sl.dart';
 import '../buses_screen/view/buses_screen.dart';
 import '../buses_screen/view/pages/add_bus_screen/view/add_bus_view.dart';
-import '../buses_screen/view/pages/add_trip_screen/view/add_trip.dart';
+import '../buses_screen/view/pages/add_trip_screen/view/add_trip_view.dart';
 import '../buses_screen/view/pages/my_buses_screen/view/my_buses_screen.dart';
 import '../buses_screen/view/pages/schedule_screen/view/schedule_screen.dart';
 import '../common/transitions/transitions.dart';
@@ -32,7 +32,7 @@ class Routes {
   Routes._();
 
   //todo make splash initial route
-  static const String splashRoute = "/splash";
+  static const String splashRoute = "/";
   static const String onBoardingRoute = "/onBoarding";
   static const String loginRoute = "/login";
   static const String selectionRoute = "/selection";
@@ -108,19 +108,22 @@ class RouteGenerator {
         initRateUseCase();
         return MaterialPageRoute(builder: (_) => const RateScreen());
       case Routes.busesRoute:
-        initBusesDriverTripsUseCase();
-        initDisplayBusesUseCase();
         initLogOutUseCase();
-        initAddBusUseCase();
-        initAddBusTripUseCase();
-        return MaterialPageRoute(builder: (_) => const BusesScreen());
+        return MaterialPageRoute(
+          settings: RouteSettings(name: settings.name),
+          builder: (_) => const BusesScreen(),
+        );
       case Routes.scheduleRoute:
+        initBusesDriverTripsUseCase();
         return MaterialPageRoute(builder: (_) => const ScheduleScreen());
       case Routes.myBusesRoute:
+        initDisplayBusesUseCase();
         return MaterialPageRoute(builder: (_) => const MyBusesScreen());
       case Routes.addBusTripRoute:
+        initAddBusTripUseCase();
         return MaterialPageRoute(builder: (_) => const AddBusTripScreen());
       case Routes.addBusRoute:
+        initAddBusUseCase();
         return MaterialPageRoute(builder: (_) => const AddBusScreen());
       case Routes.profileEditRoute:
         return MaterialPageRoute(builder: (_) => const ProfileEditPage());

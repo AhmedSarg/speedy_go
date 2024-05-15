@@ -3,21 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../../../../common/validators/validators.dart';
-import '../../../../../../common/widget/main_button.dart';
-import '../../../../../../common/widget/options_menu.dart';
-import '../../../../../../resources/assets_manager.dart';
-import '../../../../../../resources/color_manager.dart';
-import '../../../../../../resources/strings_manager.dart';
-import '../../../../../../resources/text_styles.dart';
-import '../../../../../../resources/values_manager.dart';
-import '../../../../widgets/buses_logo_widget.dart';
-import '../../../add_bus_screen/view/widgets/buses_item.dart';
-import '../../../../../view/widgets/text_field.dart';
-import '../../viewmodel/add_trip_viewmodel.dart';
-import 'trip_item.dart';
-import 'trip_search.dart';
-import 'trip_search_from.dart';
+import '../../../../../common/validators/validators.dart';
+import '../../../../../common/widget/main_button.dart';
+import '../../../../../common/widget/options_menu.dart';
+import '../../../../../resources/assets_manager.dart';
+import '../../../../../resources/color_manager.dart';
+import '../../../../../resources/strings_manager.dart';
+import '../../../../../resources/text_styles.dart';
+import '../../../../../resources/values_manager.dart';
+import '../../../widgets/buses_logo_widget.dart';
+import '../../add_bus_screen/view/widgets/buses_item.dart';
+import '../../../widgets/text_field.dart';
+import '../viewmodel/add_trip_viewmodel.dart';
+import 'widgets/trip_item.dart';
+import 'widgets/trip_search.dart';
+import 'widgets/trip_search_from.dart';
 
 class AddTripBody extends StatelessWidget {
   const AddTripBody({super.key, required this.viewModel});

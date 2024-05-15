@@ -281,7 +281,7 @@ class AppTextStyles {
       );
 
   static TextStyle profileItemTextStyle(BuildContext context) =>
-      getSemiBoldStyle(
+      getMediumStyle(
         fontFamily: AppLanguages.getPrimaryFont(context),
         color: ColorManager.white,
         fontSize: FontSize.f18,

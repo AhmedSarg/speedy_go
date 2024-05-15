@@ -4,17 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../../../../../../domain/models/domain.dart';
-import '../../../../../../common/widget/main_button.dart';
-import '../../../../../../resources/assets_manager.dart';
-import '../../../../../../resources/color_manager.dart';
-import '../../../../../../resources/font_manager.dart';
-import '../../../../../../resources/strings_manager.dart';
-import '../../../../../../resources/text_styles.dart';
-import '../../../../../../resources/values_manager.dart';
-import '../../../../../view/widgets/buses_logo_widget.dart';
-import '../../../add_bus_screen/view/widgets/buses_item.dart';
-import '../../viewmodel/my_buses_viewmodel.dart';
+import '../../../../../../domain/models/domain.dart';
+import '../../../../../common/widget/main_button.dart';
+import '../../../../../resources/assets_manager.dart';
+import '../../../../../resources/color_manager.dart';
+import '../../../../../resources/font_manager.dart';
+import '../../../../../resources/strings_manager.dart';
+import '../../../../../resources/text_styles.dart';
+import '../../../../../resources/values_manager.dart';
+import '../../../widgets/buses_logo_widget.dart';
+import '../../add_bus_screen/view/widgets/buses_item.dart';
+import '../viewmodel/my_buses_viewmodel.dart';
 
 class MyBusesBody extends StatelessWidget {
   const MyBusesBody({super.key, required this.viewModel});

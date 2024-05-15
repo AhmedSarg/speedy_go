@@ -7,7 +7,7 @@ import '../../../../../base/cubit_builder.dart';
 import '../../../../../base/cubit_listener.dart';
 import '../../../../../resources/color_manager.dart';
 import '../viewmodel/add_trip_viewmodel.dart';
-import 'widgets/add_trip_body.dart';
+import 'add_trip_body.dart';
 
 class AddBusTripScreen extends StatelessWidget {
   const AddBusTripScreen({super.key});
@@ -21,15 +21,11 @@ class AddBusTripScreen extends StatelessWidget {
         child: BlocConsumer<AddTripViewModel, BaseStates>(
           listener: (context, state) {
             if (state is SuccessState) {
-
               Navigator.pop(context);
-
             } else if (state is ErrorState) {
               Navigator.pop(context);
             }
             baseListener(context, state);
-
-
           },
           builder: (context, state) {
             return baseBuilder(
