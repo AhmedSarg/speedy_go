@@ -12,7 +12,7 @@ import '../driver_trip_screen/view/driver_trip_view.dart';
 import '../login_screen/view/login_view.dart';
 import '../main_layout/view/main_layout_view.dart';
 import '../main_layout/view/pages/bus_page/pages/bus_trips_page/view/bus_trips_view.dart';
-import '../main_layout/view/pages/profile_page/pages/edit_profile/view/edit_profile_screen.dart';
+import '../edit_profile_screen/view/edit_profile_view.dart';
 import '../main_layout/view/pages/profile_page/pages/my_trips/view/my_trips_screen.dart';
 import '../main_layout/view/pages/profile_page/pages/request_history/view/request_history_screen.dart';
 import '../main_layout/view/pages/profile_page/pages/safty/safety.dart';
@@ -126,6 +126,7 @@ class RouteGenerator {
         initAddBusUseCase();
         return MaterialPageRoute(builder: (_) => const AddBusScreen());
       case Routes.profileEditRoute:
+        initChangeAccountInfoUseCase();
         return MaterialPageRoute(builder: (_) => const ProfileEditPage());
       case Routes.myTripsRoute:
         return MaterialPageRoute(builder: (_) => const MyTripsScreen());

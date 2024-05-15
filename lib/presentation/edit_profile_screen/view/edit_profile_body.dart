@@ -1,16 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:lottie/lottie.dart';
 import 'package:speedy_go/presentation/common/validators/validators.dart';
 import 'package:speedy_go/presentation/common/widget/main_button.dart';
 import 'package:speedy_go/presentation/resources/text_styles.dart';
 
-import '../../../../../../../common/widget/main_text_field.dart';
-import '../../../../../../../resources/assets_manager.dart';
-import '../../../../../../../resources/color_manager.dart';
-import '../../../../../../../resources/values_manager.dart';
+import '../../common/widget/main_text_field.dart';
+import '../../resources/assets_manager.dart';
+import '../../resources/color_manager.dart';
+import '../../resources/values_manager.dart';
 import '../viewmodel/edit_profile_viewmodel.dart';
 
 class EditProfileBody extends StatelessWidget {

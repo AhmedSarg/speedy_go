@@ -5,6 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:speedy_go/domain/usecase/change_account_info_usecase.dart';
+import 'package:speedy_go/domain/usecase/change_account_info_usecase.dart';
+import 'package:speedy_go/domain/usecase/change_account_info_usecase.dart';
+import 'package:speedy_go/domain/usecase/change_account_info_usecase.dart';
 import 'package:speedy_go/domain/usecase/show_buses_usecase.dart';
 
 import '../data/data_source/cache_data_source.dart';
@@ -177,7 +181,8 @@ void initGetSignedUserUseCase() {
 
 void initChangeDriverStatusUseCase() {
   if (GetIt.instance.isRegistered<ChangeDriverStatusUseCase>() == false) {
-    sl.registerFactory<ChangeDriverStatusUseCase>(() => ChangeDriverStatusUseCase(sl()));
+    sl.registerFactory<ChangeDriverStatusUseCase>(
+        () => ChangeDriverStatusUseCase(sl()));
   }
 }
 
@@ -195,7 +200,8 @@ void initAcceptTripUseCase() {
 
 void initCancelAcceptTripUseCase() {
   if (GetIt.instance.isRegistered<CancelAcceptTripUseCase>() == false) {
-    sl.registerFactory<CancelAcceptTripUseCase>(() => CancelAcceptTripUseCase(sl()));
+    sl.registerFactory<CancelAcceptTripUseCase>(
+        () => CancelAcceptTripUseCase(sl()));
   }
 }
 
@@ -225,12 +231,20 @@ void initDisplayBusesUseCase() {
 
 void initBusesDriverTripsUseCase() {
   if (GetIt.instance.isRegistered<BusesDriverTripsUseCase>() == false) {
-    sl.registerFactory<BusesDriverTripsUseCase>(() => BusesDriverTripsUseCase(sl()));
+    sl.registerFactory<BusesDriverTripsUseCase>(
+        () => BusesDriverTripsUseCase(sl()));
   }
 }
 
 void initBookBusTripUseCase() {
   if (GetIt.instance.isRegistered<BookBusTripUseCase>() == false) {
     sl.registerFactory<BookBusTripUseCase>(() => BookBusTripUseCase(sl()));
+  }
+}
+
+void initChangeAccountInfoUseCase() {
+  if (GetIt.instance.isRegistered<ChangeAccountInfoUseCase>() == false) {
+    sl.registerFactory<ChangeAccountInfoUseCase>(
+        () => ChangeAccountInfoUseCase(sl()));
   }
 }

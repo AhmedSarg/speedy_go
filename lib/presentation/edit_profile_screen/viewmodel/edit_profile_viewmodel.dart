@@ -4,8 +4,8 @@ import 'package:speedy_go/domain/models/domain.dart';
 import 'package:speedy_go/domain/models/enums.dart';
 import 'package:speedy_go/domain/models/user_manager.dart';
 
-import '../../../../../../../../app/sl.dart';
-import '../../../../../../../base/base_cubit.dart';
+import '../../../app/sl.dart';
+import '../../base/base_cubit.dart';
 
 class EditProfileViewModel extends BaseCubit
     implements EditProfileViewModelInput, EditProfileViewModelOutput {
