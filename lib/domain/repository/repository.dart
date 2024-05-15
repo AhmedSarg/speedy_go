@@ -155,4 +155,20 @@ abstract class Repository {
     required String busTripId,
     required int seats,
   });
+
+  Future<Either<Failure, void>> changeAccountInfo({
+    required String userId,
+    required String firstName,
+    required String lastName,
+    required String email,
+    required String phoneNumber,
+    required bool pictureChanged,
+    File? picture,
+  });
+
+  Future<Either<Failure, void>> changePassword({
+    required String userId,
+    required String oldPassword,
+    required String newPassword,
+  });
 }

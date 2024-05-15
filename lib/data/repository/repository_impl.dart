@@ -743,4 +743,56 @@ class RepositoryImpl implements Repository {
       return Left(ErrorHandler.handle(e).failure);
     }
   }
+
+  @override
+  Future<Either<Failure, void>> changeAccountInfo({
+    required String userId,
+    required String firstName,
+    required String lastName,
+    required String email,
+    required String phoneNumber,
+    required bool pictureChanged,
+    File? picture,
+  }) async {
+    try {
+      if (await _networkInfo.isConnected) {
+        await _remoteDataSource.changeAccountInfo(
+          userId: userId,
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          phoneNumber: phoneNumber,
+          pictureChanged: pictureChanged,
+          picture: picture,
+        );
+        return const Right(null);
+      } else {
+        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+      }
+    } catch (e) {
+      return Left(ErrorHandler.handle(e).failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> changePassword({
+    required String userId,
+    required String oldPassword,
+    required String newPassword,
+  }) async {
+    try {
+      if (await _networkInfo.isConnected) {
+        // await _remoteDataSource.changePassword(
+        //   userId: userId,
+        //   oldPassword: oldPassword,
+        //   newPassword: newPassword,
+        // );
+        return const Right(null);
+      } else {
+        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+      }
+    } catch (e) {
+      return Left(ErrorHandler.handle(e).failure);
+    }
+  }
 }

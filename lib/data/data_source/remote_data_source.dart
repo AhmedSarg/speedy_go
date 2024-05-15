@@ -12,8 +12,8 @@ import '../../domain/models/enums.dart';
 
 abstract class RemoteDataSource {
   Future<RegisteredBeforeError?> doesUserExists({
-    required String email,
-    required String phoneNumber,
+    String? email,
+    String? phoneNumber,
   });
 
   Future<Stream<FirebaseAuthException?>> verifyPhoneNumber({
@@ -166,7 +166,6 @@ abstract class RemoteDataSource {
 
   Stream<List<Map<String, dynamic>>> displayBuses({
     required String driverId,
-
   });
 
   Future<void> bookBusTicket({
@@ -175,11 +174,19 @@ abstract class RemoteDataSource {
     required int seats,
   });
 
-
   Stream<List<Map<String, dynamic>>> buseDriverTrips({
     required String driverId,
     required DateTime date,
+  });
 
+  Future<void> changeAccountInfo({
+    required String userId,
+    required String firstName,
+    required String lastName,
+    required String email,
+    required String phoneNumber,
+    required bool pictureChanged,
+    File? picture,
   });
 }
 
@@ -193,29 +200,37 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<RegisteredBeforeError?> doesUserExists({
-    required String email,
-    required String phoneNumber,
+    String? email,
+    String? phoneNumber,
   }) async {
     bool phoneNumberUsed = false;
     bool emailUsed = false;
-    await _firestore
-        .collection('users')
-        .where('phone_number', isEqualTo: phoneNumber)
-        .get()
-        .then((value) {
-      if (value.docs.isNotEmpty) {
-        phoneNumberUsed = true;
-      }
-    });
-    await _firestore
-        .collection('users')
-        .where('email', isEqualTo: email)
-        .get()
-        .then((value) {
-      if (value.docs.isNotEmpty) {
-        emailUsed = true;
-      }
-    });
+    if (phoneNumber != null) {
+      await _firestore
+          .collection('users')
+          .where('phone_number', isEqualTo: phoneNumber)
+          .get()
+          .then(
+        (value) {
+          if (value.docs.isNotEmpty) {
+            phoneNumberUsed = true;
+          }
+        },
+      );
+    }
+    if (email != null) {
+      await _firestore
+          .collection('users')
+          .where('email', isEqualTo: email)
+          .get()
+          .then(
+        (value) {
+          if (value.docs.isNotEmpty) {
+            emailUsed = true;
+          }
+        },
+      );
+    }
     if (phoneNumberUsed && emailUsed) {
       return RegisteredBeforeError.emailAndPhoneNumberUsed;
     } else if (emailUsed) {
@@ -881,60 +896,83 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         'passengers': FieldValue.arrayUnion(
           List.generate(
             seats,
-            (index) => '${userId}_${index+1}',
+            (index) => '${userId}_${index + 1}',
           ),
         ),
       },
     );
   }
 
-
   @override
   Stream<List<Map<String, dynamic>>> displayBuses({
     required String driverId,
   }) {
-    print(driverId);
-
     return _firestore
         .collection('buses')
         .where('driver_id', isEqualTo: driverId)
         .snapshots()
         .map(
-          (busTrip) {
-            print(busTrip);
-
+      (busTrip) {
         return busTrip.docs.map(
-              (e) {
-            return  e.data();
+          (e) {
+            return e.data();
           },
         ).toList();
       },
     );
   }
 
-
   @override
   Stream<List<Map<String, dynamic>>> buseDriverTrips({
     required String driverId,
     required DateTime date,
-
   }) {
-
     return _firestore
         .collection('available_bus_trips')
         .where('driver_id', isEqualTo: driverId)
         .where('calendar', isEqualTo: Timestamp.fromDate(date))
         .snapshots()
         .map(
-          (busTrip) {
-        print(busTrip);
-
+      (busTrip) {
         return busTrip.docs.map(
-              (e) {
-            return  e.data();
+          (e) {
+            return e.data();
           },
         ).toList();
       },
     );
+  }
+
+  @override
+  Future<void> changeAccountInfo({
+    required String userId,
+    required String firstName,
+    required String lastName,
+    required String email,
+    required String phoneNumber,
+    required bool pictureChanged,
+    File? picture,
+  }) async {
+    DocumentReference docRef = _firestore.collection('users').doc(userId);
+    if (pictureChanged) {
+      String picturePath = '$userId-picture';
+      await docRef.get().then(
+        (value) async {
+          await _firebaseStorage.ref('user_images').child(picturePath!).putFile(
+                picture!,
+                SettableMetadata(contentType: 'image/jpeg'),
+              );
+        },
+      );
+      await docRef.update({
+        'picture_path': picturePath,
+      });
+    }
+    await docRef.update({
+      'first_name': firstName,
+      'last_name': lastName,
+      'email': email,
+      'phone_number': phoneNumber,
+    });
   }
 }
