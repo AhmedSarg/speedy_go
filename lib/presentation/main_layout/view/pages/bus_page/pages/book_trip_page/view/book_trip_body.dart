@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:speedy_go/presentation/buses_screen/pages/add_trip_screen/view/widgets/trip_item.dart';
-import 'package:speedy_go/presentation/common/widget/main_button.dart';
+import '../../../../../../../buses_screen/view/pages/add_trip_screen/view/widgets/trip_item.dart';
 import '../../../../../../../common/validators/validators.dart';
+import '../../../../../../../common/widget/main_button.dart';
 import '../../../../../../../resources/assets_manager.dart';
 import '../../../../../../../resources/strings_manager.dart';
 import '../../../../../../../resources/text_styles.dart';

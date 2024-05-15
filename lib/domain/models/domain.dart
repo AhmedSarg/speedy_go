@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:speedy_go/domain/models/enums.dart';
-import 'package:speedy_go/presentation/resources/assets_manager.dart';
+
+import '../../presentation/resources/assets_manager.dart';
+import 'enums.dart';
 
 ///User Model
 
@@ -11,6 +12,7 @@ class UserModel {
   final String lastName;
   final String phoneNumber;
   final String email;
+  final String imagePath;
   final UserType type;
 
   UserModel({
@@ -19,6 +21,7 @@ class UserModel {
     required this.lastName,
     required this.phoneNumber,
     required this.email,
+    required this.imagePath,
     required this.type,
   });
 
@@ -28,6 +31,7 @@ class UserModel {
         lastName: '',
         phoneNumber: '',
         email: '',
+        imagePath: ImageAssets.unknownUserImage,
         type: UserType.passenger,
       );
 }
@@ -41,6 +45,7 @@ class PassengerModel extends UserModel {
     required super.lastName,
     required super.phoneNumber,
     required super.email,
+    required super.imagePath,
     required this.gender,
     super.type = UserType.passenger,
   });
@@ -51,6 +56,7 @@ class PassengerModel extends UserModel {
         lastName: '',
         phoneNumber: '',
         email: '',
+        imagePath: ImageAssets.unknownUserImage,
         gender: Gender.male,
       );
 
@@ -61,6 +67,7 @@ class PassengerModel extends UserModel {
       lastName: user['last_name'],
       phoneNumber: user['phone_number'],
       email: user['email'],
+      imagePath: user['image_path'] ?? ImageAssets.unknownUserImage,
       gender: user['gender'] == 'female' ? Gender.female : Gender.male,
     );
   }
@@ -88,6 +95,7 @@ class DriverModel extends UserModel {
     required super.lastName,
     required super.phoneNumber,
     required super.email,
+    required super.imagePath,
     required this.nationalId,
     required this.vehicleType,
     super.type = UserType.driver,
@@ -99,6 +107,7 @@ class DriverModel extends UserModel {
         lastName: '',
         phoneNumber: '',
         email: '',
+        imagePath: ImageAssets.unknownUserImage,
         nationalId: '',
         vehicleType: VehicleType.car,
       );
@@ -118,6 +127,7 @@ class DriverModel extends UserModel {
       lastName: data['last_name'],
       phoneNumber: data['phone_number'],
       email: data['email'],
+      imagePath: data['image_path'] ?? ImageAssets.unknownUserImage,
       nationalId: data['national_id'],
       vehicleType: vehicleType,
     );

@@ -60,7 +60,7 @@ class LoginViewModel extends BaseCubit
           emit(ErrorState(failure: l, displayType: DisplayType.popUpDialog));
         },
         (r) {
-          emit(SuccessState(AppStrings.verificationScreenLoginSuccessMessage));
+          emit(SuccessState(message: AppStrings.verificationScreenLoginSuccessMessage));
           if (_userManager.getCurrentUserType == UserType.driver &&
               _userManager.getCurrentDriver!.vehicleType ==
                   VehicleType.bus) {
@@ -81,7 +81,7 @@ class LoginViewModel extends BaseCubit
     DataIntent.pushPhoneNumber(_phoneNumberController.text.trim());
     DataIntent.setAuthType(AuthType.login);
     DataIntent.setOnVerified(() {
-      return SuccessState(AppStrings.verificationScreenLoginSuccessMessage);
+      return SuccessState(message: AppStrings.verificationScreenLoginSuccessMessage);
     });
     emit(LoginVerifyPhoneNumberState());
   }

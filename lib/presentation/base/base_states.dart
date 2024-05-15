@@ -31,7 +31,6 @@ class EmptyState extends BaseStates {
 
 class IntentEmptyState extends BaseStates {
   IntentEmptyState();
-
 }
 
 class ConfirmState extends BaseStates {
@@ -45,6 +44,9 @@ class ConfirmState extends BaseStates {
 }
 
 class SuccessState extends BaseStates {
-  SuccessState(this.message) : super(displayType: DisplayType.popUpDialog);
+  SuccessState({
+    required this.message,
+    super.displayType = DisplayType.popUpDialog,
+  });
   final String message;
 }

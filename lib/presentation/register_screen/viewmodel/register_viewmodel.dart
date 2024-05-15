@@ -129,13 +129,16 @@ class RegisterViewModel extends BaseCubit
   TextEditingController get getEmailController => _emailController;
 
   @override
-  TextEditingController get getVehicleModelController => _vehicleModelController;
+  TextEditingController get getVehicleModelController =>
+      _vehicleModelController;
 
   @override
-  TextEditingController get getVehicleColorController => _vehicleColorController;
+  TextEditingController get getVehicleColorController =>
+      _vehicleColorController;
 
   @override
-  TextEditingController get getVehiclePlateController => _vehiclePlateController;
+  TextEditingController get getVehiclePlateController =>
+      _vehiclePlateController;
 
   @override
   File? get getDrivingLicense => _drivingLicense;
@@ -207,11 +210,7 @@ class RegisterViewModel extends BaseCubit
         _registerType = UserType.driver;
         emit(ContentState());
       });
-    } else {
-
-
-
-    }
+    } else {}
   }
 
   void chooseDrivingLicense() async {
@@ -313,7 +312,7 @@ class RegisterViewModel extends BaseCubit
   }
 
   Future<BaseStates> _register() async {
-    BaseStates resultState = SuccessState('message');
+    BaseStates resultState = SuccessState(message: 'message');
     await _registerCarDriverUseCase(
       RegisterUseCaseInput(
         firstName: _firstNameController.text.trim(),
@@ -348,7 +347,7 @@ class RegisterViewModel extends BaseCubit
           },
           (r) {
             resultState = SuccessState(
-                AppStrings.verificationScreenRegisterSuccessMessage);
+                message: AppStrings.verificationScreenRegisterSuccessMessage);
           },
         );
       },
@@ -370,8 +369,7 @@ class RegisterViewModel extends BaseCubit
     if (_oldRegisterType != null) {
       setRegisterType = _oldRegisterType!;
       setRegisterBoxType = _registerBoxType;
-    }
-    else {
+    } else {
       emit(RegisterTypeSelectionState());
     }
   }

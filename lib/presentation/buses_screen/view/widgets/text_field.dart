@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -7,25 +6,27 @@ import '../../../resources/text_styles.dart';
 import '../../../resources/values_manager.dart';
 
 class BusesTextField extends StatefulWidget {
-  BusesTextField({
-    super.key,
-    this.controller,
-     this.focusNode,
-     this.nextFocus,
-    this.label,
-    required this.hint,
-    this.isObscured = false,
-    this.prefixIcon,
-    this.textInputType = TextInputType.text,
-    this.backgroundColor,
-    this.hintTextStyle,
-    this.labelTextStyle,
-    this.cursorColor = ColorManager.white,
-    this.readOnly = false,
-    this.validation,
-    this.onTap,
-    this.surffixIcon, this.surffixIconFunc,  this.initialValue,this.inputFormatters
-  });
+  const BusesTextField(
+      {super.key,
+      this.controller,
+      this.focusNode,
+      this.nextFocus,
+      this.label,
+      required this.hint,
+      this.isObscured = false,
+      this.prefixIcon,
+      this.textInputType = TextInputType.text,
+      this.backgroundColor,
+      this.hintTextStyle,
+      this.labelTextStyle,
+      this.cursorColor = ColorManager.white,
+      this.readOnly = false,
+      this.validation,
+      this.onTap,
+      this.suffixIcon,
+      this.suffixIconFunc,
+      this.initialValue,
+      this.inputFormatters});
 
   final TextEditingController? controller;
   final FocusNode? focusNode;
@@ -36,9 +37,9 @@ class BusesTextField extends StatefulWidget {
   final String? initialValue;
   final TextInputType textInputType;
   final IconData? prefixIcon;
-  final IconData? surffixIcon;
-  final void Function()? surffixIconFunc;
-  List<TextInputFormatter>? inputFormatters;
+  final IconData? suffixIcon;
+  final void Function()? suffixIconFunc;
+  final List<TextInputFormatter>? inputFormatters;
   final Color? backgroundColor;
   final TextStyle? hintTextStyle;
   final TextStyle? labelTextStyle;
@@ -47,6 +48,7 @@ class BusesTextField extends StatefulWidget {
 
   final String? Function(String?)? validation;
   final void Function()? onTap;
+
   @override
   State<BusesTextField> createState() => _MainTextFieldState();
 }
@@ -58,18 +60,16 @@ class _MainTextFieldState extends State<BusesTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-
       initialValue: widget.initialValue,
       inputFormatters: widget.inputFormatters,
       controller: widget.controller,
       focusNode: widget.focusNode,
       readOnly: widget.readOnly,
       style:
-      widget.hintTextStyle ?? AppTextStyles.busesItemTripTextStyle(context),
+          widget.hintTextStyle ?? AppTextStyles.busesItemTripTextStyle(context),
       obscureText: hidden,
       keyboardType: widget.textInputType,
       obscuringCharacter: '*',
-
       cursorColor: widget.cursorColor,
       onTap: widget.onTap,
       onEditingComplete: () {

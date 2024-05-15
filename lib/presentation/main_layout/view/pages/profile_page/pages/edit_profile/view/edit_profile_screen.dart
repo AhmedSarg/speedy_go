@@ -6,7 +6,7 @@ import '../../../../../../../base/cubit_builder.dart';
 import '../../../../../../../base/cubit_listener.dart';
 import '../../../../../../../resources/color_manager.dart';
 import '../viewmodel/edit_profile_viewmodel.dart';
-import 'widgets/edit_profile_body.dart';
+import 'edit_profile_body.dart';
 
 class ProfileEditPage extends StatelessWidget {
   const ProfileEditPage({super.key});

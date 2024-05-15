@@ -44,7 +44,8 @@ class BaseWidgets {
       {List<Widget>? actions}) {
     showDialog(
         context: context,
-        builder: (context) => AlertDialog(
+        builder: (context) =>
+            AlertDialog(
               actions: actions,
               actionsAlignment: MainAxisAlignment.spaceEvenly,
               content: Padding(
@@ -74,11 +75,10 @@ class BaseWidgets {
     );
   }
 
-  static Widget buildButton(
-      {required DisplayType displayType,
-      required BuildContext context,
-      required String title,
-      void Function()? onTap}) {
+  static Widget buildButton({required DisplayType displayType,
+    required BuildContext context,
+    required String title,
+    void Function()? onTap}) {
     if (onTap == null) return const SizedBox();
 
     return Center(

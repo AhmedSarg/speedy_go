@@ -77,7 +77,7 @@ class BusTripsViewModel extends BaseCubit
             );
           },
           (r) {
-            emit(SuccessState('Tickets Booked Successfully'));
+            emit(SuccessState(message: 'Tickets Booked Successfully'));
           },
         );
       },
