@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:speedy_go/app/extensions.dart';
 
 import '../../../../domain/models/enums.dart';
+import '../../../common/widget/options_menu.dart';
 import '../../../resources/assets_manager.dart';
 import '../../../resources/color_manager.dart';
 import '../../../resources/routes_manager.dart';
@@ -457,6 +458,54 @@ class _GenderInputState extends State<GenderInput> {
                   ),
                 ),
         ],
+      ),
+    );
+  }
+}
+
+
+class CountryCodeInput extends StatelessWidget {
+  const CountryCodeInput({
+    super.key,
+    required this.viewModel,
+  });
+
+  final RegisterViewModel viewModel;
+
+  @override
+  Widget build(BuildContext context) {
+    return FormField(
+      validator: (v) {
+        if (viewModel.getCountryCode == viewModel.getCountryCodes[0]) {
+          return AppStrings.validationsFieldRequired.tr();
+        }
+        return null;
+      },
+      initialValue: null,
+      builder: (error) => Container(
+        width: AppSize.s80,
+        height: AppSize.s50,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(AppSize.s10),
+          border: Border.all(
+            color: error.hasError ? ColorManager.error : ColorManager.white,
+            width: AppSize.s0_5,
+          ),
+        ),
+        child: OptionMenu(
+          selectedValue: viewModel.getCountryCode,
+          items: viewModel.getCountryCodes
+              .map(
+                (e) => OptionMenuItem(
+              text: e,
+              onPressed: () {
+                viewModel.setCountryCode = e;
+              },
+            ),
+          )
+              .toList(),
+          mainIcon: Icons.arrow_drop_down_outlined,
+        ),
       ),
     );
   }

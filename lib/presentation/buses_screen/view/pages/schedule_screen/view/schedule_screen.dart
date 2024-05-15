@@ -27,7 +27,7 @@ class ScheduleScreen extends StatelessWidget {
             return baseBuilder(
               context,
               state,
-              SehedualBodyScreen(viewModel: ScheduleViewModel.get(context)),
+              ScheduleBodyScreen(viewModel: ScheduleViewModel.get(context)),
             );
           },
         ),

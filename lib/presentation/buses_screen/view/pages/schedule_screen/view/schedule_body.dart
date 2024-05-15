@@ -14,8 +14,8 @@ import '../../../widgets/buses_logo_widget.dart';
 import '../../add_bus_screen/view/widgets/buses_item.dart';
 import '../viewmodel/schedule_viewmodel.dart';
 
-class SehedualBodyScreen extends StatelessWidget {
-  const SehedualBodyScreen({super.key, required this.viewModel});
+class ScheduleBodyScreen extends StatelessWidget {
+  const ScheduleBodyScreen({super.key, required this.viewModel});
 
   final ScheduleViewModel viewModel;
 
@@ -70,8 +70,11 @@ class SehedualBodyScreen extends StatelessWidget {
                       );
                     },
                   ).then((selectedDate) {
+                    print(selectedDate);
                     if (selectedDate != null) {
+                      print("select date ${selectedDate.toString()}");
                       viewModel.setDate = selectedDate;
+
                     }
                   });
                 },
@@ -159,10 +162,11 @@ class SehedualBodyScreen extends StatelessWidget {
                     );
                   },
                 );
-              } else if (snapshot.hasData) {
+              }
+              else if (snapshot.hasData) {
+                print('error ${snapshot.error}');
+                print('data ${snapshot.data}');
                 return Lottie.asset(LottieAssets.empty);
-              } else if (snapshot.data!.isEmpty) {
-                return Lottie.asset(LottieAssets.success);
               } else if (snapshot.hasError) {
                 return Lottie.asset(LottieAssets.error);
               } else {

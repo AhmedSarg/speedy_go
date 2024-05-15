@@ -71,6 +71,14 @@ class RegisterViewModel extends BaseCubit
   final TextEditingController _vehicleColorController = TextEditingController();
   final TextEditingController _vehiclePlateController = TextEditingController();
 
+  final List<String> _countryCodes = [
+    '---',
+    '+20',
+    '+966',
+  ];
+
+  late String _countryCode;
+
   File? _drivingLicense;
   File? _carLicense;
   File? _carImage;
@@ -79,6 +87,7 @@ class RegisterViewModel extends BaseCubit
 
   @override
   void start() {
+    _countryCode = _countryCodes[0];
     _registerType = DataIntent.getSelection();
     if (_registerType == UserType.driver) {
       emit(RegisterVehicleSelectionState());
@@ -114,6 +123,13 @@ class RegisterViewModel extends BaseCubit
 
   @override
   TextEditingController get getPhoneNumberController => _phoneNumberController;
+
+  @override
+  String get getCountryCode => _countryCode;
+
+
+  @override
+  List<String> get getCountryCodes => _countryCodes;
 
   @override
   TextEditingController get getPasswordController => _passwordController;
@@ -203,6 +219,12 @@ class RegisterViewModel extends BaseCubit
     }
   }
 
+  @override
+  set setCountryCode(String countryCode) {
+    _countryCode = countryCode;
+    emit(ContentState());
+  }
+
   void animateToDriver() {
     if (_oldRegisterType != null) {
       _registerType = _oldRegisterType!;
@@ -254,6 +276,7 @@ class RegisterViewModel extends BaseCubit
   }
 
   void chooseCarImage() async {
+    emit(PickFileState());
     try {
       String path = await getImagesFromGallery();
       _carImage = File(path);
@@ -291,9 +314,11 @@ class RegisterViewModel extends BaseCubit
 
   Future<void> authenticate() async {
     emit(LoadingState(displayType: DisplayType.popUpDialog));
+    String phoneNumber = _countryCode + _phoneNumberController.text.substring(1);
+    // print(phoneNumber);
     await _authenticateUseCase(AuthenticateUseCaseInput(
       email: _emailController.text.trim(),
-      phoneNumber: _phoneNumberController.text.trim(),
+      phoneNumber: phoneNumber.trim(),
     )).then((value) {
       value.fold(
         (l) {
@@ -384,6 +409,8 @@ abstract class RegisterViewModelInput {
 
   set setContent(Widget content);
 
+  set setCountryCode(String countryCode);
+
   set setGender(String gender);
 }
 
@@ -405,6 +432,10 @@ abstract class RegisterViewModelOutput {
   TextEditingController get getLastNameController;
 
   TextEditingController get getPhoneNumberController;
+
+  String get getCountryCode;
+
+  List<String> get getCountryCodes;
 
   TextEditingController get getPasswordController;
 

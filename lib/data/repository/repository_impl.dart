@@ -425,9 +425,9 @@ class RepositoryImpl implements Repository {
   @override
   Future<Either<Failure, void>> logout() async {
     try {
-      void response;
       await _cacheDataSource.logout();
-      return Right(response);
+      await _cacheDataSource.clearCurrentUser();
+      return const Right(null);
     } catch (e) {
       return Left(ErrorHandler.handle(e).failure);
     }
@@ -713,6 +713,7 @@ class RepositoryImpl implements Repository {
                   )
                   .toList(),
             );
+        // print("list $listOfBuses");
         return Right(listOfBuses);
       } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());

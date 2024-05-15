@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../common/validators/validators.dart';
@@ -47,13 +48,21 @@ List<Widget> passengerRegisterWidgets(BuildContext context,
       ],
     ),
     const SizedBox(height: AppSize.s20),
-    RegisterTextField(
-      controller: viewModel.getPhoneNumberController,
-      keyboard: TextInputType.number,
-      hintText: AppStrings.registerScreenPhoneNumberHint.tr(),
-      iconPath: SVGAssets.phone,
-      validator: AppValidators.validatePhoneNumber,
-      focusNode: phoneNumberFocusNode,
+    Row(
+      children: [
+        CountryCodeInput(viewModel: viewModel),
+        const SizedBox(width: AppSize.s10),
+        Expanded(
+          child: RegisterTextField(
+            controller: viewModel.getPhoneNumberController,
+            keyboard: TextInputType.number,
+            hintText: AppStrings.registerScreenPhoneNumberHint.tr(),
+            iconPath: SVGAssets.phone,
+            validator: AppValidators.validatePhoneNumber,
+            focusNode: phoneNumberFocusNode,
+          ),
+        ),
+      ],
     ),
     const SizedBox(height: AppSize.s20),
     GenderInput(viewModel: viewModel),
@@ -513,7 +522,7 @@ List<Widget> busRegisterWidgets(BuildContext context,
         text: AppStrings.registerScreenSignUp.tr(),
         onPressed: () {
           if (formKey.currentState!.validate()) {
-           viewModel.authenticate();
+            viewModel.authenticate();
           }
         },
       ),

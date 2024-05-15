@@ -12,6 +12,8 @@ abstract class CacheDataSource {
   Future<void> logout();
 
   Future<void> setCurrentUser(Map<String, dynamic> currentUser);
+
+  Future<void> clearCurrentUser();
 }
 
 class CacheDataSourceImpl implements CacheDataSource {
@@ -38,5 +40,10 @@ class CacheDataSourceImpl implements CacheDataSource {
   @override
   Future<void> logout() async {
     await _firebaseAuth?.signOut();
+  }
+
+  @override
+  Future<void> clearCurrentUser() async {
+    await _preferences.removeKey(_currentUser);
   }
 }

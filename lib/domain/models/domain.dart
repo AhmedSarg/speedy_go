@@ -307,6 +307,7 @@ class TripBusModel {
   final DateTime date;
   final int price;
   int? availableSeats;
+  BusModel? busModel;
 
   TripBusModel({
     required this.id,
@@ -316,11 +317,18 @@ class TripBusModel {
     required this.date,
     required this.price,
     this.availableSeats,
+    this.busModel
   });
 
   set setAvailableSeats(int seats) {
     availableSeats = seats;
   }
+
+  set setBusModel(BusModel busModel) {
+    this.busModel = busModel;
+  }
+
+
 
   factory TripBusModel.fake() => TripBusModel(
         id: '',
@@ -364,9 +372,5 @@ class BusModel {
      driverId: map['driver_id'],
      licensePlate: map['bus_plate']??"ا ب ح 2 3 4",
      seats: map['seats_number'],
-
-
-
-
    );
 }

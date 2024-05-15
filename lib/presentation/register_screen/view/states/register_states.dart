@@ -6,6 +6,8 @@ class RegisterPassengerState extends BaseStates {}
 
 class RegisterCarState extends BaseStates {}
 
+class PickFileState extends BaseStates {}
+
 class RegisterTukTukState extends BaseStates {}
 
 class RegisterBusState extends BaseStates {}

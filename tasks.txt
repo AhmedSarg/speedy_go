@@ -4,8 +4,6 @@
 - # PhoneNumberUtil #
 - login screen to be flexible and handle validation error overflow
 - # login country code validation #
-- add the new register fields
-- bus driver to bus driver screen after register
 - scribble color
 - handling driver close app
 - remove useless back buttons in passenger trip
@@ -18,7 +16,5 @@
 // profile in both driver and passenger
 
 // buse screen drawer and scheduling
-
-// add some attributes like plate to register "ل س ب 1 4 5"
 
 - handle book bus tickets again
