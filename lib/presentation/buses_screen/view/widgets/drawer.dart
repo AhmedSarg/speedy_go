@@ -36,7 +36,10 @@ class BusesScreenDrawer extends StatelessWidget {
             const SizedBox(height: AppSize.s30),
             InkWell(
               onTap: () {
-                Navigator.pushNamed(context, Routes.profileEditRoute);
+                Navigator.pushNamed(context, Routes.profileEditRoute).then((value) {
+                  viewModel.start();
+                  Scaffold.of(context).closeDrawer();
+                });
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: AppMargin.m20),

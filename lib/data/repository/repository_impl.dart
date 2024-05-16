@@ -349,6 +349,7 @@ class RepositoryImpl implements Repository {
       email: email,
       phoneNumber: phoneNumber,
     );
+    print(userData);
     userData['created_at'] = userData['created_at'].toString();
     _cacheDataSource.setCurrentUser(userData);
     if (userData['type'] == 'passenger') {
@@ -766,6 +767,7 @@ class RepositoryImpl implements Repository {
           pictureChanged: pictureChanged,
           picture: picture,
         );
+        await _storeCurrentUser(email: email, phoneNumber: phoneNumber);
         return const Right(null);
       } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());

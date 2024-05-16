@@ -956,16 +956,17 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     DocumentReference docRef = _firestore.collection('users').doc(userId);
     if (pictureChanged) {
       String picturePath = '$userId-picture';
+      late TaskSnapshot imageUrl;
       await docRef.get().then(
         (value) async {
-          await _firebaseStorage.ref('user_images').child(picturePath!).putFile(
+          imageUrl = await _firebaseStorage.ref('user_images').child(picturePath).putFile(
                 picture!,
                 SettableMetadata(contentType: 'image/jpeg'),
               );
         },
       );
       await docRef.update({
-        'picture_path': picturePath,
+        'image_path': await imageUrl.ref.getDownloadURL(),
       });
     }
     await docRef.update({

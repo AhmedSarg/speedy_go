@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:speedy_go/domain/models/domain.dart';
 import 'package:speedy_go/domain/models/user_manager.dart';
@@ -14,7 +13,8 @@ class ScheduleViewModel extends BaseCubit
   final BusesDriverTripsUseCase _busesDriverTripsUseCase;
 
   ScheduleViewModel(this._busesDriverTripsUseCase);
-   DateTime? _selectedDate;
+
+  DateTime? _selectedDate;
 
   final UserManager _userManager = sl<UserManager>();
 
@@ -22,12 +22,13 @@ class ScheduleViewModel extends BaseCubit
 
   Future<void> _displayBuses() async {
     print("selcted date d ${_selectedDate}");
-    print(Timestamp.fromDate(_selectedDate!));
     // emit(LoadingState(displayType: DisplayType.popUpDialog));
-    await _busesDriverTripsUseCase(BusesDriverTripsUseCaseInput(
-      driverId: _userManager.getCurrentDriver!.uuid,
-      date: _selectedDate!,
-    )).then(
+    await _busesDriverTripsUseCase(
+      BusesDriverTripsUseCaseInput(
+        driverId: _userManager.getCurrentDriver!.uuid,
+        date: _selectedDate!,
+      ),
+    ).then(
       (value) {
         value.fold(
           (l) {
@@ -52,7 +53,6 @@ class ScheduleViewModel extends BaseCubit
     _displayBuses();
   }
 
-
   @override
   set setDate(DateTime date) {
     _selectedDate = date;
@@ -60,11 +60,8 @@ class ScheduleViewModel extends BaseCubit
     print("set date");
   }
 
-
-
   @override
   Stream<List<BusModel>>? get getBusesStream => _busesStream;
-
 }
 
 abstract class ScheduleViewModelInput {
@@ -73,5 +70,4 @@ abstract class ScheduleViewModelInput {
 
 abstract class ScheduleViewModelOutput {
   Stream<List<BusModel>>? get getBusesStream;
-
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../app/sl.dart';
 import '../../base/base_states.dart';
 import '../../base/cubit_builder.dart';
 import '../../base/cubit_listener.dart';
@@ -13,12 +14,15 @@ class ProfileEditPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   return Scaffold(
+    return Scaffold(
       backgroundColor: ColorManager.bgColor,
       body: BlocProvider(
-        create: (_) => EditProfileViewModel()..start(),
+        create: (_) => EditProfileViewModel(sl())..start(),
         child: BlocConsumer<EditProfileViewModel, BaseStates>(
           listener: (context, state) {
+            if (state is SuccessState) {
+              Navigator.pop(context);
+            }
             baseListener(context, state);
           },
           builder: (context, state) {
@@ -31,7 +35,5 @@ class ProfileEditPage extends StatelessWidget {
         ),
       ),
     );
-
-
   }
 }

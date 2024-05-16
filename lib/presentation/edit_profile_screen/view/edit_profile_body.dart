@@ -54,28 +54,40 @@ class EditProfileBody extends StatelessWidget {
                             child: Stack(
                               alignment: Alignment.center,
                               children: [
-                                !viewModel.getImagePath.contains('https')
-                                    ? Image.asset(
-                                        ImageAssets.unknownUserImage,
+                                viewModel.getPictureChanged
+                                    ? Image.memory(
+                                        viewModel.getSelectedPicture
+                                            .readAsBytesSync(),
+                                        width: AppSize.infinity,
+                                        height: AppSize.infinity,
                                         fit: BoxFit.cover,
                                       )
-                                    : CachedNetworkImage(
-                                        imageUrl: viewModel.getImagePath,
-                                        fit: BoxFit.cover,
-                                        progressIndicatorBuilder:
-                                            (context, url, downloadProgress) {
-                                          return Center(
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(
-                                                AppPadding.p10,
-                                              ),
-                                              child: Lottie.asset(
-                                                LottieAssets.loading,
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      ),
+                                    : !viewModel.getImagePath.contains('https')
+                                        ? Image.asset(
+                                            ImageAssets.unknownUserImage,
+                                            width: AppSize.infinity,
+                                            height: AppSize.infinity,
+                                            fit: BoxFit.cover,
+                                          )
+                                        : CachedNetworkImage(
+                                            imageUrl: viewModel.getImagePath,
+                                            fit: BoxFit.cover,
+                                            width: AppSize.infinity,
+                                            height: AppSize.infinity,
+                                            progressIndicatorBuilder: (context,
+                                                url, downloadProgress) {
+                                              return Center(
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(
+                                                    AppPadding.p10,
+                                                  ),
+                                                  child: Lottie.asset(
+                                                    LottieAssets.loading,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
                                 SizedBox(
                                   width: AppSize.infinity,
                                   height: AppSize.infinity,
@@ -84,7 +96,7 @@ class EditProfileBody extends StatelessWidget {
                                       backgroundColor: ColorManager.transparent,
                                       surfaceTintColor: ColorManager.black,
                                     ),
-                                    onPressed: () {},
+                                    onPressed: viewModel.chooseNewPicture,
                                     child: const Icon(
                                       CupertinoIcons.camera,
                                       color: ColorManager.white,
@@ -174,27 +186,7 @@ class EditProfileBody extends StatelessWidget {
                               text: 'Update',
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
-                                  var snackBar = SnackBar(
-                                    backgroundColor: ColorManager.lightBlue
-                                        .withOpacity(0.75),
-                                    duration: const Duration(seconds: 3),
-                                    behavior: SnackBarBehavior.floating,
-                                    content: Text(
-                                      'Updated Successfully',
-                                      textAlign: TextAlign.center,
-                                      style: AppTextStyles
-                                          .profileItemUpdateFieldTextStyle(
-                                              context, ColorManager.white),
-                                    ),
-                                  );
-
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: snackBar.content,
-                                      duration: snackBar.duration,
-                                      backgroundColor: snackBar.backgroundColor,
-                                    ),
-                                  );
+                                  viewModel.update();
                                 }
                               },
                             ),
@@ -212,10 +204,11 @@ class EditProfileBody extends StatelessWidget {
                 icon: Container(
                   padding: const EdgeInsets.all(AppPadding.p10),
                   decoration: BoxDecoration(
-                      border: Border.all(
-                          color: ColorManager.black, width: AppSize.s1_2),
-                      shape: BoxShape.circle,
-                      color: ColorManager.black.withOpacity(.4)),
+                    border: Border.all(
+                        color: ColorManager.black, width: AppSize.s1_2),
+                    shape: BoxShape.circle,
+                    color: ColorManager.black.withOpacity(.4),
+                  ),
                   child: const Icon(
                     Icons.arrow_back,
                     color: ColorManager.white,

@@ -148,7 +148,7 @@ class ScheduleBodyScreen extends StatelessWidget {
                                                 FontSize.f12,
                                                 ColorManager.grey),
                                       )
-                                    ]))
+                                    ],),)
                               ],
                             ),
                           )
@@ -169,7 +169,8 @@ class ScheduleBodyScreen extends StatelessWidget {
                 return Lottie.asset(LottieAssets.empty);
               } else if (snapshot.hasError) {
                 return Lottie.asset(LottieAssets.error);
-              } else {
+              }
+              else {
                 return Padding(
                   padding: const EdgeInsets.all(AppPadding.p50),
                   child: Lottie.asset(LottieAssets.loading),

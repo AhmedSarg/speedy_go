@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:speedy_go/presentation/resources/text_styles.dart';
 import '../../resources/color_manager.dart';
-import '../../resources/language_manager.dart';
 import '../../resources/values_manager.dart';
 
 class CustomTextField extends StatefulWidget {
@@ -39,52 +38,67 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: AppMargin.m8,horizontal: AppMargin.m12),
-      decoration: BoxDecoration(
-        border: Border.all(color: ColorManager.lightBlack,width: AppSize.s1),
-        borderRadius: BorderRadius.circular(AppSize.s12)
-      ),
+      margin: const EdgeInsets.symmetric(
+          vertical: AppMargin.m8, horizontal: AppMargin.m12),
       child: TextFormField(
-          controller: widget.controller,
-          focusNode: widget.focusNode,
-          cursorWidth: AppSize.s1,
-          cursorColor: ColorManager.white,
-          obscureText: widget.obscureText,
-          keyboardType: widget.keyboardType,
-          style: AppTextStyles.profileItemUpdateSubFieldTextStyle(context,ColorManager.offwhite),
-          onTap: widget.onTap,
-
-          readOnly: widget.readOnly,
-          validator: (value) {
-            setState(() {
-              errorText = widget.validator(value);
-            });
-            return widget.validator(value);
-          },
-          textInputAction: TextInputAction.next,
-          onEditingComplete: () {
-            if (widget.nextFocus != null) {
-              widget.focusNode.unfocus();
-              widget.nextFocus!.requestFocus();
-            }
-          },
-          // style: AppTextStyles.textFieldValueTextStyle(context),
-          decoration: const InputDecoration(
-            errorStyle: TextStyle(
-              fontSize: AppSize.s0,
-              color: ColorManager.transparent,
+        controller: widget.controller,
+        focusNode: widget.focusNode,
+        cursorWidth: AppSize.s1,
+        cursorColor: ColorManager.white,
+        obscureText: widget.obscureText,
+        keyboardType: widget.keyboardType,
+        style: AppTextStyles.profileItemUpdateSubFieldTextStyle(
+            context, ColorManager.offwhite),
+        onTap: widget.onTap,
+        readOnly: widget.readOnly,
+        validator: widget.validator,
+        textInputAction: TextInputAction.next,
+        onEditingComplete: () {
+          if (widget.nextFocus != null) {
+            widget.focusNode.unfocus();
+            widget.nextFocus!.requestFocus();
+          }
+        },
+        decoration: InputDecoration(
+          contentPadding: const EdgeInsets.symmetric(horizontal: AppPadding.p8),
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(
+              color: ColorManager.lightBlack,
+              width: AppSize.s1,
             ),
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: AppPadding.p8),
-            enabledBorder: InputBorder.none,
-            disabledBorder: InputBorder.none,
-            focusedBorder: InputBorder.none,
-            errorBorder: InputBorder.none,
-            focusedErrorBorder: InputBorder.none,
+            borderRadius: BorderRadius.circular(AppSize.s12),
+          ),
+          disabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(
+              color: ColorManager.lightBlack,
+              width: AppSize.s1,
+            ),
+            borderRadius: BorderRadius.circular(AppSize.s12),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(
+              color: ColorManager.lightBlack,
+              width: AppSize.s1,
+            ),
+            borderRadius: BorderRadius.circular(AppSize.s12),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: const BorderSide(
+              color: ColorManager.error,
+              width: AppSize.s1,
+            ),
+            borderRadius: BorderRadius.circular(AppSize.s12),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: const BorderSide(
+              color: ColorManager.error,
+              width: AppSize.s1,
+            ),
+            borderRadius: BorderRadius.circular(AppSize.s12),
           ),
         ),
+      ),
     );
   }
 }
