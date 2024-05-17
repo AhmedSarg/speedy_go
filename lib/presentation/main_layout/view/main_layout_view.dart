@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../app/sl.dart';
 import '../../base/base_states.dart';
 import '../../base/cubit_builder.dart';
 import '../../base/cubit_listener.dart';
@@ -17,11 +16,12 @@ class MainLayoutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-        create: (context) => MainViewModel(sl())..start(),
+        create: (context) => MainViewModel()..start(),
         child: BlocConsumer<MainViewModel, BaseStates>(
           listener: (context, state) {
             if (state is CheckLocationPermissionsState) {
-              Navigator.pushNamed(context, Routes.permissionsRoute).whenComplete(
+              Navigator.pushNamed(context, Routes.permissionsRoute)
+                  .whenComplete(
                 () {
                   MainViewModel.get(context).permissionsPermitted();
                 },

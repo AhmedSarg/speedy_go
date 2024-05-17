@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../../../domain/usecase/current_user_usecase.dart';
 import '../../base/base_cubit.dart';
 import '../../base/base_states.dart';
 import '../states/main_states.dart';
@@ -13,11 +12,7 @@ class MainViewModel extends BaseCubit
     implements MainViewModelInput, MainViewModelOutput {
   static MainViewModel get(context) => BlocProvider.of(context);
 
-  final CurrentUserUseCase _currentUserUseCase;
-
-  MainViewModel(
-    this._currentUserUseCase,
-  );
+  MainViewModel();
 
   late final PageController _pageController = PageController();
 
@@ -48,26 +43,16 @@ class MainViewModel extends BaseCubit
     emit(ContentState());
   }
 
-  Future<void> _fetchUser() async {
-    emit(LoadingState());
-    _currentUserUseCase(null).then(
-      (value) {
-        value.fold(
-          (l) {
-            emit(ErrorState(failure: l));
-          },
-          (r) {},
-        );
-      },
-    );
-  }
-
   @override
   void start() async {
     emit(LoadingState());
-    await _fetchUser();
-    emit(CheckLocationPermissionsState());
-    emit(LoadingState());
+    Future.delayed(
+      const Duration(milliseconds: 100),
+      () {
+        emit(CheckLocationPermissionsState());
+        emit(LoadingState());
+      },
+    );
   }
 
   @override
