@@ -12,6 +12,6 @@ class GetSignedUserUseCase extends BaseUseCase<void, User?> {
 
   @override
   Future<Either<Failure, User?>> call(void input) async {
-    return _repository.getSignedUser();
+    return _repository.fetchCurrentUser();
   }
 }

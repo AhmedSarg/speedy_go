@@ -22,11 +22,12 @@ abstract class Repository {
     required File busImage,
     required int seatsNumber,
     required String busPlate,
+    required int busNumber,
   });
 
   Future<Either<Failure, void>> addBusTrip({
     required String driverId,
-    required int numberOfBus,
+    required String busId,
     required double price,
     required String pickupLocation,
     required String destinationLocation,
@@ -94,8 +95,6 @@ abstract class Repository {
 
   Future<Either<Failure, void>> cancelTrip(String tripId);
 
-  Either<Failure, void> getCurrentUser();
-
   Future<Either<Failure, Future<void>>> acceptDriver({
     required String tripId,
     required String driverId,
@@ -104,7 +103,7 @@ abstract class Repository {
 
   Future<Either<Failure, void>> endTrip(String tripId);
 
-  Future<Either<Failure, User?>> getSignedUser();
+  Future<Either<Failure, User?>> fetchCurrentUser();
 
   Future<Either<Failure, void>> logout();
 
@@ -139,15 +138,12 @@ abstract class Repository {
     required DateTime date,
   });
 
-
   Future<Either<Failure, Stream<List<BusModel>>>> displayBuses({
     required String driverId,
-
   });
   Future<Either<Failure, Stream<List<Future<TripBusModel>>>>> busesDriverTrips({
     required String driverId,
     required DateTime date,
-
   });
 
   Future<Either<Failure, void>> bookBusTicket({

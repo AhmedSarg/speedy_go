@@ -7,7 +7,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:speedy_go/domain/models/user_manager.dart';
 import 'package:speedy_go/presentation/resources/assets_manager.dart';
-
 import 'package:uuid/uuid.dart';
 
 import '../../domain/models/domain.dart';
@@ -116,7 +115,7 @@ class RepositoryImpl implements Repository {
         FirebaseAuthException? result = await retCompleter.future;
         if (result == null) {
           if (authType == AuthType.login) {
-            await _storeCurrentUser(phoneNumber: phoneNumber);
+            await fetchCurrentUser();
           }
           return const Right(null);
         } else {
@@ -208,7 +207,7 @@ class RepositoryImpl implements Repository {
             createdAt: DateTime.now(),
           );
         }
-        await _storeCurrentUser(phoneNumber: phoneNumber);
+        await fetchCurrentUser();
         return const Right(null);
       } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
@@ -229,7 +228,7 @@ class RepositoryImpl implements Repository {
           email: email,
           password: password,
         );
-        await _storeCurrentUser(email: email);
+        await fetchCurrentUser();
         return const Right(null);
       } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
@@ -344,38 +343,6 @@ class RepositoryImpl implements Repository {
     }
   }
 
-  Future<void> _storeCurrentUser({String? email, String? phoneNumber}) async {
-    Map<String, dynamic> userData = await _remoteDataSource.getUserData(
-      email: email,
-      phoneNumber: phoneNumber,
-    );
-    print(userData);
-    userData['created_at'] = userData['created_at'].toString();
-    _cacheDataSource.setCurrentUser(userData);
-    if (userData['type'] == 'passenger') {
-      _userManager.setCurrentPassenger(PassengerModel.fromMap(userData));
-    } else {
-      _userManager.setCurrentDriver(DriverModel.fromMap(userData));
-    }
-  }
-
-  @override
-  Either<Failure, void> getCurrentUser() {
-    try {
-      Map<String, dynamic>? userData = _cacheDataSource.getCurrentUser();
-      if (userData != null) {
-        if (userData['type'] == 'passenger') {
-          _userManager.setCurrentPassenger(PassengerModel.fromMap(userData));
-        } else {
-          _userManager.setCurrentDriver(DriverModel.fromMap(userData));
-        }
-      }
-      return const Right(null);
-    } catch (e) {
-      return Left(ErrorHandler.handle(e).failure);
-    }
-  }
-
   @override
   Future<Either<Failure, Future<void>>> acceptDriver({
     required String tripId,
@@ -413,11 +380,26 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, User?>> getSignedUser() async {
+  Future<Either<Failure, User?>> fetchCurrentUser() async {
     try {
-      User? data = _cacheDataSource.getSignedUser();
-      getCurrentUser();
-      return Right(data);
+      if (await _networkInfo.isConnected) {
+        User? data = _cacheDataSource.getSignedUser();
+        if (data != null) {
+          Map<String, dynamic> userData = await _remoteDataSource.getUserData(
+            email: data.email,
+            phoneNumber: data.phoneNumber,
+          );
+          userData['created_at'] = userData['created_at'].toString();
+          if (userData['type'] == 'passenger') {
+            _userManager.setCurrentPassenger(PassengerModel.fromMap(userData));
+          } else {
+            _userManager.setCurrentDriver(DriverModel.fromMap(userData));
+          }
+        }
+        return Right(data);
+      } else {
+        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+      }
     } catch (e) {
       return Left(ErrorHandler.handle(e).failure);
     }
@@ -427,7 +409,6 @@ class RepositoryImpl implements Repository {
   Future<Either<Failure, void>> logout() async {
     try {
       await _cacheDataSource.logout();
-      await _cacheDataSource.clearCurrentUser();
       return const Right(null);
     } catch (e) {
       return Left(ErrorHandler.handle(e).failure);
@@ -594,6 +575,7 @@ class RepositoryImpl implements Repository {
     required File busImage,
     required int seatsNumber,
     required String busPlate,
+    required int busNumber,
   }) async {
     try {
       if (await _networkInfo.isConnected) {
@@ -609,7 +591,9 @@ class RepositoryImpl implements Repository {
           busImage: busImage,
           seatsNumber: seatsNumber,
           busPlate: busPlate,
+          busNumber: busNumber,
         );
+        await fetchCurrentUser();
         return const Right(null);
       } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
@@ -622,7 +606,7 @@ class RepositoryImpl implements Repository {
   @override
   Future<Either<Failure, void>> addBusTrip(
       {required String driverId,
-      required int numberOfBus,
+      required String busId,
       required double price,
       required String pickupLocation,
       required String destinationLocation,
@@ -631,7 +615,7 @@ class RepositoryImpl implements Repository {
       if (await _networkInfo.isConnected) {
         await _remoteDataSource.addBusTrip(
           driverId: driverId,
-          numberOfBus: numberOfBus,
+          busId: busId,
           price: price,
           pickupLocation: pickupLocation,
           destinationLocation: destinationLocation,
@@ -659,9 +643,10 @@ class RepositoryImpl implements Repository {
             .map(
               (trips) => trips.map(
                 (trip) async {
+                  trip['bus'] =
+                      await _remoteDataSource.findBusById(trip['bus_id']);
                   trip['available_seats'] =
-                      await _remoteDataSource.findBusSeats(trip['driver_id']) -
-                          trip['taken_seats'];
+                      trip['bus']['seats_number'] - trip['taken_seats'];
                   return TripBusModel.fromMap(trip);
                 },
               ).toList(),
@@ -710,9 +695,9 @@ class RepositoryImpl implements Repository {
             .map(
               (trips) => trips.map(
                 (trip) async {
-                  trip['available_seats'] =
-                      await _remoteDataSource.findBusSeats(trip['bus_id']) ;
-
+                  trip['bus'] =
+                      await _remoteDataSource.findBusById(trip['bus_id']);
+                  trip['available_seats'] = trip['bus']['seats_number'];
                   return TripBusModel.fromMap(trip);
                 },
               ).toList(),
@@ -770,7 +755,7 @@ class RepositoryImpl implements Repository {
           pictureChanged: pictureChanged,
           picture: picture,
         );
-        await _storeCurrentUser(email: email, phoneNumber: phoneNumber);
+        await fetchCurrentUser();
         return const Right(null);
       } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
@@ -793,6 +778,7 @@ class RepositoryImpl implements Repository {
         //   oldPassword: oldPassword,
         //   newPassword: newPassword,
         // );
+        await fetchCurrentUser();
         return const Right(null);
       } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());

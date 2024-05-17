@@ -9,7 +9,7 @@ import '../../../../../../resources/values_manager.dart';
 import '../../../../../view/widgets/text_field.dart';
 
 class TripItem extends StatelessWidget {
-  const TripItem({
+  TripItem({
     super.key,
     required this.title,
     required this.hintText,
@@ -33,6 +33,7 @@ class TripItem extends StatelessWidget {
   final int? inputFormatNumber;
   final TextEditingController? controller;
   final String? Function(String?)? validation;
+  final FocusNode _focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +77,7 @@ class TripItem extends StatelessWidget {
                   cursorColor: ColorManager.lightGrey,
                   hint: hintText,
                   readOnly: read,
+                  focusNode: _focusNode,
                   validation: validation,
                   controller: controller,
                   textInputType: textInputType,

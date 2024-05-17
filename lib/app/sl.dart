@@ -1,8 +1,8 @@
-import 'package:get_it/get_it.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:speedy_go/domain/usecase/change_account_info_usecase.dart';
@@ -24,27 +24,26 @@ import '../data/network/network_info.dart';
 import '../data/repository/repository_impl.dart';
 import '../domain/models/user_manager.dart';
 import '../domain/repository/repository.dart';
+import '../domain/usecase/accept_driver_usecase.dart';
 import '../domain/usecase/accept_trip_usecase.dart';
+import '../domain/usecase/add_bus_trip_usecase.dart';
 import '../domain/usecase/add_bus_usecase.dart';
-import '../domain/usecase/add_trip_bus.dart';
+import '../domain/usecase/authenticate_usecase.dart';
 import '../domain/usecase/book_bus_trip_usecase.dart';
 import '../domain/usecase/buses_driver_trips_usecase.dart';
-import '../domain/usecase/cancel_accept_trip_usecase.dart';
-import '../domain/usecase/change_driver_status_usecase.dart';
-import '../domain/usecase/find_bus_trips_usecase.dart';
-import '../domain/usecase/find_trips_usecase.dart';
-import '../domain/usecase/logout_usecase.dart';
-import '../domain/usecase/accept_driver_usecase.dart';
-import '../domain/usecase/authenticate_usecase.dart';
 import '../domain/usecase/calculate_two_points_usecase.dart';
+import '../domain/usecase/cancel_accept_trip_usecase.dart';
 import '../domain/usecase/cancel_trip_usecase.dart';
-import '../domain/usecase/rate_usecase.dart';
-import '../domain/usecase/signed_user_usecase.dart';
-import '../domain/usecase/current_user_usecase.dart';
+import '../domain/usecase/change_driver_status_usecase.dart';
 import '../domain/usecase/end_trip_usecase.dart';
+import '../domain/usecase/find_bus_trips_usecase.dart';
 import '../domain/usecase/find_drivers_usecase.dart';
+import '../domain/usecase/find_trips_usecase.dart';
 import '../domain/usecase/login_usecase.dart';
+import '../domain/usecase/logout_usecase.dart';
+import '../domain/usecase/rate_usecase.dart';
 import '../domain/usecase/register_usecase.dart';
+import '../domain/usecase/signed_user_usecase.dart';
 import '../domain/usecase/start_verify_usecase.dart';
 import '../domain/usecase/verify_otp_usecase.dart';
 import 'date_ntp.dart';
@@ -143,12 +142,6 @@ void initCalculateTwoPointsUseCase() {
 void initCancelTripUseCase() {
   if (GetIt.instance.isRegistered<CancelTripUseCase>() == false) {
     sl.registerFactory<CancelTripUseCase>(() => CancelTripUseCase(sl()));
-  }
-}
-
-void initCurrentUserUseCase() {
-  if (GetIt.instance.isRegistered<CurrentUserUseCase>() == false) {
-    sl.registerFactory<CurrentUserUseCase>(() => CurrentUserUseCase(sl()));
   }
 }
 

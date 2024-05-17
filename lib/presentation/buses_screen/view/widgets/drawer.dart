@@ -36,7 +36,8 @@ class BusesScreenDrawer extends StatelessWidget {
             const SizedBox(height: AppSize.s30),
             InkWell(
               onTap: () {
-                Navigator.pushNamed(context, Routes.profileEditRoute).then((value) {
+                Navigator.pushNamed(context, Routes.profileEditRoute)
+                    .then((value) {
                   viewModel.start();
                   Scaffold.of(context).closeDrawer();
                 });
@@ -63,22 +64,22 @@ class BusesScreenDrawer extends StatelessWidget {
                     clipBehavior: Clip.antiAliasWithSaveLayer,
                     child: !viewModel.getImagePath.contains('https')
                         ? Image.asset(
-                      ImageAssets.unknownUserImage,
-                      fit: BoxFit.cover,
-                    )
+                            ImageAssets.unknownUserImage,
+                            fit: BoxFit.cover,
+                          )
                         : CachedNetworkImage(
-                      imageUrl: viewModel.getImagePath,
-                      fit: BoxFit.cover,
-                      progressIndicatorBuilder:
-                          (context, url, downloadProgress) {
-                        return Center(
-                          child: Padding(
-                              padding:
-                              const EdgeInsets.all(AppPadding.p10),
-                              child: Lottie.asset(LottieAssets.loading)),
-                        );
-                      },
-                    ),
+                            imageUrl: viewModel.getImagePath,
+                            fit: BoxFit.cover,
+                            progressIndicatorBuilder:
+                                (context, url, downloadProgress) {
+                              return Center(
+                                child: Padding(
+                                    padding:
+                                        const EdgeInsets.all(AppPadding.p10),
+                                    child: Lottie.asset(LottieAssets.loading)),
+                              );
+                            },
+                          ),
                   ),
                   title: Text(
                     viewModel.getName,

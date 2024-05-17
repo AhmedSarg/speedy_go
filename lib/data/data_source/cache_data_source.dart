@@ -5,15 +5,9 @@ import '../network/app_prefs.dart';
 const String _currentUser = "currentUser";
 
 abstract class CacheDataSource {
-  Map<String, dynamic>? getCurrentUser();
-
   User? getSignedUser();
 
   Future<void> logout();
-
-  Future<void> setCurrentUser(Map<String, dynamic> currentUser);
-
-  Future<void> clearCurrentUser();
 }
 
 class CacheDataSourceImpl implements CacheDataSource {
@@ -23,16 +17,6 @@ class CacheDataSourceImpl implements CacheDataSource {
   CacheDataSourceImpl(this._preferences, this._firebaseAuth);
 
   @override
-  Map<String, dynamic>? getCurrentUser() {
-    return _preferences.getMap(_currentUser);
-  }
-
-  @override
-  Future<void> setCurrentUser(Map<String, dynamic> currentUser) async {
-    await _preferences.setMap(_currentUser, currentUser);
-  }
-
-  @override
   User? getSignedUser() {
     return _firebaseAuth?.currentUser;
   }
@@ -40,10 +24,5 @@ class CacheDataSourceImpl implements CacheDataSource {
   @override
   Future<void> logout() async {
     await _firebaseAuth?.signOut();
-  }
-
-  @override
-  Future<void> clearCurrentUser() async {
-    await _preferences.removeKey(_currentUser);
   }
 }

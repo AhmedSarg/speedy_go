@@ -122,6 +122,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const MyBusesScreen());
       case Routes.addBusTripRoute:
         initAddBusTripUseCase();
+        initDisplayBusesUseCase();
         return MaterialPageRoute(builder: (_) => const AddBusTripScreen());
       case Routes.addBusRoute:
         initAddBusUseCase();
@@ -134,10 +135,10 @@ class RouteGenerator {
       case Routes.driverTripRoute:
         initLogOutUseCase();
         initChangeDriverStatusUseCase();
-       initFindTripsUseCase();
-       initAcceptTripUseCase();
-       initCancelAcceptTripUseCase();
-       initEndTripUseCase();
+        initFindTripsUseCase();
+        initAcceptTripUseCase();
+        initCancelAcceptTripUseCase();
+        initEndTripUseCase();
         return MaterialPageRoute(builder: (_) => const DriverTripScreen());
       case Routes.driverMainLayoutRoute:
         initLogOutUseCase();

@@ -13,7 +13,7 @@ class AddBusTripUseCase extends BaseUseCase<AddBusTripUseCaseInput, void> {
   Future<Either<Failure, void>> call(AddBusTripUseCaseInput input) async {
     return _repository.addBusTrip(
       driverId: input.driverId,
-      numberOfBus: input.numberOfBus,
+      busId: input.busId,
       price: input.price,
       pickupLocation: input.pickupLocation,
       destinationLocation: input.destinationLocation,
@@ -25,14 +25,14 @@ class AddBusTripUseCase extends BaseUseCase<AddBusTripUseCaseInput, void> {
 class AddBusTripUseCaseInput {
   final String driverId;
   final double price;
-  final int numberOfBus;
+  final String busId;
   final String pickupLocation;
   final String destinationLocation;
   final DateTime calendar;
 
   AddBusTripUseCaseInput({
     required this.driverId,
-    required this.numberOfBus,
+    required this.busId,
     required this.price,
     required this.pickupLocation,
     required this.destinationLocation,

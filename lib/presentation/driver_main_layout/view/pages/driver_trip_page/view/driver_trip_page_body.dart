@@ -1,11 +1,6 @@
-import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:speedy_go/presentation/resources/assets_manager.dart';
 
-import '../../../../../main_layout/view/pages/home_page/home_page.dart';
-import '../../../../../main_layout/view/pages/profile_page/view/profile_page.dart';
 import '../../../../../resources/color_manager.dart';
 import '../../../../../resources/values_manager.dart';
 import '../viewmodel/driver_trip_page_viewmodel.dart';
@@ -24,11 +19,9 @@ class DriverTripBody extends StatefulWidget {
 }
 
 class _DriverTripBodyState extends State<DriverTripBody> {
-
   @override
   Widget build(BuildContext context) {
     return PopScope(
-
       canPop: false,
       onPopInvoked: (_) {
         print(88);

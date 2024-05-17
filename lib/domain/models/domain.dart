@@ -88,6 +88,7 @@ class PassengerModel extends UserModel {
 class DriverModel extends UserModel {
   final String nationalId;
   final VehicleType vehicleType;
+  final List<dynamic>? buses;
 
   DriverModel({
     required super.uuid,
@@ -98,6 +99,7 @@ class DriverModel extends UserModel {
     required super.imagePath,
     required this.nationalId,
     required this.vehicleType,
+    this.buses,
     super.type = UserType.driver,
   });
 
@@ -121,6 +123,7 @@ class DriverModel extends UserModel {
     } else {
       vehicleType = VehicleType.bus;
     }
+    print(1);
     return DriverModel(
       uuid: data['uuid'],
       firstName: data['first_name'],
@@ -130,6 +133,7 @@ class DriverModel extends UserModel {
       imagePath: data['image_path'] ?? ImageAssets.unknownUserImage,
       nationalId: data['national_id'],
       vehicleType: vehicleType,
+      buses: data['buses_ids'],
     );
   }
 
@@ -309,16 +313,15 @@ class TripBusModel {
   int? availableSeats;
   BusModel? busModel;
 
-  TripBusModel({
-    required this.id,
-    required this.driverId,
-    required this.pickup,
-    required this.destination,
-    required this.date,
-    required this.price,
-    this.availableSeats,
-    this.busModel
-  });
+  TripBusModel(
+      {required this.id,
+      required this.driverId,
+      required this.pickup,
+      required this.destination,
+      required this.date,
+      required this.price,
+      this.availableSeats,
+      this.busModel});
 
   set setAvailableSeats(int seats) {
     availableSeats = seats;
@@ -327,8 +330,6 @@ class TripBusModel {
   set setBusModel(BusModel busModel) {
     this.busModel = busModel;
   }
-
-
 
   factory TripBusModel.fake() => TripBusModel(
         id: '',
@@ -341,35 +342,44 @@ class TripBusModel {
       );
 
   factory TripBusModel.fromMap(Map<String, dynamic> map) => TripBusModel(
-        id: map['id']??'',
+        id: map['id'] ?? '',
         driverId: map['driver_id'],
         pickup: map['pickup_location'],
         destination: map['destination_location'],
         date: map['calendar'].toDate(),
         price: map['price'].toInt(),
-        availableSeats:( map['available_seats']??-1).toInt(),
+        availableSeats: (map['available_seats'] ?? -1).toInt(),
+        busModel: BusModel.fromMap(map['bus']),
       );
 }
 
 class BusModel {
+  final String busId;
   final String driverId;
+  final int busNumber;
   final String licensePlate;
-  num? seats;
+  final int? seats;
 
   BusModel({
+    required this.busId,
     required this.driverId,
+    required this.busNumber,
     required this.licensePlate,
-    this.seats,
+    required this.seats,
   });
 
   factory BusModel.fake() => BusModel(
+        busId: '',
         driverId: '',
+        busNumber: -1,
         seats: -1,
         licensePlate: '',
       );
 
   factory BusModel.fromMap(Map<String, dynamic> map) => BusModel(
+        busId: map['bus_id'],
         driverId: map['driver_id'],
+        busNumber: map['bus_number'],
         licensePlate: map['bus_plate'] ?? "ا ب ح 2 3 4",
         seats: map['seats_number'],
       );

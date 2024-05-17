@@ -57,6 +57,7 @@ class AddBusViewModel extends BaseCubit
         busImage: _busImage!,
         seatsNumber: int.parse(_seatsNumberController.text),
         busPlate: _busPlateController.text.trim(),
+        busNumber: _userManager.getCurrentDriver!.buses!.length + 1,
       ),
     ).then(
       (value) => {

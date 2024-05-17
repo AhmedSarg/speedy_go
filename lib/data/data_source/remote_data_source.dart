@@ -145,11 +145,12 @@ abstract class RemoteDataSource {
     required File busImage,
     required int seatsNumber,
     required String busPlate,
+    required int busNumber,
   });
 
   Future<void> addBusTrip({
     required String driverId,
-    required int numberOfBus,
+    required String busId,
     required double price,
     required String pickupLocation,
     required String destinationLocation,
@@ -162,7 +163,7 @@ abstract class RemoteDataSource {
     required DateTime date,
   });
 
-  Future<int> findBusSeats(String busId);
+  Future<Map<String, dynamic>> findBusById(String busId);
 
   Stream<List<Map<String, dynamic>>> displayBuses({
     required String driverId,
@@ -591,7 +592,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     String key, value;
     if (phoneNumber != null) {
       key = 'phone_number';
-      value = phoneNumber;
+      value = phoneNumber.substring(2);
     } else {
       key = 'email';
       value = email!;
@@ -790,6 +791,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required File busImage,
     required int seatsNumber,
     required String busPlate,
+    required int busNumber,
   }) async {
     String busLicenceName = '${busId}_bus_license.jpg';
     String drivingLicenseName = '${busId}_driving_license.jpg';
@@ -810,6 +812,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         'seats_number': seatsNumber,
         'driver_id': driverId,
         'bus_plate': busPlate,
+        'bus_number': busNumber,
       },
     );
     await _firebaseStorage.ref('bus_licenses').child(busLicenceName).putFile(
@@ -832,7 +835,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<void> addBusTrip({
     required String driverId,
-    required int numberOfBus,
+    required String busId,
     required double price,
     required String pickupLocation,
     required String destinationLocation,
@@ -840,7 +843,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }) async {
     await _firestore.collection('available_bus_trips').add({
       'driver_id': driverId,
-      'number_bus': numberOfBus,
+      'bus_id': busId,
       'price': price,
       'pickup_location': pickupLocation,
       'destination_location': destinationLocation,
@@ -875,14 +878,16 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<int> findBusSeats(String busId) async {
+  Future<Map<String, dynamic>> findBusById(String busId) async {
     return await _firestore
         .collection('buses')
         .where('bus_id', isEqualTo: busId)
         .get()
-        .then((value) {
-      return value.docs[0].data()['seats_number'];
-    });
+        .then(
+      (value) {
+        return value.docs[0].data();
+      },
+    );
   }
 
   @override
@@ -910,6 +915,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     return _firestore
         .collection('buses')
         .where('driver_id', isEqualTo: driverId)
+        .orderBy('bus_number')
         .snapshots()
         .map(
       (busTrip) {
@@ -930,8 +936,9 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     return _firestore
         .collection('available_bus_trips')
         .where('driver_id', isEqualTo: driverId)
-        .where('calendar', isGreaterThanOrEqualTo : Timestamp.fromDate(date))
-        .where('calendar', isLessThan : Timestamp.fromDate(date.add(const Duration(days: 1))))
+        .where('calendar', isGreaterThanOrEqualTo: Timestamp.fromDate(date))
+        .where('calendar',
+            isLessThan: Timestamp.fromDate(date.add(const Duration(days: 1))))
         .snapshots()
         .map(
       (busTrip) {
@@ -962,7 +969,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       late TaskSnapshot imageUrl;
       await docRef.get().then(
         (value) async {
-          imageUrl = await _firebaseStorage.ref('user_images').child(picturePath).putFile(
+          imageUrl = await _firebaseStorage
+              .ref('user_images')
+              .child(picturePath)
+              .putFile(
                 picture!,
                 SettableMetadata(contentType: 'image/jpeg'),
               );

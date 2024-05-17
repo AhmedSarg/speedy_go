@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../app/sl.dart';
 import '../../../../../../domain/models/user_manager.dart';
-import '../../../../../../domain/usecase/add_trip_bus.dart';
+import '../../../../../../domain/usecase/add_bus_trip_usecase.dart';
 import '../../../../../base/base_cubit.dart';
 import '../../../../../base/base_states.dart';
 
@@ -21,11 +21,58 @@ class AddTripViewModel extends BaseCubit
   final TextEditingController _toController = TextEditingController();
   final TextEditingController _toSearchController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
-  String _num = '1';
+
+  int? _busNumber;
+  late int _numberOfBuses;
   DateTime? _selectedDate;
 
+  Future<void> addTrip() async {
+    emit(LoadingState(displayType: DisplayType.popUpDialog));
+
+    DateTime selectedDate =
+        DateFormat('EEE, MMM d yyyy hh:mm a').parse(_dateController.text);
+    double? price = double.tryParse(_priceController.text);
+
+    await _addBusTripUseCase(
+      AddBusTripUseCaseInput(
+        driverId: _userManager.getCurrentDriver!.uuid,
+        busId: _userManager.getCurrentDriver!.buses![_busNumber! - 1],
+        price: price ?? 0.0,
+        pickupLocation: _fromController.text.trim().toLowerCase(),
+        destinationLocation: _toController.text.trim().toLowerCase(),
+        calendar: selectedDate,
+      ),
+    ).then(
+      (value) {
+        value.fold(
+          (l) {
+            emit(ErrorState(failure: l, displayType: DisplayType.popUpDialog));
+          },
+          (r) {
+            emit(SuccessState(message: 'Trip Added Successfully'));
+          },
+        );
+      },
+    );
+  }
+
+  Future<void> clear() async {
+    _numController.clear();
+    _priceController.clear();
+    _fromController.clear();
+    _toController.clear();
+    _toSearchController.clear();
+    _dateController.clear();
+    _busNumber = null;
+    _selectedDate = null;
+  }
+
   @override
-  void start() {}
+  void start() {
+    emit(LoadingState());
+    _numberOfBuses = _userManager.getCurrentDriver!.buses!.length;
+    emit(ContentState());
+  }
 
   @override
   TextEditingController get getNumController => _numController;
@@ -45,54 +92,19 @@ class AddTripViewModel extends BaseCubit
   @override
   TextEditingController get getDateController => _dateController;
 
-  String get getNum => _num;
+  @override
+  int? get getBusNumber => _busNumber;
 
+  @override
+  int get getNumberOfBuses => _numberOfBuses;
+
+  @override
   DateTime get getDate => _selectedDate!;
 
   @override
-  set setNum(String number) {
-    _num = number;
-    _numController.text = _num;
-  }
-
-  Future<void> addTrip() async {
-    emit(LoadingState(displayType: DisplayType.popUpDialog));
-
-    DateTime selectedDate = DateFormat('EEE, MMM d yyyy hh:mm a').parse(_dateController.text);
-    double? price = double.tryParse(_priceController.text);
-
-    await _addBusTripUseCase(
-      AddBusTripUseCaseInput(
-        driverId:_userManager.getCurrentDriver!.uuid,
-        numberOfBus: int.parse(_num),
-        price: price ?? 0.0,
-        pickupLocation: _fromController.text.trim().toLowerCase(),
-        destinationLocation: _toController.text.trim().toLowerCase(),
-        calendar: selectedDate,
-      ),
-    ).then(
-          (value) {
-        value.fold(
-              (l) {
-            emit(ErrorState(failure: l, displayType: DisplayType.popUpDialog));
-          },
-              (r) {
-            emit(SuccessState(message: 'Trip Added Successfully'));
-          },
-        );
-      },
-    );
-  }
-
-  Future<void> clear() async {
-    _numController.clear();
-    _priceController.clear();
-    _fromController.clear();
-    _toController.clear();
-    _toSearchController.clear();
-    _dateController.clear();
-    _num = '1';
-    _selectedDate = null;
+  set setBusNumber(int number) {
+    _busNumber = number;
+    _numController.text = _busNumber.toString();
   }
 
   @override
@@ -102,7 +114,7 @@ class AddTripViewModel extends BaseCubit
 }
 
 abstract class AddTripViewModelInput {
-  set setNum(String number);
+  set setBusNumber(int number);
 
   set setDate(DateTime date);
 }
@@ -119,4 +131,10 @@ abstract class AddTripViewModelOutput {
   TextEditingController get getToSearchController;
 
   TextEditingController get getDateController;
+
+  int? get getBusNumber;
+
+  int get getNumberOfBuses;
+
+  DateTime get getDate;
 }

@@ -25,6 +25,7 @@ class AddBusUseCase extends BaseUseCase<AddBusUseCaseInput, void> {
       busImage: input.busImage,
       seatsNumber: input.seatsNumber,
       busPlate: input.busPlate,
+      busNumber: input.busNumber,
     );
   }
 }
@@ -41,6 +42,7 @@ class AddBusUseCaseInput {
   final File busImage;
   final int seatsNumber;
   final String busPlate;
+  final int busNumber;
 
   AddBusUseCaseInput({
     required this.driverId,
@@ -54,5 +56,6 @@ class AddBusUseCaseInput {
     required this.busImage,
     required this.seatsNumber,
     required this.busPlate,
+    required this.busNumber,
   });
 }
