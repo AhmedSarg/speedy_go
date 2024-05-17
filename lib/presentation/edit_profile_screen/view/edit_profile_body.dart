@@ -13,10 +13,10 @@ import '../../resources/values_manager.dart';
 import '../viewmodel/edit_profile_viewmodel.dart';
 
 class EditProfileBody extends StatelessWidget {
-  const EditProfileBody({super.key, required this.viewModel});
+   EditProfileBody({super.key, required this.viewModel});
 
   final EditProfileViewModel viewModel;
-  static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   static final FocusNode firstNameFocusNode = FocusNode();
   static final FocusNode lastNameFocusNode = FocusNode();
@@ -199,6 +199,7 @@ class EditProfileBody extends StatelessWidget {
               ),
               IconButton(
                 onPressed: () {
+
                   Navigator.pop(context);
                 },
                 icon: Container(

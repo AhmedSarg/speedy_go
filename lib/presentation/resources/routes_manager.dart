@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:speedy_go/presentation/driver_main_layout/view/driver_main_layout_view.dart';
 
 import '../../app/sl.dart';
 import '../buses_screen/view/buses_screen.dart';
@@ -50,6 +51,7 @@ class Routes {
   static const String profileEditRoute = "/profileEdit";
   static const String myTripsRoute = "/myTrips";
   static const String driverTripRoute = "/driverTrip";
+  static const String driverMainLayoutRoute = "/driverMainLayout";
   static const String safetyRoute = "/safety";
   static const String supportRoute = "/support";
   static const String requestHistoryRoute = "/requestHistory";
@@ -91,7 +93,6 @@ class RouteGenerator {
           builder: (_) => const VerificationScreen(),
         );
       case Routes.mainLayoutRoute:
-        initCurrentUserUseCase();
         initFindBusTripsUseCase();
         initBookBusTripUseCase();
         return MaterialPageRoute(builder: (_) => const MainLayoutScreen());
@@ -131,13 +132,21 @@ class RouteGenerator {
       case Routes.myTripsRoute:
         return MaterialPageRoute(builder: (_) => const MyTripsScreen());
       case Routes.driverTripRoute:
-       initChangeDriverStatusUseCase();
+        initLogOutUseCase();
+        initChangeDriverStatusUseCase();
        initFindTripsUseCase();
        initAcceptTripUseCase();
        initCancelAcceptTripUseCase();
        initEndTripUseCase();
         return MaterialPageRoute(builder: (_) => const DriverTripScreen());
-
+      case Routes.driverMainLayoutRoute:
+        initLogOutUseCase();
+        initChangeDriverStatusUseCase();
+        initFindTripsUseCase();
+        initAcceptTripUseCase();
+        initCancelAcceptTripUseCase();
+        initEndTripUseCase();
+        return MaterialPageRoute(builder: (_) => const DriverMainScreen());
       case Routes.safetyRoute:
         return MaterialPageRoute(builder: (_) => const SafetyScreen());
       case Routes.supportRoute:
