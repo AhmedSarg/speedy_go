@@ -16,7 +16,8 @@ class MainDrawer extends StatelessWidget {
       required this.start,
       required this.logOut,
       required this.imagePath,
-      this.drawerItems = const []});
+      this.drawerItems = const [
+      ]});
   final String name;
   final String imagePath;
   final void Function() start;
@@ -115,6 +116,7 @@ class MainDrawer extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: AppSize.s20),
+              ...drawerItems,
               DrawerItem(
                 onTap: () {
                   Navigator.pushNamed(context, Routes.safetyRoute);

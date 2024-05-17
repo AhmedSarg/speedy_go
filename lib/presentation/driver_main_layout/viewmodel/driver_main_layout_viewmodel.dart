@@ -20,7 +20,7 @@ class DriverMainViewModel extends BaseCubit
   final UserManager _userManager = sl<UserManager>();
   final LogoutUseCase _logoutUseCase;
   DriverMainViewModel(this._logoutUseCase);
-  GoogleMapController? _mapController; // Make _mapController nullable
+  GoogleMapController? _mapController;
   LatLng? _userLocation;
   String? _mapStyle;
   late String _name;

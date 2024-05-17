@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../app/sl.dart';
 import '../../base/base_states.dart';
 import '../../base/cubit_builder.dart';
 import '../../base/cubit_listener.dart';
+import '../../buses_screen/states/buses_states.dart';
 import '../../resources/routes_manager.dart';
 import '../states/main_states.dart';
 import '../viewmodel/main_viewmodel.dart';
@@ -16,7 +18,7 @@ class MainLayoutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-        create: (context) => MainViewModel()..start(),
+        create: (context) => MainViewModel(sl())..start(),
         child: BlocConsumer<MainViewModel, BaseStates>(
           listener: (context, state) {
             if (state is CheckLocationPermissionsState) {
@@ -26,6 +28,12 @@ class MainLayoutScreen extends StatelessWidget {
                   MainViewModel.get(context).permissionsPermitted();
                 },
               );
+            }
+
+            if (state is LogoutState) {
+              Navigator.pop(context);
+
+              Navigator.pushReplacementNamed(context, Routes.loginRoute);
             }
             baseListener(context, state);
           },

@@ -138,13 +138,10 @@ class _DriverMainScreenBodyState extends State<DriverMainScreenBody> {
   List<Widget> get tabs => [
         const DriverTripScreen(),
         MainDrawer(
+
             name: widget.viewModel.getName,
             start: () {
-              // Navigator.pushNamed(context, Routes.profileEditRoute);
-              //     .then((value) {
-              //   widget.viewModel.start();
-              //   // Scaffold.of(context).closeDrawer();
-              // });
+
               widget.viewModel.start();
             },
             logOut: () {

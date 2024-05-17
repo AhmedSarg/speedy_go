@@ -4,21 +4,28 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../../../app/sl.dart';
+import '../../../domain/models/user_manager.dart';
+import '../../../domain/usecase/logout_usecase.dart';
 import '../../base/base_cubit.dart';
 import '../../base/base_states.dart';
+import '../../buses_screen/states/buses_states.dart';
 import '../states/main_states.dart';
 
 class MainViewModel extends BaseCubit
     implements MainViewModelInput, MainViewModelOutput {
   static MainViewModel get(context) => BlocProvider.of(context);
 
-  MainViewModel();
-
   late final PageController _pageController = PageController();
-
-  late final GoogleMapController _mapController;
+  final UserManager _userManager = sl<UserManager>();
+  final LogoutUseCase _logoutUseCase;
+  GoogleMapController? _mapController;
   LatLng? _userLocation;
   String? _mapStyle;
+  late String _name;
+  late String _imagePath;
+
+  MainViewModel(this._logoutUseCase);
 
   Future<void> _fetchMapStyle() async {
     _mapStyle = await rootBundle.loadString('assets/maps/dark_map.json');
@@ -45,26 +52,57 @@ class MainViewModel extends BaseCubit
 
   @override
   void start() async {
+    _name = _userManager.getCurrentPassenger!.firstName;
+    _imagePath = _userManager.getCurrentPassenger!.imagePath;
     emit(LoadingState());
-    Future.delayed(
-      const Duration(milliseconds: 100),
-      () {
-        emit(CheckLocationPermissionsState());
-        emit(LoadingState());
+
+    Future.delayed(const Duration(milliseconds: 100), () {
+      emit(CheckLocationPermissionsState());
+      emit(LoadingState());
+    });
+  }
+  Future<void> logout() async {
+    emit(LoadingState(displayType: DisplayType.popUpDialog));
+    await _logoutUseCase.call(null).then(
+          (value) {
+        value.fold(
+              (l) {
+            emit(
+              ErrorState(
+                failure: l,
+                displayType: DisplayType.popUpDialog,
+              ),
+            );
+          },
+              (r) {
+            emit(LogoutState());
+          },
+        );
       },
     );
   }
 
   @override
+  String get getName => _name;
+
+  @override
+  String get getImagePath => _imagePath;
+
+  @override
   set setMapController(GoogleMapController mapController) {
-    _mapController = mapController;
+    if (_mapController == null) {
+      _mapController = mapController;
+    } else {
+      print('_____________mapController is already initialized');
+    }
   }
+
 
   @override
   PageController get getPageController => _pageController;
 
   @override
-  GoogleMapController get getMapController => _mapController;
+  GoogleMapController get getMapController => _mapController!;
 
   @override
   LatLng get getUserLocation => _userLocation!;
@@ -85,4 +123,8 @@ abstract class MainViewModelOutput {
   LatLng get getUserLocation;
 
   String get getMapStyle;
+
+  String get getName;
+
+  String get getImagePath;
 }

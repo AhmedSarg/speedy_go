@@ -41,7 +41,7 @@ class EditProfileViewModel extends BaseCubit
     emit(LoadingState(displayType: DisplayType.popUpDialog));
     await _changeAccountInfoUseCase(
       ChangeAccountInfoUseCaseInput(
-        userId: _userManager.getCurrentDriver!.uuid,
+        userId: _userModel.uuid,
         firstName: _firstNameController.text.trim().isEmpty
             ? _userModel.firstName
             : _firstNameController.text.trim(),
