@@ -875,10 +875,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<int> findBusSeats(String driverId) async {
+  Future<int> findBusSeats(String busId) async {
     return await _firestore
         .collection('buses')
-        .where('driver_id', isEqualTo: driverId)
+        .where('bus_id', isEqualTo: busId)
         .get()
         .then((value) {
       return value.docs[0].data()['seats_number'];
@@ -930,13 +930,16 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     return _firestore
         .collection('available_bus_trips')
         .where('driver_id', isEqualTo: driverId)
-        .where('calendar', isEqualTo: Timestamp.fromDate(date))
+        .where('calendar', isGreaterThanOrEqualTo : Timestamp.fromDate(date))
+        .where('calendar', isLessThan : Timestamp.fromDate(date.add(const Duration(days: 1))))
         .snapshots()
         .map(
       (busTrip) {
         return busTrip.docs.map(
           (e) {
-            return e.data();
+            Map<String, dynamic> ret = e.data();
+            ret['id'] = e.id;
+            return ret;
           },
         ).toList();
       },
