@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:speedy_go/presentation/driver_main_layout/view/pages/driver_trip_page/viewmodel/driver_trip_page_viewmodel.dart';
 
 import '../../../app/sl.dart';
 import '../../base/base_states.dart';
@@ -17,8 +18,14 @@ class DriverMainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocProvider(
-        create: (context) => DriverMainViewModel(sl())..start(),
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => DriverMainViewModel(sl())..start()),
+          BlocProvider(
+              create: (context) =>
+                  DriverTripViewModel(sl(), sl(), sl(), sl(), sl(), sl())
+                    ..start()),
+        ],
         child: BlocConsumer<DriverMainViewModel, BaseStates>(
           listener: (context, state) {
             if (state is CheckLocationPermissionsState) {

@@ -48,7 +48,7 @@ class RegisterScreen extends StatelessWidget {
                       viewModel.setBoxContent =
                           passengerRegisterWidgets(context, viewModel, formKey);
                     } else if (state is PickFileState) {
-                      showAboutDialog(context: context);
+                      // showAboutDialog(context: context);
                     } else if (state is RegisterCarState) {
                       viewModel.setBoxContent =
                           carRegisterWidgets(context, viewModel, formKey);

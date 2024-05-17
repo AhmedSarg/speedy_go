@@ -30,7 +30,7 @@ import '../../../../../common/widget/app_lifecycle_observer.dart';
 import '../../../../../resources/assets_manager.dart';
 import '../../../../../resources/color_manager.dart';
 import '../../../../../resources/values_manager.dart';
-import '../states/driver_trip_states.dart';
+import '../../../../states/driver_trip_states.dart';
 import '../view/pages/accept_ride_page.dart';
 import '../view/pages/loading_page.dart';
 import '../view/pages/running_trip.dart';

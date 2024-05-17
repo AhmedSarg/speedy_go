@@ -8,9 +8,9 @@ import 'package:speedy_go/presentation/buses_screen/viewmodel/buses_viewmodel.da
 import 'package:speedy_go/presentation/resources/routes_manager.dart';
 
 import '../../../app/sl.dart';
+import '../../common/widget/main_drawer.dart';
 import '../../resources/color_manager.dart';
 import '../../resources/values_manager.dart';
-import 'widgets/drawer.dart';
 import 'widgets/buses_screen_body.dart';
 
 class BusesScreen extends StatelessWidget {
@@ -41,6 +41,7 @@ class BusesScreen extends StatelessWidget {
   }
 
   buildContent(BuildContext context) {
+    BusesViewModel viewModel = BusesViewModel.get(context);
     return Scaffold(
       backgroundColor: ColorManager.bgColor,
       appBar: AppBar(
@@ -60,7 +61,12 @@ class BusesScreen extends StatelessWidget {
           },
         ),
       ),
-      drawer: const BusesScreenDrawer(),
+      drawer: MainDrawer(
+        name: viewModel.getName,
+        start: viewModel.start,
+        logOut: viewModel.logout,
+        imagePath: viewModel.getImagePath,
+      ),
       body: const BusesScreenBody(),
     );
   }

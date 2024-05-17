@@ -1,4 +1,4 @@
-import '../../../../../base/base_states.dart';
+import '../../base/base_states.dart';
 
 class ChangeDriverStatusState extends BaseStates {}
 

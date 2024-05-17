@@ -30,7 +30,8 @@ class VerificationScreen extends StatelessWidget {
             ),
           ),
           BlocProvider(
-            create: (context) => VerificationViewModel(sl(), sl(), sl())..start(),
+            create: (context) =>
+                VerificationViewModel(sl(), sl(), sl())..start(),
             child: BlocConsumer<VerificationViewModel, BaseStates>(
               listener: (context, state) {
                 if (state is ErrorState) {
@@ -44,7 +45,7 @@ class VerificationScreen extends StatelessWidget {
                 } else if (state is UserIsDriverState) {
                   Navigator.pushNamedAndRemoveUntil(
                     context,
-                    Routes.driverTripRoute,
+                    Routes.driverMainLayoutRoute,
                     ModalRoute.withName('/'),
                   );
                 } else if (state is UserIsBusDriverState) {

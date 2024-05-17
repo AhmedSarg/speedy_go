@@ -56,7 +56,7 @@ class _DriverTripBodyState extends State<DriverTripBody> {
                       ),
                     ),
                     widget.viewModel.getPageIndex <= 0
-                        ? const StatusButton()
+                        ? StatusButton()
                         : const SizedBox(),
                   ],
                 ),

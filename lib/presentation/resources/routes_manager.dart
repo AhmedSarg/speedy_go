@@ -9,7 +9,6 @@ import '../buses_screen/view/pages/add_trip_screen/view/add_trip_view.dart';
 import '../buses_screen/view/pages/my_buses_screen/view/my_buses_screen.dart';
 import '../buses_screen/view/pages/schedule_screen/view/schedule_screen.dart';
 import '../common/transitions/transitions.dart';
-import '../driver_main_layout/view/pages/driver_trip_page/view/driver_trip_page_view.dart';
 import '../edit_profile_screen/view/edit_profile_view.dart';
 import '../login_screen/view/login_view.dart';
 import '../main_layout/view/main_layout_view.dart';
@@ -50,7 +49,6 @@ class Routes {
   static const String addBusRoute = "/addBus";
   static const String profileEditRoute = "/profileEdit";
   static const String myTripsRoute = "/myTrips";
-  static const String driverTripRoute = "/driverTrip";
   static const String driverMainLayoutRoute = "/driverMainLayout";
   static const String safetyRoute = "/safety";
   static const String supportRoute = "/support";
@@ -134,14 +132,6 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const ProfileEditPage());
       case Routes.myTripsRoute:
         return MaterialPageRoute(builder: (_) => const MyTripsScreen());
-      case Routes.driverTripRoute:
-        initLogOutUseCase();
-        initChangeDriverStatusUseCase();
-        initFindTripsUseCase();
-        initAcceptTripUseCase();
-        initCancelAcceptTripUseCase();
-        initEndTripUseCase();
-        return MaterialPageRoute(builder: (_) => const DriverTripScreen());
       case Routes.driverMainLayoutRoute:
         initLogOutUseCase();
         initChangeDriverStatusUseCase();
