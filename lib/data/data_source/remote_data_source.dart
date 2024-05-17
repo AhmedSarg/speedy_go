@@ -11,6 +11,19 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../domain/models/enums.dart';
 
 abstract class RemoteDataSource {
+  Future<List<Map<String, dynamic>>> historyTrips({
+    required String id,
+  });
+
+  Future<List<Map<String, dynamic>>> historyBusPastTrips({
+    required String id,
+    // required DateTime date,
+  });
+
+  Future<List<Map<String, dynamic>>> historyBusCurrentTrips({
+    required String id,
+  });
+
   Future<RegisteredBeforeError?> doesUserExists({
     String? email,
     String? phoneNumber,
@@ -990,5 +1003,50 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       'email': email,
       'phone_number': phoneNumber,
     });
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> historyTrips({required String id}) async {
+    List<Map<String, dynamic>>? allData;
+    await _firestore
+        .collection('finished_trips')
+        .where('driver_id', isEqualTo: id)
+        .get()
+        .then((value) {
+      allData = value.docs.map((doc) => doc.data()).toList();
+    });
+    return allData!;
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> historyBusPastTrips({
+    required String id,
+  }) async {
+    List<Map<String, dynamic>>? allData;
+    await _firestore
+        .collection('Available_bus_trips')
+        .where('driver_id', isEqualTo: id)
+        .where('', isLessThan: DateTime.now()) // TODO:: Name attribute
+        .get()
+        .then((value) {
+      allData = value.docs.map((doc) => doc.data()).toList();
+    });
+    return allData!;
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> historyBusCurrentTrips(
+      {required String id}) async {
+    List<Map<String, dynamic>>? allData;
+    await _firestore
+        .collection('Available_bus_trips')
+        .where('driver_id', isEqualTo: id)
+        .where('',
+            isGreaterThanOrEqualTo: DateTime.now()) // TODO:: Name attribute
+        .get()
+        .then((value) {
+      allData = value.docs.map((doc) => doc.data()).toList();
+    });
+    return allData!;
   }
 }

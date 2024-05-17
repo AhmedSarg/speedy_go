@@ -5,7 +5,11 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../app/sl.dart';
+import '../../../domain/models/domain.dart';
 import '../../../domain/models/user_manager.dart';
+import '../../../domain/usecase/history_bus_current_trips_usecase.dart';
+import '../../../domain/usecase/history_bus_past_trips_usecase.dart';
+import '../../../domain/usecase/history_trips_usecase.dart';
 import '../../../domain/usecase/logout_usecase.dart';
 import '../../base/base_cubit.dart';
 import '../../base/base_states.dart';
@@ -24,6 +28,17 @@ class MainViewModel extends BaseCubit
   String? _mapStyle;
   late String _name;
   late String _imagePath;
+
+  late UserModel _userModel;
+
+  final HistoryTripsUseCase _historyTripsUseCase = sl<HistoryTripsUseCase>();
+  final HistoryBusCurrentTripsUseCase _historyBusCurrentTripsUseCase =
+      sl<HistoryBusCurrentTripsUseCase>();
+  final HistoryBusPastTripsUseCase _historyBusPastTripsUseCase =
+      sl<HistoryBusPastTripsUseCase>();
+  List<Map<String, dynamic>> _listOfHistoryTrips = [];
+  List<Map<String, dynamic>> _listOfHistoryBusCurrentTrips = [];
+  List<Map<String, dynamic>> _listOfHistoryBusPastTrips = [];
 
   MainViewModel(this._logoutUseCase);
 
@@ -61,12 +76,13 @@ class MainViewModel extends BaseCubit
       emit(LoadingState());
     });
   }
+
   Future<void> logout() async {
     emit(LoadingState(displayType: DisplayType.popUpDialog));
     await _logoutUseCase.call(null).then(
-          (value) {
+      (value) {
         value.fold(
-              (l) {
+          (l) {
             emit(
               ErrorState(
                 failure: l,
@@ -74,13 +90,80 @@ class MainViewModel extends BaseCubit
               ),
             );
           },
-              (r) {
+          (r) {
             emit(LogoutState());
           },
         );
       },
     );
   }
+
+  getListOfHistoryTrips() async {
+    emit(LoadingState());
+    await _historyTripsUseCase(HistoryTripsUseCaseInput(id: _userModel.uuid))
+        .then((value) {
+      value.fold(
+        (l) {
+          emit(
+            ErrorState(
+              failure: l,
+              displayType: DisplayType.popUpDialog,
+            ),
+          );
+        },
+        (r) {
+          _listOfHistoryTrips = r;
+          emit(ContentState());
+        },
+      );
+    });
+  }
+
+  getListOfHistoryBusPastTrips() async {
+    emit(LoadingState());
+    await _historyBusPastTripsUseCase(
+            HistoryBusPastTripsUseCaseInput(id: _userModel.uuid))
+        .then((value) {
+      value.fold(
+        (l) {
+          emit(
+            ErrorState(
+              failure: l,
+              displayType: DisplayType.popUpDialog,
+            ),
+          );
+        },
+        (r) {
+          _listOfHistoryBusPastTrips = r;
+          emit(ContentState());
+        },
+      );
+    });
+  }
+
+  getListOfHistoryBusCurrentTrips() async {
+    emit(LoadingState());
+    await _historyBusCurrentTripsUseCase(
+            HistoryBusCurrentTripsUseCaseInput(id: _userModel.uuid))
+        .then((value) {
+      value.fold(
+        (l) {
+          emit(
+            ErrorState(
+              failure: l,
+              displayType: DisplayType.popUpDialog,
+            ),
+          );
+        },
+        (r) {
+          _listOfHistoryBusCurrentTrips = r;
+          emit(ContentState());
+        },
+      );
+    });
+  }
+
+  getListOfUpcomingTrips() async {}
 
   @override
   String get getName => _name;
@@ -96,7 +179,6 @@ class MainViewModel extends BaseCubit
       print('_____________mapController is already initialized');
     }
   }
-
 
   @override
   PageController get getPageController => _pageController;
