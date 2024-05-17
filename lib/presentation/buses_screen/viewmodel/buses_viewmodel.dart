@@ -12,9 +12,9 @@ class BusesViewModel extends BaseCubit
   static BusesViewModel get(context) => BlocProvider.of(context);
 
   final LogoutUseCase _logoutUseCase;
-  final UserManager _userManager = sl<UserManager>();
 
   BusesViewModel(this._logoutUseCase);
+  final UserManager _userManager = sl<UserManager>();
 
   late String _name;
   late String _imagePath;

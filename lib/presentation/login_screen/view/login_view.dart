@@ -29,7 +29,7 @@ class LoginScreen extends StatelessWidget {
             } else if (state is UserIsDriverState) {
               Navigator.pushNamedAndRemoveUntil(
                 context,
-                Routes.driverTripRoute,
+                Routes.driverMainLayoutRoute,
                 ModalRoute.withName('/'),
               );
             } else if (state is UserIsBusDriverState) {

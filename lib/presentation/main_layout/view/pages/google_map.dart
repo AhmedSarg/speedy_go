@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:speedy_go/presentation/driver_main_layout/viewmodel/driver_main_layout_viewmodel.dart';
 import 'package:speedy_go/presentation/main_layout/viewmodel/main_viewmodel.dart';
 import 'package:speedy_go/presentation/resources/color_manager.dart';
 import 'package:speedy_go/presentation/resources/values_manager.dart';
@@ -15,6 +16,35 @@ class GoogleMapScreenProfile extends StatelessWidget {
   });
 
   final MainViewModel viewModel;
+
+  @override
+  Widget build(BuildContext context) {
+    return GoogleMap(
+      compassEnabled: false,
+      myLocationEnabled: true,
+      myLocationButtonEnabled: false,
+      zoomControlsEnabled: false,
+      mapType: MapType.normal,
+      style: viewModel.getMapStyle,
+      onMapCreated: (controller) {
+        viewModel.setMapController = controller;
+      },
+      initialCameraPosition: CameraPosition(
+        target: viewModel.getUserLocation,
+        zoom: AppSize.s18,
+      ),
+    );
+  }
+}
+
+
+class GoogleMapScreenDriverProfile extends StatelessWidget {
+  const GoogleMapScreenDriverProfile({
+    super.key,
+    required this.viewModel,
+  });
+
+  final DriverMainViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {
