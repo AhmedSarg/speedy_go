@@ -862,6 +862,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         .where('pickup_location', isEqualTo: pickup)
         .where('destination_location', isEqualTo: destination)
         .where('calendar', isGreaterThanOrEqualTo: Timestamp.fromDate(date))
+        .where('calendar',
+            isLessThan: Timestamp.fromDate(date.add(const Duration(days: 1))))
         .snapshots()
         .map(
       (busTrip) {
