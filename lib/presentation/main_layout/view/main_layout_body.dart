@@ -1,16 +1,17 @@
+import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:speedy_go/presentation/main_layout/view/pages/profile_page/view/widgets/profile_items.dart';
 import 'package:speedy_go/presentation/resources/routes_manager.dart';
+
 import '../../common/widget/main_drawer.dart';
 import '../../resources/assets_manager.dart';
 import '../../resources/color_manager.dart';
 import '../../resources/values_manager.dart';
 import '../viewmodel/main_viewmodel.dart';
 import 'pages/bus_page/pages/book_trip_page/view/book_trip_view.dart';
-import 'pages/google_map.dart';
 import 'pages/home_page/home_page.dart';
 
 class MainLayoutBody extends StatefulWidget {
@@ -45,14 +46,17 @@ class _MainLayoutBodyState extends State<MainLayoutBody> {
       const HomePage(),
       const BookTripScreen(),
       MainDrawer(
-          drawerItems:  [
-            DrawerItem(text: 'request history', image: SVGAssets.history,onTap: () {
-              Navigator.pushNamed(context, Routes.requestHistoryRoute);
-            },)
+          drawerItems: [
+            DrawerItem(
+              text: 'request history',
+              image: SVGAssets.history,
+              onTap: () {
+                Navigator.pushNamed(context, Routes.requestHistoryRoute);
+              },
+            )
           ],
           name: widget.viewModel.getName,
           start: () {
-
             widget.viewModel.start();
           },
           logOut: () {
@@ -78,33 +82,26 @@ class _MainLayoutBodyState extends State<MainLayoutBody> {
         child: Scaffold(
           key: _key,
           resizeToAvoidBottomInset: false,
-          body: Stack(
-            children: [
-              GoogleMapScreenProfile(viewModel: widget.viewModel),
-              PageView(
-                controller: _pageController,
-                physics: const NeverScrollableScrollPhysics(),
-                children: List.generate(
-                  tabs.length,
-                  (index) => tabs[index],
-                ),
-              ),
-            ],
+          body: PageView(
+            controller: _pageController,
+            physics: const NeverScrollableScrollPhysics(),
+            children: List.generate(
+              tabs.length,
+              (index) => tabs[index],
+            ),
           ),
           backgroundColor: ColorManager.bgColor,
           extendBody: selectedTabIndex != 1,
-
           bottomNavigationBar: (tabs.length <= maxCount)
               ? AnimatedNotchBottomBar(
-           elevation: AppSize.s10,
-                   notchBottomBarController: _controller,
+                  elevation: AppSize.s10,
+                  notchBottomBarController: _controller,
                   shadowElevation: AppSize.s10,
                   color: ColorManager.primary,
                   showLabel: false,
                   notchColor: ColorManager.primary,
-                   removeMargins: false,
+                  removeMargins: false,
                   showTopRadius: true,
-                  // bottomBarWidth: context.width() * 0.8,
                   durationInMilliSeconds: 2,
                   bottomBarItems: [
                     BottomBarItem(

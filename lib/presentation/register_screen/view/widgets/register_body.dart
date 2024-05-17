@@ -153,9 +153,8 @@ class RegisterTypeSelector extends StatelessWidget {
         children: [
           AnimatedPositioned(
             duration: const Duration(milliseconds: 400),
-            left: viewModel.getRegisterType == UserType.passenger
-                ? 0
-                : itemWidth,
+            left:
+                viewModel.getRegisterType == UserType.passenger ? 0 : itemWidth,
             child: Container(
               width: itemWidth,
               height: AppSize.s40,
@@ -463,7 +462,6 @@ class _GenderInputState extends State<GenderInput> {
   }
 }
 
-
 class CountryCodeInput extends StatelessWidget {
   const CountryCodeInput({
     super.key,
@@ -497,12 +495,12 @@ class CountryCodeInput extends StatelessWidget {
           items: viewModel.getCountryCodes
               .map(
                 (e) => OptionMenuItem(
-              text: e,
-              onPressed: () {
-                viewModel.setCountryCode = e;
-              },
-            ),
-          )
+                  text: e,
+                  onPressed: () {
+                    viewModel.setCountryCode = e;
+                  },
+                ),
+              )
               .toList(),
           mainIcon: Icons.arrow_drop_down_outlined,
         ),

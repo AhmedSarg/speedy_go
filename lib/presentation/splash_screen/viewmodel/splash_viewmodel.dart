@@ -32,11 +32,9 @@ class SplashViewModel extends BaseCubit
                   _userManager.getCurrentDriver!.vehicleType ==
                       VehicleType.bus) {
                 emit(BusDriverSignedState());
-              }
-              else if (_userManager.getCurrentUserType == UserType.driver) {
+              } else if (_userManager.getCurrentUserType == UserType.driver) {
                 emit(DriverSignedState());
-              }
-              else {
+              } else {
                 emit(PassengerSignedState());
               }
             }

@@ -5,11 +5,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:speedy_go/presentation/common/widget/main_drawer.dart';
 import 'package:speedy_go/presentation/driver_main_layout/view/pages/driver_trip_page/view/driver_trip_page_view.dart';
 import 'package:speedy_go/presentation/main_layout/view/pages/google_map.dart';
-import 'package:speedy_go/presentation/main_layout/view/pages/profile_page/view/widgets/profile_items.dart';
-import '../../main_layout/view/pages/profile_page/view/profile_page.dart';
+
 import '../../resources/assets_manager.dart';
 import '../../resources/color_manager.dart';
-import '../../resources/routes_manager.dart';
 import '../../resources/values_manager.dart';
 import '../viewmodel/driver_main_layout_viewmodel.dart';
 
@@ -138,10 +136,8 @@ class _DriverMainScreenBodyState extends State<DriverMainScreenBody> {
   List<Widget> get tabs => [
         const DriverTripScreen(),
         MainDrawer(
-
             name: widget.viewModel.getName,
             start: () {
-
               widget.viewModel.start();
             },
             logOut: () {

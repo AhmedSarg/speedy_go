@@ -26,6 +26,7 @@ import '../../../../../../domain/usecase/change_driver_status_usecase.dart';
 import '../../../../../../domain/usecase/find_trips_usecase.dart';
 import '../../../../../base/base_cubit.dart';
 import '../../../../../base/base_states.dart';
+import '../../../../../common/widget/app_lifecycle_observer.dart';
 import '../../../../../resources/assets_manager.dart';
 import '../../../../../resources/color_manager.dart';
 import '../../../../../resources/values_manager.dart';
@@ -61,6 +62,8 @@ class DriverTripViewModel extends BaseCubit
   String? _mapStyle;
 
   late GoogleMapController _mapController;
+
+  final AppLifecycleObserver _appLifecycleObserver = AppLifecycleObserver();
 
   Stream<LatLng>? _positionStream;
 
@@ -549,6 +552,11 @@ class DriverTripViewModel extends BaseCubit
   @override
   void start() {
     emit(LoadingState());
+    _appLifecycleObserver.initialize(() {
+      if (_selectedTrip != null && !_started) {
+        cancelAcceptTrip();
+      }
+    });
     Future.delayed(
       const Duration(milliseconds: 100),
       _getLocationStream,

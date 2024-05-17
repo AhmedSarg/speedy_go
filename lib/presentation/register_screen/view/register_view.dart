@@ -47,9 +47,9 @@ class RegisterScreen extends StatelessWidget {
                     if (state is RegisterPassengerState) {
                       viewModel.setBoxContent =
                           passengerRegisterWidgets(context, viewModel, formKey);
-                    }else if (state is PickFileState) {
+                    } else if (state is PickFileState) {
                       showAboutDialog(context: context);
-                    }else if (state is RegisterCarState) {
+                    } else if (state is RegisterCarState) {
                       viewModel.setBoxContent =
                           carRegisterWidgets(context, viewModel, formKey);
                       viewModel.animateToDriver();
@@ -75,11 +75,9 @@ class RegisterScreen extends StatelessWidget {
                         ),
                       );
                     } else if (state is RegisterImagePickFailedState) {
-                    }
-                    else if (state is RegisterTypeSelectionState) {
+                    } else if (state is RegisterTypeSelectionState) {
                       Navigator.pop(context);
-                    }
-                    else if (state is RegisterVerifyPhoneNumberState) {
+                    } else if (state is RegisterVerifyPhoneNumberState) {
                       Navigator.pop(context);
                       Navigator.pushNamed(context, Routes.verificationRoute);
                     } else if (state is SuccessState) {
@@ -105,7 +103,8 @@ class RegisterScreen extends StatelessWidget {
                       viewModel.setContent = RegisterBody(viewModel: viewModel);
                     } else if (state is LoadingState ||
                         state is ErrorState ||
-                        state is SuccessState || state is RegisterTypeSelectionState) {
+                        state is SuccessState ||
+                        state is RegisterTypeSelectionState) {
                     } else {
                       viewModel.setContent = RegisterBody(viewModel: viewModel);
                     }

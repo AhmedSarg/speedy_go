@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:speedy_go/presentation/main_layout/view/pages/google_map.dart';
 
 import '../../../../resources/assets_manager.dart';
 import '../../../../resources/color_manager.dart';
@@ -15,13 +14,29 @@ import '../../../viewmodel/main_viewmodel.dart';
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
-  // final MainViewModel viewModel;
+  static late MainViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {
+    viewModel = MainViewModel.get(context);
     return Stack(
       alignment: Alignment.topCenter,
       children: [
+        GoogleMap(
+          compassEnabled: false,
+          myLocationEnabled: true,
+          myLocationButtonEnabled: false,
+          zoomControlsEnabled: false,
+          mapType: MapType.normal,
+          style: viewModel.getMapStyle,
+          onMapCreated: (controller) {
+            viewModel.setMapController = controller;
+          },
+          initialCameraPosition: CameraPosition(
+            target: viewModel.getUserLocation,
+            zoom: AppSize.s18,
+          ),
+        ),
         SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(

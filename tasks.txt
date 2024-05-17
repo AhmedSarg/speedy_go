@@ -5,8 +5,8 @@
 - login screen to be flexible and handle validation error overflow
 - # login country code validation #
 - # scribble color #
-- handling driver close app
 - remove useless back buttons in passenger trip
+- no internet
 
 
 
@@ -18,3 +18,8 @@
 // buse screen drawer and scheduling
 
 - handle book bus tickets again
+
+
+CHECK
+-- handling driver close app --
+-- handling getting same user --

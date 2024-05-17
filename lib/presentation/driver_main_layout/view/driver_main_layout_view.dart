@@ -22,14 +22,13 @@ class DriverMainScreen extends StatelessWidget {
         child: BlocConsumer<DriverMainViewModel, BaseStates>(
           listener: (context, state) {
             if (state is CheckLocationPermissionsState) {
-              Navigator.pushNamed(context, Routes.permissionsRoute).whenComplete(
-                    () {
-                      DriverMainViewModel.get(context).permissionsPermitted();
+              Navigator.pushNamed(context, Routes.permissionsRoute)
+                  .whenComplete(
+                () {
+                  DriverMainViewModel.get(context).permissionsPermitted();
                 },
-
               );
             }
-
             if (state is LogoutState) {
               Navigator.pop(context);
 

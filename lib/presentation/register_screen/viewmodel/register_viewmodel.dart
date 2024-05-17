@@ -127,7 +127,6 @@ class RegisterViewModel extends BaseCubit
   @override
   String get getCountryCode => _countryCode;
 
-
   @override
   List<String> get getCountryCodes => _countryCodes;
 
@@ -222,6 +221,7 @@ class RegisterViewModel extends BaseCubit
   @override
   set setCountryCode(String countryCode) {
     _countryCode = countryCode;
+    setRegisterBoxType = _registerBoxType;
     emit(ContentState());
   }
 
@@ -314,12 +314,14 @@ class RegisterViewModel extends BaseCubit
 
   Future<void> authenticate() async {
     emit(LoadingState(displayType: DisplayType.popUpDialog));
-    String phoneNumber = _countryCode + _phoneNumberController.text.substring(1);
-    // print(phoneNumber);
-    await _authenticateUseCase(AuthenticateUseCaseInput(
-      email: _emailController.text.trim(),
-      phoneNumber: phoneNumber.trim(),
-    )).then((value) {
+    String phoneNumber =
+        _countryCode + _phoneNumberController.text.substring(1);
+    await _authenticateUseCase(
+      AuthenticateUseCaseInput(
+        email: _emailController.text.trim(),
+        phoneNumber: phoneNumber.trim(),
+      ),
+    ).then((value) {
       value.fold(
         (l) {
           emit(ErrorState(failure: l, displayType: DisplayType.popUpDialog));
