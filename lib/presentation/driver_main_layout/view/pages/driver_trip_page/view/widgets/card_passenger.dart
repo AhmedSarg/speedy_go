@@ -1,15 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:path/path.dart';
 import 'package:speedy_go/app/extensions.dart';
 
-import '../../../resources/assets_manager.dart';
-import '../../../resources/color_manager.dart';
-import '../../../resources/text_styles.dart';
-import '../../../resources/values_manager.dart';
-import '../../viewmodel/driver_trip_viewmodel.dart';
+import '../../../../../../resources/assets_manager.dart';
+import '../../../../../../resources/color_manager.dart';
+import '../../../../../../resources/text_styles.dart';
+import '../../../../../../resources/values_manager.dart';
+import '../../viewmodel/driver_trip_page_viewmodel.dart';
 
 class CardPassenger extends StatelessWidget {
   const CardPassenger({
@@ -51,7 +49,8 @@ class CardPassenger extends StatelessWidget {
               Stack(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: AppPadding.p10),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: AppPadding.p10),
                     child: Container(
                       width: AppSize.s80,
                       height: AppSize.s80,
@@ -135,8 +134,9 @@ class CardPassenger extends StatelessWidget {
               const SizedBox(height: AppSize.s5),
               Text(
                 "Pickup is $time min away",
-                style: AppTextStyles.acceptingPassengersScreenStartTimeTextStyle(
-                    context),
+                style:
+                    AppTextStyles.acceptingPassengersScreenStartTimeTextStyle(
+                        context),
               ),
               const SizedBox(height: AppSize.s5),
               TextButton(
@@ -154,8 +154,9 @@ class CardPassenger extends StatelessWidget {
                     ),
                     Text(
                       "EGP $tripCost",
-                      style: AppTextStyles.acceptingPassengersScreenCostTextStyle(
-                          context),
+                      style:
+                          AppTextStyles.acceptingPassengersScreenCostTextStyle(
+                              context),
                     ),
                   ],
                 ),

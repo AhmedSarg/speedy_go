@@ -2,15 +2,15 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:speedy_go/app/extensions.dart';
-import 'package:speedy_go/presentation/driver_trip_screen/view/widgets/card_passenger.dart';
 import 'package:speedy_go/presentation/resources/assets_manager.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-import '../../../resources/color_manager.dart';
-import '../../../resources/strings_manager.dart';
-import '../../../resources/text_styles.dart';
-import '../../../resources/values_manager.dart';
-import '../../viewmodel/driver_trip_viewmodel.dart';
+import '../../../../../../resources/color_manager.dart';
+import '../../../../../../resources/strings_manager.dart';
+import '../../../../../../resources/text_styles.dart';
+import '../../../../../../resources/values_manager.dart';
+import '../../viewmodel/driver_trip_page_viewmodel.dart';
+import '../widgets/card_passenger.dart';
 
 class RunningTrip extends StatelessWidget {
   const RunningTrip({super.key});
@@ -49,7 +49,8 @@ class RunningTrip extends StatelessWidget {
             widget: IconButton(
               icon: SvgPicture.asset(SVGAssets.fillPhone),
               onPressed: () {
-                launchUrlString('tel://${viewModel.getSelectedTrip.passengerPhoneNumber}');
+                launchUrlString(
+                    'tel://${viewModel.getSelectedTrip.passengerPhoneNumber}');
                 // launchUrlString('tel://011');
               },
             ),

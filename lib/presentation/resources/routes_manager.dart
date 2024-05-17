@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 
 import '../../app/sl.dart';
 import '../buses_screen/view/buses_screen.dart';
@@ -8,11 +8,11 @@ import '../buses_screen/view/pages/add_trip_screen/view/add_trip_view.dart';
 import '../buses_screen/view/pages/my_buses_screen/view/my_buses_screen.dart';
 import '../buses_screen/view/pages/schedule_screen/view/schedule_screen.dart';
 import '../common/transitions/transitions.dart';
-import '../driver_trip_screen/view/driver_trip_view.dart';
+import '../driver_main_layout/view/pages/driver_trip_page/view/driver_trip_page_view.dart';
+import '../edit_profile_screen/view/edit_profile_view.dart';
 import '../login_screen/view/login_view.dart';
 import '../main_layout/view/main_layout_view.dart';
 import '../main_layout/view/pages/bus_page/pages/bus_trips_page/view/bus_trips_view.dart';
-import '../edit_profile_screen/view/edit_profile_view.dart';
 import '../main_layout/view/pages/profile_page/pages/my_trips/view/my_trips_screen.dart';
 import '../main_layout/view/pages/profile_page/pages/request_history/view/request_history_screen.dart';
 import '../main_layout/view/pages/profile_page/pages/safty/safety.dart';

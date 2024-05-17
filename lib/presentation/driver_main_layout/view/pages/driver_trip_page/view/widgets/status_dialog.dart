@@ -2,11 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:speedy_go/app/extensions.dart';
 
-import '../../../resources/color_manager.dart';
-import '../../../resources/strings_manager.dart';
-import '../../../resources/text_styles.dart';
-import '../../../resources/values_manager.dart';
-import '../../viewmodel/driver_trip_viewmodel.dart';
+import '../../../../../../resources/color_manager.dart';
+import '../../../../../../resources/strings_manager.dart';
+import '../../../../../../resources/text_styles.dart';
+import '../../../../../../resources/values_manager.dart';
+import '../../viewmodel/driver_trip_page_viewmodel.dart';
 
 class StatusDialog extends StatelessWidget {
   const StatusDialog({super.key, required this.viewModel});
@@ -43,7 +43,7 @@ class StatusDialog extends StatelessWidget {
               Text(
                 titleText.tr(),
                 style:
-                AppTextStyles.runModeScreenTitleContainerTextStyle(context),
+                    AppTextStyles.runModeScreenTitleContainerTextStyle(context),
               ),
               const SizedBox(height: AppSize.s20),
               Row(
@@ -52,7 +52,7 @@ class StatusDialog extends StatelessWidget {
                   Text(
                     AppStrings.driverTripScreenStatusTurnInto.tr(),
                     style:
-                    AppTextStyles.runModeScreenTurnIntoTextStyle(context),
+                        AppTextStyles.runModeScreenTurnIntoTextStyle(context),
                   ),
                   const SizedBox(width: AppSize.s5),
                   SizedBox(
@@ -73,7 +73,7 @@ class StatusDialog extends StatelessWidget {
                       child: Text(
                         "${toggleStateText.tr()} Mode",
                         style:
-                        AppTextStyles.runModeScreenModeTextStyle(context),
+                            AppTextStyles.runModeScreenModeTextStyle(context),
                       ),
                     ),
                   )

@@ -39,7 +39,7 @@ dependencies:
   string_validator:
   firebase_app_check:
   table_calendar:
-  geolocator:
+  geolocator: ^8.2.1
   geocoding:
   curved_navigation_bar:
   animated_bottom_navigation_bar:

@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:speedy_go/app/extensions.dart';
 
-import '../../../resources/assets_manager.dart';
-import '../../../resources/color_manager.dart';
-import '../../../resources/strings_manager.dart';
-import '../../../resources/text_styles.dart';
-import '../../../resources/values_manager.dart';
-import '../../viewmodel/driver_trip_viewmodel.dart';
+import '../../../../../../resources/assets_manager.dart';
+import '../../../../../../resources/color_manager.dart';
+import '../../../../../../resources/strings_manager.dart';
+import '../../../../../../resources/text_styles.dart';
+import '../../../../../../resources/values_manager.dart';
+import '../../viewmodel/driver_trip_page_viewmodel.dart';
 
 class EditCost extends StatelessWidget {
   const EditCost({super.key});
@@ -110,7 +110,8 @@ class EditCost extends StatelessWidget {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        viewModel.setNewCost = int.parse(viewModel.getNewCostController.text);
+                        viewModel.setNewCost =
+                            int.parse(viewModel.getNewCostController.text);
                         viewModel.acceptTrip(
                           int.parse(viewModel.getNewCostController.text),
                         );

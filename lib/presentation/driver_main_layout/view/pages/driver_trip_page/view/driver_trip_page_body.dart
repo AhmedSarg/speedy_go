@@ -2,17 +2,14 @@ import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_not
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:lottie/lottie.dart';
 import 'package:speedy_go/presentation/resources/assets_manager.dart';
 
-import '../../main_layout/view/pages/bus_page/pages/book_trip_page/view/book_trip_view.dart';
-import '../../main_layout/view/pages/home_page/home_page.dart';
-import '../../main_layout/view/pages/profile_page/view/profile_page.dart';
-import '../../resources/color_manager.dart';
-import '../../resources/values_manager.dart';
-import '../viewmodel/driver_trip_viewmodel.dart';
+import '../../../../../main_layout/view/pages/home_page/home_page.dart';
+import '../../../../../main_layout/view/pages/profile_page/view/profile_page.dart';
+import '../../../../../resources/color_manager.dart';
+import '../../../../../resources/values_manager.dart';
+import '../viewmodel/driver_trip_page_viewmodel.dart';
 import 'widgets/status_button.dart';
-import 'widgets/action_button.dart';
 
 class DriverTripBody extends StatefulWidget {
   const DriverTripBody({
@@ -45,63 +42,63 @@ class _DriverTripBodyState extends State<DriverTripBody> {
       child: Scaffold(
         bottomNavigationBar: (tabs.length <= maxCount)
             ? AnimatedNotchBottomBar(
-          elevation: AppSize.s10,
-          notchBottomBarController: _controller,
-          shadowElevation: AppSize.s10,
-          color: ColorManager.primary,
-          showLabel: false,
-          notchColor: ColorManager.primary,
-          removeMargins: false,
-          showTopRadius: true,
-          // bottomBarWidth: context.width() * 0.8,
-          durationInMilliSeconds: 2,
-          bottomBarItems: [
-            BottomBarItem(
-              inActiveItem: SvgPicture.asset(
-                SVGAssets.home,
-                colorFilter: const ColorFilter.mode(
-                  ColorManager.offwhite,
-                  BlendMode.srcIn,
-                ),
-              ),
-              activeItem: SvgPicture.asset(
-                SVGAssets.home,
-                colorFilter: const ColorFilter.mode(
-                  ColorManager.offwhite,
-                  BlendMode.srcIn,
-                ),
-              ),
-            ),
-            BottomBarItem(
-              inActiveItem: SvgPicture.asset(
-                SVGAssets.profile,
-                colorFilter: const ColorFilter.mode(
-                  ColorManager.offwhite,
-                  BlendMode.srcIn,
-                ),
-              ),
-              activeItem: SvgPicture.asset(
-                SVGAssets.profile,
-                colorFilter: const ColorFilter.mode(
-                  ColorManager.offwhite,
-                  BlendMode.srcIn,
-                ),
-              ),
-            ),
-          ],
-          onTap: (index) {
-            _pageController.animateToPage(
-              index,
-              duration: const Duration(milliseconds: 500),
-              curve: Curves.easeInOut,
-            );
-            setState(() {
-              selectedTabIndex = index;
-            });
-          },
-          kIconSize: AppSize.s26,
-          kBottomRadius: AppSize.s35,
-        )
+                elevation: AppSize.s10,
+                notchBottomBarController: _controller,
+                shadowElevation: AppSize.s10,
+                color: ColorManager.primary,
+                showLabel: false,
+                notchColor: ColorManager.primary,
+                removeMargins: false,
+                showTopRadius: true,
+                // bottomBarWidth: context.width() * 0.8,
+                durationInMilliSeconds: 2,
+                bottomBarItems: [
+                  BottomBarItem(
+                    inActiveItem: SvgPicture.asset(
+                      SVGAssets.home,
+                      colorFilter: const ColorFilter.mode(
+                        ColorManager.offwhite,
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                    activeItem: SvgPicture.asset(
+                      SVGAssets.home,
+                      colorFilter: const ColorFilter.mode(
+                        ColorManager.offwhite,
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                  ),
+                  BottomBarItem(
+                    inActiveItem: SvgPicture.asset(
+                      SVGAssets.profile,
+                      colorFilter: const ColorFilter.mode(
+                        ColorManager.offwhite,
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                    activeItem: SvgPicture.asset(
+                      SVGAssets.profile,
+                      colorFilter: const ColorFilter.mode(
+                        ColorManager.offwhite,
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                  ),
+                ],
+                onTap: (index) {
+                  _pageController.animateToPage(
+                    index,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeInOut,
+                  );
+                  setState(() {
+                    selectedTabIndex = index;
+                  });
+                },
+                kIconSize: AppSize.s26,
+                kBottomRadius: AppSize.s35,
+              )
             : null,
         body: SafeArea(
           child: SizedBox(
