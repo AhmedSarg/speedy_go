@@ -6,13 +6,13 @@ import '../repository/repository.dart';
 import 'base_usecase.dart';
 
 class BusesDriverTripsUseCase
-    extends BaseUseCase<BusesDriverTripsUseCaseInput, Stream<List<BusModel>>> {
+    extends BaseUseCase<BusesDriverTripsUseCaseInput, Stream<List<Future<TripBusModel>>>> {
   final Repository _repository;
 
   BusesDriverTripsUseCase(this._repository);
 
   @override
-  Future<Either<Failure, Stream<List<BusModel>>>> call(
+  Future<Either<Failure, Stream<List<Future<TripBusModel>>>>> call(
       BusesDriverTripsUseCaseInput input) async {
     return _repository.busesDriverTrips(
       driverId: input.driverId,

@@ -144,7 +144,7 @@ abstract class Repository {
     required String driverId,
 
   });
-  Future<Either<Failure, Stream<List<BusModel>>>> busesDriverTrips({
+  Future<Either<Failure, Stream<List<Future<TripBusModel>>>>> busesDriverTrips({
     required String driverId,
     required DateTime date,
 

@@ -11,6 +11,7 @@ import '../../main_layout/view/pages/profile_page/view/profile_page.dart';
 import '../../resources/color_manager.dart';
 import '../../resources/values_manager.dart';
 import '../viewmodel/driver_trip_viewmodel.dart';
+import 'driver_trip_view.dart';
 import 'widgets/status_button.dart';
 import 'widgets/action_button.dart';
 
@@ -31,10 +32,13 @@ class _DriverTripBodyState extends State<DriverTripBody> {
   final _pageController = PageController(initialPage: 0);
   final _controller = NotchBottomBarController(index: 0);
   int maxCount = 5;
-  List<Widget> tabs = [
-    const HomePage(),
-    const ProfilePage(),
-  ];
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -53,7 +57,6 @@ class _DriverTripBodyState extends State<DriverTripBody> {
           notchColor: ColorManager.primary,
           removeMargins: false,
           showTopRadius: true,
-          // bottomBarWidth: context.width() * 0.8,
           durationInMilliSeconds: 2,
           bottomBarItems: [
             BottomBarItem(
@@ -111,6 +114,17 @@ class _DriverTripBodyState extends State<DriverTripBody> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Expanded(
+                  child: PageView(
+                    controller: _pageController,
+                    onPageChanged: (index) {
+                      setState(() {
+                        selectedTabIndex = index;
+                      });
+                    },
+                    children: tabs,
+                  ),
+                ),
+                Expanded(
                   child: Stack(
                     children: [
                       GoogleMap(
@@ -136,20 +150,20 @@ class _DriverTripBodyState extends State<DriverTripBody> {
                 ),
                 widget.viewModel.getDriverStatus
                     ? Container(
-                        width: AppSize.infinity,
-                        padding: const EdgeInsets.symmetric(
-                          vertical: AppPadding.p20,
-                          horizontal: AppSize.s0,
-                        ),
-                        decoration: const BoxDecoration(
-                          color: ColorManager.lightBlack,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(AppSize.s20),
-                            topRight: Radius.circular(AppSize.s20),
-                          ),
-                        ),
-                        child: widget.viewModel.getPage,
-                      )
+                  width: AppSize.infinity,
+                  padding: const EdgeInsets.symmetric(
+                    vertical: AppPadding.p20,
+                    horizontal: AppSize.s0,
+                  ),
+                  decoration: const BoxDecoration(
+                    color: ColorManager.lightBlack,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(AppSize.s20),
+                      topRight: Radius.circular(AppSize.s20),
+                    ),
+                  ),
+                  child: widget.viewModel.getPage,
+                )
                     : const SizedBox(),
               ],
             ),
@@ -158,4 +172,10 @@ class _DriverTripBodyState extends State<DriverTripBody> {
       ),
     );
   }
+
+  List<Widget> tabs = [
+    const DriverTripScreen(),
+    const ProfilePage(),
+  ];
 }
+

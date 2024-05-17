@@ -6,62 +6,57 @@ import '../../../../../../app/sl.dart';
 import '../../../../../../domain/usecase/buses_driver_trips_usecase.dart';
 import '../../../../../base/base_cubit.dart';
 
-class ScheduleViewModel extends BaseCubit
-    implements ScheduleViewModelInput, ScheduleViewModelOutput {
+class ScheduleViewModel extends BaseCubit implements ScheduleViewModelInput, ScheduleViewModelOutput {
   static ScheduleViewModel get(context) => BlocProvider.of(context);
 
   final BusesDriverTripsUseCase _busesDriverTripsUseCase;
+  final UserManager _userManager = sl<UserManager>();
+
+  DateTime? _selectedDate;
+  Stream<List<Future<TripBusModel>>>? _busesStream;
 
   ScheduleViewModel(this._busesDriverTripsUseCase);
 
-  DateTime? _selectedDate;
-
-  final UserManager _userManager = sl<UserManager>();
-
-  Stream<List<BusModel>>? _busesStream;
-
   Future<void> _displayBuses() async {
-    print("selcted date d ${_selectedDate}");
+    if (_selectedDate == null) return;
+
     // emit(LoadingState(displayType: DisplayType.popUpDialog));
-    await _busesDriverTripsUseCase(
+
+    final result = await _busesDriverTripsUseCase(
       BusesDriverTripsUseCaseInput(
         driverId: _userManager.getCurrentDriver!.uuid,
         date: _selectedDate!,
       ),
-    ).then(
-      (value) {
-        value.fold(
-          (l) {
-            emit(
-              ErrorState(
-                failure: l,
-                displayType: DisplayType.popUpDialog,
-              ),
-            );
-          },
-          (r) {
-            _busesStream = r;
-            emit(ContentState());
-          },
-        );
+    );
+
+    result.fold(
+          (failure) {
+        emit(ErrorState(
+          failure: failure,
+          displayType: DisplayType.popUpDialog,
+        ));
+      },
+          (stream) {
+        _busesStream = stream;
+        emit(ContentState());
       },
     );
   }
 
   @override
   void start() {
-    _displayBuses();
+    // _selectedDate = DateTime.now();
+    // _displayBuses();
   }
 
   @override
   set setDate(DateTime date) {
     _selectedDate = date;
     _displayBuses();
-    print("set date");
   }
 
   @override
-  Stream<List<BusModel>>? get getBusesStream => _busesStream;
+  Stream<List<Future<TripBusModel>>>? get getBusesStream => _busesStream;
 }
 
 abstract class ScheduleViewModelInput {
@@ -69,5 +64,5 @@ abstract class ScheduleViewModelInput {
 }
 
 abstract class ScheduleViewModelOutput {
-  Stream<List<BusModel>>? get getBusesStream;
+  Stream<List<Future<TripBusModel>>>? get getBusesStream;
 }

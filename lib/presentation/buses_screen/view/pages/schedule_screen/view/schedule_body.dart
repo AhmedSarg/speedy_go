@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
+import 'package:speedy_go/app/extensions.dart';
 import 'package:speedy_go/presentation/resources/font_manager.dart';
 
 import '../../../../../../domain/models/domain.dart';
@@ -36,19 +37,13 @@ class ScheduleBodyScreen extends StatelessWidget {
         FittedBox(
           child: Row(
             children: [
-              const SizedBox(
-                width: AppSize.s30,
-              ),
-              const SizedBox(
-                width: AppSize.s40,
-              ),
+              const SizedBox(width: AppSize.s30),
               InkWell(
-                onTap: () {
-                  showDatePicker(
+                onTap: () async {
+                  final selectedDate = await showDatePicker(
                     context: context,
                     firstDate: DateTime.now(),
                     initialDate: DateTime.now(),
-                    currentDate: DateTime.now(),
                     lastDate: DateTime.now().add(const Duration(days: 365)),
                     builder: (context, child) {
                       return Theme(
@@ -69,112 +64,131 @@ class ScheduleBodyScreen extends StatelessWidget {
                         child: child!,
                       );
                     },
-                  ).then((selectedDate) {
-                    print(selectedDate);
-                    if (selectedDate != null) {
-                      print("select date ${selectedDate.toString()}");
-                      viewModel.setDate = selectedDate;
-
-                    }
-                  });
+                  );
+                  if (selectedDate != null) {
+                    viewModel.setDate = selectedDate;
+                  }
                 },
                 child: CircleAvatar(
-                    backgroundColor: ColorManager.lightBlue,
-                    radius: AppSize.s20,
-                    child: SvgPicture.asset(SVGAssets.calender)),
+                  backgroundColor: ColorManager.lightBlue,
+                  radius: AppSize.s20,
+                  child: SvgPicture.asset(SVGAssets.calender),
+                ),
               ),
-              const SizedBox(
-                width: AppSize.s30,
-              ),
+              const SizedBox(width: AppSize.s30),
             ],
           ),
         ),
         SizedBox(
           height: AppSize.s300,
-          child: StreamBuilder<List<BusModel>>(
+          child: StreamBuilder<List<Future<TripBusModel>>>(
             stream: viewModel.getBusesStream,
             builder: (context, snapshot) {
+              print(snapshot.data);
+              print('_________________________________');
+
               if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                 return ListView.separated(
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
-                    final item = snapshot.data?[index];
-
-                    return Container(
-                      width: MediaQuery.of(context).size.width * .7,
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: AppSize.s12, vertical: AppSize.s10),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: AppSize.s12, vertical: AppSize.s10),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: ColorManager.lightBlack),
-                          borderRadius: BorderRadius.circular(AppSize.s10),
-                          color: ColorManager.offwhite),
-                      child: Row(
-                        children: [
-                          Column(
-                            children: [
-                              SvgPicture.asset(
-                                SVGAssets.blueBus,
-                                color: ColorManager.blue,
-                              )
-                            ],
-                          ),
-                          Expanded(
-                            child: Column(
+                    final futureTrip = snapshot.data?[index];
+                    return FutureBuilder<TripBusModel>(
+                      future: futureTrip,
+                      builder: (context, snapshot) {
+                        print(snapshot);
+                        if(snapshot.hasData){
+                          TripBusModel item = snapshot.data!;
+                          return Container(
+                            width: MediaQuery.of(context).size.width * .7,
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: AppSize.s12,
+                                vertical: AppSize.s10
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: AppSize.s12,
+                                vertical: AppSize.s10
+                            ),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: ColorManager.lightBlack),
+                              borderRadius: BorderRadius.circular(AppSize.s10),
+                              color: ColorManager.offwhite,
+                            ),
+                            child: Row(
                               children: [
-                                Text(
-                                  'bus',
-                                  style: AppTextStyles.profileGeneralTextStyle(
-                                      context, FontSize.f17, ColorManager.blue),
+                                SvgPicture.asset(
+                                  SVGAssets.blueBus,
+                                  color: ColorManager.blue,
                                 ),
-                                Text(
-                                  item!.licensePlate,
-                                  style: AppTextStyles.profileGeneralTextStyle(
-                                      context, FontSize.f12, ColorManager.grey),
-                                ),
-                                RichText(
-                                    text: TextSpan(
-                                        text: "Seats number : ",
-                                        style: AppTextStyles.busItemTextStyle(
-                                          context,
+                                const SizedBox(width: AppSize.s12),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'bus',
+                                        style: AppTextStyles.profileGeneralTextStyle(
+                                            context, FontSize.f17, ColorManager.blue
                                         ),
-                                        children: [
-                                      TextSpan(
-                                        text: '${item.seats} Seat',
-                                        style: AppTextStyles
-                                            .profileGeneralTextStyle(
-                                                context,
-                                                FontSize.f12,
-                                                ColorManager.grey),
-                                      )
-                                    ],),)
+                                      ),
+                                      Text(
+                                        item.destination ?? '',
+                                        style: AppTextStyles.profileGeneralTextStyle(
+                                            context, FontSize.f12, ColorManager.grey
+                                        ),
+                                      ),
+                                      RichText(
+                                        text: TextSpan(
+                                          text: "Seats number: ",
+                                          style: AppTextStyles.busItemTextStyle(context),
+                                          children: [
+                                            TextSpan(
+                                              text: '${item?.availableSeats} Seat',
+                                              style: AppTextStyles.profileGeneralTextStyle(
+                                                  context, FontSize.f12, ColorManager.grey
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
-                          )
-                        ],
-                      ),
+                          );
+
+                        }
+                        else if(snapshot.hasError){
+                          print('_____________snapshot.error');
+                          print(snapshot.error);
+                          return Center(child: Lottie.asset(LottieAssets.error,repeat: false));
+
+                        }
+                        else{
+                          return Lottie.asset(LottieAssets.loading,width: context.width()*.2);
+
+                        }
+                      },
+
+
                     );
                   },
                   separatorBuilder: (BuildContext context, int index) {
-                    return const SizedBox(
-                      height: AppSize.s10,
-                    );
+                    return const SizedBox(height: AppSize.s10);
                   },
                 );
               }
-              else if (snapshot.hasData) {
-                print('error ${snapshot.error}');
-                print('data ${snapshot.data}');
-                return Lottie.asset(LottieAssets.empty);
-              } else if (snapshot.hasError) {
-                return Lottie.asset(LottieAssets.error);
-              }
-              else {
+              else if (snapshot.hasError) {
+                print('_____________snapshot.error');
+                print(snapshot.error);
+                return Center(child: Lottie.asset(LottieAssets.error,repeat: false));
+              } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return Padding(
                   padding: const EdgeInsets.all(AppPadding.p50),
                   child: Lottie.asset(LottieAssets.loading),
                 );
+              } else {
+                return Center(child: Lottie.asset(LottieAssets.empty));
               }
             },
           ),

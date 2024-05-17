@@ -341,13 +341,13 @@ class TripBusModel {
       );
 
   factory TripBusModel.fromMap(Map<String, dynamic> map) => TripBusModel(
-        id: map['id'],
+        id: map['id']??'',
         driverId: map['driver_id'],
         pickup: map['pickup_location'],
         destination: map['destination_location'],
         date: map['calendar'].toDate(),
         price: map['price'].toInt(),
-        availableSeats: map['available_seats'].toInt(),
+        availableSeats:( map['available_seats']??-1).toInt(),
       );
 }
 

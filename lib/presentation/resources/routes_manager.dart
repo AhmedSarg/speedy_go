@@ -131,12 +131,13 @@ class RouteGenerator {
       case Routes.myTripsRoute:
         return MaterialPageRoute(builder: (_) => const MyTripsScreen());
       case Routes.driverTripRoute:
-        initChangeDriverStatusUseCase();
-        initFindTripsUseCase();
-        initAcceptTripUseCase();
-        initCancelAcceptTripUseCase();
-        initEndTripUseCase();
+       initChangeDriverStatusUseCase();
+       initFindTripsUseCase();
+       initAcceptTripUseCase();
+       initCancelAcceptTripUseCase();
+       initEndTripUseCase();
         return MaterialPageRoute(builder: (_) => const DriverTripScreen());
+
       case Routes.safetyRoute:
         return MaterialPageRoute(builder: (_) => const SafetyScreen());
       case Routes.supportRoute:
