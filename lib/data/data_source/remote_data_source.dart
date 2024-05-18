@@ -657,6 +657,9 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         _firestore.collection('running_trips').doc(tripId);
     await doc.get().then((trip) {
       _firestore.collection('finished_trips').doc(trip.id).set(trip.data()!);
+      _firestore.collection('finished_trips').doc(trip.id).update({
+        'date': DateTime.now(),
+      });
     });
     await doc.delete();
   }
@@ -861,6 +864,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       'pickup_location': pickupLocation,
       'destination_location': destinationLocation,
       'calendar': calendar,
+      'passengers': [],
     });
   }
 
@@ -1009,11 +1013,15 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   Future<List<Map<String, dynamic>>> historyTrips({required String id}) async {
     return await _firestore
         .collection('finished_trips')
-        .where('driver_id', isEqualTo: id)
+        .where('passenger_id', isEqualTo: id)
         .get()
         .then(
       (value) {
-        return value.docs.map((doc) => doc.data()).toList();
+        return value.docs.map((doc) {
+          Map<String, dynamic> ret = doc.data();
+          ret['id'] = doc.id;
+          return ret;
+        }).toList();
       },
     );
   }
@@ -1024,9 +1032,9 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }) async {
     List<Map<String, dynamic>>? allData;
     await _firestore
-        .collection('Available_bus_trips')
-        .where('driver_id', isEqualTo: id)
-        .where('', isLessThan: DateTime.now())
+        .collection('available_bus_trips')
+        .where('passengers', arrayContains: id)
+        .where('calendar', isLessThan: Timestamp.fromDate(DateTime.now()))
         .get()
         .then((value) {
       allData = value.docs.map((doc) => doc.data()).toList();
@@ -1037,16 +1045,18 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<List<Map<String, dynamic>>> historyBusCurrentTrips(
       {required String id}) async {
-    List<Map<String, dynamic>>? allData;
-    await _firestore
-        .collection('Available_bus_trips')
-        .where('driver_id', isEqualTo: id)
-        .where('',
-            isGreaterThanOrEqualTo: DateTime.now()) // TODO:: Name attribute
+    return await _firestore
+        .collection('available_bus_trips')
+        .where('passengers', arrayContains: id)
+        .where(
+          'calendar',
+          isGreaterThanOrEqualTo: Timestamp.fromDate(DateTime.now()),
+        )
         .get()
-        .then((value) {
-      allData = value.docs.map((doc) => doc.data()).toList();
-    });
-    return allData!;
+        .then(
+      (value) {
+        return value.docs.map((doc) => doc.data()).toList();
+      },
+    );
   }
 }

@@ -4,11 +4,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:speedy_go/presentation/login_screen/view/login_view.dart';
 import 'package:speedy_go/presentation/resources/routes_manager.dart';
 
-import '../../../../../../resources/assets_manager.dart';
-import '../../../../../../resources/color_manager.dart';
-import '../../../../../../resources/text_styles.dart';
-import '../../../../../../resources/values_manager.dart';
-import 'profile_items.dart';
+import '../../../../../resources/assets_manager.dart';
+import '../../../../../resources/color_manager.dart';
+import '../../../../../resources/text_styles.dart';
+import '../../../../../resources/values_manager.dart';
+import 'widgets/profile_items.dart';
 
 class ProfileScreenBody extends StatelessWidget {
   const ProfileScreenBody({super.key});
@@ -18,7 +18,8 @@ class ProfileScreenBody extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * .02),
+          margin:
+              EdgeInsets.only(top: MediaQuery.of(context).size.height * .02),
           width: MediaQuery.of(context).size.width * .8,
           height: MediaQuery.of(context).size.height * .75,
           decoration: const BoxDecoration(
@@ -58,7 +59,8 @@ class ProfileScreenBody extends StatelessWidget {
                         ),
                         title: Text(
                           'Ahmed',
-                          style: AppTextStyles.profileUserNameTextStyle(context),
+                          style:
+                              AppTextStyles.profileUserNameTextStyle(context),
                         ),
                         subtitle: Row(
                           children: [
@@ -89,25 +91,23 @@ class ProfileScreenBody extends StatelessWidget {
                     text: 'My Trips',
                     image: SVGAssets.myTrips,
                   ),
-                   DrawerItem(
+                  DrawerItem(
                     onTap: () {
                       Navigator.pushNamed(context, Routes.requestHistoryRoute);
-
                     },
                     text: 'request history ',
                     image: SVGAssets.history,
                   ),
-                   DrawerItem(
+                  DrawerItem(
                     onTap: () {
                       Navigator.pushNamed(context, Routes.safetyRoute);
                     },
                     text: 'Safety',
                     image: SVGAssets.safety,
                   ),
-                   DrawerItem(
+                  DrawerItem(
                     onTap: () {
                       Navigator.pushNamed(context, Routes.supportRoute);
-
                     },
                     text: 'Support',
                     image: SVGAssets.support,
@@ -131,17 +131,18 @@ class ProfileScreenBody extends StatelessWidget {
                               FirebaseAuth.instance.signOut();
 
                               Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(builder: (_) => const LoginScreen()),
+                                MaterialPageRoute(
+                                    builder: (_) => const LoginScreen()),
                               );
-                              },
+                            },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 SvgPicture.asset(SVGAssets.halfCircle),
                                 Text(
                                   'log out',
-                                  style:
-                                      AppTextStyles.profileItemTextStyle(context),
+                                  style: AppTextStyles.profileItemTextStyle(
+                                      context),
                                 ),
                               ],
                             ),

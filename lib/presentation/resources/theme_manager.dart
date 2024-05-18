@@ -1,20 +1,18 @@
+import 'package:flutter/material.dart';
+
 import 'color_manager.dart';
 import 'values_manager.dart';
-import 'package:flutter/material.dart';
 
 ThemeData getApplicationTheme() {
   return ThemeData(
     splashColor: Colors.transparent,
     highlightColor: Colors.transparent,
-
     useMaterial3: true,
     // main colors
     primaryColor: ColorManager.primary,
     primaryColorLight: ColorManager.primary,
     primaryColorDark: ColorManager.primary,
     disabledColor: ColorManager.darkGrey,
-    // ripple effect color
-    // splashColor: ColorManager.primary,
     scaffoldBackgroundColor: ColorManager.primary,
     // app bar theme
     appBarTheme: const AppBarTheme(
@@ -25,30 +23,12 @@ ThemeData getApplicationTheme() {
       iconTheme: IconThemeData(color: ColorManager.white), //add this line here
     ),
     dialogTheme: const DialogTheme(
-      backgroundColor: ColorManager.primary,
-      surfaceTintColor: ColorManager.transparent
-    ),
-    // bottomNavigationBarTheme: BottomNavigationBarThemeData(
-    //     backgroundColor: ColorManager.primary,
-    //     selectedIconTheme: IconThemeData(
-    //       color: ColorManager.secondary,
-    //       size: AppSize.s34,
-    //     ),
-    //     showUnselectedLabels: true,
-    //
-    //     unselectedIconTheme: IconThemeData(
-    //       color: ColorManager.white,
-    //       size: AppSize.s34,
-    //     ),
-    //     selectedItemColor: ColorManager.secondary,
-    //     unselectedItemColor: ColorManager.white,
-    //     showSelectedLabels: true,
-    //     type: BottomNavigationBarType.fixed,
-    //     selectedLabelStyle:
-    //         AppTextStyles.btnNavBarSelectedLabelTextStyle(null),
-    //     unselectedLabelStyle:
-    //         AppTextStyles.btnNavBarUnselectedLabelTextStyle(null)),
+        backgroundColor: ColorManager.primary,
+        surfaceTintColor: ColorManager.transparent),
 
+    tabBarTheme: TabBarTheme(
+      overlayColor: WidgetStateProperty.all(ColorManager.blue.withOpacity(.05)),
+    ),
     // button theme
     buttonTheme: ButtonThemeData(
       shape: RoundedRectangleBorder(
@@ -70,19 +50,18 @@ ThemeData getApplicationTheme() {
       ),
     ),
     textButtonTheme: TextButtonThemeData(
-      style: TextButton.styleFrom(
-        backgroundColor: ColorManager.transparent,
-        foregroundColor: ColorManager.secondary,
-      )
-    ),
+        style: TextButton.styleFrom(
+      backgroundColor: ColorManager.transparent,
+      foregroundColor: ColorManager.secondary,
+    )),
 
     // input decoration theme (text form field)
     inputDecorationTheme: const InputDecorationTheme(
       // content padding
       contentPadding: EdgeInsets.all(AppPadding.p8),
-      // hint style
-      // labelStyle: AppTextStyles.textFieldLabelTextStyle(null),
-      // errorStyle: AppTextStyles.textFieldErrorTextStyle(null),
+    ),
+    textSelectionTheme: const TextSelectionThemeData(
+      selectionHandleColor: ColorManager.secondary,
     ),
   );
 }

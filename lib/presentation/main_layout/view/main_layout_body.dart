@@ -48,12 +48,19 @@ class _MainLayoutBodyState extends State<MainLayoutBody> {
       MainDrawer(
           drawerItems: [
             DrawerItem(
-              text: 'request history',
+              text: 'My Trips',
+              image: SVGAssets.myTrips,
+              onTap: () {
+                Navigator.pushNamed(context, Routes.myTripsRoute);
+              },
+            ),
+            DrawerItem(
+              text: 'Request History',
               image: SVGAssets.history,
               onTap: () {
                 Navigator.pushNamed(context, Routes.requestHistoryRoute);
               },
-            )
+            ),
           ],
           name: widget.viewModel.getName,
           start: () {

@@ -789,12 +789,20 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, List<Map<String, dynamic>>>> historyOfTrips(
+  Future<Either<Failure, List<HistoryTripModel>>> historyOfTrips(
       {required String id}) async {
     try {
       if (await _networkInfo.isConnected) {
-        List<Map<String, dynamic>> listOfHistoryTrips = _remoteDataSource
-            .historyTrips(id: id) as List<Map<String, dynamic>>;
+        List<HistoryTripModel> listOfHistoryTrips =
+            await _remoteDataSource.historyTrips(id: id).then(
+          (trips) {
+            return trips.map(
+              (trip) {
+                return HistoryTripModel.fromMap(trip);
+              },
+            ).toList();
+          },
+        );
         return Right(listOfHistoryTrips);
       } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());

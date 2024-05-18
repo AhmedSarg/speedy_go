@@ -1,14 +1,11 @@
-- # country code in register and handle zero in phone number #
 - # image from camera #
 - handle no image picked
 - # PhoneNumberUtil #
 - login screen to be flexible and handle validation error overflow
-- # login country code validation #
-- # scribble color #
 - remove useless back buttons in passenger trip
 - no internet
 - loading in driver map
-
+- change auth when update
 
 
 

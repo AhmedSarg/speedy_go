@@ -302,6 +302,58 @@ class TripPassengerModel {
   }
 }
 
+class HistoryTripModel {
+  final String id;
+  final LatLng pickupLocation;
+  final LatLng destinationLocation;
+  final int price;
+  final DateTime date;
+  late final String pickupAddress;
+  late final String destinationAddress;
+
+  HistoryTripModel({
+    required this.id,
+    required this.pickupLocation,
+    required this.destinationLocation,
+    required this.price,
+    required this.date,
+  });
+
+  set setPickupAddress(String address) {
+    pickupAddress = address;
+  }
+
+  set setDestinationAddress(String address) {
+    destinationAddress = address;
+  }
+
+  factory HistoryTripModel.fake() => HistoryTripModel(
+        id: '',
+        pickupLocation: const LatLng(0, 0),
+        destinationLocation: const LatLng(0, 0),
+        price: -1,
+        date: DateTime.now(),
+      );
+
+  factory HistoryTripModel.fromMap(Map<String, dynamic> map) {
+    LatLng pickupLocation = LatLng(
+      (map['pickup_location'] as GeoPoint).latitude,
+      (map['pickup_location'] as GeoPoint).longitude,
+    );
+    LatLng destinationLocation = LatLng(
+      (map['destination_location'] as GeoPoint).latitude,
+      (map['destination_location'] as GeoPoint).longitude,
+    );
+    return HistoryTripModel(
+      id: map['id'],
+      pickupLocation: pickupLocation,
+      destinationLocation: destinationLocation,
+      price: map['price'].toInt(),
+      date: (map['date'] as Timestamp).toDate(),
+    );
+  }
+}
+
 class TripBusModel {
   final String id;
   final String driverId;
