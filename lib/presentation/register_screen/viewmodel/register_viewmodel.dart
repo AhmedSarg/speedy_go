@@ -327,7 +327,7 @@ class RegisterViewModel extends BaseCubit
           emit(ErrorState(failure: l, displayType: DisplayType.popUpDialog));
         },
         (r) {
-          DataIntent.pushPhoneNumber(_phoneNumberController.text.trim());
+          DataIntent.pushPhoneNumber(phoneNumber);
           DataIntent.pushEmail(_emailController.text.trim());
           DataIntent.pushPassword(_passwordController.text.trim());
           DataIntent.setAuthType(AuthType.register);

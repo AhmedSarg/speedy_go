@@ -55,17 +55,19 @@ class AddTripBody extends StatelessWidget {
                           selectedValue: '',
                           color: ColorManager.lightBlue.withOpacity(.9),
                           Bgcolor: ColorManager.traditional,
-                          items: List.generate(
-                                  viewModel.getNumberOfBuses, (i) => i + 1)
-                              .map(
-                                (e) => OptionMenuItem(
-                                  text: e.toString(),
-                                  onPressed: () {
-                                    viewModel.setBusNumber = e;
-                                  },
-                                ),
-                              )
-                              .toList(),
+                          items: viewModel.getNumberOfBuses > 0
+                              ? List.generate(
+                                      viewModel.getNumberOfBuses, (i) => i + 1)
+                                  .map(
+                                    (e) => OptionMenuItem(
+                                      text: e.toString(),
+                                      onPressed: () {
+                                        viewModel.setBusNumber = e;
+                                      },
+                                    ),
+                                  )
+                                  .toList()
+                              : [],
                           mainIcon: Icons.keyboard_arrow_down,
                         ),
                       ),

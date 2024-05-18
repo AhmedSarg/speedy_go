@@ -83,7 +83,6 @@ abstract class Repository {
 
   Future<Either<Failure, List<Map<String, dynamic>>>> historyOfBusPastTrips({
     required String id,
-    // required DateTime date,
   });
 
   Future<Either<Failure, List<Map<String, dynamic>>>> historyOfBusCurrentTrips({

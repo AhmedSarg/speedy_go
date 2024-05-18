@@ -795,7 +795,6 @@ class RepositoryImpl implements Repository {
       if (await _networkInfo.isConnected) {
         List<Map<String, dynamic>> listOfHistoryTrips = _remoteDataSource
             .historyTrips(id: id) as List<Map<String, dynamic>>;
-        // await _localDataSource.cacheHistoryTrips(listOfHistoryTrips);
         return Right(listOfHistoryTrips);
       } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
@@ -808,14 +807,11 @@ class RepositoryImpl implements Repository {
   @override
   Future<Either<Failure, List<Map<String, dynamic>>>> historyOfBusPastTrips({
     required String id,
-    // required DateTime date,
   }) async {
     try {
       if (await _networkInfo.isConnected) {
-        List<Map<String, dynamic>> listOfHistoryBusPastTrips =
-            _remoteDataSource.historyBusPastTrips(
-          id: id, /* date: date */
-        ) as List<Map<String, dynamic>>;
+        List<Map<String, dynamic>> listOfHistoryBusPastTrips = _remoteDataSource
+            .historyBusPastTrips(id: id) as List<Map<String, dynamic>>;
         return Right(listOfHistoryBusPastTrips);
       } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());

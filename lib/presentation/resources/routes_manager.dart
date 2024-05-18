@@ -94,7 +94,9 @@ class RouteGenerator {
         initFindBusTripsUseCase();
         initBookBusTripUseCase();
         initLogOutUseCase();
-
+        initHistoryTripsUseCase();
+        initHistoryBusCurrentTripsUseCase();
+        initHistoryBusPastTripsUseCase();
         return MaterialPageRoute(builder: (_) => const MainLayoutScreen());
       case Routes.passengerMapRoute:
         return MaterialPageRoute(builder: (_) => const PassengerMapScreen());

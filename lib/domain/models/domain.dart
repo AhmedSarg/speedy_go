@@ -123,7 +123,6 @@ class DriverModel extends UserModel {
     } else {
       vehicleType = VehicleType.bus;
     }
-    print(1);
     return DriverModel(
       uuid: data['uuid'],
       firstName: data['first_name'],
@@ -133,7 +132,7 @@ class DriverModel extends UserModel {
       imagePath: data['image_path'] ?? ImageAssets.unknownUserImage,
       nationalId: data['national_id'],
       vehicleType: vehicleType,
-      buses: data['buses_ids'],
+      buses: data['buses_ids'] ?? [],
     );
   }
 

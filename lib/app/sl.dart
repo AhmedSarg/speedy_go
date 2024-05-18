@@ -39,6 +39,9 @@ import '../domain/usecase/end_trip_usecase.dart';
 import '../domain/usecase/find_bus_trips_usecase.dart';
 import '../domain/usecase/find_drivers_usecase.dart';
 import '../domain/usecase/find_trips_usecase.dart';
+import '../domain/usecase/history_bus_current_trips_usecase.dart';
+import '../domain/usecase/history_bus_past_trips_usecase.dart';
+import '../domain/usecase/history_trips_usecase.dart';
 import '../domain/usecase/login_usecase.dart';
 import '../domain/usecase/logout_usecase.dart';
 import '../domain/usecase/rate_usecase.dart';
@@ -236,5 +239,25 @@ void initChangeAccountInfoUseCase() {
   if (GetIt.instance.isRegistered<ChangeAccountInfoUseCase>() == false) {
     sl.registerFactory<ChangeAccountInfoUseCase>(
         () => ChangeAccountInfoUseCase(sl()));
+  }
+}
+
+void initHistoryTripsUseCase() {
+  if (GetIt.instance.isRegistered<HistoryTripsUseCase>() == false) {
+    sl.registerFactory<HistoryTripsUseCase>(() => HistoryTripsUseCase(sl()));
+  }
+}
+
+void initHistoryBusCurrentTripsUseCase() {
+  if (GetIt.instance.isRegistered<HistoryBusCurrentTripsUseCase>() == false) {
+    sl.registerFactory<HistoryBusCurrentTripsUseCase>(
+        () => HistoryBusCurrentTripsUseCase(sl()));
+  }
+}
+
+void initHistoryBusPastTripsUseCase() {
+  if (GetIt.instance.isRegistered<HistoryBusPastTripsUseCase>() == false) {
+    sl.registerFactory<HistoryBusPastTripsUseCase>(
+        () => HistoryBusPastTripsUseCase(sl()));
   }
 }

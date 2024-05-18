@@ -1,10 +1,12 @@
 import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:speedy_go/data/network/error_handler.dart';
 import 'package:speedy_go/domain/models/user_manager.dart';
+
 import '../../../domain/models/enums.dart';
 import '../../../domain/usecase/start_verify_usecase.dart';
 import '../../../domain/usecase/verify_otp_usecase.dart';

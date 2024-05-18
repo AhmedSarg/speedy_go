@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:speedy_go/presentation/resources/styles_manager.dart';
 
 import '../../resources/color_manager.dart';
 import '../../resources/text_styles.dart';
@@ -69,25 +70,43 @@ class _OptionMenuState extends State<OptionMenu> {
 
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton(
-      color: widget.Bgcolor ?? ColorManager.primary,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppSize.s10),
+    return GestureDetector(
+      onTap: widget.items.isEmpty
+          ? () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Center(
+                    child: Text(
+                      'You don\'t have any buses',
+                      style: getRegularStyle(color: ColorManager.white),
+                    ),
+                  ),
+                  backgroundColor: ColorManager.blueWithOpacity0_5,
+                ),
+              );
+            }
+          : null,
+      child: PopupMenuButton(
+        color: widget.Bgcolor ?? ColorManager.primary,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppSize.s10),
+        ),
+        enabled: widget.items.isNotEmpty,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text(
+              widget.selectedValue!,
+              style: AppTextStyles.optionsMenuOptionTextStyle(context),
+            ),
+            Icon(
+              widget.mainIcon,
+              color: widget.color ?? ColorManager.white,
+            ),
+          ],
+        ),
+        itemBuilder: (context) => buildOptions(context, widget.items),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Text(
-            widget.selectedValue!,
-            style: AppTextStyles.optionsMenuOptionTextStyle(context),
-          ),
-          Icon(
-            widget.mainIcon,
-            color: widget.color ?? ColorManager.white,
-          ),
-        ],
-      ),
-      itemBuilder: (context) => buildOptions(context, widget.items),
     );
   }
 }

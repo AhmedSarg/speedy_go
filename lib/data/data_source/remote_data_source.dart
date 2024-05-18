@@ -277,7 +277,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     StreamController<FirebaseAuthException?> errorStreamController =
         StreamController<FirebaseAuthException?>.broadcast();
     await _firebaseAuth.verifyPhoneNumber(
-      phoneNumber: '+20${phoneNumber.substring(1)}',
+      phoneNumber: phoneNumber,
       verificationCompleted: (phoneAuthCredential) async {
         UserCredential userCredential =
             await _firebaseAuth.signInWithCredential(phoneAuthCredential);
@@ -1007,15 +1007,15 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<List<Map<String, dynamic>>> historyTrips({required String id}) async {
-    List<Map<String, dynamic>>? allData;
-    await _firestore
+    return await _firestore
         .collection('finished_trips')
         .where('driver_id', isEqualTo: id)
         .get()
-        .then((value) {
-      allData = value.docs.map((doc) => doc.data()).toList();
-    });
-    return allData!;
+        .then(
+      (value) {
+        return value.docs.map((doc) => doc.data()).toList();
+      },
+    );
   }
 
   @override
@@ -1026,7 +1026,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     await _firestore
         .collection('Available_bus_trips')
         .where('driver_id', isEqualTo: id)
-        .where('', isLessThan: DateTime.now()) // TODO:: Name attribute
+        .where('', isLessThan: DateTime.now())
         .get()
         .then((value) {
       allData = value.docs.map((doc) => doc.data()).toList();
