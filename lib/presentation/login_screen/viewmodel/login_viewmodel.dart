@@ -54,34 +54,37 @@ class LoginViewModel extends BaseCubit
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       ),
-    ).then((value) {
-      value.fold(
-        (l) {
-          emit(ErrorState(failure: l, displayType: DisplayType.popUpDialog));
-        },
-        (r) {
-          emit(SuccessState(message: AppStrings.verificationScreenLoginSuccessMessage));
-          if (_userManager.getCurrentUserType == UserType.driver &&
-              _userManager.getCurrentDriver!.vehicleType ==
-                  VehicleType.bus) {
-            emit(UserIsBusDriverState());
-          }
-          else if (_userManager.getCurrentUserType == UserType.driver) {
-            emit(UserIsDriverState());
-          }
-          else {
-            emit(UserIsPassengerState());
-          }
-        },
-      );
-    },);
+    ).then(
+      (value) {
+        value.fold(
+          (l) {
+            emit(ErrorState(failure: l, displayType: DisplayType.popUpDialog));
+          },
+          (r) {
+            emit(SuccessState(
+                message: AppStrings.verificationScreenLoginSuccessMessage));
+            if (_userManager.getCurrentUserType == UserType.driver &&
+                _userManager.getCurrentDriver!.vehicleType == VehicleType.bus) {
+              emit(UserIsBusDriverState());
+            } else if (_userManager.getCurrentUserType == UserType.driver) {
+              emit(UserIsDriverState());
+            } else {
+              emit(UserIsPassengerState());
+            }
+          },
+        );
+      },
+    );
   }
 
   void loginWithPhoneNumber() {
-    DataIntent.pushPhoneNumber(_phoneNumberController.text.trim());
+    String phoneNumber =
+        _countryCode + _phoneNumberController.text.trim().substring(1);
+    DataIntent.pushPhoneNumber(phoneNumber);
     DataIntent.setAuthType(AuthType.login);
     DataIntent.setOnVerified(() {
-      return SuccessState(message: AppStrings.verificationScreenLoginSuccessMessage);
+      return SuccessState(
+          message: AppStrings.verificationScreenLoginSuccessMessage);
     });
     emit(LoginVerifyPhoneNumberState());
   }
