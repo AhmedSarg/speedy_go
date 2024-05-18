@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'app/app.dart';
 import 'app/sl.dart';
 import 'presentation/resources/language_manager.dart';
@@ -22,15 +23,18 @@ void main() async {
 
   await initAppModule();
 
-  runApp(
-    EasyLocalization(
-      supportedLocales: AppLanguages.locals,
-      path: AppLanguages.translationsPath,
-      fallbackLocale: AppLanguages.fallBackLocal,
-      startLocale: AppLanguages.startLocal,
-      useOnlyLangCode: true,
-      saveLocale: true,
-      child: const MyApp(),
-    ),
-  );
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
+    runApp(
+      EasyLocalization(
+        supportedLocales: AppLanguages.locals,
+        path: AppLanguages.translationsPath,
+        fallbackLocale: AppLanguages.fallBackLocal,
+        startLocale: AppLanguages.startLocal,
+        useOnlyLangCode: true,
+        saveLocale: true,
+        child: const MyApp(),
+      ),
+    );
+  });
 }

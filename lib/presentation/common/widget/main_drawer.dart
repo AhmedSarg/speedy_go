@@ -50,7 +50,7 @@ class MainDrawer extends StatelessWidget {
                   Navigator.pushNamed(context, Routes.profileEditRoute)
                       .then((value) {
                     start();
-                    // Scaffold.of(context).closeDrawer();
+                    Scaffold.of(context).closeDrawer();
                   });
                 },
                 child: Container(

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:path/path.dart';
+import 'package:speedy_go/app/extensions.dart';
 import 'package:speedy_go/presentation/main_layout/view/pages/profile_page/view/widgets/profile_items.dart';
 import 'package:speedy_go/presentation/resources/routes_manager.dart';
 
@@ -99,18 +101,21 @@ class _MainLayoutBodyState extends State<MainLayoutBody> {
           ),
           backgroundColor: ColorManager.bgColor,
           extendBody: selectedTabIndex != 1,
+
           bottomNavigationBar: (tabs.length <= maxCount)
+
               ? AnimatedNotchBottomBar(
                   elevation: AppSize.s10,
                   notchBottomBarController: _controller,
-                  shadowElevation: AppSize.s10,
-                  color: ColorManager.primary,
+                   color: ColorManager.primary,
                   showLabel: false,
                   notchColor: ColorManager.primary,
                   removeMargins: false,
                   showTopRadius: true,
+              bottomBarWidth: context.width()*.99,
                   durationInMilliSeconds: 2,
                   bottomBarItems: [
+
                     BottomBarItem(
                       inActiveItem: SvgPicture.asset(
                         SVGAssets.home,
