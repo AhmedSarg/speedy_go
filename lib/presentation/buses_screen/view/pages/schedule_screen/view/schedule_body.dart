@@ -1,5 +1,9 @@
+import 'dart:math';
+
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:speedy_go/app/extensions.dart';
@@ -9,6 +13,7 @@ import '../../../../../../domain/models/domain.dart';
 import '../../../../../resources/assets_manager.dart';
 import '../../../../../resources/color_manager.dart';
 import '../../../../../resources/strings_manager.dart';
+import '../../../../../resources/styles_manager.dart';
 import '../../../../../resources/text_styles.dart';
 import '../../../../../resources/values_manager.dart';
 import '../../../widgets/buses_logo_widget.dart';
@@ -108,60 +113,137 @@ class ScheduleBodyScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(AppSize.s10),
                               color: ColorManager.offwhite,
                             ),
-                            child: Row(
+                            child: Stack(
+
                               children: [
-                                Column(
+                                Row(
                                   children: [
-                                    SvgPicture.asset(
-                                      SVGAssets.blueBus,
-                                      color: ColorManager.blue,
+                                    Column(
+                                      children: [
+                                        SvgPicture.asset(
+                                          SVGAssets.blueBus,
+                                          color: ColorManager.blue,
+                                        ),
+                                        Text(
+                                          'Bus',
+                                          style: AppTextStyles
+                                              .profileGeneralTextStyle(
+                                              context,
+                                              FontSize.f12,
+                                              ColorManager.blue),
+                                        ),
+
+                                        Text(item.busModel.licensePlate)
+                                      ],
                                     ),
-                                    Text(item.busModel.licensePlate)
-                                  ],
-                                ),
-                                const SizedBox(width: AppSize.s12),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Bus',
-                                        style: AppTextStyles
-                                            .profileGeneralTextStyle(
-                                                context,
-                                                FontSize.f17,
-                                                ColorManager.blue),
-                                      ),
-                                      Text(
-                                        '${item.pickup} - ${item.destination}',
-                                        style: AppTextStyles
-                                            .profileGeneralTextStyle(
-                                                context,
-                                                FontSize.f12,
-                                                ColorManager.grey),
-                                      ),
-                                      RichText(
-                                        text: TextSpan(
-                                          text: "Seats Number: ",
-                                          style: AppTextStyles.busItemTextStyle(
-                                              context),
+                                    const SizedBox(width: AppSize.s12),
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+
+                                        Row(
                                           children: [
-                                            TextSpan(
-                                              text:
-                                                  '${item.busModel.seats} Seat',
+                                            Text(
+                                              'Form : ',
                                               style: AppTextStyles
                                                   .profileGeneralTextStyle(
-                                                      context,
-                                                      FontSize.f12,
-                                                      ColorManager.grey),
+                                                  context,
+                                                  FontSize.f18,
+                                                  ColorManager.blue),
+                                            ),
+                                            Text(
+                                              item.pickup,
+                                              style: AppTextStyles
+                                                  .profileGeneralTextStyle(
+                                                  context,
+                                                  FontSize.f14,
+                                                  ColorManager.grey),
                                             ),
                                           ],
                                         ),
-                                      ),
-                                    ],
-                                  ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'To : ',
+                                              style: AppTextStyles
+                                                  .profileGeneralTextStyle(
+                                                  context,
+                                                  FontSize.f18,
+                                                  ColorManager.blue),
+                                            ),
+                                            Text(
+                                              item.destination,
+                                              style: AppTextStyles
+                                                  .profileGeneralTextStyle(
+                                                  context,
+                                                  FontSize.f14,
+                                                  ColorManager.grey),
+                                            ),
+
+                                          ],
+                                        ),
+
+                                      ],
+                                    ),
+                                    const SizedBox(width: AppSize.s12),
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'Price : ',
+                                              style: AppTextStyles
+                                                  .profileGeneralTextStyle(
+                                                  context,
+                                                  FontSize.f18,
+                                                  ColorManager.blue),
+                                            ),
+                                            Text(
+                                              '${item.price}',
+                                              style: AppTextStyles
+                                                  .profileGeneralTextStyle(
+                                                  context,
+                                                  FontSize.f14,
+                                                  ColorManager.grey),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+
+                                            Text(
+                                              _formatDate('${item.date}'),
+
+                                              style: AppTextStyles
+                                                  .profileGeneralTextStyle(
+                                                  context,
+                                                  FontSize.f14,
+                                                  ColorManager.grey),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ],
+                                        ),
+
+                                      ],
+                                    ),
+
+                                  ],
                                 ),
+                                Transform.rotate(
+                                  angle: pi * -.1,
+                                  child: Text(
+                                    '#${item.busModel.busNumber}',
+                                    style: getBoldStyle(
+                                      color: ColorManager.secondary,
+                                      fontSize: FontSize.f22,
+                                    ),
+                                  ),
+                                )
+
                               ],
                             ),
                           );
@@ -202,5 +284,10 @@ class ScheduleBodyScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+  String _formatDate(String dateString) {
+    final DateTime date = DateTime.parse(dateString);
+    final DateFormat formatter = DateFormat('yyyy-MM-dd h:mm a');
+    return formatter.format(date);
   }
 }

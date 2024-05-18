@@ -27,7 +27,7 @@ ThemeData getApplicationTheme() {
         surfaceTintColor: ColorManager.transparent),
 
     tabBarTheme: TabBarTheme(
-      overlayColor: WidgetStateProperty.all(ColorManager.blue.withOpacity(.05)),
+      // overlayColor: WidgetStateProperty.all(ColorManager.blue.withOpacity(.05)),
     ),
     // button theme
     buttonTheme: ButtonThemeData(
