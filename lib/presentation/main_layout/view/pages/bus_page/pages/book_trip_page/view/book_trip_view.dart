@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:speedy_go/presentation/resources/color_manager.dart';
 import 'package:speedy_go/presentation/resources/routes_manager.dart';
 
@@ -12,9 +11,8 @@ import '../states/book_trip_states.dart';
 import '../viewmodel/book_trip_viewmodel.dart';
 import 'book_trip_body.dart';
 
-
 class BookTripScreen extends StatelessWidget {
-  const BookTripScreen({Key? key}) : super(key: key);
+  const BookTripScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

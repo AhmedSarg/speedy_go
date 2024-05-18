@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
-
 import '../../../../../../../../common/widget/main_trip_item.dart';
 
-class MyCurrentTrip extends StatelessWidget {
-  const MyCurrentTrip({super.key});
+class CurrentTrips extends StatelessWidget {
+  const CurrentTrips({super.key});
 
   @override
   Widget build(BuildContext context) {

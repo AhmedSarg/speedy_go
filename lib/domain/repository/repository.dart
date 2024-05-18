@@ -77,18 +77,6 @@ abstract class Repository {
     required String password,
   });
 
-  Future<Either<Failure, List<Map<String, dynamic>>>> historyOfTrips({
-    required String id,
-  });
-
-  Future<Either<Failure, List<Map<String, dynamic>>>> historyOfBusPastTrips({
-    required String id,
-  });
-
-  Future<Either<Failure, List<Map<String, dynamic>>>> historyOfBusCurrentTrips({
-    required String id,
-  });
-
   Future<Either<Failure, (Stream<List<Future<TripDriverModel>>>, String)>>
       findDrivers({
     required String passengerId,
@@ -178,5 +166,17 @@ abstract class Repository {
     required String userId,
     required String oldPassword,
     required String newPassword,
+  });
+
+  Future<Either<Failure, List<HistoryTripModel>>> historyOfTrips({
+    required String id,
+  });
+
+  Future<Either<Failure, List<Map<String, dynamic>>>> historyOfBusPastTrips({
+    required String id,
+  });
+
+  Future<Either<Failure, List<Map<String, dynamic>>>> historyOfBusCurrentTrips({
+    required String id,
   });
 }
