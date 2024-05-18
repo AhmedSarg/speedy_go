@@ -739,6 +739,7 @@ class RepositoryImpl implements Repository {
     required String userId,
     required String firstName,
     required String lastName,
+    required bool emailChanged,
     required String email,
     required String phoneNumber,
     required bool pictureChanged,
@@ -746,11 +747,19 @@ class RepositoryImpl implements Repository {
   }) async {
     try {
       if (await _networkInfo.isConnected) {
-        if (await _remoteDataSource.doesUserExists(email: email) == null) {
+        RegisteredBeforeError? registeredBeforeError;
+        if (emailChanged) {
+          registeredBeforeError =
+              await _remoteDataSource.doesUserExists(email: email);
+        } else {
+          registeredBeforeError = null;
+        }
+        if (registeredBeforeError == null) {
           await _remoteDataSource.changeAccountInfo(
             userId: userId,
             firstName: firstName,
             lastName: lastName,
+            emailChanged: emailChanged,
             email: email,
             phoneNumber: phoneNumber,
             pictureChanged: pictureChanged,
@@ -766,6 +775,8 @@ class RepositoryImpl implements Repository {
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-token-expired') {
+        return Left(DataSource.TOKEN_EXPIRED.getFailure());
+      } else if (e.code == 'requires-recent-login') {
         return Left(DataSource.TOKEN_EXPIRED.getFailure());
       }
       return Left(ErrorHandler.handle(e).failure);

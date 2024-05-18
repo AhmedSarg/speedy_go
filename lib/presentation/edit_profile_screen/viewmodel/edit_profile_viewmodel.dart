@@ -47,6 +47,7 @@ class EditProfileViewModel extends BaseCubit
         lastName: _lastNameController.text.trim().isEmpty
             ? _userModel.lastName
             : _lastNameController.text.trim(),
+        emailChanged: _emailController.text.trim() != _userModel.email,
         email: _emailController.text.trim().isEmpty
             ? _userModel.email
             : _emailController.text.trim(),

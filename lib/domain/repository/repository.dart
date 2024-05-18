@@ -157,6 +157,7 @@ abstract class Repository {
     required String userId,
     required String firstName,
     required String lastName,
+    required bool emailChanged,
     required String email,
     required String phoneNumber,
     required bool pictureChanged,

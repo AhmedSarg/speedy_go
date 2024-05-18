@@ -20,6 +20,7 @@ class ChangeAccountInfoUseCase
       firstName: input.firstName,
       lastName: input.lastName,
       email: input.email,
+      emailChanged: input.emailChanged,
       phoneNumber: input.phoneNumber,
       pictureChanged: input.pictureChanged,
       picture: input.picture,
@@ -31,6 +32,7 @@ class ChangeAccountInfoUseCaseInput {
   final String userId;
   final String firstName;
   final String lastName;
+  final bool emailChanged;
   final String email;
   final String phoneNumber;
   final bool pictureChanged;
@@ -40,6 +42,7 @@ class ChangeAccountInfoUseCaseInput {
     required this.userId,
     required this.firstName,
     required this.lastName,
+    required this.emailChanged,
     required this.email,
     required this.phoneNumber,
     required this.pictureChanged,
