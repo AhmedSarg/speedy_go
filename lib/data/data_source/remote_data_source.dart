@@ -605,7 +605,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     String key, value;
     if (phoneNumber != null) {
       key = 'phone_number';
-      value = phoneNumber.substring(2);
+      value = phoneNumber;
     } else {
       key = 'email';
       value = email!;
