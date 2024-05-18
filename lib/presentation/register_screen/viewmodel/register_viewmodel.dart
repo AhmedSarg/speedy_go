@@ -340,12 +340,14 @@ class RegisterViewModel extends BaseCubit
 
   Future<BaseStates> _register() async {
     BaseStates resultState = SuccessState(message: 'message');
+    String phoneNumber =
+        _countryCode + _phoneNumberController.text.substring(1);
     await _registerCarDriverUseCase(
       RegisterUseCaseInput(
         firstName: _firstNameController.text.trim(),
         lastName: _lastNameController.text.trim(),
         gender: _gender,
-        phoneNumber: _phoneNumberController.text.trim(),
+        phoneNumber: phoneNumber,
         email: _emailController.text.trim(),
         nationalId: _nationalIdController.text.trim() == ''
             ? null
