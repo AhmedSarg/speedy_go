@@ -117,6 +117,7 @@ class DriverTripViewModel extends BaseCubit
   }
 
   nextPage() {
+    print('next clicked');
     if (_pageIndex < 2) {
       _pageIndex++;
       updatePage();
@@ -124,7 +125,7 @@ class DriverTripViewModel extends BaseCubit
   }
 
   reset() {
-    // print('RESET');
+    print('RESET');
     _positionSubscription!.cancel();
     _selectedTrip = null;
     _tripIndex = 0;
@@ -349,6 +350,7 @@ class DriverTripViewModel extends BaseCubit
           (r) async {
             if (await r) {
               _started = true;
+              print('in right');
               nextPage();
             } else {
               _isAccepted = false;
@@ -553,7 +555,9 @@ class DriverTripViewModel extends BaseCubit
   void start() {
     emit(LoadingState());
     _appLifecycleObserver.initialize(() {
-      if (_selectedTrip != null && !_started) {
+      print(_selectedTrip);
+      print(_started);
+      if (_selectedTrip != null && _pageIndex == 0) {
         cancelAcceptTrip();
       }
     });

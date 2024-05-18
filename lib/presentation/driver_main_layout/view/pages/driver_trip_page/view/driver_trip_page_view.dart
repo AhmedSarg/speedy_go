@@ -12,7 +12,9 @@ import 'widgets/status_dialog.dart';
 
 class DriverTripScreen extends StatelessWidget {
   const DriverTripScreen({super.key, required this.onChange});
+
   final Function() onChange;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

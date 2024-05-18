@@ -761,6 +761,22 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         'drivers': FieldValue.arrayUnion([driverData]),
       },
     );
+    _firestore
+        .collection('available_trips')
+        .doc(tripId)
+        .snapshots()
+        .listen((trip) {
+      List<dynamic> drivers = trip.data()!['drivers'];
+      bool found = false;
+      for (Map<String, dynamic> driver in drivers) {
+        if (driver['id'] == driverId) {
+          found = true;
+        }
+      }
+      if (!found) {
+        completer.complete(false);
+      }
+    });
     _firestore.collection('available_trips').doc(tripId).snapshots().listen(
       (oldDoc) async {
         if (!oldDoc.exists) {
