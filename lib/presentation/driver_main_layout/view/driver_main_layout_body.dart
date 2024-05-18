@@ -2,6 +2,7 @@ import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_not
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:speedy_go/app/extensions.dart';
 import 'package:speedy_go/presentation/common/widget/main_drawer.dart';
 import 'package:speedy_go/presentation/driver_main_layout/view/pages/driver_trip_page/view/driver_trip_page_view.dart';
 import 'package:speedy_go/presentation/driver_main_layout/view/pages/driver_trip_page/viewmodel/driver_trip_page_viewmodel.dart';
@@ -93,7 +94,9 @@ class _DriverMainScreenBodyState extends State<DriverMainScreenBody> {
                       shadowElevation: AppSize.s10,
                       color: ColorManager.primary,
                       showLabel: false,
-                      notchColor: ColorManager.primary,
+                bottomBarWidth: context.width()*.99,
+
+                notchColor: ColorManager.primary,
                       removeMargins: false,
                       showTopRadius: true,
                       bottomBarItems: [
