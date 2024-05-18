@@ -746,20 +746,29 @@ class RepositoryImpl implements Repository {
   }) async {
     try {
       if (await _networkInfo.isConnected) {
-        await _remoteDataSource.changeAccountInfo(
-          userId: userId,
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          phoneNumber: phoneNumber,
-          pictureChanged: pictureChanged,
-          picture: picture,
-        );
-        await fetchCurrentUser();
-        return const Right(null);
+        if (await _remoteDataSource.doesUserExists(email: email) == null) {
+          await _remoteDataSource.changeAccountInfo(
+            userId: userId,
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            phoneNumber: phoneNumber,
+            pictureChanged: pictureChanged,
+            picture: picture,
+          );
+          await fetchCurrentUser();
+          return const Right(null);
+        } else {
+          return Left(DataSource.EMAIL_ALREADY_EXISTS.getFailure());
+        }
       } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
       }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-token-expired') {
+        return Left(DataSource.TOKEN_EXPIRED.getFailure());
+      }
+      return Left(ErrorHandler.handle(e).failure);
     } catch (e) {
       return Left(ErrorHandler.handle(e).failure);
     }

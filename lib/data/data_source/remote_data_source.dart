@@ -250,6 +250,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     } else if (emailUsed) {
       return RegisteredBeforeError.emailUsed;
     } else if (phoneNumberUsed) {
+      print(2);
       return RegisteredBeforeError.phoneNumberUsed;
     } else {
       return null;
@@ -982,6 +983,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     required bool pictureChanged,
     File? picture,
   }) async {
+    await _firebaseAuth.currentUser!.verifyBeforeUpdateEmail(email);
     DocumentReference docRef = _firestore.collection('users').doc(userId);
     if (pictureChanged) {
       String picturePath = '$userId-picture';

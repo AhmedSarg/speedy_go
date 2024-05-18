@@ -1,6 +1,5 @@
 // ignore_for_file: constant_identifier_names
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../presentation/resources/strings_manager.dart';
@@ -30,6 +29,7 @@ enum DataSource {
   EMAIL_AND_PHONE_NUMBER_ALREADY_EXISTS,
   EMAIL_LOGIN_FAILED,
   INVALID_VERIFICATION_CODE,
+  TOKEN_EXPIRED,
   DEFAULT
 }
 
@@ -55,6 +55,7 @@ class ResponseCode {
   static const int PHONE_NUMBER_ALREADY_EXISTS = -12;
   static const int EMAIL_AND_PHONE_NUMBER_ALREADY_EXISTS = -13;
   static const int INVALID_VERIFICATION_CODE = -14;
+  static const int TOKEN_EXPIRED = -15;
 }
 
 class ResponseMessage {
@@ -87,6 +88,8 @@ class ResponseMessage {
   static const String EMAIL_LOGIN_FAILED = AppStrings.emailLoginFailedError;
   static const String INVALID_VERIFICATION_CODE =
       AppStrings.invalidVerificationCodeError;
+  static const String TOKEN_EXPIRED =
+      'Please Login Again Before Changing Email';
 
   static const String DEFAULT = AppStrings.defaultError;
 }
@@ -183,6 +186,11 @@ extension DataSourceExtension on DataSource {
         return Failure(
           ResponseCode.INVALID_VERIFICATION_CODE,
           ResponseMessage.INVALID_VERIFICATION_CODE,
+        );
+      case DataSource.TOKEN_EXPIRED:
+        return Failure(
+          ResponseCode.TOKEN_EXPIRED,
+          ResponseMessage.TOKEN_EXPIRED,
         );
       case DataSource.DEFAULT:
         return Failure(

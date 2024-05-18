@@ -27,7 +27,6 @@ class EditProfileViewModel extends BaseCubit
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
 
   late UserModel _userModel;
 
@@ -51,9 +50,7 @@ class EditProfileViewModel extends BaseCubit
         email: _emailController.text.trim().isEmpty
             ? _userModel.email
             : _emailController.text.trim(),
-        phoneNumber: _phoneController.text.trim().isEmpty
-            ? _userModel.phoneNumber
-            : _phoneController.text.trim(),
+        phoneNumber: _userModel.phoneNumber,
         pictureChanged: _pictureChanged,
         picture: _picture,
       ),
@@ -69,8 +66,13 @@ class EditProfileViewModel extends BaseCubit
             );
           },
           (r) {
+            String successMessage = 'Profile Updated Successfully';
+            if (_userModel.email != _emailController.text.trim()) {
+              successMessage +=
+                  '\nPlease Verify email for changes to be applied';
+            }
             emit(
-              SuccessState(message: 'Profile Updated Successfully'),
+              SuccessState(message: successMessage),
             );
           },
         );
@@ -104,7 +106,6 @@ class EditProfileViewModel extends BaseCubit
     _firstNameController.text = _userModel.firstName;
     _lastNameController.text = _userModel.lastName;
     _emailController.text = _userModel.email;
-    _phoneController.text = _userModel.phoneNumber;
     _imagePath = _userModel.imagePath;
   }
 
@@ -116,9 +117,6 @@ class EditProfileViewModel extends BaseCubit
 
   @override
   TextEditingController get getEmailController => _emailController;
-
-  @override
-  TextEditingController get getPhoneController => _phoneController;
 
   @override
   String get getImagePath => _imagePath;
@@ -138,8 +136,6 @@ abstract class EditProfileViewModelOutput {
   TextEditingController get getLastNameController;
 
   TextEditingController get getEmailController;
-
-  TextEditingController get getPhoneController;
 
   String get getImagePath;
 

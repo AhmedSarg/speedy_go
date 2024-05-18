@@ -13,10 +13,10 @@ import '../../resources/values_manager.dart';
 import '../viewmodel/edit_profile_viewmodel.dart';
 
 class EditProfileBody extends StatelessWidget {
-   EditProfileBody({super.key, required this.viewModel});
+  EditProfileBody({super.key, required this.viewModel});
 
   final EditProfileViewModel viewModel;
-   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   static final FocusNode firstNameFocusNode = FocusNode();
   static final FocusNode lastNameFocusNode = FocusNode();
@@ -153,30 +153,29 @@ class EditProfileBody extends StatelessWidget {
                           ),
                         ),
                         CustomTextField(
-                          nextFocus: phoneFocusNode,
                           focusNode: emailFocusNode,
                           controller: viewModel.getEmailController,
                           validator: AppValidators.validateName,
                           obscureText: false,
                           keyboardType: TextInputType.emailAddress,
                         ),
-                        const SizedBox(height: AppSize.s10),
-                        Padding(
-                          padding: const EdgeInsets.only(left: AppPadding.p16),
-                          child: Text(
-                            'Phone Number',
-                            style:
-                                AppTextStyles.profileItemUpdateFieldTextStyle(
-                                    context, ColorManager.offwhite),
-                          ),
-                        ),
-                        CustomTextField(
-                          focusNode: phoneFocusNode,
-                          controller: viewModel.getPhoneController,
-                          validator: AppValidators.validateName,
-                          obscureText: false,
-                          keyboardType: TextInputType.phone,
-                        ),
+                        // const SizedBox(height: AppSize.s10),
+                        // Padding(
+                        //   padding: const EdgeInsets.only(left: AppPadding.p16),
+                        //   child: Text(
+                        //     'Phone Number',
+                        //     style:
+                        //         AppTextStyles.profileItemUpdateFieldTextStyle(
+                        //             context, ColorManager.offwhite),
+                        //   ),
+                        // ),
+                        // CustomTextField(
+                        //   focusNode: phoneFocusNode,
+                        //   controller: viewModel.getPhoneController,
+                        //   validator: AppValidators.validateName,
+                        //   obscureText: false,
+                        //   keyboardType: TextInputType.phone,
+                        // ),
                         const SizedBox(height: AppSize.s30),
                         Center(
                           child: SizedBox(
@@ -199,7 +198,6 @@ class EditProfileBody extends StatelessWidget {
               ),
               IconButton(
                 onPressed: () {
-
                   Navigator.pop(context);
                 },
                 icon: Container(

@@ -20,7 +20,7 @@ class ProfileEditPage extends StatelessWidget {
         create: (_) => EditProfileViewModel(sl())..start(),
         child: BlocConsumer<EditProfileViewModel, BaseStates>(
           listener: (context, state) {
-            if (state is SuccessState) {
+            if (state is SuccessState || state is ErrorState) {
               Navigator.pop(context);
             }
             baseListener(context, state);

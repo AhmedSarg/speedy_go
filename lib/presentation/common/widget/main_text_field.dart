@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:speedy_go/presentation/resources/text_styles.dart';
+
 import '../../resources/color_manager.dart';
 import '../../resources/values_manager.dart';
 
@@ -12,7 +13,7 @@ class CustomTextField extends StatefulWidget {
     this.width = AppSize.s300,
     this.height = AppSize.s50,
     required this.validator,
-    required this.obscureText,
+    this.obscureText = false,
     required this.keyboardType,
     this.readOnly = false,
     this.onTap,
@@ -53,10 +54,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
         onTap: widget.onTap,
         readOnly: widget.readOnly,
         validator: widget.validator,
-        textInputAction: TextInputAction.next,
+        textInputAction: widget.nextFocus == null
+            ? TextInputAction.done
+            : TextInputAction.next,
         onEditingComplete: () {
+          widget.focusNode.unfocus();
           if (widget.nextFocus != null) {
-            widget.focusNode.unfocus();
             widget.nextFocus!.requestFocus();
           }
         },
