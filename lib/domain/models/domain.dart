@@ -386,16 +386,24 @@ class TripBusModel {
         busModel: BusModel.fake(),
       );
 
-  factory TripBusModel.fromMap(Map<String, dynamic> map) => TripBusModel(
-        id: map['id'] ?? '',
-        driverId: map['driver_id'],
-        pickup: map['pickup_location'],
-        destination: map['destination_location'],
-        date: map['calendar'].toDate(),
-        price: map['price'].toInt(),
-        availableSeats: (map['available_seats'] ?? -1).toInt(),
-        busModel: BusModel.fromMap(map['bus']),
-      );
+  factory TripBusModel.fromMap(Map<String, dynamic> map) {
+    BusModel busModel;
+    if (map['bus'] != null) {
+      busModel = BusModel.fromMap(map['bus']);
+    } else {
+      busModel = BusModel.fake();
+    }
+    return TripBusModel(
+      id: map['id'] ?? '',
+      driverId: map['driver_id'],
+      pickup: map['pickup_location'],
+      destination: map['destination_location'],
+      date: map['calendar'].toDate(),
+      price: map['price'].toInt(),
+      availableSeats: (map['available_seats'] ?? -1).toInt(),
+      busModel: busModel,
+    );
+  }
 }
 
 class BusModel {

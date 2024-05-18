@@ -1,8 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:speedy_go/app/extensions.dart';
 import 'package:speedy_go/domain/models/domain.dart';
 
 import '../../resources/assets_manager.dart';
@@ -14,10 +12,10 @@ import '../../resources/values_manager.dart';
 class MainTripItem extends StatelessWidget {
   const MainTripItem({
     super.key,
-    this.tripModel,
+    required this.tripModel,
   });
 
-  final TripBusModel? tripModel;
+  final TripBusModel tripModel;
 
   @override
   Widget build(BuildContext context) {
@@ -29,20 +27,23 @@ class MainTripItem extends StatelessWidget {
         color: ColorManager.veryLightGrey,
       ),
       child: ListTile(
-        leading: SvgPicture.asset(SVGAssets.redBus,color:ColorManager.red,),
+        leading: SvgPicture.asset(
+          SVGAssets.redBus,
+          color: ColorManager.red,
+        ),
         title: Text(
-          DateFormat('hh:mm a').format(tripModel!.date),
+          DateFormat('hh:mm a').format(tripModel.date),
           style: AppTextStyles.profileGeneralTextStyle(
               context, FontSize.f16, ColorManager.lightBlue),
         ),
         subtitle: Text(
-          '${tripModel!.availableSeats} seats available',
+          '${tripModel.availableSeats} seats available',
           style: AppTextStyles.profileHintTextStyle(context),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),
         trailing: Text(
-          '${tripModel!.price}.0 EGP',
+          '${tripModel.price}.0 EGP',
           style: AppTextStyles.profileGeneralTextStyle(
             context,
             FontSize.f17,

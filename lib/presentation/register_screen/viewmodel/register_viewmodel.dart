@@ -276,7 +276,6 @@ class RegisterViewModel extends BaseCubit
   }
 
   void chooseCarImage() async {
-    emit(PickFileState());
     try {
       String path = await getImagesFromGallery();
       _carImage = File(path);

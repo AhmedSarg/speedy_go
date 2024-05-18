@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:speedy_go/presentation/resources/assets_manager.dart';
-import 'package:speedy_go/presentation/resources/text_styles.dart';
-import 'package:speedy_go/presentation/resources/values_manager.dart';
+import 'package:flutter_svg/svg.dart';
 
-import '../../../../../../../../resources/color_manager.dart';
+import '../../../../../../../../resources/assets_manager.dart';
+import '../../../../../../../../resources/text_styles.dart';
+import '../../../../../../../../resources/values_manager.dart';
 
-class PastTrips extends StatelessWidget {
-  const PastTrips({super.key});
+class NoTrips extends StatelessWidget {
+  const NoTrips({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: double.infinity,
-      color: ColorManager.bgColor,
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -23,9 +21,9 @@ class PastTrips extends StatelessWidget {
               height: AppSize.s15,
             ),
             Text(
-              'No trips found',
+              'No Trips Found',
               style: AppTextStyles.profileItemTextStyle(context),
-            )
+            ),
           ],
         ),
       ),

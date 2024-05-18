@@ -141,6 +141,7 @@ abstract class Repository {
   Future<Either<Failure, Stream<List<BusModel>>>> displayBuses({
     required String driverId,
   });
+
   Future<Either<Failure, Stream<List<Future<TripBusModel>>>>> busesDriverTrips({
     required String driverId,
     required DateTime date,
@@ -172,11 +173,11 @@ abstract class Repository {
     required String id,
   });
 
-  Future<Either<Failure, List<Map<String, dynamic>>>> historyOfBusPastTrips({
+  Future<Either<Failure, List<TripBusModel>>> historyOfBusPastTrips({
     required String id,
   });
 
-  Future<Either<Failure, List<Map<String, dynamic>>>> historyOfBusCurrentTrips({
+  Future<Either<Failure, List<TripBusModel>>> historyOfBusCurrentTrips({
     required String id,
   });
 }

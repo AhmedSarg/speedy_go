@@ -50,10 +50,11 @@ ThemeData getApplicationTheme() {
       ),
     ),
     textButtonTheme: TextButtonThemeData(
-        style: TextButton.styleFrom(
-      backgroundColor: ColorManager.transparent,
-      foregroundColor: ColorManager.secondary,
-    )),
+      style: TextButton.styleFrom(
+        backgroundColor: ColorManager.transparent,
+        foregroundColor: ColorManager.secondary,
+      ),
+    ),
 
     // input decoration theme (text form field)
     inputDecorationTheme: const InputDecorationTheme(
@@ -62,6 +63,7 @@ ThemeData getApplicationTheme() {
     ),
     textSelectionTheme: const TextSelectionThemeData(
       selectionHandleColor: ColorManager.secondary,
+      selectionColor: ColorManager.secondary,
     ),
   );
 }

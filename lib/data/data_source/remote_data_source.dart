@@ -1030,16 +1030,26 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   Future<List<Map<String, dynamic>>> historyBusPastTrips({
     required String id,
   }) async {
-    List<Map<String, dynamic>>? allData;
-    await _firestore
+    return await _firestore
         .collection('available_bus_trips')
-        .where('passengers', arrayContains: id)
         .where('calendar', isLessThan: Timestamp.fromDate(DateTime.now()))
         .get()
-        .then((value) {
-      allData = value.docs.map((doc) => doc.data()).toList();
-    });
-    return allData!;
+        .then(
+      (value) {
+        List<Map<String, dynamic>> rets = [];
+        for (QueryDocumentSnapshot<Map<String, dynamic>> doc in value.docs) {
+          doc.data()['id'] = doc.id;
+          List<dynamic> passengerIds = doc.data()['passengers'];
+          for (String passenger in passengerIds) {
+            if (passenger.contains(id)) {
+              rets.add(doc.data());
+              break;
+            }
+          }
+        }
+        return rets;
+      },
+    );
   }
 
   @override
@@ -1047,7 +1057,6 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       {required String id}) async {
     return await _firestore
         .collection('available_bus_trips')
-        .where('passengers', arrayContains: id)
         .where(
           'calendar',
           isGreaterThanOrEqualTo: Timestamp.fromDate(DateTime.now()),
@@ -1055,7 +1064,18 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         .get()
         .then(
       (value) {
-        return value.docs.map((doc) => doc.data()).toList();
+        List<Map<String, dynamic>> rets = [];
+        for (QueryDocumentSnapshot<Map<String, dynamic>> doc in value.docs) {
+          doc.data()['id'] = doc.id;
+          List<dynamic> passengerIds = doc.data()['passengers'];
+          for (String passenger in passengerIds) {
+            if (passenger.contains(id)) {
+              rets.add(doc.data());
+              break;
+            }
+          }
+        }
+        return rets;
       },
     );
   }

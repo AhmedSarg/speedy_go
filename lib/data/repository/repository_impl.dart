@@ -813,13 +813,21 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, List<Map<String, dynamic>>>> historyOfBusPastTrips({
+  Future<Either<Failure, List<TripBusModel>>> historyOfBusPastTrips({
     required String id,
   }) async {
     try {
       if (await _networkInfo.isConnected) {
-        List<Map<String, dynamic>> listOfHistoryBusPastTrips = _remoteDataSource
-            .historyBusPastTrips(id: id) as List<Map<String, dynamic>>;
+        List<TripBusModel> listOfHistoryBusPastTrips =
+            await _remoteDataSource.historyBusPastTrips(id: id).then(
+          (trips) {
+            return trips.map(
+              (trip) {
+                return TripBusModel.fromMap(trip);
+              },
+            ).toList();
+          },
+        );
         return Right(listOfHistoryBusPastTrips);
       } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
@@ -830,13 +838,20 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, List<Map<String, dynamic>>>> historyOfBusCurrentTrips(
+  Future<Either<Failure, List<TripBusModel>>> historyOfBusCurrentTrips(
       {required String id}) async {
     try {
       if (await _networkInfo.isConnected) {
-        List<Map<String, dynamic>> listOfHistoryBusCurrentTrips =
-            _remoteDataSource.historyBusCurrentTrips(id: id)
-                as List<Map<String, dynamic>>;
+        List<TripBusModel> listOfHistoryBusCurrentTrips =
+            await _remoteDataSource.historyBusCurrentTrips(id: id).then(
+          (trips) {
+            return trips.map(
+              (trip) {
+                return TripBusModel.fromMap(trip);
+              },
+            ).toList();
+          },
+        );
         return Right(listOfHistoryBusCurrentTrips);
       } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
